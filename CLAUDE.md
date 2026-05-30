@@ -5,9 +5,10 @@ Site da **Commanderie de Bordeaux do Brasil**, uma confraria dedicada aos vinhos
 
 ## Publicação (deploy)
 - Site **estático** (HTML puro, sem build).
-- Hospedado na **Netlify**, com **deploy automático a partir deste repositório GitHub** (`lulidias/commanderie-site`, branch `main`).
-- **Todo push para `main` republica o site sozinho.** Não há build command; publish directory = raiz.
-- Domínio oficial: **commanderiedebordeaux.com.br** (https automático). O domínio **gcvb.com.br** deverá redirecionar para o principal (pendente).
+- Hospedado no **GitHub Pages** (migrado da Netlify em 2026-05-30 — ver abaixo), servindo a partir do repositório `lulidias/commanderie-site`, branch `main`, pasta raiz.
+- **Todo push para `main` republica o site sozinho** (GitHub Pages rebuilda em ~1 min). Não há build command; publish directory = raiz. Builds do GitHub Pages são **gratuitos e sem cota de créditos**.
+- Domínio oficial: **commanderiedebordeaux.com.br**. DNS gerenciado no **Registro.br** (nameservers `*.sec.dns.br`). Apex aponta para os 4 IPs do GitHub Pages (`185.199.108-111.153`); `www` é CNAME para o apex. Arquivo `CNAME` na raiz do repo define o domínio. HTTPS é emitido automaticamente pelo GitHub (marcar "Enforce HTTPS" em Settings → Pages quando o cert ficar pronto). O domínio **gcvb.com.br** deverá redirecionar para o principal (pendente).
+- **Por que saiu da Netlify:** o modelo novo da Netlify (plano Free = 300 créditos/mês, cada build/deploy consome crédito) pausou o site em 30/05/2026 depois de muitos deploys no mesmo dia. GitHub Pages não tem essa limitação. **Regra:** agrupar mudanças e publicar menos vezes; manter páginas leves (imagens em `img/`, nunca rebase64).
 
 ## Identidade visual
 - Inspirada nos diplomas do Grand Conseil de Bordeaux (pergaminho).

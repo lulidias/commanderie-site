@@ -47,15 +47,15 @@ var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","
 var DESDE={1:"11/2025",2:"12/2025",3:"03/2026",4:"03/2026",5:"04/2026"};
 function ini(n){var p=(""+(n||"")).trim().split(/\s+/);return (((p[0]||"")[0]||"")+((p[p.length-1]||"")[0]||"")).toUpperCase();}
 function avatar(m){if(m.foto_url)return '<span class="av"><img src="'+m.foto_url+'"></span>';return '<span class="av">'+ini(m.nome)+'</span>';}
-function card(m,honra){
-  var meta="";
-  if(!honra){var d=DESDE[m.capitulo];meta=(m.codigo||"")+(d?(" · Desde "+d):"");}
+function card(m){
+  var d=DESDE[m.capitulo];
+  var meta=(m.codigo||"")+(d?(" · Desde "+d):"");
   var nuc=m.nucleo?('<div class="nuc">'+m.nucleo+'</div>'):"";
   return '<div class="card">'+avatar(m)+'<div class="info"><b>'+m.nome+'</b>'+nuc+(meta?('<div class="meta">'+meta+'</div>'):"")+'</div></div>';
 }
-function grupo(titulo,itens,honra){
+function grupo(titulo,itens){
   if(!itens.length)return "";
-  var cards=itens.map(function(m){return card(m,honra);}).join("");
+  var cards=itens.map(function(m){return card(m);}).join("");
   return '<div class="sec-title">'+titulo+'</div><div class="sec-rule"></div><div class="grid">'+cards+'</div>';
 }
 function rank(g){g=(""+g).toLowerCase();if(g.indexOf("grão")>=0||g.indexOf("grao")>=0)return 0;if(g.indexOf("mestre")>=0)return 1;return 2;}
@@ -71,7 +71,7 @@ async function carregar(){
   mestres.sort(function(a,b){return rank(a.grau)-rank(b.grau)||a.nome.localeCompare(b.nome);});
   comend.sort(function(a,b){return (a.codigo||"").localeCompare(b.codigo||"");});
   honra.sort(function(a,b){return a.nome.localeCompare(b.nome);});
-  document.getElementById("wrap").innerHTML=grupo("Mestres",mestres,false)+grupo("Comendadores",comend,false)+grupo("Membros de Honra",honra,true);
+  document.getElementById("wrap").innerHTML=grupo("Mestres",mestres)+grupo("Comendadores",comend)+grupo("Membros de Honra",honra);
   document.getElementById("dir").style.display="block";
 }
 document.addEventListener("DOMContentLoaded",carregar);

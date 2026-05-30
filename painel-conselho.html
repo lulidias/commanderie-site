@@ -44,7 +44,8 @@ select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size
   <div class="wrap">
     <div class="sec-title">Indicações</div><div class="sec-rule"></div>
     <div id="indList"></div>
-    <div class="sec-title">Anuidades por núcleo</div><div class="sec-rule"></div>
+    <div class="sec-title">Financeiro — anuidades</div><div class="sec-rule"></div>
+    <div id="finGeral" class="fin-grid" style="margin-bottom:14px;"></div>
     <div id="finResumo" class="fin-grid"></div>
     <div id="finTabela"></div>
   </div>
@@ -82,24 +83,25 @@ async function setStatus(id,status){
   if(r.error)alert("Erro ao atualizar: "+r.error.message);
   carregarIndicacoes();
 }
+function brl(v){return "R$ "+(Math.round(v||0)).toLocaleString("pt-BR");}
+function finBox(titulo,c,p,extra){return "<div class=\"fin\"><h3>"+esc(titulo)+"</h3>"
+  +"<div class=\"n\">Cotizado: <b>"+brl(c)+"</b></div>"
+  +"<div class=\"n\"><span class=\"dot\" style=\"background:#3a9a4e;\"></span>Arrecadado: <b>"+brl(p)+"</b></div>"
+  +"<div class=\"n\"><span class=\"dot\" style=\"background:#c0392b;\"></span>A receber: <b>"+brl(c-p)+"</b></div>"+(extra||"")+"</div>";}
 async function carregarFinanceiro(){
-  var q=await sb.from("membros").select("codigo,nome,grau,nucleo,anuidade_paga").order("nucleo",{ascending:true}).order("codigo",{ascending:true});
+  var q=await sb.from("membros").select("codigo,nome,grau,nucleo,anuidade_valor,anuidade_paga").order("nucleo",{ascending:true}).order("codigo",{ascending:true});
   if(q.error){document.getElementById("finResumo").innerHTML="<p style=\"color:#8f1d24;\">Erro: "+esc(q.error.message)+"</p>";return;}
   var rows=q.data||[];
-  var grupos={};
-  rows.forEach(function(m){var n=m.nucleo||"Sem núcleo";(grupos[n]=grupos[n]||[]).push(m);});
+  var grupos={},Tc=0,Tp=0;
+  rows.forEach(function(m){var n=m.nucleo||"Sem núcleo";var v=m.anuidade_valor||0;var g=grupos[n]=grupos[n]||{n:0,c:0,p:0};g.n++;g.c+=v;Tc+=v;if(m.anuidade_paga){g.p+=v;Tp+=v;}});
+  document.getElementById("finGeral").innerHTML=finBox("Total geral",Tc,Tp,"<div class=\"n\" style=\"margin-top:4px;color:#8a8270;\">"+rows.length+" membros</div>");
   var nucs=Object.keys(grupos).sort();
-  document.getElementById("finResumo").innerHTML=nucs.map(function(n){
-    var arr=grupos[n];var pagos=arr.filter(function(m){return m.anuidade_paga;}).length;
-    return "<div class=\"fin\"><h3>"+esc(n)+"</h3><div class=\"n\">"+arr.length+" membros</div>"
-    +"<div class=\"n\"><span class=\"dot\" style=\"background:#3a9a4e;\"></span>"+pagos+" em dia</div>"
-    +"<div class=\"n\"><span class=\"dot\" style=\"background:#c0392b;\"></span>"+(arr.length-pagos)+" pendente</div></div>";
-  }).join("");
-  var tb="<table class=\"tbl\"><thead><tr><th>Núcleo</th><th>Nº</th><th>Nome</th><th>Grau</th><th>Anuidade</th></tr></thead><tbody>";
+  document.getElementById("finResumo").innerHTML=nucs.map(function(n){var g=grupos[n];return finBox(n,g.c,g.p,"<div class=\"n\" style=\"margin-top:4px;color:#8a8270;\">"+g.n+" membros</div>");}).join("");
+  var tb="<table class=\"tbl\"><thead><tr><th>Núcleo</th><th>Nº</th><th>Nome</th><th>Anuidade</th><th>Status</th></tr></thead><tbody>";
   rows.forEach(function(m){
     var paga=!!m.anuidade_paga;
     var pill=paga?"<span class=\"pill\" style=\"color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;\">Em dia</span>":"<span class=\"pill\" style=\"color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;\">Pendente</span>";
-    tb+="<tr><td>"+esc(m.nucleo||"")+"</td><td>"+esc(m.codigo)+"</td><td>"+esc(m.nome)+"</td><td>"+esc(m.grau||"")+"</td><td>"+pill+"</td></tr>";
+    tb+="<tr><td>"+esc(m.nucleo||"")+"</td><td>"+esc(m.codigo)+"</td><td>"+esc(m.nome)+"</td><td>"+brl(m.anuidade_valor||0)+"</td><td>"+pill+"</td></tr>";
   });
   tb+="</tbody></table>";
   document.getElementById("finTabela").innerHTML=tb;

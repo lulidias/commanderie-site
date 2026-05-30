@@ -44,7 +44,7 @@ Site da **Commanderie de Bordeaux do Brasil**, uma confraria dedicada aos vinhos
 - Login real, cadastro/CRM, fotos dos membros e o webhook "pagou → libera carteira" entram com o backend (sugestão: **Supabase** para auth + banco + storage; função na Netlify para o webhook do Asaas).
 
 ## Notas técnicas
-- Cada `.html` é **autocontido**: o CSS está embutido em `<style>` e as imagens (brasão, carteira, fotos) estão em **base64** dentro do próprio arquivo. Não há CSS/JS externos.
+- O CSS está embutido em `<style>` em cada `.html`. As **imagens compartilhadas** (brasão, hero, logo do topo) ficam em **arquivos na pasta `img/`** e são referenciadas por caminho relativo (ex.: `img/brasao.png`) — assim o navegador baixa e cacheia cada imagem uma única vez para o site inteiro, reduzindo muito o consumo de banda da Netlify. (Antes ficavam em base64 dentro de cada arquivo, o que deixava as páginas pesadas; migrado em 2026-05-30.) Não há CSS/JS externos próprios.
 - Por isso, o mesmo bloco de CSS se repete em várias páginas — ao mudar um estilo global, atualizar em todas.
 - Importadoras parceiras (seção "Apoio" no index): Epice, Mistral, World Wine, Enclos, Chez France, Interfood, Casa Santa Luzia (logos a inserir).
 - As páginas foram geradas originalmente por um script Python no ambiente Cowork (não incluído neste repositório). Daqui em diante, editar os `.html` diretamente.

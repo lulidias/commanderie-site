@@ -2,95 +2,92 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Parceiros — Commanderie de Bordeaux Brasil</title>
 <style>
-:root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--ink-lt:#5b5446;--line:#ddd0ad;}
+:root{--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--ink-lt:#5b5446;--line:#ddd0ad;--parch2:#ece3cd;}
 *{box-sizing:border-box;}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
-.ptop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
-.ptop img{width:34px;}
-.ptop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
-.ptop .back{margin-left:auto;font-size:13px;color:var(--red);text-decoration:none;}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;box-shadow:0 2px 16px rgba(40,30,10,.05);}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:13px;color:var(--red);text-decoration:none;}
 .lang-sel{display:inline-flex;gap:2px;align-items:center;margin-left:10px;}.lang-sel a{cursor:pointer;font-size:11.5px;letter-spacing:.5px;color:#9a8f72;padding:3px 6px;border-radius:6px;text-decoration:none;}.lang-sel a.on{color:var(--navy);font-weight:bold;background:#efe9da;}
-.phead{text-align:center;padding:44px 20px 8px;}
-.phead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
-.phead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:38px;margin:6px 0 4px;}
-.phead p{max-width:600px;margin:0 auto;color:var(--ink-lt);line-height:1.6;}
+.dhead{text-align:center;padding:40px 20px 6px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:36px;margin:6px 0 4px;}
+.dhead p{max-width:620px;margin:0 auto;color:var(--ink-lt);line-height:1.6;}
 .note{max-width:640px;margin:12px auto 0;font-size:12.5px;color:#9a937f;text-align:center;font-style:italic;}
-.filters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0 26px;}
-.fbtn{font-family:Georgia,serif;font-size:14px;color:var(--navy);background:#fffdf7;border:1px solid var(--line);border-radius:30px;padding:9px 18px;cursor:pointer;}
-.fbtn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
-.pgrid{max-width:1080px;margin:0 auto;padding:0 20px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;}
-.pcard{background:#fffdf7;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 22px rgba(40,30,10,.06);}
-.pphoto{height:180px;background:radial-gradient(120% 120% at 50% 0%,#faf5e8,var(--parch2));display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);overflow:hidden;}
-.pphoto span{font-family:Georgia,serif;font-size:54px;color:var(--gold);opacity:.5;}
-.pphoto img{width:100%;height:100%;object-fit:cover;}
-.pbody{padding:18px 20px 20px;}
-.pcat{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:bold;}
-.pname{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:20px;margin:4px 0 2px;}
-.pcity{font-size:12px;color:#8a8270;letter-spacing:.5px;text-transform:uppercase;}
-.pdesc{font-size:14px;color:var(--ink-lt);line-height:1.6;margin:10px 0 12px;}
-.pbenef{display:inline-block;font-size:12.5px;color:var(--red);background:#fbf1f1;border:1px solid #e6cccc;border-radius:20px;padding:6px 12px;}
-.plinks{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}.plinks a{font-size:11.5px;color:var(--navy);text-decoration:none;border:1px solid var(--line);border-radius:20px;padding:5px 11px;background:#fff;}.plinks a:hover{border-color:var(--gold);}
-.state{text-align:center;padding:60px 20px;color:#8a8270;}
+.wrap{max-width:1000px;margin:0 auto;padding:14px 20px 50px;}
+.dcity{margin:34px 0 14px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+.dcity h2{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:24px;margin:0;display:inline;}
+.dcity span{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-left:10px;}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
+.dcard{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:0;overflow:hidden;box-shadow:0 4px 16px rgba(40,30,10,.06);transition:transform .16s ease,box-shadow .16s ease;}
+.dcard:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(40,30,10,.12);}
+.dphoto{height:172px;background:radial-gradient(120% 120% at 50% 0%,#faf5e8,var(--parch2));border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.dphoto img{width:100%;height:100%;object-fit:cover;display:block;}
+.dphoto span{font-family:Georgia,serif;font-size:52px;color:var(--gold);opacity:.5;}
+.dbody{padding:15px 17px;}
+.dcat{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;}
+.dname{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:19px;margin:4px 0 6px;}
+.ddesc{font-size:13.5px;color:var(--ink-lt);line-height:1.55;margin:0 0 10px;}
+.dmeta{font-size:12px;color:#8a8270;margin-bottom:8px;}
+.dbenef{display:inline-block;font-size:12px;color:var(--red);background:#fbf1f1;border:1px solid #e6cccc;border-radius:20px;padding:5px 11px;margin-bottom:10px;}
+.dlinks{font-size:12.5px;}
+.dlinks a{color:var(--red);text-decoration:none;}
+.dlinks .sep{color:#cdbf9a;margin:0 7px;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
 .pfoot{text-align:center;padding:30px 20px;background:var(--navy);color:#cdbf9a;}
 .pfoot .m{font-family:Georgia,serif;font-style:italic;color:#e7d8a8;}
 </style></head><body>
-<div class="ptop"><img src="img/brasao.png" alt="Brasão"><b data-i18n="p_brand">Parceiros · Commanderie de Bordeaux</b><a class="back" href="index.html" data-i18n="p_back">← Painel do Comendador</a><span class="lang-sel" id="langSel"><a data-lang="pt" onclick="setLang('pt')">PT</a><a data-lang="en" onclick="setLang('en')">EN</a><a data-lang="fr" onclick="setLang('fr')">FR</a></span></div>
-<div class="phead">
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b data-i18n="p_brand">Parceiros · Commanderie de Bordeaux</b><a class="back" href="index.html" data-i18n="p_back">← Painel do Comendador</a><span class="lang-sel" id="langSel"><a data-lang="pt" onclick="setLang('pt')">PT</a><a data-lang="en" onclick="setLang('en')">EN</a><a data-lang="fr" onclick="setLang('fr')">FR</a></span></div>
+<div class="dhead">
   <div class="k" data-i18n="p_k">Benefícios aos membros</div>
   <h1 data-i18n="p_h1">Parceiros da Commanderie</h1>
   <p data-i18n="p_intro">Restaurantes e casas parceiras que oferecem condições especiais aos comendadores. Apresente sua carteira de membro para usufruir.</p>
   <div class="note" data-i18n="p_note">Benefício atual: taxa de rolha livre. Novos benefícios em negociação pelo Conselho.</div>
 </div>
-<div class="filters" id="filters"></div>
-<div class="pgrid" id="grid"></div>
+<div class="wrap" id="dwrap"></div>
 <div id="estado" class="state" style="display:none;"></div>
 <div class="pfoot"><div class="m">“Bordeaux, toujours Bordeaux”</div><div style="margin:16px 0 0;"><a href="https://www.instagram.com/commanderiedebordeaux_brasil/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;color:#e7d8a8;text-decoration:none;font-size:13px;letter-spacing:.3px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" style="flex:none;"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52.01-4.77.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7-.06 1.25-.07 1.62-.07 4.77s.01 3.52.07 4.77c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.25.06 1.62.07 4.77.07s3.52-.01 4.77-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.25.07-1.62.07-4.77s-.01-3.52-.07-4.77c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 0 0-.68-1.06 2.85 2.85 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.52 4.01 15.15 4 12 4zm0 3.07A4.93 4.93 0 1 1 7.07 12 4.93 4.93 0 0 1 12 7.07zm0 1.8A3.13 3.13 0 1 0 15.13 12 3.13 3.13 0 0 0 12 8.87zm5.13-.99a1.15 1.15 0 1 1-1.15 1.15 1.15 1.15 0 0 1 1.15-1.15z"/></svg>@commanderiedebordeaux_brasil</a></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
-var PARC=[],CIDADE="todos";
+var ORDEM_CIDADE=["Recife","São Paulo","Campinas","Curitiba","Gramado","Canela"];
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function ini(n){return ((""+(n||"?")).trim()[0]||"?").toUpperCase();}
 function card(p){
-  var foto=p.foto_url?('<img src="'+esc(p.foto_url)+'" alt="">'):('<span>'+ini(p.nome)+'</span>');
-  var loc=[p.cidade,p.endereco].filter(Boolean).map(esc).join(" · ");
-  var links=[];
-  if(p.instagram)links.push('<a href="https://instagram.com/'+esc((""+p.instagram).replace(/^@/,""))+'" target="_blank" rel="noopener">Instagram</a>');
-  if(p.site)links.push('<a href="'+esc(p.site)+'" target="_blank" rel="noopener">Site</a>');
+  var foto=p.foto_url?('<img loading="lazy" src="'+esc(p.foto_url)+'" alt="'+esc(p.nome)+'" onerror="this.style.display=\'none\';this.parentNode.innerHTML=\'<span>'+esc(ini(p.nome))+'</span>\'">'):('<span>'+ini(p.nome)+'</span>');
+  var L=[];
+  if(p.site){var w=(""+p.site).indexOf("http")===0?p.site:("https://"+p.site);L.push('<a href="'+esc(w)+'" target="_blank" rel="noopener">site</a>');}
+  if(p.instagram)L.push('<a href="https://instagram.com/'+esc((""+p.instagram).replace(/^@/,""))+'" target="_blank" rel="noopener">'+esc((""+p.instagram).charAt(0)==="@"?p.instagram:("@"+p.instagram))+'</a>');
+  if(p.telefone)L.push('<a href="tel:'+esc((""+p.telefone).replace(/[^+0-9]/g,""))+'">'+esc(p.telefone)+'</a>');
   var mu=p.maps_url||('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent((p.nome||"")+" "+(p.cidade||"")));
-  links.push('<a href="'+esc(mu)+'" target="_blank" rel="noopener">Mapa</a>');
-  if(p.telefone)links.push('<a href="tel:'+esc((""+p.telefone).replace(/[^+0-9]/g,""))+'">'+esc(p.telefone)+'</a>');
-  return '<article class="pcard"><div class="pphoto">'+foto+'</div><div class="pbody">'
-    +(p.categoria?('<div class="pcat">'+esc(p.categoria)+'</div>'):'')
-    +'<h3 class="pname">'+esc(p.nome)+'</h3>'
-    +(loc?('<div class="pcity">'+loc+'</div>'):'')
-    +(p.descricao?('<p class="pdesc">'+esc(p.descricao)+'</p>'):'')
-    +(p.beneficio?('<div class="pbenef">✦ '+esc(p.beneficio)+'</div>'):'')
-    +(links.length?('<div class="plinks">'+links.join("")+'</div>'):'')
+  L.push('<a href="'+esc(mu)+'" target="_blank" rel="noopener">mapa</a>');
+  return '<article class="dcard"><div class="dphoto">'+foto+'</div><div class="dbody">'
+    +(p.categoria?('<div class="dcat">'+esc(p.categoria)+'</div>'):'')
+    +'<h3 class="dname">'+esc(p.nome)+'</h3>'
+    +(p.descricao?('<p class="ddesc">'+esc(p.descricao)+'</p>'):'')
+    +(p.endereco?('<div class="dmeta">'+esc(p.endereco)+'</div>'):'')
+    +(p.beneficio?('<div class="dbenef">✦ '+esc(p.beneficio)+'</div>'):'')
+    +(L.length?('<div class="dlinks">'+L.join('<span class="sep">·</span>')+'</div>'):'')
     +'</div></article>';
 }
-function render(){
-  var lista=PARC.filter(function(p){return CIDADE==="todos"||p.cidade===CIDADE;});
-  document.getElementById("grid").innerHTML=lista.map(card).join("");
+function render(rows){
+  var grupos={};rows.forEach(function(p){var c=p.cidade||"Outras";(grupos[c]=grupos[c]||[]).push(p);});
+  var cidades=Object.keys(grupos).sort(function(a,b){var ia=ORDEM_CIDADE.indexOf(a),ib=ORDEM_CIDADE.indexOf(b);if(ia<0)ia=99;if(ib<0)ib=99;return ia-ib||a.localeCompare(b);});
+  document.getElementById("dwrap").innerHTML=cidades.map(function(c){
+    var n=grupos[c].length;var lbl=n+(n===1?" casa":" casas");
+    return '<div class="dcity"><h2>'+esc(c)+'</h2><span>'+lbl+'</span></div><div class="dgrid">'+grupos[c].map(card).join("")+'</div>';
+  }).join("");
 }
-function filtros(){
-  var cidades=[];PARC.forEach(function(p){if(p.cidade&&cidades.indexOf(p.cidade)<0)cidades.push(p.cidade);});
-  cidades.sort();
-  var fb=document.getElementById("filters");
-  var all='<button class="fbtn'+(CIDADE==="todos"?" active":"")+'" onclick="setCidade(\'todos\')" data-i18n="p_f_all">Todos</button>';
-  fb.innerHTML=all+cidades.map(function(c){return '<button class="fbtn'+(CIDADE===c?" active":"")+'" onclick="setCidade(\''+(""+c).replace(/'/g,"\\'")+'\')">'+esc(c)+'</button>';}).join("");
-  try{setLang(localStorage.getItem("lang")||"pt");}catch(e){}
-}
-function setCidade(c){CIDADE=c;filtros();render();}
 async function carregar(){
   var est=document.getElementById("estado");
   var q=await sb.from("parceiros").select("*").order("cidade",{ascending:true}).order("ordem",{ascending:true}).order("nome",{ascending:true});
   if(q.error){est.style.display="block";est.textContent="Não foi possível carregar os parceiros.";return;}
-  PARC=q.data||[];
-  if(!PARC.length){est.style.display="block";est.textContent="Em breve — parceiros sendo cadastrados pelo Conselho.";return;}
-  filtros();render();
+  var rows=q.data||[];
+  if(!rows.length){est.style.display="block";est.textContent="Em breve — parceiros sendo cadastrados pelo Conselho.";return;}
+  render(rows);
 }
-var I18N={pt:{p_brand:"Parceiros · Commanderie de Bordeaux",p_back:"← Painel do Comendador",p_k:"Benefícios aos membros",p_h1:"Parceiros da Commanderie",p_intro:"Restaurantes e casas parceiras que oferecem condições especiais aos comendadores. Apresente sua carteira de membro para usufruir.",p_note:"Benefício atual: taxa de rolha livre. Novos benefícios em negociação pelo Conselho.",p_f_all:"Todos"},en:{p_brand:"Partners · Commanderie de Bordeaux",p_back:"← Commander's Panel",p_k:"Member benefits",p_h1:"Commanderie Partners",p_intro:"Partner restaurants and venues offering special conditions to commanders. Show your membership card to enjoy them.",p_note:"Current benefit: free corkage. New benefits being negotiated by the Council.",p_f_all:"All"},fr:{p_brand:"Partenaires · Commanderie de Bordeaux",p_back:"← Espace du Commandeur",p_k:"Avantages aux membres",p_h1:"Partenaires de la Commanderie",p_intro:"Restaurants et maisons partenaires offrant des conditions spéciales aux commandeurs. Présentez votre carte de membre pour en profiter.",p_note:"Avantage actuel : droit de bouchon offert. De nouveaux avantages sont en négociation par le Conseil.",p_f_all:"Tous"}};
+var I18N={pt:{p_brand:"Parceiros · Commanderie de Bordeaux",p_back:"← Painel do Comendador",p_k:"Benefícios aos membros",p_h1:"Parceiros da Commanderie",p_intro:"Restaurantes e casas parceiras que oferecem condições especiais aos comendadores. Apresente sua carteira de membro para usufruir.",p_note:"Benefício atual: taxa de rolha livre. Novos benefícios em negociação pelo Conselho."},en:{p_brand:"Partners · Commanderie de Bordeaux",p_back:"← Commander's Panel",p_k:"Member benefits",p_h1:"Commanderie Partners",p_intro:"Partner restaurants and venues offering special conditions to commanders. Show your membership card to enjoy them.",p_note:"Current benefit: free corkage. New benefits being negotiated by the Council."},fr:{p_brand:"Partenaires · Commanderie de Bordeaux",p_back:"← Espace du Commandeur",p_k:"Avantages aux membres",p_h1:"Partenaires de la Commanderie",p_intro:"Restaurants et maisons partenaires offrant des conditions spéciales aux commandeurs. Présentez votre carte de membre pour en profiter.",p_note:"Avantage actuel : droit de bouchon offert. De nouveaux avantages sont en négociation par le Conseil."}};
 function setLang(l){if(!I18N[l])l="pt";try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(d[k]!=null)els[i].innerHTML=d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){as[j].className=(as[j].getAttribute("data-lang")===l)?"on":"";}}}
 document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}setLang(sl);carregar();});
 </script></body></html>

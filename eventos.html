@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eventos — Commanderie de Bordeaux</title>
+<style>
+:root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;box-shadow:0 2px 16px rgba(40,30,10,.05);}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:13px;color:var(--red);text-decoration:none;}
+.dhead{text-align:center;padding:38px 20px 6px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:36px;margin:6px 0 2px;}
+.wrap{max-width:880px;margin:0 auto;padding:14px 20px 60px;}
+.sec-title{font-family:Georgia,serif;color:var(--navy);font-size:22px;font-weight:normal;margin:30px 0 4px;}
+.sec-rule{height:1px;background:var(--line);margin:0 0 16px;}
+.evrow{display:flex;align-items:center;gap:14px;background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:10px;box-shadow:0 4px 14px rgba(40,30,10,.05);}
+.evdate{flex:none;width:54px;text-align:center;line-height:1;}
+.evdate b{display:block;font-family:Georgia,serif;color:var(--navy);font-size:24px;}
+.evdate span{display:block;font-size:11px;letter-spacing:1px;color:var(--red);font-weight:bold;margin-top:2px;}
+.evdate small{display:block;font-size:10px;color:#9a937f;margin-top:1px;}
+.evinfo{flex:1;min-width:0;}
+.evtitle{font-family:Georgia,serif;color:var(--navy);font-size:16px;}
+.evmeta{font-size:12px;color:#8a8270;margin-top:2px;}
+.evbadge{flex:none;font-size:10px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:3px 10px;}
+.evbadge.prox{color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);}
+.evbadge.real{color:#5b5446;background:#efe9da;border:1px solid var(--line);}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
+.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+</style></head><body>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Eventos</b><a class="back" href="index.html">← Painel do Comendador</a></div>
+<div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para ver os eventos.</p><a class="btn" href="index.html">Entrar</a></div>
+<div id="loading" class="state">Carregando…</div>
+<div id="content" style="display:none;">
+  <div class="dhead"><div class="k">Confraria</div><h1>Eventos</h1><p style="max-width:540px;margin:0 auto;color:#5b5446;line-height:1.6;">Capítulos, viagens, jantares e almoços da Commanderie — realizados e por vir.</p></div>
+  <div class="wrap" id="evWrap"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+var ORDEM=["Capítulo","Viagem","Jantar","Almoço","Outro"];
+var PLURAL={"Capítulo":"Capítulos","Viagem":"Viagens","Jantar":"Jantares","Almoço":"Almoços","Outro":"Outros"};
+var MES=["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
+function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function row(e){
+  var d=e.data?new Date(e.data+"T12:00:00"):null;
+  var dia=d?("0"+d.getDate()).slice(-2):"--",mes=d?MES[d.getMonth()]:"",ano=d?d.getFullYear():"";
+  var loc=[e.local,e.cidade].filter(Boolean).map(esc).join(" · ");
+  var badge=e.realizado?'<span class="evbadge real">Realizado</span>':'<span class="evbadge prox">Em breve</span>';
+  return '<div class="evrow"><div class="evdate"><b>'+dia+'</b><span>'+mes+'</span><small>'+ano+'</small></div>'
+    +'<div class="evinfo"><div class="evtitle">'+(e.numero?(esc(e.numero)+" · "):"")+esc(e.titulo||"")+'</div>'
+    +(loc?('<div class="evmeta">'+loc+'</div>'):'')+'</div>'+badge+'</div>';
+}
+async function carregar(){
+  var u=(await sb.auth.getUser()).data.user;
+  document.getElementById("loading").style.display="none";
+  if(!u){document.getElementById("needLogin").style.display="block";return;}
+  var q=await sb.from("eventos").select("*").order("data",{ascending:true});
+  if(q.error){document.getElementById("needLogin").style.display="block";document.getElementById("needLogin").querySelector("p").textContent="Não foi possível carregar ("+q.error.message+").";return;}
+  var rows=q.data||[];
+  var grupos={};rows.forEach(function(e){var t=e.tipo||"Outro";if(ORDEM.indexOf(t)<0)t="Outro";(grupos[t]=grupos[t]||[]).push(e);});
+  var html=ORDEM.filter(function(t){return grupos[t]&&grupos[t].length;}).map(function(t){
+    return '<div class="sec-title">'+esc(PLURAL[t]||t)+'</div><div class="sec-rule"></div>'+grupos[t].map(row).join("");
+  }).join("");
+  document.getElementById("evWrap").innerHTML=html||'<p class="state">Nenhum evento cadastrado ainda.</p>';
+  document.getElementById("content").style.display="block";
+}
+document.addEventListener("DOMContentLoaded",carregar);
+</script></body></html>

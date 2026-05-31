@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Preview — Atalhos do Painel</title>
+<style>
+:root{--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;--parch2:#ece3cd;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.top{padding:18px 22px;background:#fffdf7;border-bottom:1px solid var(--line);}
+.top b{font-family:Georgia,serif;color:var(--navy);font-size:20px;font-weight:normal;}
+.wrap{max-width:920px;margin:0 auto;padding:18px 20px 70px;}
+.opt-h{font-family:Georgia,serif;color:var(--navy);font-size:24px;font-weight:normal;margin:38px 0 4px;}
+.opt-d{font-size:13px;color:#8a8270;margin:0 0 16px;}
+.divider{height:1px;background:var(--line);margin:8px 0 0;}
+
+/* ===== OPÇÃO A — Grade com ícone e fio dourado ===== */
+.tA{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.tA a{position:relative;background:#fffdf7;border:1px solid var(--line);border-radius:16px;padding:20px 16px 16px;text-decoration:none;color:var(--navy);box-shadow:0 6px 18px rgba(40,30,10,.06);overflow:hidden;transition:transform .16s ease,box-shadow .16s ease;display:block;}
+.tA a::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-l));}
+.tA a:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgba(40,30,10,.14);}
+.tA .ic{width:40px;height:40px;border-radius:11px;background:#f6efdc;border:1px solid #e6d9b3;display:flex;align-items:center;justify-content:center;color:var(--gold);margin-bottom:12px;}
+.tA b{font-family:Georgia,serif;font-weight:normal;font-size:16px;display:block;}
+.tA span{font-size:12px;color:#8a8270;display:block;margin-top:2px;}
+.tA a.council{background:linear-gradient(160deg,#243161,#161f3f);border-color:#37436f;color:#f3ecd9;}
+.tA a.council::before{background:linear-gradient(90deg,var(--gold-l),#e7d8a8);}
+.tA a.council .ic{background:rgba(201,168,92,.16);border-color:rgba(201,168,92,.4);color:var(--gold-l);}
+.tA a.council span{color:#c9bfa0;}
+
+/* ===== OPÇÃO B — Lista elegante ===== */
+.tB{background:#fffdf7;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(40,30,10,.06);}
+.tB a{display:flex;align-items:center;gap:15px;padding:15px 18px;text-decoration:none;color:var(--navy);border-bottom:1px solid #efe7d3;transition:background .14s ease;}
+.tB a:last-child{border-bottom:none;}
+.tB a:hover{background:#faf4e6;}
+.tB .ic{width:38px;height:38px;border-radius:50%;background:#f6efdc;border:1px solid #e6d9b3;display:flex;align-items:center;justify-content:center;color:var(--gold);flex:none;}
+.tB .tx{flex:1;min-width:0;}
+.tB b{font-family:Georgia,serif;font-weight:normal;font-size:16px;display:block;}
+.tB span{font-size:12px;color:#8a8270;}
+.tB .chev{color:#c4b690;flex:none;}
+.tB a.council{background:#f2f1f8;}
+.tB a.council:hover{background:#ecebf4;}
+.tB a.council .ic{background:#e7e9f3;border-color:#cdd2e6;color:var(--navy);}
+
+/* ===== OPÇÃO C — Cartão pergaminho centralizado ===== */
+.tC{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.tC a{background:linear-gradient(165deg,#fffdf7,#f1e7cf);border:1px solid var(--line);border-radius:16px;padding:22px 14px 18px;text-align:center;text-decoration:none;color:var(--navy);box-shadow:0 6px 18px rgba(40,30,10,.07);transition:transform .16s ease,box-shadow .16s ease;display:block;}
+.tC a:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgba(40,30,10,.15);}
+.tC .ic{width:50px;height:50px;border-radius:50%;background:#fffdf7;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);margin:0 auto 12px;box-shadow:0 3px 10px rgba(176,138,58,.18);}
+.tC b{font-family:Georgia,serif;font-weight:normal;font-size:16px;display:block;}
+.tC span{font-size:11.5px;color:#8a8270;display:block;margin-top:3px;}
+.tC a.council{background:linear-gradient(160deg,#243161,#161f3f);border-color:#37436f;color:#f3ecd9;}
+.tC a.council .ic{background:rgba(201,168,92,.14);border-color:var(--gold-l);color:var(--gold-l);box-shadow:none;}
+.tC a.council span{color:#c9bfa0;}
+
+@media(max-width:680px){.tA,.tC{grid-template-columns:1fr 1fr;}}
+@media(max-width:430px){.tA,.tC{grid-template-columns:1fr;}}
+</style></head><body>
+<div class="top"><b>Commanderie — 3 opções para os atalhos do Painel do Comendador</b></div>
+<div class="wrap">
+  <p style="font-size:13.5px;color:#5b5446;line-height:1.6;">Escolha a que mais gostar (ou misture detalhes). São só os <b>atalhos</b> — o resto do painel (carteira, agenda, galeria) continua igual. Os links aqui são reais, pode clicar para testar.</p>
+
+  <div class="opt-h">Opção A — Grade com ícone e fio dourado</div>
+  <p class="opt-d">Cards claros, ícone em selo dourado, um fio dourado no topo. Sóbrio e moderno. Conselho em azul-marinho.</p>
+  <div class="divider" style="margin-bottom:16px;"></div>
+  <div class="tA" id="gridA"></div>
+
+  <div class="opt-h">Opção B — Lista elegante</div>
+  <p class="opt-d">Em vez de caixas, uma lista refinada (ícone · título · seta), como um menu de aplicativo premium. Menos “botões”, mais leitura.</p>
+  <div class="divider" style="margin-bottom:16px;"></div>
+  <div class="tB" id="gridB"></div>
+
+  <div class="opt-h">Opção C — Cartão pergaminho centralizado</div>
+  <p class="opt-d">Cards com leve gradiente de pergaminho, ícone num medalhão dourado, texto centralizado. Mais cerimonioso, alinhado ao diploma.</p>
+  <div class="divider" style="margin-bottom:16px;"></div>
+  <div class="tC" id="gridC"></div>
+</div>
+<script>
+var ICON={
+ card:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/>',
+ user:'<circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-5.5 7-5.5s7 1.9 7 5.5"/>',
+ userplus:'<circle cx="10" cy="8" r="3.2"/><path d="M3.5 20c0-3.4 2.9-5.2 6.5-5.2 1 0 2 .14 2.8.4"/><path d="M18 13v6M15 16h6"/>',
+ users:'<circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.2 2.7-4.8 6-4.8s6 1.6 6 4.8"/><path d="M16 5.2A3 3 0 0 1 16 11M21 19c0-2.4-1.3-3.9-3.4-4.5"/>',
+ calendar:'<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3"/>',
+ pay:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9.5h18M7 15h4"/>',
+ utensils:'<path d="M7 3v8M5 3v4a2 2 0 0 0 2 2M9 3v4a2 2 0 0 1-2 2M7 11v10"/><path d="M16 3c-1.6 0-2.5 2-2.5 4.5S15 12 16 12v9"/>',
+ wine:'<path d="M8 3h8M8 3c0 4 1.2 7 4 7s4-3 4-7M12 10v7M8.5 21h7"/>',
+ file:'<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h5M9.5 15.5h5"/>',
+ shield:'<path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/><path d="M9.3 12l1.8 1.8 3.6-3.6"/>'
+};
+function svg(name){return '<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+(ICON[name]||"")+'</svg>';}
+var ITENS=[
+ {t:"Minha carteira",s:"Apple Wallet · Google Wallet",i:"card",h:"#"},
+ {t:"Cadastro",s:"Dados pessoais",i:"user",h:"cadastro.html"},
+ {t:"Indicações",s:"Sugerir · acompanhar",i:"userplus",h:"indicacoes.html"},
+ {t:"Diretório de Membros",s:"Mestres · Comendadores · Honra",i:"users",h:"diretorio.html"},
+ {t:"Eventos",s:"Passados e futuros",i:"calendar",h:"eventos.html"},
+ {t:"Pagamentos",s:"Anuidade · jantares · viagens",i:"pay",h:"pagamentos.html"},
+ {t:"Parceiros",s:"Benefícios aos membros",i:"utensils",h:"parceiros.html"},
+ {t:"Dicas de Bordeaux",s:"Onde comer e beber",i:"wine",h:"dicas-bordeaux.html"},
+ {t:"Documentos",s:"Estatuto social",i:"file",h:"Estatuto_Commanderie_Bordeaux_Brasil.pdf"},
+ {t:"Conselho",s:"Mestre · Grão-Mestre",i:"shield",h:"painel-conselho.html",council:true}
+];
+function chev(){return '<svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';}
+document.getElementById("gridA").innerHTML=ITENS.map(function(x){return '<a class="'+(x.council?"council":"")+'" href="'+x.h+'"><div class="ic">'+svg(x.i)+'</div><b>'+x.t+'</b><span>'+x.s+'</span></a>';}).join("");
+document.getElementById("gridB").innerHTML=ITENS.map(function(x){return '<a class="'+(x.council?"council":"")+'" href="'+x.h+'"><div class="ic">'+svg(x.i)+'</div><div class="tx"><b>'+x.t+'</b><span>'+x.s+'</span></div>'+chev()+'</a>';}).join("");
+document.getElementById("gridC").innerHTML=ITENS.map(function(x){return '<a class="'+(x.council?"council":"")+'" href="'+x.h+'"><div class="ic">'+svg(x.i)+'</div><b>'+x.t+'</b><span>'+x.s+'</span></a>';}).join("");
+</script></body></html>

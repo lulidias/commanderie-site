@@ -54,29 +54,29 @@ async function carregar(){
   var q=await sb.from("membros").select("grau,capitulo,anuidade_valor,anuidade_paga").eq("user_id",u.id).maybeSingle();
   if(q.error||!q.data){document.getElementById("needLogin").style.display="block";return;}
   var m=q.data;
-  var honra=(""+(m.grau||"")).toLowerCase().indexOf("honra")>=0;
+  var g=(""+(m.grau||"")).toLowerCase();
+  var isento=g.indexOf("mestre")>=0||g.indexOf("honra")>=0;
   var cap=m.capitulo;
   var val=m.anuidade_valor||1200;
   var paga=!!m.anuidade_paga;
   var box=document.getElementById("anuidadeBox");
-  if(honra){
+  if(isento){
+    var rotulo=g.indexOf("honra")>=0?"Membro de Honra — isento de anuidade":"Mesa diretora — isento de anuidade";
     pill("Anuidade — Isento","#3a9a4e","#eef6ef");
-    box.innerHTML='<div class="row"><span class="t">Anuidade<br><small>Membro de Honra — isento de anuidade</small></span><span class="badge b-isento">Isento</span></div>';
+    box.innerHTML='<div class="row"><span class="t">Anuidade<br><small>'+rotulo+'</small></span><span class="badge b-isento">Isento</span></div>';
     document.getElementById("content").style.display="block";return;
   }
   var html="";
-  if(cap===1||cap===2){ // intronizado em 2025 -> ciclo 2026
-    if(paga){
-      pill("Anuidade em dia","#3a9a4e","#eef6ef");
-      html='<div class="row"><span class="t">Anuidade 2026<br><small>'+brl(val)+' · Quitada</small></span><span class="badge b-pago">Pago</span></div>';
-    }else{
-      pill("Anuidade a vencer","#c0392b","#fbeaea");
-      html='<div class="row"><span class="t">Anuidade 2026<br><small>'+brl(val)+' · Vence em 02/11/2026</small></span><span style="display:flex;align-items:center;"><span class="badge b-venc">A vencer</span><a href="#" onclick="pagar();return false;" class="pay">Pagar</a></span></div>';
-    }
-  }else{ // intronizado em 2026 -> coberto, próxima anuidade 2027
+  if(!paga){ // deve a anuidade do ciclo 2026 -> vence 02/11/2026
+    pill("Anuidade a vencer","#c0392b","#fbeaea");
+    html='<div class="row"><span class="t">Anuidade 2026<br><small>'+brl(val)+' · Vence em 02/11/2026</small></span><span style="display:flex;align-items:center;"><span class="badge b-venc">A vencer</span><a href="#" onclick="pagar();return false;" class="pay">Pagar</a></span></div>';
+  }else if(cap>=3){ // intronizado em 2026, já pago na intronização -> próxima anuidade 2027
     pill("Anuidade em dia","#3a9a4e","#eef6ef");
     html='<div class="row"><span class="t">Anuidade 2026<br><small>Incluída na sua intronização (2026)</small></span><span class="badge b-pago">Em dia</span></div>'
         +'<div class="row"><span class="t">Próxima anuidade<br><small>'+brl(val)+' · Vence em 01/11/2027</small></span><span class="badge b-venc">A partir de 2027</span></div>';
+  }else{ // intronizado em 2025 e já quitou o ciclo 2026
+    pill("Anuidade em dia","#3a9a4e","#eef6ef");
+    html='<div class="row"><span class="t">Anuidade 2026<br><small>'+brl(val)+' · Quitada</small></span><span class="badge b-pago">Pago</span></div>';
   }
   box.innerHTML=html;
   document.getElementById("content").style.display="block";

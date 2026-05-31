@@ -29,6 +29,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .pcity{font-size:12px;color:#8a8270;letter-spacing:.5px;text-transform:uppercase;}
 .pdesc{font-size:14px;color:var(--ink-lt);line-height:1.6;margin:10px 0 12px;}
 .pbenef{display:inline-block;font-size:12.5px;color:var(--red);background:#fbf1f1;border:1px solid #e6cccc;border-radius:20px;padding:6px 12px;}
+.plinks{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}.plinks a{font-size:11.5px;color:var(--navy);text-decoration:none;border:1px solid var(--line);border-radius:20px;padding:5px 11px;background:#fff;}.plinks a:hover{border-color:var(--gold);}
 .state{text-align:center;padding:60px 20px;color:#8a8270;}
 .pfoot{text-align:center;padding:30px 20px;background:var(--navy);color:#cdbf9a;}
 .pfoot .m{font-family:Georgia,serif;font-style:italic;color:#e7d8a8;}
@@ -53,12 +54,19 @@ function ini(n){return ((""+(n||"?")).trim()[0]||"?").toUpperCase();}
 function card(p){
   var foto=p.foto_url?('<img src="'+esc(p.foto_url)+'" alt="">'):('<span>'+ini(p.nome)+'</span>');
   var loc=[p.cidade,p.endereco].filter(Boolean).map(esc).join(" · ");
+  var links=[];
+  if(p.instagram)links.push('<a href="https://instagram.com/'+esc((""+p.instagram).replace(/^@/,""))+'" target="_blank" rel="noopener">Instagram</a>');
+  if(p.site)links.push('<a href="'+esc(p.site)+'" target="_blank" rel="noopener">Site</a>');
+  var mu=p.maps_url||('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent((p.nome||"")+" "+(p.cidade||"")));
+  links.push('<a href="'+esc(mu)+'" target="_blank" rel="noopener">Mapa</a>');
+  if(p.telefone)links.push('<a href="tel:'+esc((""+p.telefone).replace(/[^+0-9]/g,""))+'">'+esc(p.telefone)+'</a>');
   return '<article class="pcard"><div class="pphoto">'+foto+'</div><div class="pbody">'
     +(p.categoria?('<div class="pcat">'+esc(p.categoria)+'</div>'):'')
     +'<h3 class="pname">'+esc(p.nome)+'</h3>'
     +(loc?('<div class="pcity">'+loc+'</div>'):'')
     +(p.descricao?('<p class="pdesc">'+esc(p.descricao)+'</p>'):'')
     +(p.beneficio?('<div class="pbenef">✦ '+esc(p.beneficio)+'</div>'):'')
+    +(links.length?('<div class="plinks">'+links.join("")+'</div>'):'')
     +'</div></article>';
 }
 function render(){

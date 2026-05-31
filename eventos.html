@@ -48,7 +48,7 @@ function row(e){
   var d=e.data?new Date(e.data+"T12:00:00"):null;
   var dia=d?("0"+d.getDate()).slice(-2):"--",mes=d?MES[d.getMonth()]:"",ano=d?d.getFullYear():"";
   var loc=[e.local,e.cidade].filter(Boolean).map(esc).join(" · ");
-  var badge=e.realizado?'<span class="evbadge real">Realizado</span>':'<span class="evbadge prox">Em breve</span>';
+  var badge;if(e.realizado){badge='<span class="evbadge real">Realizado</span>';}else{var txt="Em breve";if(d){var d0=new Date(d.getFullYear(),d.getMonth(),d.getDate()),n=new Date(),n0=new Date(n.getFullYear(),n.getMonth(),n.getDate()),dias=Math.round((d0-n0)/86400000);if(dias===0)txt="hoje";else if(dias===1)txt="amanhã";else if(dias>1)txt="em "+dias+" dias";}badge='<span class="evbadge prox">'+txt+'</span>';}
   return '<div class="evrow"><div class="evdate"><b>'+dia+'</b><span>'+mes+'</span><small>'+ano+'</small></div>'
     +'<div class="evinfo"><div class="evtitle">'+(e.numero?(esc(e.numero)+" · "):"")+esc(e.titulo||"")+'</div>'
     +(loc?('<div class="evmeta">'+loc+'</div>'):'')+'</div>'+badge+'</div>';

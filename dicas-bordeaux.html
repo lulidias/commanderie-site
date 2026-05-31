@@ -44,99 +44,37 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
-var DADOS=[{city:'Bordeaux',region:'Bordeaux & Gironde',entries:[
-    {n:'La Tupina',q:'Francesa Tradicional · Pato & Carnes',a:'6 Rue Porte de la Monnaie, 33800 Bordeaux',p:'+33 5 56 91 56 37',w:'latupina.com',ig:'latupina',pr:2,d:'Fundada em 1968 por Jean-Pierre Xiradakis, a La Tupina é o templo da cozinha sudoeste francesa em Bordeaux. Pato confit, foie gras, entrecôte e pratos cozinhados na lareira — uma experiência autêntica e inesquecível.'},
-    {n:'Le Noailles',q:'Francesa · Escargot & Pato',a:'12 Allées de Tourny, 33000 Bordeaux',p:'+33 5 40 25 04 43',w:'lenoailles.fr',ig:'lenoailles',pr:2,d:'Brasserie clássica no coração de Bordeaux com a cozinha do sudoeste em destaque. Escargots, magret de canard e foie gras num ambiente elegante junto à Allée de Tourny.'},
-    {n:'Le Pressoir d\'Argent',q:'Francesa de Autor',a:'2-5 Pl. de la Comédie, Bordeaux',p:'+33 5 57 30 44 44',pr:4,m:'m2',note:'2 Estrelas Michelin · Chef Gordon Ramsay',d:'Duas Estrelas Michelin no Grand Hôtel de Bordeaux. O chef Gordon Ramsay assina uma cozinha francesa sofisticada com os melhores produtos de Bordeaux e Aquitânia — foie gras, trufas e caviar. A prensa de lagosta em prata é a peça central da sala.'},
-    {n:'Brasserie Bordelaise',q:'Francesa Tradicional',a:'50 Rue Saint-Rémi, Bordeaux',p:'+33 5 57 87 11 91',pr:2,d:'Uma das mais animadas brasseries do centro histórico de Bordeaux. Cozinha bordalesa genuína com ostras, magret e entrecôte grelhada num ambiente de mercado coberto.'},
-    {n:'Le 7',q:'Francesa · Vista Rio',a:'23 Quai des Chartrons, Bordeaux',p:'+33 5 56 77 50 77',pr:2,d:'Restaurante com vista panorâmica para o rio Garonne no bairro dos Chartrons. Cozinha francesa contemporânea num dos cenários mais bonitos de Bordeaux.'},
-    {n:'Le 1925',q:'Francesa · Escargot · Ostras · Pato',a:'4 Place des Quinconces, 33000 Bordeaux',p:'+33 5 56 52 84 56',w:'le1925.fr',ig:'le.1925',pr:2,d:'Restaurante com nome que remete à tradição bordalesa, especializado nos clássicos do sudoeste: escargots, ostras do Bassin d\'Arcachon e magret de canard.'},
-    {n:'Le Coluche Kebab',q:'Kebab & Sandwiches',a:'40 Rue du Pas-Saint-Georges, 33000 Bordeaux',p:'+33 7 66 34 38 55',w:'lecoluchekebab.com',ig:'lecoluchekebab_',pr:1,d:'Endereço informal e popular em Bordeaux para um kebab ou sandwich de qualidade a preço acessível.'},
-    {n:'Le Gabriel',q:'Francesa de Autor',a:'10 Pl. de la Bourse, Bordeaux',p:'+33 5 56 30 00 80',pr:3,m:'m1',note:'1 Estrela Michelin',d:'Uma Estrela Michelin com vista privilegiada para a Place de la Bourse e o Miroir d\'Eau. Cozinha francesa criativa com os produtos da região num dos endereços mais icónicos de Bordeaux.'},
-    {n:'Ressources',q:'Francesa Contemporânea',a:'126 Rue Fondaudège, 33000 Bordeaux',p:'+33 9 70 66 72 32',w:'restaurantressources.com',ig:'ressources.restaurant',pr:3,m:'m1',note:'1 Estrela Michelin',d:'Uma Estrela Michelin em Bordeaux com cozinha francesa contemporânea e criativa, focada nos produtos sazonais da Aquitânia.'},
-    {n:'Le Chapon Fin',q:'Francesa Clássica',a:'5 Rue Montesquieu, Bordeaux',p:'+33 5 56 79 10 10',pr:3,m:'rec',d:'Fundado em 1825, é um dos restaurantes históricos mais emblemáticos de França. Décor Belle Époque com a famosa sala em forma de gruta rochosa. Uma visita ao Le Chapon Fin é uma viagem no tempo.'},
-    {t:"h",n:"InterContinental Bordeaux Le Grand Hôtel",c:"luli",q:"Hotel · Histórico 5★",a:"2-5 Place de la Comédie, 33000 Bordeaux",p:"+33 5 57 30 44 44",pr:4,k:1,s:5,d:"Hotel monumental do séc. XVIII em frente ao Grand Théâtre de Bordeaux, na Place de la Comédie. 130 quartos com decoração assinada por Jacques Garcia. Restaurante Le Pressoir d'Argent (2 Estrelas Michelin, Chef Gordon Ramsay), spa Guerlain, rooftop com vista para a Garonne. O hotel mais prestigiado de Bordeaux."}
-  ]},
-  {city:'Bouliac',region:'Bordeaux & Gironde',entries:[
-    {n:'Le Saint-James',q:'Francesa de Autor',a:'3 Place Camille Hostein, 33270 Bouliac',p:'+33 5 57 97 06 00',pr:4,m:'m1',w:'saintjames-bouliac.com',ig:'stjamesbordeaux',note:'1 Estrela Michelin · Chef Mathieu Martin · Reaberto maio 2026',d:'Uma Estrela Michelin na "varanda de Bordeaux", com vista panorâmica sobre o vale do Garonne e a cidade. Arquitectura icónica de **Jean Nouvel** (Prémio Pritzker), inspirada nos celeiros de tabaco da Gironde — estruturas em treliça de metal cor de ferrugem. Chef **Mathieu Martin** assina uma cozinha criativa e sensorial com produtos sazonais da Aquitânia. Reaberto em maio de 2026 após renovação completa, com 11 quartos e 5 suites, escola de cozinha e piscina exterior. Carta de vinhos com mais de 1.700 referências.'},
-    {t:"h",n:"Le Saint-James Bouliac",c:"luli",q:"Hotel Boutique · Relais & Châteaux 4★",a:"3 Place Camille Hostein, 33270 Bouliac",p:"+33 5 57 97 06 00",pr:4,s:4,w:"saintjames-bouliac.com",ig:"stjamesbordeaux",note:"Relais & Châteaux · Arquitectura Jean Nouvel · Vista panorâmica Bordeaux",d:"Hotel boutique Relais & Châteaux em Bouliac, a poucos minutos de Bordeaux, com vista deslumbrante sobre o vale do Garonne. Arquitectura assinada por **Jean Nouvel** — estruturas metálicas cor de ferrugem que dialogam com a paisagem dos vinhedos. 11 quartos e 5 suites, restaurante gastronómico com 1 Estrela Michelin, escola de cozinha Côté Cours e piscina exterior. Reaberto em maio de 2026 após renovação total."}
-  ]},
-  {city:'Lormont',region:'Bordeaux & Gironde',entries:[
-    {n:'Le Prince Noir',q:'Francesa Criativa',a:'1 Rue du Prince Noir, 33310 Lormont',p:'+33 5 56 06 12 52',w:'leprincenoir-restaurant.fr',ig:'restaurant_prince_noir',pr:3,m:'m1',note:'1 Estrela Michelin · Chef Vivien Durand',d:'Uma Estrela Michelin numa villa medieval do século XIV com vista para o rio Garonne. O chef Vivien Durand cria uma cozinha francesa criativa e técnica, com produtos de excelência da região bordalesa.'},
-  ]},
-  {city:'Martillac',region:'Bordeaux & Gironde',entries:[
-    {n:'La Grand\'Vigne',q:'Francesa de Autor',a:'Les Sources de Caudalie, Martillac',p:'+33 5 57 83 83 83',pr:4,m:'m2',h:true,note:'2 Estrelas Michelin',d:'Duas Estrelas Michelin nas Sources de Caudalie, o hotel-spa de vinотerapia mais famoso do mundo. Cozinha francesa de alto nível rodeada de vinhas em Martillac, a poucos quilómetros de Bordeaux.'},
-    {n:'La Table de Lavoir',q:'Francesa Brasserie',a:'Chemin de Smith Haut Lafitte, 33650 Martillac',p:'+33 5 57 83 83 83',w:'sources-hotels.com/bordeaux',ig:'lessourcesdecaudalie',pr:3,h:true,d:'A opção mais descontraída das Sources de Caudalie, com cozinha brasserie francesa de qualidade num ambiente rústico e elegante junto às vinhas de Pessac-Léognan.'},
-  ]},
-  {city:'Sauternes',region:'Bordeaux & Gironde',entries:[
-    {n:'La Chapelle',q:'Francesa Regional',a:'5 Château Guiraud, 33210 Sauternes',p:'+33 5 40 24 85 45',w:'lachapelledeguiraud.com',ig:'restaurant_lachapelle',pr:2,d:'Restaurante no coração do Sauternes, a região dos vinhos brancos mais famosos do mundo. Cozinha regional do sudoeste harmonizada com os preciosos Sauternes da zona.'},
-  ]},
-  {city:'Artigues-près-de-Bordeaux',region:'Bordeaux & Gironde',entries:[
-    {n:'Château Fage',q:'Francesa · Vinho',a:'Arveyres, Gironde',p:'+33 5 56 68 56 16',w:'chateaufage.com',ig:'chateaufage',pr:2,d:'Restaurante integrado num château bordalês com cozinha regional e harmonização com os vinhos da propriedade.'},
-  ]},
-  {city:'Saint-Émilion',region:'Bordeaux & Gironde',entries:[
-    {n:'Logis de la Cadène',q:'Francesa de Autor',a:'3 Pl. du Marché au Bois, Saint-Émilion',p:'+33 5 57 24 71 40',pr:3,m:'m1',note:'1 Estrela Michelin',d:'Uma Estrela Michelin numa das praças mais bonitas de Saint-Émilion. Cozinha francesa de autor com produtos da região, numa das vilas medievais mais visitadas de França.'},
-    {n:'L\'Envers du Décor',q:'Francesa · Escargot & Pato',a:'11 Rue du Clocher, Saint-Émilion',p:'+33 5 57 74 48 31',pr:2,m:'rec',d:'O bistrô mais animado de Saint-Émilion, com escargots, magret e carta de vinhos de Saint-Émilion a preços razoáveis. Esplanada animada no centro histórico.'},
-    {n:'À La Terrasse Rouge',q:'Francesa Contemporânea',a:'1 Château La Dominique, 33330 Saint-Émilion',p:'+33 5 57 24 47 05',w:'laterrasserouge.com',ig:'laterrasserouge',pr:3,d:'Restaurante no Château La Dominique, com uma terrasse de cor vermelha icónica desenhada por Jean Nouvel. Cozinha contemporânea com vista para os vinhedos de Saint-Émilion e Pomerol.'},
-    {n:'Petit Faurie de Soutard',q:'Francesa',a:'Château Petit Faurie de Soutard, 33330 Saint-Émilion',p:'+33 5 57 51 12 78',w:'le-jardin-saint-emilion.fr',ig:'lejardinrestaurantpfs',pr:2,d:'Restaurante integrado num dos châteaux históricos de Saint-Émilion, com cozinha regional e vinhos da propriedade.'},
-    {n:'Atelier de Candale',q:'Francesa',a:'210 Route du Tertre, 33330 Saint-Laurent-des-Combes',p:'+33 5 57 24 15 45',w:'atelierdecandale.com',ig:'atelierdecandale',pr:2,d:'Espaço gastronómico criativo em Saint-Émilion com cozinha contemporânea num ambiente de adega renovada.'},
-    {n:'La Table de Pavie',q:'Francesa de Autor',a:'5 Place du Clocher, 33330 Saint-Émilion',p:'+33 5 57 55 07 55',w:'hoteldepavie.com',ig:'hoteldepavie',pr:4,m:'m2',note:'2 Estrelas Michelin',d:'Duas Estrelas Michelin no Château Pavie, um dos Grand Cru Classé A de Saint-Émilion. Alta cozinha francesa com harmonização perfeita com os lendários vinhos de Pavie. Uma das experiências gastronómicas mais exclusivas de Bordéus.'},
-    {n:'Les Belles Perdrix',q:'Francesa de Autor',a:'Château Troplong Mondot, 33330 Saint-Émilion',p:'+33 6 47 08 80 49',w:'troplong-mondot.com',ig:'chateautroplongmondot',pr:3,m:'m1',note:'1 Estrela Michelin',d:'Uma Estrela Michelin no Château Troplong Mondot com vista panorâmica para Saint-Émilion. Cozinha francesa criativa num dos terraços mais belos da região.'},
-    {n:'Le Jardin de Soutard',q:'Francesa',a:'Château Petit Faurie de Soutard, 33330 Saint-Émilion',p:'+33 5 57 51 12 78',w:'le-jardin-saint-emilion.fr',ig:'lejardinrestaurantpfs',pr:2,d:'Restaurante num jardim de château em Saint-Émilion com cozinha regional bordalesa e ambiente tranquilo.'},
-    {n:'Café Saigon',q:'Vietnamita',a:'21 Rue Guadet, 33330 Saint-Émilion',p:'+33 9 53 00 00 19',ig:'cafesaigonsaintemilion',pr:1,d:'Uma surpresa em plena Saint-Émilion: cozinha vietnamita autêntica com pho, banh mi e pratos frescos, num endereço informal que contrasta com os grandes châteaux da região.'},
-    {n:'Le Tertre',q:'Francesa Regional',a:'5 Rue Tente, 33330 Saint-Émilion',p:'+33 5 57 74 46 33',w:'restaurantletertre.com',ig:'restaurant_letertre',pr:2,d:'Restaurante com cozinha regional bordalesa em Saint-Émilion, com os clássicos do sudoeste e carta de vinhos local.'},
-    {t:"h",n:"Hôtel de Pavie",c:"luli",q:"Hotel Boutique · Relais & Châteaux 5★",a:"Place du Clocher, 33330 Saint-Émilion",p:"+33 5 57 55 07 55",pr:4,s:5,w:"hoteldepavie.com",ig:"hoteldepavie",note:"Relais & Châteaux · 22 quartos · La Table de Pavie 2★ Michelin",d:"Hotel boutique cinco-estrelas Relais & Châteaux no coração de Saint-Émilion, directamente ligado ao Château Pavie (Premier Grand Cru Classé A). Ocupa um antigo convento medieval com 22 quartos e suítes repartidos por três casas históricas, incluindo a Maison des Suites (séc. XVIII, renovada em 2022). Restaurante **La Table de Pavie** com 2 Estrelas Michelin, assinado pelo chef **Yannick Alléno**. Adega e provas dos vinhos Pavie, bar, fitness e serviço de valet. A experiência mais completa de Saint-Émilion."},
-    {t:"h",n:"Château Bellefont-Belcier",c:"luli",q:"Hotel · Château Vinícola 5★",a:"Saint-Laurent-des-Combes, 33330 Saint-Émilion",p:"+33 5 57 24 72 16",pr:4,s:5,d:"Château Grand Cru Classé de Saint-Émilion com hospedagem boutique de luxo. Suítes elegantes em meio às vinhas, jantares privados com harmonização de vinhos da própria casa, prova de barricas no chai. Uma experiência exclusiva e íntima no coração de Saint-Émilion para apreciadores de vinhos da margem direita."},
-    {t:"h",n:"Château Valandraud",c:"luli",q:"Hotel · Château Vinícola 5★",a:"6 Rue Guadet, 33330 Saint-Émilion",p:"+33 5 57 55 09 13",pr:4,s:5,w:"valandraud.com",ig:"chateau_valandraud",note:"Premier Grand Cru Classé B · 7 suítes",d:"Hotel boutique com 7 suítes de luxo no coração de Saint-Émilion, propriedade do visionário Jean-Luc Thunevin, criador do mítico Valandraud — um dos primeiros 'vins de garage' que revolucionou Saint-Émilion. Suítes decoradas com arte contemporânea, piscina, jacuzzi e pequeno-almoço com produtos artesanais. Provas privadas dos vinhos Premier Grand Cru Classé B directamente na adega. Uma experiência íntima e exclusiva para amantes dos grandes bordéus."}
-  ]},
-  {city:'Saint-Jean-de-Blaignac',region:'Bordeaux & Gironde',entries:[
-    {n:'Auberge Saint Jean',q:'Francesa Regional',a:'8 Rue du Pont, 33420 Saint-Jean-de-Blaignac',p:'+33 5 57 74 95 50',w:'aubergesaintjean.com',ig:'aubergestjean.restaurant',pr:2,d:'Auberge de charme em Saint-Jean-de-Blaignac com cozinha regional do Entre-Deux-Mers, entre Dordogne e Garonne.'},
-  ]},
-  {city:'Brane',region:'Bordeaux & Gironde',entries:[
-    {n:'Caffé Cousine',q:'Francesa',a:'9 Place du Marché, 33420 Branne',p:'+33 5 57 24 19 67',ig:'caffecuisine',pr:2,d:'Restaurante familiar no Médoc com cozinha francesa regional e ambiente descontraído.'},
-  ]},
-  {city:'Saint-Julien',region:'Bordeaux & Gironde',entries:[
-    {n:'Le Saint Julien',q:'Francesa · Médoc',a:'11 Rue de Saint-Julien, 33250 Saint-Julien-Beychevelle',p:'+33 5 56 59 63 87',w:'restaurant-le-saint-julien.com',ig:'restaurantlesaintjulien',pr:2,d:'Restaurante no coração do Médoc, rodeado pelos grands crus de Saint-Julien. Cozinha bordalesa com harmonização com os grandes vinhos da appellation.'},
-  ]},
-  {city:'Saint-Estèphe',region:'Bordeaux & Gironde',entries:[
-    {n:'Maison d\'Estournel',q:'Francesa · Château Cos d\'Estournel',a:'Route de Poumeys "Leyssac", 33180 Saint-Estèphe',p:'+33 5 56 59 30 25',w:'lamaison-estournel.com',ig:'lamaison_estournel',pr:4,h:true,d:'O restaurante do lendário Château Cos d\'Estournel, um dos grandes nomes do Médoc. Ambiente orientalista único — o château é inspirado em palácios da Índia — com cozinha francesa de luxo e os míticos vinhos da casa.'},
-  ]},
-  {city:'Pauillac',region:'Bordeaux & Gironde',entries:[
-    {n:'Lavinal',q:'Brasserie · Escargot & Pato',a:'Bages, Pauillac',p:'+33 5 57 75 00 09',pr:2,m:'bib',d:'Brasserie do Village de Bages, um conjunto de casas históricas restaurado por Jean-Michel Cazes de Lynch-Bages. Cozinha sudoeste descontraída com escargots, magret e a melhor garrafeira de Pauillac.'},
-    {t:"h",n:"Château Cordeillan-Bages",c:"luli",q:"Hotel · Château Vinícola 5★",a:"Route des Châteaux, 33250 Pauillac",p:"+33 5 56 59 24 24",pr:4,k:1,s:5,d:"Château do séc. XVII transformado em hotel boutique de luxo no coração do Médoc, propriedade da família Cazes (proprietários do Château Lynch-Bages). 28 quartos elegantes, restaurante gastronómico, piscina e localização privilegiada entre os Grands Crus Classés. Membro Relais & Châteaux. O endereço de eleição para visitas vinícolas em Pauillac."}
-  ]},
-  {city:'Pomerol',region:'Bordeaux & Gironde',entries:[
-    {n:'La Table de Catusseau',q:'Francesa Regional',a:'86 Rue de Catusseau, 33500 Pomerol',p:'+33 5 57 84 40 40',w:'latabledecatusseau.fr',pr:2,d:'Restaurante em Pomerol, a appellation do mítico Pétrus, com cozinha regional e harmonização com os vinhos de Pomerol e Saint-Émilion.'},
-  ]},
-  {city:'Arcachon',region:'Bordeaux & Gironde',entries:[
-    {n:'La Corniche',q:'Ostras & Peixe',a:'46 Avenue Louis Gaume, 33115 Pyla-sur-Mer',p:'+33 5 56 22 72 11',w:'lacoorniche.com',ig:'lacoorniche',pr:3,d:'No topo da famosa Dune du Pilat, com vista para o Bassin d\'Arcachon. As ostras do Bassin e o peixe fresco do Atlântico são servidos com o cenário mais espetacular da costa atlântica francesa.'},
-  ]}];
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function preco(pr){var n=Math.min(4,pr||0);var o="";for(var k=0;k<n;k++)o+="\u20AC";return o;}
-function slugp(n){return (""+n).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
-function card(e){
+function preco(pr){var n=Math.min(4,pr||0);var o="";for(var k=0;k<n;k++)o+="€";return o;}
+function card(p){
   var L=[];
-  if(e.w){var w=(""+e.w).indexOf("http")===0?e.w:("https://"+e.w);L.push('<a href="'+esc(w)+'" target="_blank" rel="noopener">site</a>');}
-  if(e.ig)L.push('<a href="https://instagram.com/'+esc(e.ig)+'" target="_blank" rel="noopener">@'+esc(e.ig)+'</a>');
-  if(e.p)L.push('<a href="tel:'+esc((""+e.p).replace(/\s/g,""))+'">'+esc(e.p)+'</a>');
-  if(e.a)L.push('<a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(e.a)+'" target="_blank" rel="noopener">mapa</a>');
-  return '<article class="dcard"><div class="dphoto"><img loading="lazy" src="img/dicas/'+slugp(e.n)+'.jpg" alt="'+esc(e.n)+'" onerror="this.parentNode.style.display=\'none\'"></div><div class="dbody">'+(e.q?'<div class="dcat">'+esc(e.q)+'</div>':'')
-    +'<h3 class="dname">'+esc(e.n)+(e.pr?' <span class="dprice">'+preco(e.pr)+'</span>':'')+'</h3>'
-    +(e.d?'<p class="ddesc">'+esc(e.d)+'</p>':'')
-    +(e.a?'<div class="dmeta">'+esc(e.a)+'</div>':'')
+  if(p.site){var w=(""+p.site).indexOf("http")===0?p.site:("https://"+p.site);L.push('<a href="'+esc(w)+'" target="_blank" rel="noopener">site</a>');}
+  if(p.instagram){var ig=(""+p.instagram).replace(/^@/,"");L.push('<a href="https://instagram.com/'+esc(ig)+'" target="_blank" rel="noopener">@'+esc(ig)+'</a>');}
+  if(p.telefone)L.push('<a href="tel:'+esc((""+p.telefone).replace(/\s/g,""))+'">'+esc(p.telefone)+'</a>');
+  if(p.endereco)L.push('<a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.endereco)+'" target="_blank" rel="noopener">mapa</a>');
+  var foto=p.foto_url?('<div class="dphoto"><img loading="lazy" src="'+esc(p.foto_url)+'" alt="'+esc(p.nome)+'" onerror="this.parentNode.style.display=\'none\'"></div>'):'';
+  return '<article class="dcard">'+foto+'<div class="dbody">'+(p.categoria?'<div class="dcat">'+esc(p.categoria)+'</div>':'')
+    +'<h3 class="dname">'+esc(p.nome)+(p.preco?' <span class="dprice">'+preco(p.preco)+'</span>':'')+'</h3>'
+    +(p.descricao?'<p class="ddesc">'+esc(p.descricao)+'</p>':'')
+    +(p.endereco?'<div class="dmeta">'+esc(p.endereco)+'</div>':'')
     +(L.length?'<div class="dlinks">'+L.join('<span class="sep">·</span>')+'</div>':'')
     +'</div></article>';
 }
-function render(){
-  document.getElementById("dwrap").innerHTML=DADOS.map(function(g){
-    return '<div class="dcity"><h2>'+esc(g.city)+'</h2><span>'+esc(g.region)+'</span></div><div class="dgrid">'+(g.entries||[]).map(card).join('')+'</div>';
+function render(rows){
+  var grupos=[],idx={};
+  rows.forEach(function(p){var c=p.cidade||"Outras";if(idx[c]==null){idx[c]=grupos.length;grupos.push({city:c,region:p.region||"",entries:[]});}grupos[idx[c]].entries.push(p);});
+  document.getElementById("dwrap").innerHTML=grupos.map(function(g){
+    return '<div class="dcity"><h2>'+esc(g.city)+'</h2><span>'+esc(g.region)+'</span></div><div class="dgrid">'+g.entries.map(card).join('')+'</div>';
   }).join('');
 }
 async function carregar(){
   var u=(await sb.auth.getUser()).data.user;
   document.getElementById("loading").style.display="none";
   if(!u){document.getElementById("needLogin").style.display="block";return;}
-  render();document.getElementById("content").style.display="block";
+  var q=await sb.from("dicas").select("*").order("ordem",{ascending:true});
+  if(q.error){document.getElementById("needLogin").style.display="block";document.getElementById("needLogin").querySelector("p").textContent="Não foi possível carregar ("+q.error.message+").";return;}
+  render(q.data||[]);
+  document.getElementById("content").style.display="block";
 }
 document.addEventListener("DOMContentLoaded",carregar);
 </script></body></html>

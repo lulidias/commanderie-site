@@ -16,6 +16,15 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;}
 .m-status{display:inline-flex;align-items:center;gap:7px;font-size:13px;border:1px solid var(--line);border-radius:20px;padding:6px 12px;background:#f0ece0;}
 .m-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#9a937f;}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #ece0c2;}
+.row:last-child{border-bottom:none;}
+.row .t{color:#2a2620;font-size:14px;}
+.row .t small{color:#9a937f;}
+.badge{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:3px 10px;white-space:nowrap;}
+.b-venc{color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);}
+.b-pago{color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;}
+.b-isento{color:#5b5446;background:#efe9da;border:1px solid var(--line);}
+.pay{ text-decoration:none;font-size:12px;background:var(--navy);color:#fff;border-radius:9px;padding:6px 12px;margin-left:10px;}
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
 .state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
@@ -26,19 +35,51 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <div id="content" style="display:none;">
   <div class="dhead"><div class="k">Comendador</div><h1>Pagamentos</h1></div>
   <div class="wrap"><div class="card">
-    <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin:0 0 12px;">Anuidade, jantares e viagens — veja o que já foi pago e o que está por vencer, e quite tudo por aqui.</p>
-    <div style="text-align:left;margin-bottom:12px;"><span class="m-status" id="mStatusPill"><span class="m-dot" id="mDot"></span> <span id="mStatusTxt">—</span></span></div>
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #ece0c2;"><span style="color:#2a2620;font-size:14px;">Anuidade 2026<br><small style="color:#9a937f;">Vence em 31/12/2026</small></span><span style="display:flex;align-items:center;"><span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:3px 10px;">A vencer</span><a href="#" onclick="pagar();return false;" style="text-decoration:none;font-size:12px;background:var(--navy);color:#fff;border-radius:9px;padding:6px 12px;margin-left:10px;">Pagar</a></span></div>
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #ece0c2;"><span style="color:#2a2620;font-size:14px;">Jantar · Capítulo VI<br><small style="color:#9a937f;">Piselli · São Paulo · 09/07/2026</small></span><span style="display:flex;align-items:center;"><span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:3px 10px;">A vencer</span><a href="#" onclick="pagar();return false;" style="text-decoration:none;font-size:12px;background:var(--navy);color:#fff;border-radius:9px;padding:6px 12px;margin-left:10px;">Pagar</a></span></div>
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #ece0c2;"><span style="color:#2a2620;font-size:14px;">Viagem · Primeurs Bordeaux<br><small style="color:#9a937f;">19–23/04/2026</small></span><span style="display:flex;align-items:center;"><span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;border-radius:20px;padding:3px 10px;">Pago</span></span></div>
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;"><span style="color:#2a2620;font-size:14px;">Anuidade 2025<br><small style="color:#9a937f;">Quitada</small></span><span style="display:flex;align-items:center;"><span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;border-radius:20px;padding:3px 10px;">Pago</span></span></div>
-    <p style="font-size:11.5px;color:#9a937f;margin-top:12px;">Valores e cobranças serão processados via Asaas quando o sistema entrar no ar.</p>
+    <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin:0 0 12px;">Anuidade, jantares e viagens — acompanhe o que está em dia e o que está por vencer.</p>
+    <div style="text-align:left;margin-bottom:6px;"><span class="m-status" id="mStatusPill"><span class="m-dot" id="mDot"></span> <span id="mStatusTxt">—</span></span></div>
+    <div id="anuidadeBox"></div>
+    <p style="font-size:11.5px;color:#9a937f;margin-top:14px;">A anuidade vence no 1º dia útil de novembro. No ano da intronização, ela já está incluída nos eventos de intronização — a cobrança anual começa no ano seguinte. Valores e cobranças (Pix/boleto/cartão) serão processados via Asaas quando o sistema entrar no ar.</p>
   </div></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+function brl(v){return "R$ "+(Number(v)||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 function pagar(){alert("Pagamento será processado via Asaas quando o sistema entrar no ar.");}
-async function carregar(){var u=(await sb.auth.getUser()).data.user;document.getElementById("loading").style.display="none";if(!u){document.getElementById("needLogin").style.display="block";return;}var q=await sb.from("membros").select("anuidade_paga").eq("user_id",u.id).maybeSingle();if(q.error||!q.data){document.getElementById("needLogin").style.display="block";return;}var paga=!!q.data.anuidade_paga;var st=document.getElementById("mStatusTxt");st.textContent=paga?"Anuidade em dia":"Anuidade pendente";document.getElementById("mDot").style.background=paga?"#3a9a4e":"#c0392b";document.getElementById("mStatusPill").style.background=paga?"#eef6ef":"#fbeaea";document.getElementById("content").style.display="block";}
+function pill(txt,cor,bg){var t=document.getElementById("mStatusTxt");t.textContent=txt;document.getElementById("mDot").style.background=cor;document.getElementById("mStatusPill").style.background=bg;}
+async function carregar(){
+  var u=(await sb.auth.getUser()).data.user;
+  document.getElementById("loading").style.display="none";
+  if(!u){document.getElementById("needLogin").style.display="block";return;}
+  var q=await sb.from("membros").select("grau,capitulo,anuidade_valor,anuidade_paga").eq("user_id",u.id).maybeSingle();
+  if(q.error||!q.data){document.getElementById("needLogin").style.display="block";return;}
+  var m=q.data;
+  var honra=(""+(m.grau||"")).toLowerCase().indexOf("honra")>=0;
+  var cap=m.capitulo;
+  var val=m.anuidade_valor||1200;
+  var paga=!!m.anuidade_paga;
+  var box=document.getElementById("anuidadeBox");
+  if(honra){
+    pill("Anuidade — Isento","#3a9a4e","#eef6ef");
+    box.innerHTML='<div class="row"><span class="t">Anuidade<br><small>Membro de Honra — isento de anuidade</small></span><span class="badge b-isento">Isento</span></div>';
+    document.getElementById("content").style.display="block";return;
+  }
+  var html="";
+  if(cap===1||cap===2){ // intronizado em 2025 -> ciclo 2026
+    if(paga){
+      pill("Anuidade em dia","#3a9a4e","#eef6ef");
+      html='<div class="row"><span class="t">Anuidade 2026<br><small>'+brl(val)+' · Quitada</small></span><span class="badge b-pago">Pago</span></div>';
+    }else{
+      pill("Anuidade a vencer","#c0392b","#fbeaea");
+      html='<div class="row"><span class="t">Anuidade 2026<br><small>'+brl(val)+' · Vence em 02/11/2026</small></span><span style="display:flex;align-items:center;"><span class="badge b-venc">A vencer</span><a href="#" onclick="pagar();return false;" class="pay">Pagar</a></span></div>';
+    }
+  }else{ // intronizado em 2026 -> coberto, próxima anuidade 2027
+    pill("Anuidade em dia","#3a9a4e","#eef6ef");
+    html='<div class="row"><span class="t">Anuidade 2026<br><small>Incluída na sua intronização (2026)</small></span><span class="badge b-pago">Em dia</span></div>'
+        +'<div class="row"><span class="t">Próxima anuidade<br><small>'+brl(val)+' · Vence em 01/11/2027</small></span><span class="badge b-venc">A partir de 2027</span></div>';
+  }
+  box.innerHTML=html;
+  document.getElementById("content").style.display="block";
+}
 document.addEventListener("DOMContentLoaded",carregar);
 </script></body></html>

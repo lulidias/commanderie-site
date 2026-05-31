@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Indicações — Commanderie de Bordeaux</title>
+<style>
+:root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:13px;color:var(--red);text-decoration:none;cursor:pointer;}
+.dhead{text-align:center;padding:34px 20px 4px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:32px;margin:6px 0 2px;}
+.wrap{max-width:680px;margin:0 auto;padding:14px 20px 60px;}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px;}
+.ct{font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
+.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+</style></head><body>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Indicações</b><a class="back" href="index.html">← Painel do Comendador</a></div>
+<div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para acessar as indicações.</p><a class="btn" href="index.html">Entrar</a></div>
+<div id="loading" class="state">Carregando…</div>
+<div id="content" style="display:none;">
+  <div class="dhead"><div class="k">Comendador</div><h1>Indicações</h1></div>
+  <div class="wrap">
+    <div class="card">
+      <div class="ct">Sugerir um Comendador ao Conselho</div>
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;">A entrada é por indicação. Você é o 1º padrinho — escolha o 2º padrinho e o Mestre avalista. Com os dois avais, a indicação segue para o Conselho.</p>
+      <input id="sgNome" placeholder="Nome do indicado" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:10px;font-size:14px;">
+      <input id="sgEmail" placeholder="E-mail do indicado" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:10px;font-size:14px;">
+      <select id="sgNucleo" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:12px;font-size:14px;background:#fff;"><option value="">Núcleo do indicado</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select>
+      <textarea id="sgApres" rows="4" placeholder="Apresentação do indicado — por que você o indica, o perfil dele e a ligação com os vinhos de Bordeaux…" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:12px;font-size:14px;font-family:inherit;resize:vertical;"></textarea>
+      <label style="font-size:12px;color:#8a8270;display:block;margin-bottom:5px;">Avais necessários (2º padrinho + Mestre)</label>
+      <select id="sgPadrinho2" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:10px;font-size:14px;background:#fff;"><option value="">2º padrinho (comendador)</option></select>
+      <select id="sgMestre" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:10px;font-size:14px;background:#fff;"><option value="">Mestre avalista</option></select>
+      <a href="#" onclick="sugerir();return false;" style="display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border-radius:11px;padding:11px 18px;font-size:15px;">Enviar sugestão</a>
+      <div id="sgOk" style="margin-top:10px;font-size:13.5px;"></div>
+    </div>
+    <div id="avaisCard" class="card" style="display:none;">
+      <div class="ct">Avais pendentes</div>
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:10px;">Indicações em que você foi escolhido como 2º padrinho ou Mestre avalista. Avalize ou recuse.</p>
+      <div id="avaisList"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Minhas indicações</div>
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:10px;">Acompanhe o status dos nomes que você sugeriu ao Conselho.</p>
+      <div id="minhasInd"><p style="font-size:12.5px;color:#9a937f;">—</p></div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+var membroAtual=null;
+function indBadge(s){var m={"Aguardando avais":["#8a6a1f","#f6efdc","var(--line)"],"Avalizada":["#1e5a86","#e7f0f6","#cfe0ec"],"Aguardando aprovação":["#8a6a1f","#f6efdc","var(--line)"],"Aprovado":["#1e2a56","#eef2f8","#cdd6e6"],"Recusado":["#8f1d24","#f7e9e9","#e6cccc"],"Formulário enviado":["#5a2d86","#efe7f6","#ddcdec"],"Membro":["#7a5a12","#f1e3bf","#d8c48a"]};var c=m[s]||["#8a8270","#f0ece0","var(--line)"];return "<span style=\"font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:"+c[0]+";background:"+c[1]+";border:1px solid "+c[2]+";border-radius:20px;padding:3px 10px;\">"+s+"</span>";}
+async function carregarListaMembros(){var p2=document.getElementById("sgPadrinho2"),me=document.getElementById("sgMestre");if(!p2||!me)return;var r=await sb.rpc("lista_membros");if(r.error)return;var rows=r.data||[];var meuId=membroAtual&&membroAtual.id;var oP="<option value=\"\">2º padrinho (comendador)</option>",oM="<option value=\"\">Mestre avalista</option>";rows.forEach(function(m){if(m.id===meuId)return;oP+="<option value=\""+m.id+"\">"+m.nome+(m.nucleo?(" · "+m.nucleo):"")+"</option>";if((""+(m.grau||"")).toLowerCase().indexOf("mestre")>=0)oM+="<option value=\""+m.id+"\">"+m.nome+"</option>";});p2.innerHTML=oP;me.innerHTML=oM;}
+async function sugerir(){var n=document.getElementById("sgNome").value.trim(),e=document.getElementById("sgEmail").value.trim(),nu=document.getElementById("sgNucleo").value,ap=document.getElementById("sgApres").value.trim(),o=document.getElementById("sgOk");var p2=document.getElementById("sgPadrinho2"),me=document.getElementById("sgMestre");var p2id=p2.value,meid=me.value;var p2nm=(p2.options[p2.selectedIndex]||{}).text||"",menm=(me.options[me.selectedIndex]||{}).text||"";if(!(n&&e&&nu&&ap)){o.style.color="#8f1d24";o.textContent="Preencha nome, e-mail, núcleo e a apresentação do indicado.";return;}if(!p2id||!meid){o.style.color="#8f1d24";o.textContent="Escolha o 2º padrinho e o Mestre avalista.";return;}o.style.color="#2f6b3a";o.textContent="Enviando...";var u=(await sb.auth.getUser()).data.user;if(!u){o.style.color="#8f1d24";o.textContent="Sessão expirada.";return;}var r=await sb.from("indicacoes").insert({nome:n,email:e,nucleo:nu,apresentacao:ap,indicado_por:u.id,indicado_por_nome:(membroAtual&&membroAtual.nome)||"",padrinho2_id:p2id,padrinho2_nome:p2nm,mestre_id:meid,mestre_nome:menm,status:"Aguardando avais"});if(r.error){o.style.color="#8f1d24";o.textContent="Erro ao enviar: "+r.error.message;return;}o.style.color="#2f6b3a";o.textContent="Indicação enviada! Aguardando os avais do 2º padrinho e do Mestre.";document.getElementById("sgNome").value="";document.getElementById("sgEmail").value="";document.getElementById("sgApres").value="";document.getElementById("sgNucleo").value="";p2.value="";me.value="";carregarMinhasInd();}
+async function carregarAvais(){var card=document.getElementById("avaisCard"),el=document.getElementById("avaisList");if(!el)return;var r=await sb.rpc("meus_avais");if(r.error){card.style.display="none";return;}var rows=r.data||[];if(!rows.length){card.style.display="none";return;}card.style.display="block";el.innerHTML=rows.map(function(x){return "<div style=\"border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fffdf7;\"><div style=\"font-family:Georgia,serif;color:var(--navy);font-size:16px;\">"+(x.nome||"")+"</div><div style=\"font-size:12.5px;color:#8a8270;margin:2px 0 6px;\">"+(x.email||"")+(x.nucleo?(" · Núcleo "+x.nucleo):"")+(x.indicado_por_nome?(" · indicado por "+x.indicado_por_nome):"")+"</div>"+(x.apresentacao?("<div style=\"font-size:13.5px;color:#2a2620;line-height:1.5;background:#faf6ea;border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin-bottom:8px;\">"+x.apresentacao+"</div>"):"")+"<div style=\"display:flex;gap:8px;\"><a href=\"#\" onclick=\"avalizarInd('"+x.id+"','avalizar');return false;\" style=\"text-decoration:none;background:#2f6b3a;color:#fff;border-radius:9px;padding:8px 14px;font-size:13px;\">Avalizar</a><a href=\"#\" onclick=\"avalizarInd('"+x.id+"','recusar');return false;\" style=\"text-decoration:none;background:transparent;color:#8f1d24;border:1px solid #e6cccc;border-radius:9px;padding:8px 14px;font-size:13px;\">Recusar</a></div></div>";}).join("");}
+async function avalizarInd(id,dec){var r=await sb.rpc("avalizar",{p_id:id,p_decisao:dec});if(r.error){alert("Erro: "+r.error.message);return;}carregarAvais();carregarMinhasInd();}
+async function carregarMinhasInd(){var el=document.getElementById("minhasInd");if(!el)return;var u=(await sb.auth.getUser()).data.user;if(!u)return;var q=await sb.from("indicacoes").select("nome,status,created_at,padrinho2_nome,padrinho2_ok,mestre_nome,mestre_ok").eq("indicado_por",u.id).order("created_at",{ascending:false});if(q.error){el.innerHTML="<p style=\"font-size:12.5px;color:#9a937f;\">Não foi possível carregar.</p>";return;}var rows=q.data||[];if(!rows.length){el.innerHTML="<p style=\"font-size:12.5px;color:#9a937f;\">Você ainda não indicou ninguém.</p>";return;}function av(nm,ok){var c=ok==="Avalizado"?"#2f6b3a":(ok==="Recusado"?"#8f1d24":"#9a937f");var t=ok==="Avalizado"?"✓":(ok==="Recusado"?"✗":"…");return "<span style=\"color:"+c+";\">"+t+" "+(nm||"—")+"</span>";}el.innerHTML=rows.map(function(r,i){var bb=i<rows.length-1?"border-bottom:1px solid #ece0c2;":"";var prog=(r.padrinho2_nome||r.mestre_nome)?("<div style=\"font-size:11.5px;color:#9a937f;margin-top:3px;\">Avais: "+av(r.padrinho2_nome,r.padrinho2_ok)+" · "+av(r.mestre_nome,r.mestre_ok)+"</div>"):"";return "<div style=\"padding:11px 0;"+bb+"\"><div style=\"display:flex;justify-content:space-between;align-items:center;gap:10px;\"><span style=\"color:#2a2620;font-size:14px;\">"+r.nome+"</span>"+indBadge(r.status)+"</div>"+prog+"</div>";}).join("");}
+async function carregar(){var u=(await sb.auth.getUser()).data.user;document.getElementById("loading").style.display="none";if(!u){document.getElementById("needLogin").style.display="block";return;}var q=await sb.from("membros").select("*").eq("user_id",u.id).maybeSingle();if(q.error||!q.data){document.getElementById("needLogin").style.display="block";return;}membroAtual=q.data;document.getElementById("content").style.display="block";carregarListaMembros();carregarAvais();carregarMinhasInd();}
+document.addEventListener("DOMContentLoaded",carregar);
+</script></body></html>

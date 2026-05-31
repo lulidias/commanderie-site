@@ -44,7 +44,13 @@ select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size
   <div class="wrap">
     <div class="sec-title">Indicações</div><div class="sec-rule"></div>
     <div id="indList"></div>
-    <div class="sec-title">Financeiro — anuidades</div><div class="sec-rule"></div>
+    <div class="sec-title">Financeiro — resumo por ano</div><div class="sec-rule"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;"><label style="font-size:13px;color:#8a8270;">Ano:</label><select id="anoSel" onchange="renderAno()"></select><span id="anoMsg" style="font-size:12px;color:#9a937f;"></span></div>
+    <div id="anoGeral" class="fin-grid" style="margin-bottom:14px;"></div>
+    <div id="anoCats" class="fin-grid"></div>
+    <div id="anoTabela"></div>
+    <div class="card" style="margin-top:18px;"><b style="font-family:Georgia,serif;color:var(--navy);font-size:16px;">Lançar receita</b><p style="font-size:12.5px;color:#8a8270;margin:4px 0 10px;">Eventos, jantares, viagens, doações… entra no resumo do ano escolhido.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;"><select id="rcCat"><option>Evento</option><option>Viagem</option><option>Doação</option><option>Anuidade</option><option>Outro</option></select><input id="rcAno" type="number" placeholder="Ano" value="2026" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><select id="rcNucleo"><option value="">Sem núcleo</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select><input id="rcDesc" placeholder="Descrição (ex.: Jantar Capítulo VI)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="rcValor" type="number" placeholder="Valor (R$)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><label style="font-size:13px;color:#5b5446;display:flex;align-items:center;gap:6px;"><input id="rcPago" type="checkbox"> Recebido</label></div><button onclick="addReceita()" style="margin-top:12px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-size:14px;cursor:pointer;">Adicionar receita</button><span id="rcMsg" style="font-size:13px;margin-left:10px;"></span></div>
+    <div class="sec-title">Anuidades dos membros (ciclo atual)</div><div class="sec-rule"></div>
     <div id="finGeral" class="fin-grid" style="margin-bottom:14px;"></div>
     <div id="finResumo" class="fin-grid"></div>
     <div id="finTabela"></div><div style="text-align:center;"><div style="margin:20px 0 0;"><a href="https://www.instagram.com/commanderiedebordeaux_brasil/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;color:#1e2a56;text-decoration:none;font-size:13px;letter-spacing:.3px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" style="flex:none;"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52.01-4.77.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7-.06 1.25-.07 1.62-.07 4.77s.01 3.52.07 4.77c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.25.06 1.62.07 4.77.07s3.52-.01 4.77-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.25.07-1.62.07-4.77s-.01-3.52-.07-4.77c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 0 0-.68-1.06 2.85 2.85 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.52 4.01 15.15 4 12 4zm0 3.07A4.93 4.93 0 1 1 7.07 12 4.93 4.93 0 0 1 12 7.07zm0 1.8A3.13 3.13 0 1 0 15.13 12 3.13 3.13 0 0 0 12 8.87zm5.13-.99a1.15 1.15 0 1 1-1.15 1.15 1.15 1.15 0 0 1 1.15-1.15z"/></svg>@commanderiedebordeaux_brasil</a></div></div>
@@ -88,23 +94,70 @@ function finBox(titulo,c,p,extra){return "<div class=\"fin\"><h3>"+esc(titulo)+"
   +"<div class=\"n\">Cotizado: <b>"+brl(c)+"</b></div>"
   +"<div class=\"n\"><span class=\"dot\" style=\"background:#3a9a4e;\"></span>Arrecadado: <b>"+brl(p)+"</b></div>"
   +"<div class=\"n\"><span class=\"dot\" style=\"background:#c0392b;\"></span>A receber: <b>"+brl(c-p)+"</b></div>"+(extra||"")+"</div>";}
+var ANO_ANUIDADE=2026;var anuTc=0,anuTp=0;var receitas=[];
 async function carregarFinanceiro(){
   var q=await sb.from("membros").select("codigo,nome,grau,nucleo,anuidade_valor,anuidade_paga").order("nucleo",{ascending:true}).order("codigo",{ascending:true});
-  if(q.error){document.getElementById("finResumo").innerHTML="<p style=\"color:#8f1d24;\">Erro: "+esc(q.error.message)+"</p>";return;}
-  var rows=q.data||[];
-  var grupos={},Tc=0,Tp=0;
-  rows.forEach(function(m){var n=m.nucleo||"Sem núcleo";var v=m.anuidade_valor||0;var g=grupos[n]=grupos[n]||{n:0,c:0,p:0};g.n++;g.c+=v;Tc+=v;if(m.anuidade_paga){g.p+=v;Tp+=v;}});
-  document.getElementById("finGeral").innerHTML=finBox("Total geral",Tc,Tp,"<div class=\"n\" style=\"margin-top:4px;color:#8a8270;\">"+rows.length+" membros</div>");
-  var nucs=Object.keys(grupos).sort();
-  document.getElementById("finResumo").innerHTML=nucs.map(function(n){var g=grupos[n];return finBox(n,g.c,g.p,"<div class=\"n\" style=\"margin-top:4px;color:#8a8270;\">"+g.n+" membros</div>");}).join("");
-  var tb="<table class=\"tbl\"><thead><tr><th>Núcleo</th><th>Nº</th><th>Nome</th><th>Anuidade</th><th>Status</th></tr></thead><tbody>";
-  rows.forEach(function(m){
-    var paga=!!m.anuidade_paga;
-    var pill=paga?"<span class=\"pill\" style=\"color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;\">Em dia</span>":"<span class=\"pill\" style=\"color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;\">Pendente</span>";
-    tb+="<tr><td>"+esc(m.nucleo||"")+"</td><td>"+esc(m.codigo)+"</td><td>"+esc(m.nome)+"</td><td>"+brl(m.anuidade_valor||0)+"</td><td>"+pill+"</td></tr>";
-  });
-  tb+="</tbody></table>";
-  document.getElementById("finTabela").innerHTML=tb;
+  if(q.error){document.getElementById("finResumo").innerHTML="<p style=\"color:#8f1d24;\">Erro: "+esc(q.error.message)+"</p>";}
+  else{
+    var rows=q.data||[];var grupos={},Tc=0,Tp=0;
+    rows.forEach(function(m){var n=m.nucleo||"Sem núcleo";var v=m.anuidade_valor||0;var g=grupos[n]=grupos[n]||{n:0,c:0,p:0};g.n++;g.c+=v;Tc+=v;if(m.anuidade_paga){g.p+=v;Tp+=v;}});
+    anuTc=Tc;anuTp=Tp;
+    document.getElementById("finGeral").innerHTML=finBox("Total geral",Tc,Tp,"<div class=\"n\" style=\"margin-top:4px;color:#8a8270;\">"+rows.length+" membros</div>");
+    var nucs=Object.keys(grupos).sort();
+    document.getElementById("finResumo").innerHTML=nucs.map(function(n){var g=grupos[n];return finBox(n,g.c,g.p,"<div class=\"n\" style=\"margin-top:4px;color:#8a8270;\">"+g.n+" membros</div>");}).join("");
+    var tb="<table class=\"tbl\"><thead><tr><th>Núcleo</th><th>Nº</th><th>Nome</th><th>Anuidade</th><th>Status</th></tr></thead><tbody>";
+    rows.forEach(function(m){var paga=!!m.anuidade_paga;var pill=paga?"<span class=\"pill\" style=\"color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;\">Em dia</span>":"<span class=\"pill\" style=\"color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;\">Pendente</span>";tb+="<tr><td>"+esc(m.nucleo||"")+"</td><td>"+esc(m.codigo)+"</td><td>"+esc(m.nome)+"</td><td>"+brl(m.anuidade_valor||0)+"</td><td>"+pill+"</td></tr>";});
+    tb+="</tbody></table>";document.getElementById("finTabela").innerHTML=tb;
+  }
+  await carregarReceitas();
+}
+async function carregarReceitas(){
+  var r=await sb.from("receitas").select("*").order("ano",{ascending:false}).order("created_at",{ascending:false});
+  if(r.error){receitas=[];document.getElementById("anoMsg").textContent="(crie a tabela ‘receitas’ no Supabase p/ lançar outras receitas)";}
+  else{receitas=r.data||[];document.getElementById("anoMsg").textContent="";}
+  montarAnoSelector();
+}
+function montarAnoSelector(){
+  var anos={};anos[ANO_ANUIDADE]=1;receitas.forEach(function(x){anos[x.ano]=1;});
+  var lista=Object.keys(anos).map(Number).sort(function(a,b){return b-a;});
+  var sel=document.getElementById("anoSel");var atual=sel.value;
+  sel.innerHTML=lista.map(function(a){return "<option>"+a+"</option>";}).join("");
+  if(atual&&lista.indexOf(Number(atual))>=0)sel.value=atual;else sel.value=lista[0];
+  renderAno();
+}
+function renderAno(){
+  var ano=Number(document.getElementById("anoSel").value);var cats={};
+  function acc(cat,c,p){var g=cats[cat]=cats[cat]||{c:0,p:0};g.c+=c;g.p+=p;}
+  if(ano===ANO_ANUIDADE&&anuTc>0)acc("Anuidade",anuTc,anuTp);
+  var doAno=receitas.filter(function(x){return Number(x.ano)===ano;});
+  doAno.forEach(function(x){var v=Number(x.valor)||0;acc(x.categoria||"Outro",v,x.pago?v:0);});
+  var Tc=0,Tp=0;Object.keys(cats).forEach(function(k){Tc+=cats[k].c;Tp+=cats[k].p;});
+  document.getElementById("anoGeral").innerHTML=finBox("Total "+ano,Tc,Tp,"");
+  var ordem=["Anuidade","Evento","Viagem","Doação","Outro"];
+  var keys=Object.keys(cats).sort(function(a,b){var ia=ordem.indexOf(a),ib=ordem.indexOf(b);return (ia<0?9:ia)-(ib<0?9:ib);});
+  document.getElementById("anoCats").innerHTML=keys.length?keys.map(function(k){return finBox(k,cats[k].c,cats[k].p,"");}).join(""):"<p style=\"color:#8a8270;font-size:13px;\">Nenhuma receita neste ano.</p>";
+  if(!doAno.length){document.getElementById("anoTabela").innerHTML="";return;}
+  var tb="<table class=\"tbl\"><thead><tr><th>Categoria</th><th>Descrição</th><th>Núcleo</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody>";
+  doAno.forEach(function(x){var pago=!!x.pago;var pill=pago?"<span class=\"pill\" style=\"color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;\">Recebido</span>":"<span class=\"pill\" style=\"color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);\">A receber</span>";tb+="<tr><td>"+esc(x.categoria)+"</td><td>"+esc(x.descricao||"")+"</td><td>"+esc(x.nucleo||"")+"</td><td>"+brl(x.valor)+"</td><td>"+pill+"</td><td><a onclick=\"delReceita('"+x.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;\">remover</a></td></tr>";});
+  tb+="</tbody></table>";document.getElementById("anoTabela").innerHTML=tb;
+}
+async function addReceita(){
+  var msg=document.getElementById("rcMsg");
+  var cat=document.getElementById("rcCat").value;var ano=parseInt(document.getElementById("rcAno").value,10);
+  var nucleo=document.getElementById("rcNucleo").value||null;var desc=document.getElementById("rcDesc").value.trim()||null;
+  var valor=parseFloat(document.getElementById("rcValor").value);var pago=document.getElementById("rcPago").checked;
+  if(!ano||isNaN(valor)){msg.style.color="#8f1d24";msg.textContent="Informe ano e valor.";return;}
+  msg.style.color="#2f6b3a";msg.textContent="Salvando...";
+  var r=await sb.from("receitas").insert({ano:ano,categoria:cat,nucleo:nucleo,descricao:desc,valor:valor,pago:pago});
+  if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}
+  msg.textContent="Adicionado!";document.getElementById("rcDesc").value="";document.getElementById("rcValor").value="";document.getElementById("rcPago").checked=false;
+  await carregarReceitas();document.getElementById("anoSel").value=ano;renderAno();
+}
+async function delReceita(id){
+  if(!confirm("Remover esta receita?"))return;
+  var r=await sb.from("receitas").delete().eq("id",id);
+  if(r.error){alert("Erro: "+r.error.message);return;}
+  await carregarReceitas();
 }
 document.addEventListener("DOMContentLoaded",init);
 </script></body></html>

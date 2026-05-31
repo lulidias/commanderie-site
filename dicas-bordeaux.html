@@ -18,7 +18,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .dcity h2{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:24px;margin:0;display:inline;}
 .dcity span{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-left:10px;}
 .dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
-.dcard{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(40,30,10,.06);transition:transform .16s ease,box-shadow .16s ease;}
+.dcard{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:0;overflow:hidden;box-shadow:0 4px 16px rgba(40,30,10,.06);transition:transform .16s ease,box-shadow .16s ease;}.dphoto{height:172px;background:radial-gradient(120% 120% at 50% 0%,#faf5e8,#ece3cd);border-bottom:1px solid var(--line);}.dphoto img{width:100%;height:100%;object-fit:cover;display:block;}.dbody{padding:15px 17px;}
 .dcard:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(40,30,10,.12);}
 .dcat{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;}
 .dname{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:19px;margin:4px 0 6px;}
@@ -113,18 +113,19 @@ var DADOS=[{city:'Bordeaux',region:'Bordeaux & Gironde',entries:[
   ]}];
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function preco(pr){var n=Math.min(4,pr||0);var o="";for(var k=0;k<n;k++)o+="\u20AC";return o;}
+function slugp(n){return (""+n).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
 function card(e){
   var L=[];
   if(e.w){var w=(""+e.w).indexOf("http")===0?e.w:("https://"+e.w);L.push('<a href="'+esc(w)+'" target="_blank" rel="noopener">site</a>');}
   if(e.ig)L.push('<a href="https://instagram.com/'+esc(e.ig)+'" target="_blank" rel="noopener">@'+esc(e.ig)+'</a>');
   if(e.p)L.push('<a href="tel:'+esc((""+e.p).replace(/\s/g,""))+'">'+esc(e.p)+'</a>');
   if(e.a)L.push('<a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(e.a)+'" target="_blank" rel="noopener">mapa</a>');
-  return '<article class="dcard">'+(e.q?'<div class="dcat">'+esc(e.q)+'</div>':'')
+  return '<article class="dcard"><div class="dphoto"><img loading="lazy" src="img/dicas/'+slugp(e.n)+'.jpg" alt="'+esc(e.n)+'" onerror="this.parentNode.style.display=\'none\'"></div><div class="dbody">'+(e.q?'<div class="dcat">'+esc(e.q)+'</div>':'')
     +'<h3 class="dname">'+esc(e.n)+(e.pr?' <span class="dprice">'+preco(e.pr)+'</span>':'')+'</h3>'
     +(e.d?'<p class="ddesc">'+esc(e.d)+'</p>':'')
     +(e.a?'<div class="dmeta">'+esc(e.a)+'</div>':'')
     +(L.length?'<div class="dlinks">'+L.join('<span class="sep">·</span>')+'</div>':'')
-    +'</article>';
+    +'</div></article>';
 }
 function render(){
   document.getElementById("dwrap").innerHTML=DADOS.map(function(g){

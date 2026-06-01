@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ficha de Intronização — Commanderie de Bordeaux</title>
+<style>
+:root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;box-shadow:0 2px 16px rgba(40,30,10,.05);}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:13px;color:var(--red);text-decoration:none;}
+.dhead{text-align:center;padding:38px 20px 6px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:34px;margin:8px 0 2px;}
+.wrap{max-width:680px;margin:0 auto;padding:14px 20px 60px;}
+.note{background:#faf6ea;border:1px solid var(--line);border-radius:12px;padding:13px 16px;font-size:13.5px;color:#5b5446;line-height:1.6;text-align:center;margin-bottom:18px;}
+.card{background:#fffdf7;border:1px solid var(--line);border-radius:16px;padding:26px 24px;box-shadow:0 6px 18px rgba(40,30,10,.06);}
+.field{margin-bottom:16px;}
+.field label{display:block;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.field input,.field textarea,.field select{width:100%;font-family:Georgia,serif;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:9px;padding:11px 13px;}
+.field textarea{min-height:88px;resize:vertical;font-family:Georgia,serif;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.seclbl{color:var(--navy);font-family:Georgia,serif;font-weight:normal;font-size:20px;margin:24px 0 8px;}
+.sponsors{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fbf7ec;margin-bottom:16px;}
+.sponsors h4{color:var(--red);font-weight:normal;font-size:16px;font-family:Georgia,serif;margin:0 0 2px;}
+.sponsors p{font-family:Arial,sans-serif;font-size:12.5px;color:#7a7165;margin:0 0 12px;}
+.chk{display:flex;align-items:flex-start;gap:9px;font-family:Georgia,serif;font-size:14.5px;color:var(--ink);margin-bottom:12px;line-height:1.5;}
+.chk input{width:auto;margin-top:3px;flex:none;}
+.btn-go{display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border:none;border-radius:11px;padding:12px 24px;font-size:15px;cursor:pointer;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
+.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+.okmsg{display:none;max-width:680px;margin:0 auto;text-align:center;background:#eef6ee;border:1px solid #cfe6cf;color:#2f6b3a;border-radius:14px;padding:24px;font-family:Arial,sans-serif;line-height:1.6;}
+@media(max-width:560px){.two{grid-template-columns:1fr;}}
+</style></head><body>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Ficha de Intronização</b><a class="back" href="index.html">← Painel do Comendador</a></div>
+<div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para preencher a ficha.</p><a class="btn" href="index.html">Entrar</a></div>
+<div id="naoEleito" class="state" style="display:none;"><h2>Ficha de Intronização</h2><p>Esta ficha é destinada aos <b>Comendadores eleitos</b> antes da intronização.</p><a class="btn" href="index.html">← Voltar ao Painel</a></div>
+<div id="jaEnviada" class="state" style="display:none;"><h2>Ficha já enviada ✦</h2><p>Recebemos a sua ficha de intronização. A Secretaria entrará em contato.<br><b>Bordeaux, toujours Bordeaux.</b></p><a class="btn" href="index.html">← Voltar ao Painel</a></div>
+<div id="loading" class="state">Carregando…</div>
+<div id="content" style="display:none;">
+  <div class="dhead"><div class="k">Comendador eleito</div><h1>Ficha de Intronização</h1></div>
+  <div class="wrap">
+    <div class="note">Você já faz parte da Commanderie como <b>Comendador eleito</b>. Complete sua ficha — ela compõe o dossiê apresentado no seu capítulo de intronização.</div>
+    <form class="card" id="ficha" onsubmit="enviarFicha(event)">
+      <div class="seclbl">I · Informações pessoais</div>
+      <div class="two">
+        <div class="field"><label>Nome</label><input id="f_nome" required placeholder="Nome"></div>
+        <div class="field"><label>Sobrenome</label><input id="f_sobrenome" required placeholder="Sobrenome"></div>
+      </div>
+      <div class="two">
+        <div class="field"><label>Data de nascimento</label><input id="f_nasc" required placeholder="dd/mm/aaaa"></div>
+        <div class="field"><label>Tratamento</label><select id="f_trat"><option>Sr.</option><option>Sra.</option><option>Dr.</option><option>Dra.</option></select></div>
+      </div>
+      <div class="field"><label>Endereço completo</label><input id="f_end" required placeholder="Rua, nº, complemento, bairro"></div>
+      <div class="two">
+        <div class="field"><label>Cidade</label><input id="f_cidade" required placeholder="Cidade"></div>
+        <div class="field"><label>CEP</label><input id="f_cep" required placeholder="00000-000"></div>
+      </div>
+      <div class="two">
+        <div class="field"><label>Nacionalidade</label><input id="f_nac" required placeholder="Brasileira"></div>
+        <div class="field"><label>Núcleo</label><select id="f_nucleo"><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select></div>
+      </div>
+      <div class="two">
+        <div class="field"><label>Profissão</label><input id="f_prof" required placeholder="Profissão"></div>
+        <div class="field"><label>Telefone / WhatsApp</label><input id="f_tel" required placeholder="(11) 90000-0000"></div>
+      </div>
+      <div class="two">
+        <div class="field"><label>E-mail</label><input id="f_email" type="email" required placeholder="email@exemplo.com"></div>
+        <div class="field"><label>Restrições alimentares</label><input id="f_rest" required placeholder="Nenhuma"></div>
+      </div>
+      <div class="sponsors">
+        <h4>Padrinhos</h4>
+        <p>Os dois Commandeurs que apresentaram sua candidatura.</p>
+        <div class="two">
+          <div class="field" style="margin-bottom:0;"><label>1º Padrinho</label><input id="f_pad1" required placeholder="Nome · nº de membro"></div>
+          <div class="field" style="margin-bottom:0;"><label>2º Padrinho</label><input id="f_pad2" required placeholder="Nome · nº de membro"></div>
+        </div>
+      </div>
+      <div class="seclbl">II · Currículo &amp; Biografia</div>
+      <div class="field"><label>Atividades e interesses ligados a esta candidatura</label><textarea id="f_ativ" required placeholder="Sua atuação atual e o que o aproxima do mundo do vinho."></textarea></div>
+      <div class="field"><label>Biografia — sua trajetória</label><textarea id="f_bio" required placeholder="Um breve relato de sua origem e do trabalho que realiza."></textarea></div>
+      <div class="field"><label>Honrarias e confrarias a que pertence</label><textarea id="f_hon" required placeholder="Distinções e ordens báquicas."></textarea></div>
+      <div class="field"><label>Sua ligação particular com Bordeaux</label><textarea id="f_lig" required placeholder="Viagens, châteaux, appellations, amizades na região."></textarea></div>
+      <div class="two">
+        <div class="field"><label>Quando provou seu primeiro Bordeaux?</label><input id="f_prim" required placeholder="Ano e contexto"></div>
+        <div class="field"><label>Seu Bordeaux preferido — e por quê?</label><input id="f_pref" required placeholder="Ex.: Saint-Émilion, Margaux..."></div>
+      </div>
+      <div class="field"><label>Uma experiência memorável com um vinho de Bordeaux</label><textarea id="f_exp" required placeholder="Uma garrafa, um jantar, uma visita a um château."></textarea></div>
+      <div class="field"><label>Outras histórias com os vinhos e a gastronomia de Bordeaux</label><textarea id="f_outras" required placeholder="Fique à vontade para compartilhar."></textarea></div>
+      <div class="seclbl">III · Autorizações e compromissos</div>
+      <label class="chk"><input id="f_c1" type="checkbox" required>Autorizo o contato pela Secretaria e pelos canais de comunicação da Commanderie.</label>
+      <label class="chk"><input id="f_c2" type="checkbox" required>Autorizo o uso de fotos em que eu apareça nos eventos, para fins institucionais.</label>
+      <label class="chk"><input id="f_c3" type="checkbox" required>Comprometo-me a pagar a anuidade do exercício e a mantê-la em dia nos termos do Estatuto.</label>
+      <label class="chk"><input id="f_c4" type="checkbox" required>Declaro conhecer e aceitar o Estatuto Social e a Política de Privacidade da Commanderie de Bordeaux no Brasil.</label>
+      <div class="field" style="margin-top:6px;"><label>Local e data</label><input id="f_ld" required placeholder="São Paulo, ___/___/______"></div>
+      <div style="text-align:center;margin-top:14px;"><button class="btn-go" type="submit" id="btnEnviar">Enviar minha ficha</button><div id="fmsg" style="margin-top:10px;font-size:13.5px;"></div></div>
+    </form>
+  </div>
+</div>
+<div id="okwrap" class="wrap" style="display:none;"><div class="okmsg" style="display:block;">Ficha enviada com sucesso! A Secretaria entrará em contato para a sua intronização no próximo capítulo.<br><b>Bordeaux, toujours Bordeaux.</b><div style="margin-top:14px;"><a class="btn" href="index.html">← Voltar ao Painel</a></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+function st(id){["needLogin","naoEleito","jaEnviada","loading","content"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
+function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
+function chk(id){var e=document.getElementById(id);return e?e.checked:false;}
+function setv(id,v){var e=document.getElementById(id);if(e&&v!=null)e.value=v;}
+async function carregar(){
+  var u=(await sb.auth.getUser()).data.user;
+  if(!u){st("needLogin");return;}
+  var q=await sb.from("membros").select("nome,email,nucleo,eleito,ficha").eq("user_id",u.id).maybeSingle();
+  if(q.error||!q.data){st("needLogin");return;}
+  var m=q.data;
+  if(!m.eleito){st("naoEleito");return;}
+  if(m.ficha){st("jaEnviada");return;}
+  // pre-preenche
+  var p=(""+(m.nome||"")).trim().split(/\s+/);
+  setv("f_nome",p[0]||"");setv("f_sobrenome",p.slice(1).join(" "));
+  setv("f_email",m.email);if(m.nucleo)setv("f_nucleo",m.nucleo);
+  st("content");
+}
+async function enviarFicha(ev){
+  ev.preventDefault();
+  var b=document.getElementById("btnEnviar"),msg=document.getElementById("fmsg");
+  b.disabled=true;msg.style.color="#5b5446";msg.textContent="Enviando...";
+  var ficha={nome:val("f_nome"),sobrenome:val("f_sobrenome"),nascimento:val("f_nasc"),tratamento:val("f_trat"),endereco:val("f_end"),cidade:val("f_cidade"),cep:val("f_cep"),nacionalidade:val("f_nac"),nucleo:val("f_nucleo"),profissao:val("f_prof"),telefone:val("f_tel"),email:val("f_email"),restricoes:val("f_rest"),padrinho1:val("f_pad1"),padrinho2:val("f_pad2"),atividades:val("f_ativ"),biografia:val("f_bio"),honrarias:val("f_hon"),ligacao_bordeaux:val("f_lig"),primeiro_bordeaux:val("f_prim"),bordeaux_preferido:val("f_pref"),experiencia:val("f_exp"),outras_historias:val("f_outras"),autoriza_contato:chk("f_c1"),autoriza_fotos:chk("f_c2"),compromisso_anuidade:chk("f_c3"),aceite_estatuto:chk("f_c4"),local_data:val("f_ld"),enviada_em:new Date().toISOString()};
+  var r=await sb.rpc("salvar_ficha",{p_ficha:ficha});
+  if(r.error){b.disabled=false;msg.style.color="#8f1d24";msg.textContent="Erro ao enviar: "+r.error.message;return;}
+  document.getElementById("content").style.display="none";
+  document.getElementById("okwrap").style.display="block";
+  window.scrollTo(0,0);
+}
+document.addEventListener("DOMContentLoaded",carregar);
+</script></body></html>

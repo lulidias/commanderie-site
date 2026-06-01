@@ -99,12 +99,23 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
 .vsx-line{text-align:center;max-width:640px;margin:30px auto 0;padding-top:22px;border-top:1px solid var(--line);}
 .vsx-line .sec-k{display:block;margin-bottom:10px;}
 .vsx-line img{height:56px;opacity:.85;}
+.mesa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:840px;margin:0 auto;}
+.mesacard{background:var(--cream);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:14px;padding:20px 12px;text-align:center;}
+.mesacard .av{width:52px;height:52px;border-radius:50%;background:var(--navy);color:var(--gold-l);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:18px;margin:0 auto 10px;border:2px solid var(--gold);}
+.mesacard h4{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:17px;margin:0 0 2px;}
+.mesacard .grau{font-family:Arial,sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--red);}
+.mesacard .nm{font-size:13.5px;color:#5b5446;margin-top:2px;}
+.gm{display:inline-block;background:linear-gradient(160deg,#243161,#161f3f);border:1px solid #37436f;border-radius:14px;padding:16px 32px;color:#f3ecd9;}
+.gm .grau{font-family:Arial,sans-serif;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:#c9a85c;}
+.gm .nm{font-family:Georgia,serif;font-size:22px;margin-top:3px;}
+.gm small{display:block;font-size:11px;color:#c9bfa0;margin-top:2px;}
+@media(max-width:760px){.mesa-grid{grid-template-columns:repeat(2,1fr);}}
 @page{size:A4;margin:11mm;}
 @media print{
   nav{display:none!important;}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   section{padding:30px 0;}
-  .bcard,.placa,.invest,.stat,.tl .row,.cover,.contact > div{break-inside:avoid;}
+  .bcard,.placa,.invest,.stat,.mesacard,.gm,.cover,.contact > div{break-inside:avoid;}
   h2{break-after:avoid;}
 }
 </style></head><body>
@@ -171,13 +182,14 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
 </div></section>
 
 <section id="resultados" class="alt"><div class="container">
-  <div class="sec-k">Tração comprovada</div><h2>De 1 para 4 Commanderies em menos de 6 meses</h2><div class="rule"></div>
-  <div class="tl">
-    <div class="row"><div class="dt"><b>13 NOV</b><small>2025</small></div><div><h4>Cerimônia oficial de chegada ao Brasil</h4><p>Residência da Cônsul-Geral da França em São Paulo · 18 produtores franceses · 27 entronizados</p></div></div>
-    <div class="row"><div class="dt"><b>10 DEZ</b><small>2025</small></div><div><h4>Capítulo II — São Paulo</h4><p>Restaurante Le Chef Rouge · novos Comendadores entronizados</p></div></div>
-    <div class="row"><div class="dt"><b>04 MAR</b><small>2026</small></div><div><h4>Capítulo III — Recife</h4><p>Restaurante Licínio 1926 · 1ª expansão Nordeste</p></div></div>
-    <div class="row"><div class="dt"><b>24 MAR</b><small>2026</small></div><div><h4>Capítulo IV — Brasília</h4><p>Embaixada da França · Comendadores de Honra e diplomatas</p></div></div>
-    <div class="row"><div class="dt"><b>19 ABR</b><small>2026</small></div><div><h4>Capítulo V — Château Bellefont-Belcier</h4><p>Confirmação do Grão-Mestre e dos Mestres das 4 cidades brasileiras</p></div></div>
+  <div class="sec-k">A Mesa no Brasil</div><h2>De 1 para 4 Commanderies em menos de 6 meses</h2><div class="rule"></div>
+  <p class="lead-c" style="margin-bottom:26px;">Começamos em São Paulo, em novembro de 2025. Hoje são quatro Commanderies, cada uma conduzida por um Mestre, sob o Grão-Mestre do Brasil.</p>
+  <div style="text-align:center;margin-bottom:26px;"><div class="gm"><div class="grau">Grão-Mestre · Brasil</div><div class="nm">Manuel Brandão</div><small>Bordeaux, França</small></div></div>
+  <div class="mesa-grid">
+    <div class="mesacard"><div class="av">LD</div><h4>São Paulo</h4><div class="grau">Mestre</div><div class="nm">Luli Dias</div></div>
+    <div class="mesacard"><div class="av">TD</div><h4>Recife</h4><div class="grau">Mestre</div><div class="nm">Tito Dias</div></div>
+    <div class="mesacard"><div class="av">AA</div><h4>Curitiba</h4><div class="grau">Mestre</div><div class="nm">Abner Almeida</div></div>
+    <div class="mesacard"><div class="av">JE</div><h4>Porto Alegre</h4><div class="grau">Mestre</div><div class="nm">Jadir Engers</div></div>
   </div>
   <p class="lead-c" style="margin-top:26px;"><b>São Paulo · Recife · Curitiba · Porto Alegre</b> — e crescendo.</p>
 </div></section>

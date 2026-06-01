@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Importadores Embaixadores — Commanderie de Bordeaux Brasil</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=2"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png?v=2"><link rel="apple-touch-icon" href="img/icon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
+<style>
+:root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:var(--parch);line-height:1.6;}
+a{color:inherit;text-decoration:none;}
+.container{max-width:1080px;margin:0 auto;padding:0 24px;}
+nav{position:sticky;top:0;z-index:50;background:rgba(243,236,217,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);box-shadow:0 2px 16px rgba(40,30,10,.05);}
+.nav-in{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;max-width:1120px;margin:0 auto;}
+.brand{display:flex;align-items:center;gap:11px;}
+.brand img{width:38px;}
+.brand b{color:var(--navy);font-size:16px;font-weight:normal;}
+.brand small{display:block;font-family:Arial,sans-serif;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+.nav-links{display:flex;align-items:center;gap:22px;font-family:Arial,sans-serif;font-size:13.5px;}
+.nav-links a{color:#5b5446;transition:color .2s;}.nav-links a.btn-solid{color:#fff;}
+.nav-links a:hover{color:var(--red);}
+.btn{display:inline-block;font-family:Arial,sans-serif;font-size:13.5px;border-radius:9px;padding:10px 18px;cursor:pointer;transition:all .2s;border:1.5px solid var(--navy);}
+.btn-solid{background:var(--navy);color:#fff;}
+.btn-solid:hover{background:#16204a;}
+.btn-ghost{background:transparent;color:var(--navy);border-color:var(--gold);}
+.btn-ghost:hover{background:#efe6cf;}
+@media(max-width:860px){.nav-links a:not(.btn){display:none;}}
+.hero{text-align:center;padding:64px 24px 72px;background:radial-gradient(120% 80% at 50% 0%,#faf5e8 0%,var(--parch) 60%,var(--parch2) 100%);}
+.hero img{width:150px;margin:0 auto 8px;filter:drop-shadow(0 8px 18px rgba(40,30,10,.12));}
+.kick{font-family:Arial,sans-serif;font-size:12px;letter-spacing:4px;color:var(--red);text-transform:uppercase;}
+.hero h1{font-size:44px;color:var(--navy);font-weight:normal;margin:14px 0 2px;letter-spacing:.5px;}
+.hero .br{font-style:italic;color:var(--navy);font-size:22px;margin-bottom:18px;}
+.hero p.lead{max-width:620px;margin:0 auto 10px;font-size:18px;color:#544c3e;}
+.motto{font-style:italic;color:var(--gold);font-size:18px;margin:18px 0 26px;letter-spacing:1px;}
+.hero .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+section{padding:66px 0;}
+.sec-k{font-family:Arial,sans-serif;font-size:12px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;text-align:center;}
+h2{font-size:34px;color:var(--navy);font-weight:normal;text-align:center;margin:8px 0 8px;}
+.rule{width:64px;height:2px;background:var(--gold-l);margin:14px auto 34px;}
+.alt{background:linear-gradient(180deg,#f7f1e2,#f1e9d3);}
+.navy{background:linear-gradient(160deg,#243161,#161f3f);}
+.navy .sec-k{color:var(--gold-l);} .navy h2{color:#f3ecd9;} .navy .lead{color:#d9d2c0;}
+.lead-c{max-width:720px;margin:0 auto;text-align:center;font-size:17px;color:#4a4438;}
+.lead-c p{margin-bottom:14px;}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:920px;margin:0 auto;}
+.stat{background:rgba(255,253,247,.06);border:1px solid rgba(201,168,92,.35);border-radius:14px;padding:22px 14px;text-align:center;}
+.stat b{display:block;font-family:Georgia,serif;color:var(--gold-l);font-size:34px;line-height:1;}
+.stat small{display:block;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;color:#cfc7b2;text-transform:uppercase;margin-top:8px;line-height:1.4;}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);}}
+/* BENEFICIOS */
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.bcard{background:var(--cream);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:14px;padding:22px 20px;}
+.bcard .ic{width:42px;height:42px;border-radius:50%;background:var(--navy);color:var(--gold-l);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.bcard h3{color:var(--navy);font-weight:normal;font-size:18px;margin-bottom:5px;}
+.bcard p{font-family:Arial,sans-serif;font-size:13.5px;color:#5b5446;line-height:1.55;}
+.bcard .tag{display:inline-block;margin-top:9px;font-family:Arial,sans-serif;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:2px 9px;}
+@media(max-width:860px){.benefits{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.benefits{grid-template-columns:1fr;}}
+/* PLACAS */
+.placas{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:760px;margin:0 auto;}
+.placa{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:26px 18px;text-align:center;}
+.placa .disc{width:74px;height:74px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:26px;color:#3a2e12;border:3px solid #fff;box-shadow:0 6px 16px rgba(40,30,10,.18);}
+.p-ouro{background:linear-gradient(160deg,#e7c66a,#b8902f);} .p-prata{background:linear-gradient(160deg,#dfe1e4,#a9aeb4);} .p-bronze{background:linear-gradient(160deg,#d8a878,#a9703f);}
+.placa h3{color:var(--navy);font-weight:normal;font-size:19px;}
+.placa small{font-family:Arial,sans-serif;font-size:12px;color:#7a7165;}
+@media(max-width:620px){.placas{grid-template-columns:1fr;max-width:320px;}}
+/* TIMELINE / RESULTADOS */
+.tl{max-width:780px;margin:0 auto;}
+.tl .row{display:flex;gap:16px;background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:12px;align-items:center;}
+.tl .row .dt{flex:none;width:96px;text-align:center;border-right:1px solid var(--line);padding-right:12px;}
+.tl .row .dt b{display:block;font-family:Arial,sans-serif;font-size:13px;color:var(--red);}
+.tl .row .dt small{font-family:Arial,sans-serif;font-size:10px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;}
+.tl .row h4{color:var(--navy);font-weight:normal;font-size:16px;}
+.tl .row p{font-family:Arial,sans-serif;font-size:12.5px;color:#7a7165;}
+/* INVEST */
+.invest{max-width:720px;margin:0 auto;background:var(--cream);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:16px;padding:32px 30px;text-align:center;}
+.invest .big{font-family:Georgia,serif;color:var(--red);font-size:46px;line-height:1;margin:6px 0 2px;}
+.invest .sub{font-family:Arial,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);}
+.costs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:22px 0 6px;text-align:left;}
+.costs div{font-family:Arial,sans-serif;font-size:13px;color:#5b5446;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:10px 13px;}
+.costs b{color:var(--navy);}
+.invest .cond{font-family:Arial,sans-serif;font-size:12.5px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:18px;line-height:1.6;}
+@media(max-width:560px){.costs{grid-template-columns:1fr;}}
+/* CTA + CONTATO */
+.cta{text-align:center;}
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:820px;margin:0 auto;text-align:center;}
+.contact h4{color:var(--navy);font-weight:normal;font-size:17px;margin-bottom:4px;}
+.contact p{font-family:Arial,sans-serif;font-size:13.5px;color:#5b5446;}
+@media(max-width:680px){.contact{grid-template-columns:1fr;}}
+footer{background:var(--navy);color:#e7e0cd;text-align:center;padding:46px 24px;}
+footer img{width:64px;margin-bottom:14px;}
+footer .fmotto{font-style:italic;color:var(--gold-l);letter-spacing:2px;margin:10px 0;}
+footer .fnav{font-family:Arial,sans-serif;font-size:13px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin:16px 0;}
+footer .fnav a{color:#cfc7b2;}
+footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
+</style></head><body>
+
+<nav><div class="nav-in">
+  <a class="brand" href="index.html#topo"><img src="img/logo-topo.png" alt="Brasão"><span><b>Commanderie de Bordeaux</b><small>Brasil · Embaixadores</small></span></a>
+  <div class="nav-links"><a href="#beneficios">Benefícios</a><a href="#resultados">Resultados</a><a href="#investimento">Investimento</a><a class="btn btn-ghost" href="index.html">Voltar ao site</a><a class="btn btn-solid" href="#contato">Quero ser Importador</a></div>
+</div></nav>
+
+<header class="hero">
+  <img src="img/hero.png" alt="Brasão da Commanderie de Bordeaux">
+  <div class="kick">Programa de Importadores Embaixadores</div>
+  <h1>Seja um Embaixador de Bordeaux no Brasil</h1>
+  <div class="br">Commanderie de Bordeaux do Brasil</div>
+  <p class="lead">Uma associação de prestígio que conecta as importadoras à mais tradicional rede mundial dos vinhos de Bordeaux — reputação, relacionamento de alto nível e negócios.</p>
+  <div class="motto">“Bordeaux, toujours Bordeaux”</div>
+  <div class="btns"><a class="btn btn-solid" href="#beneficios">Conheça os benefícios</a><a class="btn btn-ghost" href="#investimento">Investimento</a></div>
+</header>
+
+<section class="navy"><div class="container">
+  <div class="sec-k">Bordeaux em números</div><h2>Um patrimônio de escala mundial</h2><div class="rule"></div>
+  <div class="stats">
+    <div class="stat"><b>1952</b><small>Fundação do Grand Conseil du Vin de Bordeaux</small></div>
+    <div class="stat"><b>65</b><small>Denominações de origem (AOP)</small></div>
+    <div class="stat"><b>4.300+</b><small>Comendadores no mundo</small></div>
+    <div class="stat"><b>109</b><small>Commanderies em 31 países</small></div>
+  </div>
+  <p class="lead" style="text-align:center;max-width:680px;margin:30px auto 0;">A força de Bordeaux combina terroir, tradição e projeção global. No Brasil, essa marca ganha presença quando se transforma em experiência, ritual e curadoria.</p>
+</div></section>
+
+<section><div class="container">
+  <div class="sec-k">A oportunidade</div><h2>Uma embaixada cultural para o mercado brasileiro</h2><div class="rule"></div>
+  <div class="lead-c">
+    <p>A Commanderie de Bordeaux posiciona Bordeaux no país por meio de relações de alto nível, hospitalidade e transmissão de cultura. Para a importadora, funciona como uma <b>plataforma de reputação</b>: um lugar onde Bordeaux é apresentado com contexto, legitimidade e desejo.</p>
+    <p>O Importador Embaixador entra para o centro dessa rede — com voz, visibilidade e acesso direto aos Comendadores de todo o Brasil e aos produtores de Bordeaux.</p>
+  </div>
+</div></section>
+
+<section id="beneficios" class="alt"><div class="container">
+  <div class="sec-k">Por que participar</div><h2>Benefícios do Importador Embaixador</h2><div class="rule"></div>
+  <div class="benefits">
+    <div class="bcard"><div class="ic">★</div><h3>Anuidade isenta</h3><p>O responsável (pessoa física) pela importadora fica isento da anuidade de Comendador.</p></div>
+    <div class="bcard"><div class="ic">✚</div><h3>Indicar novos membros</h3><p>Indique até <b>2 novos membros por ano</b> — Comendadores ou Convidados de Honra — com a 1ª anuidade incluída.</p><span class="tag">2 por ano</span></div>
+    <div class="bcard"><div class="ic">▰</div><h3>Placa da Commanderie</h3><p>Indique até <b>2 restaurantes por ano</b> para receber a placa das melhores cartas de vinhos de Bordeaux.</p><span class="tag">2 por ano</span></div>
+    <div class="bcard"><div class="ic">%</div><h3>Conceder benefícios</h3><p>Ofereça vinhos de Bordeaux e condições especiais aos Comendadores de todo o Brasil.</p></div>
+    <div class="bcard"><div class="ic">✦</div><h3>Curso “Disciple”</h3><p>Indique de 5 a 10 clientes B2B por ano para o curso exclusivo com diploma <i>Disciple de la Commanderie de Bordeaux</i>.</p></div>
+    <div class="bcard"><div class="ic">✈</div><h3>Semaine des Primeurs</h3><p>Acesso à viagem exclusiva a Bordeaux durante a <i>Semaine des Primeurs</i>.</p></div>
+    <div class="bcard"><div class="ic">♨</div><h3>Wine-dinners</h3><p>Organize degustações e jantares com os produtores de Bordeaux que vêm ao Brasil — e acesso a todos os eventos da Commanderie.</p></div>
+    <div class="bcard"><div class="ic">◈</div><h3>Marca e visibilidade</h3><p>Sua logo divulgada em todas as comunicações da Commanderie — site e membros.</p></div>
+    <div class="bcard"><div class="ic">⚑</div><h3>Voz e voto</h3><p>Reunião anual dos Embaixadores, Road Show dos importadores e direito a voto nas novas entronizações.</p></div>
+    <div class="bcard"><div class="ic">▤</div><h3>Painel do Importador</h3><p>Acesso a um painel exclusivo no site, com gestão das suas indicações e BI dos vinhos de Bordeaux no Brasil.</p></div>
+  </div>
+</div></section>
+
+<section><div class="container">
+  <div class="sec-k">O Guia das melhores cartas</div><h2>A Placa da Commanderie</h2><div class="rule"></div>
+  <p class="lead-c" style="margin-bottom:30px;">O guia anual reconhece os restaurantes e lojas com as melhores cartas de vinhos de Bordeaux no Brasil. Os estabelecimentos premiados devem adquirir os vinhos por meio das importadoras credenciadas na Commanderie.</p>
+  <div class="placas">
+    <div class="placa"><div class="disc p-ouro">Or</div><h3>Placa Ouro</h3><small>Excelência da carta</small></div>
+    <div class="placa"><div class="disc p-prata">Ag</div><h3>Placa Prata</h3><small>Carta de destaque</small></div>
+    <div class="placa"><div class="disc p-bronze">Br</div><h3>Placa Bronze</h3><small>Carta reconhecida</small></div>
+  </div>
+</div></section>
+
+<section id="resultados" class="alt"><div class="container">
+  <div class="sec-k">Tração comprovada</div><h2>De 1 para 4 capítulos em menos de 6 meses</h2><div class="rule"></div>
+  <div class="tl">
+    <div class="row"><div class="dt"><b>13 NOV</b><small>2025</small></div><div><h4>Cerimônia oficial de chegada ao Brasil</h4><p>Residência da Cônsul-Geral da França em São Paulo · 18 produtores franceses · 27 entronizados</p></div></div>
+    <div class="row"><div class="dt"><b>10 DEZ</b><small>2025</small></div><div><h4>Capítulo II — São Paulo</h4><p>Restaurante Le Chef Rouge · novos Comendadores entronizados</p></div></div>
+    <div class="row"><div class="dt"><b>04 MAR</b><small>2026</small></div><div><h4>Capítulo III — Recife</h4><p>Restaurante Licínio 1926 · 1ª expansão Nordeste</p></div></div>
+    <div class="row"><div class="dt"><b>24 MAR</b><small>2026</small></div><div><h4>Capítulo IV — Brasília</h4><p>Embaixada da França · Comendadores de Honra e diplomatas</p></div></div>
+    <div class="row"><div class="dt"><b>19 ABR</b><small>2026</small></div><div><h4>Capítulo V — Château Bellefont-Belcier</h4><p>Confirmação do Grão-Mestre e dos Mestres das 4 cidades brasileiras</p></div></div>
+  </div>
+  <p class="lead-c" style="margin-top:26px;"><b>São Paulo · Recife · Curitiba · Porto Alegre</b> — e crescendo.</p>
+</div></section>
+
+<section id="investimento"><div class="container">
+  <div class="sec-k">Adesão</div><h2>Investimento</h2><div class="rule"></div>
+  <div class="invest">
+    <div class="sub">Programa de Importador Embaixador</div>
+    <div class="big">R$ 10.000</div>
+    <p style="font-family:Arial,sans-serif;font-size:13.5px;color:#5b5446;">Inclui os custos da estrutura do programa indicados abaixo.</p>
+    <div class="costs">
+      <div><b>Placas da Commanderie</b><br>€ 100,00</div>
+      <div><b>Curso e diploma Disciple</b> (com pins)<br>€ 40,00</div>
+      <div><b>Guia das melhores cartas</b><br>Em andamento</div>
+      <div><b>Noite de premiação</b><br>A definir</div>
+    </div>
+    <div class="cond">Não serão admitidos importadores sem compromisso com <b>ética, concorrência legal e transparência</b>. A admissão depende de <b>aprovação por unanimidade</b> dos importadores membros.</div>
+  </div>
+</div></section>
+
+<section id="contato" class="navy cta"><div class="container">
+  <div class="sec-k">Faça parte</div><h2>Torne-se um Embaixador de Bordeaux</h2><div class="rule"></div>
+  <p class="lead" style="max-width:600px;margin:0 auto 26px;">Leve a sua importadora ao centro da rede mais tradicional dos vinhos de Bordeaux no mundo.</p>
+  <div class="btns" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+    <a class="btn btn-solid" style="background:var(--gold);border-color:var(--gold);color:#241a05;" href="mailto:secretaria@commanderiebordeaux.com.br?subject=Programa%20de%20Importadores%20Embaixadores">Falar com a Secretaria</a>
+    <a class="btn btn-ghost" style="border-color:var(--gold-l);color:#f3ecd9;" href="https://www.instagram.com/commanderiedebordeaux_brasil/" target="_blank" rel="noopener">@commanderiedebordeaux_brasil</a>
+  </div>
+</div></section>
+
+<footer>
+  <img src="img/logo-topo.png" alt="Brasão">
+  <div class="fmotto">Bordeaux, toujours Bordeaux</div>
+  <div class="fnav"><a href="index.html">Site</a><a href="#beneficios">Benefícios</a><a href="#investimento">Investimento</a><a href="#contato">Contato</a></div>
+  <small>© 2026 Commanderie de Bordeaux — Brasil. Todos os direitos reservados.</small>
+</footer>
+
+</body></html>

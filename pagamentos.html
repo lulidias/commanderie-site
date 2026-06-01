@@ -38,12 +38,31 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin:0 0 12px;">Anuidade, jantares e viagens — acompanhe o que está em dia e o que está por vencer.</p>
     <div style="text-align:left;margin-bottom:6px;"><span class="m-status" id="mStatusPill"><span class="m-dot" id="mDot"></span> <span id="mStatusTxt">—</span></span></div>
     <div id="anuidadeBox"></div>
-    <p style="font-size:11.5px;color:#9a937f;margin-top:14px;">A anuidade vence no 1º dia útil de novembro. No ano da intronização, ela já está incluída nos eventos de intronização — a cobrança anual começa no ano seguinte. Valores e cobranças (Pix/boleto/cartão) serão processados via Asaas quando o sistema entrar no ar.</p>
+    <div style="margin-top:18px;border-top:1px solid #ece0c2;padding-top:16px;">
+      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:10px;">Pagar por PIX</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
+        <div style="text-align:center;flex:none;"><img id="pixQR" alt="QR Code PIX" style="width:176px;height:176px;border:1px solid var(--line);border-radius:12px;padding:8px;background:#fff;display:block;"><div style="font-size:11px;color:#9a937f;margin-top:5px;">Escaneie no app do seu banco</div></div>
+        <div style="flex:1;min-width:210px;font-size:14px;color:#2a2620;line-height:1.7;">
+          <div><span style="color:#8a8270;font-size:12px;">FAVORECIDO</span><br><b>Manuel Roberto Brandão</b></div>
+          <div style="margin-top:8px;"><span style="color:#8a8270;font-size:12px;">CHAVE PIX (CPF)</span><br><b>010.091.449-79</b></div>
+          <div style="margin-top:8px;"><span style="color:#8a8270;font-size:12px;">BANCO</span><br>Bradesco · Ag. 3220 · C/C 100483-2</div>
+          <div style="margin-top:12px;"><button onclick="copiarPix()" style="background:var(--navy);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;cursor:pointer;">Copiar código PIX</button><span id="pixMsg" style="font-size:12px;margin-left:8px;color:#2f6b3a;"></span></div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:14px;">Após o pagamento, envie o comprovante à Secretaria. O Conselho confirma e a sua anuidade/participação fica registrada como <b>paga</b>.</p>
+    </div>
+    <p style="font-size:11.5px;color:#9a937f;margin-top:14px;">A anuidade vence no 1º dia útil de novembro. No ano da intronização, ela já está incluída nos eventos de intronização — a cobrança anual começa no ano seguinte. O pagamento por cartão e a cobrança recorrente entrarão quando a conta da associação (CNPJ) estiver ativa.</p>
   </div></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+function _emv(id,v){v=""+v;return id+("00"+v.length).slice(-2)+v;}
+function _crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var j=0;j<8;j++){c=(c&0x8000)?((c<<1)^0x1021):(c<<1);c&=0xFFFF;}}return ("000"+c.toString(16).toUpperCase()).slice(-4);}
+var PIX_PAYLOAD="";
+function pixInit(){var mai=_emv("00","br.gov.bcb.pix")+_emv("01","01009144979");var p=_emv("00","01")+_emv("26",mai)+_emv("52","0000")+_emv("53","986")+_emv("58","BR")+_emv("59","Manuel Roberto Brandao")+_emv("60","CURITIBA")+_emv("62",_emv("05","***"))+"6304";PIX_PAYLOAD=p+_crc16(p);try{var qr=qrcode(0,"M");qr.addData(PIX_PAYLOAD);qr.make();var img=document.getElementById("pixQR");if(img)img.src=qr.createDataURL(5,10);}catch(e){}}
+function copiarPix(){var m=document.getElementById("pixMsg");try{navigator.clipboard.writeText(PIX_PAYLOAD);}catch(e){}if(m){m.textContent="Código PIX copiado!";setTimeout(function(){m.textContent="";},2500);}}
 function brl(v){return "R$ "+(Number(v)||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 function pagar(){alert("Pagamento será processado via Asaas quando o sistema entrar no ar.");}
 function pill(txt,cor,bg){var t=document.getElementById("mStatusTxt");t.textContent=txt;document.getElementById("mDot").style.background=cor;document.getElementById("mStatusPill").style.background=bg;}
@@ -81,5 +100,5 @@ async function carregar(){
   box.innerHTML=html;
   document.getElementById("content").style.display="block";
 }
-document.addEventListener("DOMContentLoaded",carregar);
+document.addEventListener("DOMContentLoaded",function(){carregar();pixInit();});
 </script></body></html>

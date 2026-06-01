@@ -71,11 +71,16 @@ select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size
     </div>
     <div id="secFin" class="secblk"><a class="backsec" href="painel-conselho.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
     <div class="sec-title">Financeiro — resumo por ano</div><div class="sec-rule"></div>
+    <div id="caixaBox" style="margin-bottom:18px;"></div>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;"><label style="font-size:13px;color:#8a8270;">Ano:</label><select id="anoSel" onchange="renderAno()"></select><span id="anoMsg" style="font-size:12px;color:#9a937f;"></span></div>
     <div id="anoGeral" class="fin-grid" style="margin-bottom:14px;"></div>
     <div id="anoCats" class="fin-grid"></div>
     <div id="anoTabela"></div>
     <div class="card" style="margin-top:18px;"><b style="font-family:Georgia,serif;color:var(--navy);font-size:16px;">Lançar receita</b><p style="font-size:12.5px;color:#8a8270;margin:4px 0 10px;">Eventos, jantares, viagens, doações… entra no resumo do ano escolhido.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;"><select id="rcCat"><option>Evento</option><option>Viagem</option><option>Doação</option><option>Anuidade</option><option>Outro</option></select><input id="rcAno" type="number" placeholder="Ano" value="2026" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><select id="rcNucleo"><option value="">Sem núcleo</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select><input id="rcDesc" placeholder="Descrição (ex.: Jantar Capítulo VI)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="rcValor" type="number" placeholder="Valor (R$)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><label style="font-size:13px;color:#5b5446;display:flex;align-items:center;gap:6px;"><input id="rcPago" type="checkbox"> Recebido</label></div><button onclick="addReceita()" style="margin-top:12px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-size:14px;cursor:pointer;">Adicionar receita</button><span id="rcMsg" style="font-size:13px;margin-left:10px;"></span></div>
+    <div class="sec-title">Despesas</div><div class="sec-rule"></div>
+    <div id="despGeral" class="fin-grid" style="margin-bottom:14px;"></div>
+    <div id="despTabela"></div>
+    <div class="card" style="margin-top:18px;"><b style="font-family:Georgia,serif;color:var(--navy);font-size:16px;">Lançar despesa</b><p style="font-size:12.5px;color:#8a8270;margin:4px 0 10px;">Brindes, espaço, taça, cartório, site… entra no resumo e no caixa do ano escolhido.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;"><select id="dpCat"><option>Evento</option><option>Viagem</option><option>Administrativo</option><option>Brindes/Insígnias</option><option>Site/Sistema</option><option>Cartório/Jurídico</option><option>Outro</option></select><input id="dpAno" type="number" placeholder="Ano" value="2026" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><select id="dpNucleo"><option value="">Sem núcleo</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select><input id="dpDesc" placeholder="Descrição (ex.: Taças Capítulo VI)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="dpValor" type="number" placeholder="Valor (R$)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><label style="font-size:13px;color:#5b5446;display:flex;align-items:center;gap:6px;"><input id="dpPago" type="checkbox"> Pago</label></div><button onclick="addDespesa()" style="margin-top:12px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-size:14px;cursor:pointer;">Adicionar despesa</button><span id="dpMsg" style="font-size:13px;margin-left:10px;"></span></div>
     <div class="sec-title">Anuidades dos membros (ciclo atual)</div><div class="sec-rule"></div>
     <div id="finGeral" class="fin-grid" style="margin-bottom:14px;"></div>
     <div id="finResumo" class="fin-grid"></div>
@@ -149,7 +154,7 @@ function finBox(titulo,c,p,extra){return "<div class=\"fin\"><h3>"+esc(titulo)+"
   +"<div class=\"n\">Cotizado: <b>"+brl(c)+"</b></div>"
   +"<div class=\"n\"><span class=\"dot\" style=\"background:#3a9a4e;\"></span>Arrecadado: <b>"+brl(p)+"</b></div>"
   +"<div class=\"n\"><span class=\"dot\" style=\"background:#c0392b;\"></span>A receber: <b>"+brl(c-p)+"</b></div>"+(extra||"")+"</div>";}
-var ANO_ANUIDADE=2026;var anuTc=0,anuTp=0;var receitas=[];
+var ANO_ANUIDADE=2026;var anuTc=0,anuTp=0;var receitas=[];var despesas=[];
 async function carregarFinanceiro(){
   var q=await sb.from("membros").select("codigo,nome,grau,nucleo,anuidade_valor,anuidade_paga").order("nucleo",{ascending:true}).order("codigo",{ascending:true});
   if(q.error){document.getElementById("finResumo").innerHTML="<p style=\"color:#8f1d24;\">Erro: "+esc(q.error.message)+"</p>";}
@@ -164,7 +169,12 @@ async function carregarFinanceiro(){
     rows.forEach(function(m){var _g=(""+(m.grau||"")).toLowerCase();var _is=_g.indexOf("honra")>=0||_g.indexOf("mestre")>=0;var pill;if(_is)pill="<span class=\"pill\" style=\"color:#5b5446;background:#efe9da;border:1px solid var(--line);\">Isento</span>";else if(m.anuidade_paga)pill="<span class=\"pill\" style=\"color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;\">Em dia</span>";else if(new Date()>new Date("2026-11-02T12:00:00"))pill="<span class=\"pill\" style=\"color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;\">Em atraso</span>";else pill="<span class=\"pill\" style=\"color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);\">A vencer 02/11</span>";tb+="<tr><td>"+esc(m.nucleo||"")+"</td><td>"+esc(m.codigo)+"</td><td>"+esc(m.nome)+"</td><td>"+brl(m.anuidade_valor||0)+"</td><td>"+pill+"</td></tr>";});
     tb+="</tbody></table>";document.getElementById("finTabela").innerHTML=tb;
   }
+  await carregarDespesas();
   await carregarReceitas();
+}
+async function carregarDespesas(){
+  var r=await sb.from("despesas").select("*").order("ano",{ascending:false}).order("created_at",{ascending:false});
+  if(r.error){despesas=[];}else{despesas=r.data||[];}
 }
 async function carregarReceitas(){
   var r=await sb.from("receitas").select("*").order("ano",{ascending:false}).order("created_at",{ascending:false});
@@ -173,7 +183,7 @@ async function carregarReceitas(){
   montarAnoSelector();
 }
 function montarAnoSelector(){
-  var anos={};anos[ANO_ANUIDADE]=1;receitas.forEach(function(x){anos[x.ano]=1;});
+  var anos={};anos[ANO_ANUIDADE]=1;receitas.forEach(function(x){anos[x.ano]=1;});despesas.forEach(function(x){anos[x.ano]=1;});
   var lista=Object.keys(anos).map(Number).sort(function(a,b){return b-a;});
   var sel=document.getElementById("anoSel");var atual=sel.value;
   sel.innerHTML=lista.map(function(a){return "<option>"+a+"</option>";}).join("");
@@ -191,6 +201,10 @@ function renderAno(){
   var ordem=["Anuidade","Evento","Viagem","Doação","Outro"];
   var keys=Object.keys(cats).sort(function(a,b){var ia=ordem.indexOf(a),ib=ordem.indexOf(b);return (ia<0?9:ia)-(ib<0?9:ib);});
   document.getElementById("anoCats").innerHTML=keys.length?keys.map(function(k){return finBox(k,cats[k].c,cats[k].p,"");}).join(""):"<p style=\"color:#8a8270;font-size:13px;\">Nenhuma receita neste ano.</p>";
+  var despA=despesas.filter(function(x){return Number(x.ano)===ano;});
+  var Dc=0,Dp=0;despA.forEach(function(x){var v=Number(x.valor)||0;Dc+=v;if(x.pago)Dp+=v;});
+  document.getElementById("despGeral").innerHTML=despBox("Despesas "+ano,Dc,Dp)+resultBox(ano,Tp,Dp);
+  renderDespTabela(ano);renderCaixa();
   if(!doAno.length){document.getElementById("anoTabela").innerHTML="";return;}
   var tb="<table class=\"tbl\"><thead><tr><th>Categoria</th><th>Descrição</th><th>Núcleo</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody>";
   doAno.forEach(function(x){var pago=!!x.pago;var pill=pago?"<span class=\"pill\" style=\"color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;\">Recebido</span>":"<span class=\"pill\" style=\"color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);\">A receber</span>";tb+="<tr><td>"+esc(x.categoria)+"</td><td>"+esc(x.descricao||"")+"</td><td>"+esc(x.nucleo||"")+"</td><td>"+brl(x.valor)+"</td><td>"+pill+"</td><td><a onclick=\"delReceita('"+x.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;\">remover</a></td></tr>";});
@@ -213,6 +227,51 @@ async function delReceita(id){
   var r=await sb.from("receitas").delete().eq("id",id);
   if(r.error){alert("Erro: "+r.error.message);return;}
   await carregarReceitas();
+}
+function despBox(titulo,c,p){return "<div class=\"fin\"><h3>"+esc(titulo)+"</h3>"
+  +"<div class=\"n\">Previsto: <b>"+brl(c)+"</b></div>"
+  +"<div class=\"n\"><span class=\"dot\" style=\"background:#c0392b;\"></span>Pago: <b>"+brl(p)+"</b></div>"
+  +"<div class=\"n\"><span class=\"dot\" style=\"background:#8a6a1f;\"></span>A pagar: <b>"+brl(c-p)+"</b></div></div>";}
+function resultBox(ano,Rp,Dp){var saldo=Rp-Dp;var cor=saldo>=0?"#2f6b3a":"#8f1d24";return "<div class=\"fin\"><h3>Resultado "+ano+"</h3>"
+  +"<div class=\"n\">Recebido: <b>"+brl(Rp)+"</b></div>"
+  +"<div class=\"n\">Pago: <b>"+brl(Dp)+"</b></div>"
+  +"<div class=\"n\" style=\"margin-top:4px;\">Saldo do ano: <b style=\"color:"+cor+";\">"+brl(saldo)+"</b></div></div>";}
+function renderCaixa(){
+  var entr=anuTp;receitas.forEach(function(x){if(x.pago)entr+=Number(x.valor)||0;});
+  var said=0;despesas.forEach(function(x){if(x.pago)said+=Number(x.valor)||0;});
+  var caixa=entr-said;var el=document.getElementById("caixaBox");if(!el)return;
+  el.innerHTML="<div style=\"background:var(--navy);color:#fff;border-radius:14px;padding:18px 20px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;\">"
+    +"<div><div style=\"font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#c9a85c;\">Caixa atual</div><div style=\"font-family:Georgia,serif;font-size:30px;margin-top:2px;\">"+brl(caixa)+"</div></div>"
+    +"<div style=\"display:flex;gap:22px;flex-wrap:wrap;font-size:13px;\">"
+    +"<div><div style=\"color:#bfe3c5;\">Entradas recebidas</div><b style=\"font-size:16px;\">"+brl(entr)+"</b></div>"
+    +"<div><div style=\"color:#e8b4b4;\">Saídas pagas</div><b style=\"font-size:16px;\">"+brl(said)+"</b></div>"
+    +"</div></div>"
+    +"<p style=\"font-size:11.5px;color:#9a937f;margin:6px 2px 0;\">Caixa = anuidades + receitas já recebidas &minus; despesas já pagas (acumulado, todos os anos).</p>";
+}
+function renderDespTabela(ano){
+  var doAno=despesas.filter(function(x){return Number(x.ano)===ano;});
+  if(!doAno.length){document.getElementById("despTabela").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma despesa neste ano.</p>";return;}
+  var tb="<table class=\"tbl\"><thead><tr><th>Categoria</th><th>Descrição</th><th>Núcleo</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody>";
+  doAno.forEach(function(x){var pago=!!x.pago;var pill=pago?"<span class=\"pill\" style=\"color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;\">Pago</span>":"<span class=\"pill\" style=\"color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);\">A pagar</span>";tb+="<tr><td>"+esc(x.categoria)+"</td><td>"+esc(x.descricao||"")+"</td><td>"+esc(x.nucleo||"")+"</td><td>"+brl(x.valor)+"</td><td>"+pill+"</td><td><a onclick=\"delDespesa('"+x.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;\">remover</a></td></tr>";});
+  tb+="</tbody></table>";document.getElementById("despTabela").innerHTML=tb;
+}
+async function addDespesa(){
+  var msg=document.getElementById("dpMsg");
+  var cat=document.getElementById("dpCat").value;var ano=parseInt(document.getElementById("dpAno").value,10);
+  var nucleo=document.getElementById("dpNucleo").value||null;var desc=document.getElementById("dpDesc").value.trim()||null;
+  var valor=parseFloat(document.getElementById("dpValor").value);var pago=document.getElementById("dpPago").checked;
+  if(!ano||isNaN(valor)){msg.style.color="#8f1d24";msg.textContent="Informe ano e valor.";return;}
+  msg.style.color="#2f6b3a";msg.textContent="Salvando...";
+  var r=await sb.from("despesas").insert({ano:ano,categoria:cat,nucleo:nucleo,descricao:desc,valor:valor,pago:pago});
+  if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}
+  msg.textContent="Adicionada!";document.getElementById("dpDesc").value="";document.getElementById("dpValor").value="";document.getElementById("dpPago").checked=false;
+  await carregarDespesas();document.getElementById("anoSel").value=ano;renderAno();
+}
+async function delDespesa(id){
+  if(!confirm("Remover esta despesa?"))return;
+  var r=await sb.from("despesas").delete().eq("id",id);
+  if(r.error){alert("Erro: "+r.error.message);return;}
+  await carregarDespesas();renderAno();
 }
 var eventos=[];
 function comprimirImg(file,maxDim,q){return new Promise(function(res){var img=new Image();img.onload=function(){var w=img.naturalWidth,hh=img.naturalHeight;var sc=Math.min(1,maxDim/Math.max(w,hh));var cw=Math.round(w*sc),ch=Math.round(hh*sc);var cv=document.createElement("canvas");cv.width=cw;cv.height=ch;cv.getContext("2d").drawImage(img,0,0,cw,ch);cv.toBlob(function(b){res(b||file);},"image/jpeg",q);};img.onerror=function(){res(file);};var r=new FileReader();r.onload=function(e){img.src=e.target.result;};r.readAsDataURL(file);});}

@@ -49,7 +49,9 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       <div class="chartcard"><h3>Anuidade a receber por núcleo</h3><div class="cv"><canvas id="cAnuNuc"></canvas></div></div>
       <div class="chartcard"><h3>Adimplência da anuidade</h3><div class="cv"><canvas id="cAdimp"></canvas></div></div>
       <div class="chartcard"><h3>Receita projetada por evento <span style="font-size:11px;color:#9a937f;">(ano selecionado)</span></h3><div class="cv"><canvas id="cRecEv"></canvas></div></div>
-      <div class="chartcard"><h3>Receitas lançadas por ano</h3><div class="cv"><canvas id="cRec"></canvas></div></div>
+      <div class="chartcard"><h3>Receitas × Despesas por ano</h3><div class="cv"><canvas id="cRecDesp"></canvas></div></div>
+      <div class="chartcard"><h3>Despesas por categoria</h3><div class="cv"><canvas id="cDespCat"></canvas></div></div>
+      <div class="chartcard"><h3>Composição do caixa</h3><div class="cv"><canvas id="cCaixa"></canvas></div></div>
     </div>
 
     <div class="sec">Membros</div><div class="sec-rule"></div>
@@ -101,20 +103,31 @@ async function init(){
 }
 function renderEstatico(){
   document.getElementById("geradoEm").textContent="Atualizado em "+(D.gerado_em||"");
-  var m=D.membros||{},ev=D.eventos||{},ind=D.indicacoes||{},pa=D.participacao||{};
+  var m=D.membros||{},ev=D.eventos||{},ind=D.indicacoes||{},pa=D.participacao||{},fin=D.financeiro||{},desp=D.despesas||{};
   var emdia=m.anuidade_em_dia||0,avenc=m.anuidade_a_vencer||0;var adimp=(emdia+avenc)?Math.round(emdia/(emdia+avenc)*100):100;
   var ps=ind.por_status||{};var virou=(ps["Membro"]||0)+(ps["Pago"]||0);var taxa=ind.total?Math.round(virou/ind.total*100):0;
   document.getElementById("kpis").innerHTML=
      kpi(m.total||0,"Membros")
+    +kpi(brl(fin.caixa||0),"Caixa atual")
     +kpi(brl(m.anuidade_a_receber||0),"Anuidade a receber")
-    +kpi(adimp+"%","Adimplência (paga/cobrável)")
+    +kpi(brl(desp.a_pagar||0),"Despesas a pagar")
     +kpi(ev.futuros||0,"Eventos futuros")
     +kpi(pa.total_confirmacoes||0,"Confirmações de presença")
     +kpi(ind.total||0,"Indicações");
   // Financeiro (não-ano)
   var an=entries(m.anuidade_por_nucleo||{});bar("cAnuNuc",an.map(function(x){return x[0];}),an.map(function(x){return x[1];}),"#8f1d24",false,true);
   doughnut("cAdimp",{"Em dia":emdia,"A vencer":avenc,"Isentos":(m.isentos||0)});
-  var ra=entries((D.receitas&&D.receitas.por_ano)||{});if(ra.length)bar("cRec",ra.map(function(x){return x[0];}),ra.map(function(x){return x[1];}),"#1e5a86",false,true);else document.getElementById("cRec").parentNode.innerHTML='<div class="empty">Sem receitas lançadas ainda.</div>';
+  // Receitas x Despesas por ano (barras agrupadas)
+  var rpa=(D.receitas&&D.receitas.por_ano)||{},dpa=desp.por_ano||{};
+  var anosF={};Object.keys(rpa).forEach(function(a){anosF[a]=1;});Object.keys(dpa).forEach(function(a){anosF[a]=1;});
+  var anosL=Object.keys(anosF).sort();
+  if(anosL.length)mk("cRecDesp",{type:"bar",data:{labels:anosL,datasets:[{label:"Receitas",data:anosL.map(function(a){return rpa[a]||0;}),backgroundColor:"#2f6b3a",borderRadius:5},{label:"Despesas",data:anosL.map(function(a){return dpa[a]||0;}),backgroundColor:"#c0392b",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:function(c){return c.dataset.label+": "+brl(c.raw);}}}},scales:{y:{beginAtZero:true}}}});else document.getElementById("cRecDesp").parentNode.innerHTML='<div class="empty">Sem lançamentos ainda.</div>';
+  // Despesas por categoria
+  var dc=entries(desp.por_categoria||{}).filter(function(x){return x[1];});
+  if(dc.length)bar("cDespCat",dc.map(function(x){return x[0];}),dc.map(function(x){return x[1];}),"#8a6a1f",true,true);else document.getElementById("cDespCat").parentNode.innerHTML='<div class="empty">Sem despesas lançadas ainda.</div>';
+  // Composicao do caixa
+  var anuRec=fin.anuidade_recebida||0,recRec=fin.receitas_recebidas||0,saidas=fin.saidas||0;
+  if(anuRec+recRec+saidas>0)doughnut("cCaixa",{"Anuidades recebidas":anuRec,"Outras receitas recebidas":recRec,"Despesas pagas":saidas});else document.getElementById("cCaixa").parentNode.innerHTML='<div class="empty">Sem movimentação ainda.</div>';
   // Membros
   doughnut("cNucleo",m.por_nucleo);doughnut("cGrau",m.por_grau);
   var cr=entries(m.crescimento).sort(function(a,b){return a[0].localeCompare(b[0]);});var acc=0;var lbl=cr.map(function(x){return x[0];});var dat=cr.map(function(x){acc+=Number(x[1]);return acc;});
@@ -153,7 +166,11 @@ function exportar(){
   add("MEMBROS POR GRAU");entries(D.membros.por_grau).forEach(function(x){add(x[0]+";"+x[1]);});add("");
   add("ANUIDADE A RECEBER POR NUCLEO (R$)");entries(D.membros.anuidade_por_nucleo).forEach(function(x){add(x[0]+";"+x[1]);});add("");
   add("EVENTOS;Tipo;Data;Lugares;Confirmados;Valor;Receita projetada");(D.eventos.lista||[]).forEach(function(e){add(e.nome+";"+e.tipo+";"+e.data+";"+(e.lugares||"")+";"+e.confirmados+";"+e.valor+";"+(e.valor*e.confirmados));});add("");
-  add("INDICACOES POR STATUS");entries(D.indicacoes.por_status).forEach(function(x){add(x[0]+";"+x[1]);});
+  add("INDICACOES POR STATUS");entries(D.indicacoes.por_status).forEach(function(x){add(x[0]+";"+x[1]);});add("");
+  var fin=D.financeiro||{},desp=D.despesas||{};
+  add("CAIXA");add("Anuidades recebidas;"+(fin.anuidade_recebida||0));add("Outras receitas recebidas;"+(fin.receitas_recebidas||0));add("Despesas pagas;"+(fin.despesas_pagas||0));add("Caixa atual;"+(fin.caixa||0));add("");
+  add("DESPESAS POR ANO");entries(desp.por_ano||{}).forEach(function(x){add(x[0]+";"+x[1]);});add("");
+  add("DESPESAS POR CATEGORIA");entries(desp.por_categoria||{}).forEach(function(x){add(x[0]+";"+x[1]);});
   var blob=new Blob(["﻿"+L.join("\n")],{type:"text/csv;charset=utf-8;"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="indicadores-commanderie.csv";a.click();
 }
 document.addEventListener("DOMContentLoaded",init);

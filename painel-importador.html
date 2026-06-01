@@ -43,6 +43,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <div id="panel" style="display:none;">
   <div class="dhead"><div class="k">Importador Embaixador</div><h1 id="impNome">—</h1><div class="sub" id="impSub"></div><div class="badge-isento">★ Responsável isento da anuidade</div></div>
   <div class="wrap">
+    <div id="impSelWrap" style="display:none;text-align:center;margin:0 0 16px;"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);">Conselho — escolha a importadora</span><br><select id="impSel" onchange="trocarImp()" class="inp" style="max-width:300px;display:inline-block;margin-top:6px;"></select></div>
 
     <div class="sec-title">Indicar novo membro</div><div class="sec-rule"></div>
     <div class="card">
@@ -103,17 +104,31 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
-var IMP=null;var ANO=new Date().getFullYear();
+var IMP=null;var ANO=new Date().getFullYear();var ehConselho=false;var TODAS=[];
 function st(id){["needLogin","notImp","loading","panel"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function renderHeader(){
+  document.getElementById("impNome").textContent=IMP?IMP.nome:"—";
+  document.getElementById("impSub").textContent=IMP?[IMP.responsavel_nome,IMP.cidade].filter(Boolean).join(" · "):"";
+}
+function montarSeletor(){
+  var sel=document.getElementById("impSel");if(!sel)return;
+  sel.innerHTML=TODAS.map(function(x){return "<option value=\""+x.id+"\">"+esc(x.nome)+(x.responsavel_nome?(" — "+esc(x.responsavel_nome)):"")+"</option>";}).join("");
+  if(IMP)sel.value=IMP.id;
+  document.getElementById("impSelWrap").style.display="block";
+}
+function trocarImp(){var sel=document.getElementById("impSel");var x=TODAS.find(function(t){return t.id===sel.value;});if(!x)return;IMP=x;renderHeader();carregar();}
 async function init(){
   var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}
-  var q=await sb.from("importadoras").select("*").eq("owner_user_id",u.id).maybeSingle();
-  if(q.error||!q.data){st("notImp");return;}
-  IMP=q.data;
-  document.getElementById("impNome").textContent=IMP.nome;
-  document.getElementById("impSub").textContent=[IMP.responsavel_nome,IMP.cidade].filter(Boolean).join(" · ");
+  var own=await sb.from("importadoras").select("*").eq("owner_user_id",u.id).maybeSingle();
+  var ic=await sb.rpc("is_conselho");ehConselho=(!ic.error&&!!ic.data);
+  if(ehConselho){var all=await sb.from("importadoras").select("*").order("nome",{ascending:true});TODAS=all.data||[];}
+  if(own.data){IMP=own.data;}
+  else if(ehConselho&&TODAS.length){IMP=TODAS[0];}
+  else{st("notImp");return;}
   st("panel");
+  if(ehConselho&&TODAS.length)montarSeletor();
+  renderHeader();
   await carregar();
 }
 async function carregar(){

@@ -92,11 +92,19 @@ footer .fmotto{font-style:italic;color:var(--gold-l);letter-spacing:2px;margin:1
 footer .fnav{font-family:Arial,sans-serif;font-size:13px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin:16px 0;}
 footer .fnav a{color:#cfc7b2;}
 footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
+@page{size:A4;margin:11mm;}
+@media print{
+  nav{display:none!important;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  section{padding:30px 0;}
+  .bcard,.placa,.invest,.stat,.tl .row,.cover,.contact > div{break-inside:avoid;}
+  h2{break-after:avoid;}
+}
 </style></head><body>
 
 <nav><div class="nav-in">
   <a class="brand" href="index.html#topo"><img src="img/logo-topo.png" alt="Brasão"><span><b>Commanderie de Bordeaux</b><small>Brasil · Embaixadores</small></span></a>
-  <div class="nav-links"><a href="#beneficios">Benefícios</a><a href="#resultados">Resultados</a><a href="#investimento">Investimento</a><a class="btn btn-ghost" href="index.html">Voltar ao site</a><a class="btn btn-solid" href="#contato">Quero ser Importador</a></div>
+  <div class="nav-links"><a href="#beneficios">Benefícios</a><a href="#resultados">Resultados</a><a href="#investimento">Investimento</a><a href="apresentacao-importadores.pdf" download>Baixar PDF</a><a class="btn btn-ghost" href="index.html">Voltar ao site</a><a class="btn btn-solid" href="#contato">Quero ser Importador</a></div>
 </div></nav>
 
 <header class="hero">
@@ -132,8 +140,9 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
   <div class="sec-k">Por que participar</div><h2>Benefícios do Importador Embaixador</h2><div class="rule"></div>
   <div class="benefits">
     <div class="bcard"><div class="ic">★</div><h3>Anuidade isenta</h3><p>O responsável (pessoa física) pela importadora fica isento da anuidade de Comendador.</p></div>
-    <div class="bcard"><div class="ic">✚</div><h3>Indicar novos membros</h3><p>Indique até <b>2 novos membros por ano</b> — Comendadores ou Convidados de Honra — com a 1ª anuidade incluída.</p><span class="tag">2 por ano</span></div>
-    <div class="bcard"><div class="ic">▰</div><h3>Placa da Commanderie</h3><p>Indique até <b>2 restaurantes por ano</b> para receber a placa das melhores cartas de vinhos de Bordeaux.</p><span class="tag">2 por ano</span></div>
+    <div class="bcard"><div class="ic">✚</div><h3>Indicar novos membros</h3><p>Indique <b>2 novos membros por ano</b> — Comendadores ou Convidados de Honra — com a 1ª anuidade incluída. Indicações extras a <b>R$ 1.000</b> cada.</p><span class="tag">2 por ano + extras</span></div>
+    <div class="bcard"><div class="ic">▰</div><h3>Placa de Embaixada</h3><p>Indique <b>2 restaurantes por ano</b> para a Placa de Embaixada — Ouro, Prata ou Bronze — conforme a carta de Bordeaux. Extras a <b>R$ 1.000</b> cada.</p><span class="tag">2 por ano + extras</span></div>
+    <div class="bcard"><div class="ic">❦</div><h3>Restaurantes parceiros</h3><p>Indique restaurantes parceiros que oferecem <b>rolha grátis</b> aos Comendadores. Sem limite — distinto da Placa de Embaixada (toda embaixada é também parceira).</p></div>
     <div class="bcard"><div class="ic">%</div><h3>Conceder benefícios</h3><p>Ofereça vinhos de Bordeaux e condições especiais aos Comendadores de todo o Brasil.</p></div>
     <div class="bcard"><div class="ic">✦</div><h3>Curso “Disciple”</h3><p>Indique de 5 a 10 clientes B2B por ano para o curso exclusivo com diploma <i>Disciple de la Commanderie de Bordeaux</i>.</p></div>
     <div class="bcard"><div class="ic">✈</div><h3>Semaine des Primeurs</h3><p>Acesso à viagem exclusiva a Bordeaux durante a <i>Semaine des Primeurs</i>.</p></div>
@@ -145,12 +154,12 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
 </div></section>
 
 <section><div class="container">
-  <div class="sec-k">O Guia das melhores cartas</div><h2>A Placa da Commanderie</h2><div class="rule"></div>
+  <div class="sec-k">As melhores cartas de Bordeaux</div><h2>A Placa de Embaixada</h2><div class="rule"></div>
   <p class="lead-c" style="margin-bottom:30px;">O guia anual reconhece os restaurantes e lojas com as melhores cartas de vinhos de Bordeaux no Brasil. Os estabelecimentos premiados devem adquirir os vinhos por meio das importadoras credenciadas na Commanderie.</p>
   <div class="placas">
-    <div class="placa"><div class="disc p-ouro">Or</div><h3>Placa Ouro</h3><small>Excelência da carta</small></div>
-    <div class="placa"><div class="disc p-prata">Ag</div><h3>Placa Prata</h3><small>Carta de destaque</small></div>
-    <div class="placa"><div class="disc p-bronze">Br</div><h3>Placa Bronze</h3><small>Carta reconhecida</small></div>
+    <div class="placa"><div class="disc p-ouro">Or</div><h3>Placa Ouro</h3><small>Pelo menos <b>30 rótulos</b> de Bordeaux na carta</small></div>
+    <div class="placa"><div class="disc p-prata">Ag</div><h3>Placa Prata</h3><small>Pelo menos <b>20 rótulos</b> de Bordeaux</small></div>
+    <div class="placa"><div class="disc p-bronze">Br</div><h3>Placa Bronze</h3><small>Pelo menos <b>10 rótulos</b> de Bordeaux</small></div>
   </div>
 </div></section>
 
@@ -173,7 +182,7 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
     <div class="big">R$ 10.000</div>
     <p style="font-family:Arial,sans-serif;font-size:13.5px;color:#5b5446;">Inclui os custos da estrutura do programa indicados abaixo.</p>
     <div class="costs">
-      <div><b>Placas da Commanderie</b><br>€ 100,00</div>
+      <div><b>Placas de Embaixada</b><br>€ 100,00</div>
       <div><b>Curso e diploma Disciple</b> (com pins)<br>€ 40,00</div>
       <div><b>Guia das melhores cartas</b><br>Em andamento</div>
       <div><b>Noite de premiação</b><br>A definir</div>

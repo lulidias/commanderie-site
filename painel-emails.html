@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>E-mails — Administração — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png"><link rel="apple-touch-icon" href="img/favicon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
+<title>E-mails — Administração — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=2"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png?v=2"><link rel="apple-touch-icon" href="img/icon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
 <style>
 :root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
 *{box-sizing:border-box;}
@@ -59,15 +59,19 @@ function quandoDesc(m){var s=((m.nome||"")+" "+(m.chave||"")).toLowerCase();
   if(/convite|acesso|ativa|boas|vindo/.test(s))return "Quando um novo membro é criado — leva o link de primeiro acesso.";
   return "Enviado automaticamente pelo sistema, conforme o fluxo da confraria.";}
 function subPrev(t){var v={nome:"Luiz",evento:"Capítulo VI",quando:"12/09/2026, 20h",onde:"Le Petit Bordeaux — São Paulo",indicado:"João Silva",indicador:"Maria Souza",codigo:"0042",data:"02/11/2026",link:"#"};return (""+(t==null?"":t)).replace(/\{(\w+)\}/g,function(_,k){return v[k]!=null?v[k]:("{"+k+"}");});}
+// Reproduz EXATAMENTE o email_layout/email_montar (o que sera enviado)
 function previewHtml(m){var titulo=subPrev(m.titulo),corpo=subPrev(m.corpo),cta=subPrev(m.cta_label||"");
-  var btn=cta?("<div style=\"text-align:center;margin:22px 0 4px;\"><span style=\"background:#1e2a56;color:#fff;border-radius:9px;padding:12px 26px;font-size:14px;display:inline-block;\">"+cta+"</span></div>"):"";
-  return "<div class=\"subj\"><b>Assunto:</b> "+esc(subPrev(m.assunto))+"</div>"
-    +"<div style=\"background:#ece3cd;padding:16px;border-radius:10px;\"><div style=\"max-width:560px;margin:0 auto;background:#fffdf7;border:1px solid #ddd0ad;border-radius:12px;overflow:hidden;\">"
-    +"<div style=\"background:#f3ecd9;text-align:center;padding:20px 18px 14px;border-bottom:1px solid #e2d4ad;\"><img src=\"img/brasao.png\" style=\"width:66px;\"><div style=\"font-family:Georgia,serif;color:#b08a3a;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:8px;\">Commanderie de Bordeaux</div></div>"
-    +"<div style=\"padding:24px 26px;\"><h2 style=\"font-family:Georgia,serif;color:#1e2a56;font-weight:normal;font-size:21px;margin:0 0 14px;\">"+titulo+"</h2>"
-    +"<div style=\"font-size:14px;color:#2a2620;line-height:1.65;\">"+corpo+"</div>"+btn
-    +"<div style=\"margin-top:24px;border-top:1px solid #eee;padding-top:14px;font-size:11px;color:#9a937f;text-align:center;\">Commanderie de Bordeaux do Brasil · Bordeaux, toujours Bordeaux</div>"
-    +"</div></div></div>";}
+  var ctaHtml=cta?('<div style="text-align:center;margin:20px 0 2px;"><a href="#" style="background:#1e2a56;color:#fff;text-decoration:none;border-radius:10px;padding:11px 22px;font-size:14px;display:inline-block;">'+cta+'</a></div>'):'';
+  var email='<div style="background:#f3ecd9;padding:24px 12px;font-family:Arial,Helvetica,sans-serif;">'
+   +'<div style="max-width:520px;margin:0 auto;background:#fffdf7;border:1px solid #ddd0ad;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(40,30,10,.08);">'
+   +'<div style="background:linear-gradient(160deg,#243161,#161f3f);padding:24px 22px 20px;text-align:center;">'
+   +'<img src="img/brasao.png" width="78" alt="Commanderie de Bordeaux" style="display:inline-block;background:#faf6ea;border:1px solid #c9a85c;border-radius:14px;padding:8px;">'
+   +'<div style="font-family:Georgia,serif;color:#c9a85c;font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-top:12px;">Commanderie de Bordeaux</div>'
+   +'<div style="font-family:Georgia,serif;color:#f3ecd9;font-size:21px;margin-top:6px;">'+titulo+'</div></div>'
+   +'<div style="padding:24px;color:#2a2620;font-size:15px;line-height:1.65;">'+corpo+ctaHtml+'</div>'
+   +'<div style="padding:14px 24px;border-top:1px solid #ece0c2;color:#8a6a1f;font-family:Georgia,serif;font-style:italic;font-size:13px;text-align:center;">Bordeaux, toujours Bordeaux</div>'
+   +'</div></div>';
+  return '<div class="subj"><b>Assunto:</b> '+esc(subPrev(m.assunto))+'</div>'+email;}
 async function carregarModelos(){
   var el=document.getElementById("lista");
   var q=await sb.from("email_modelos").select("*").order("ordem",{ascending:true});

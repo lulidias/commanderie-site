@@ -68,7 +68,7 @@ async function carregar(){
   }
   var html="";
   if(!paga){ // deve a anuidade do ciclo 2026 -> vence 02/11/2026
-    pill("Anuidade a vencer","#c0392b","#fbeaea");
+    pill("Anuidade a vencer","#b08a3a","#f6efdc");
     html='<div class="row"><span class="t">Anuidade 2026<br><small>'+brl(val)+' · Vence em 02/11/2026</small></span><span style="display:flex;align-items:center;"><span class="badge b-venc">A vencer</span><a href="#" onclick="pagar();return false;" class="pay">Pagar</a></span></div>';
   }else if(cap>=3){ // intronizado em 2026, já pago na intronização -> próxima anuidade 2027
     pill("Anuidade em dia","#3a9a4e","#eef6ef");

@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>E-mails — Administração — Commanderie de Bordeaux</title>
+<title>E-mails — Administração — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png"><link rel="apple-touch-icon" href="img/favicon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
 <style>
 :root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
 *{box-sizing:border-box;}
@@ -20,6 +20,11 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .note code{background:#efe7d0;border-radius:5px;padding:1px 6px;font-size:12.5px;color:#5a2d86;}
 .btn-s{background:transparent;color:var(--navy);border:1.5px solid var(--gold);border-radius:9px;padding:7px 16px;font-size:13px;cursor:pointer;}
 .btn-t{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:7px 16px;font-size:13px;cursor:pointer;}
+.ehead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.ename{font-family:Georgia,serif;color:var(--navy);font-size:17px;}
+.when{font-size:12.5px;color:#8a6a1f;margin-top:4px;display:flex;align-items:flex-start;gap:5px;line-height:1.45;}
+.subj{font-size:12.5px;color:#5b5446;margin:12px 0 8px;}
+.editor{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;}
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
 .state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
@@ -31,9 +36,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <div id="panel" style="display:none;">
   <div class="dhead"><div class="k">Conselho Diretor</div><h1>Modelos de E-mail</h1></div>
   <div class="wrap">
-    <div class="note">Edite o <b>assunto</b>, o <b>título</b> (aparece no cabeçalho), o <b>corpo</b> e o <b>texto do botão</b>. O sistema preenche as variáveis sozinho:<br>
-      <code>{nome}</code> nome do membro · <code>{evento}</code> nome do evento · <code>{quando}</code> data e hora · <code>{onde}</code> local · <code>{link}</code> link do botão.<br>
-      Para acentos no corpo, use os códigos HTML (ex.: <code>&amp;aacute;</code> = á, <code>&amp;ccedil;</code> = ç). Clique em <b>Enviar teste</b> para receber o modelo no seu e-mail.</div>
+    <div class="note">Cada cartão mostra <b>quando o e-mail é enviado</b> e uma <b>prévia</b> de como o membro recebe (com o brasão). Clique em <b>Editar</b> para abrir os campos e mudar o texto; em <b>Enviar teste</b> para receber no seu e-mail.</div>
     <div id="lista"></div>
   </div>
 </div>
@@ -43,25 +46,54 @@ var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","
 function state(s){["needLogin","notAllowed","loading","panel"].forEach(function(id){var e=document.getElementById(id);if(e)e.style.display=(id===s)?"block":"none";});}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function esca(s){return esc(s).replace(/"/g,"&quot;");}
+var MODELOS={};
+function quandoDesc(m){var s=((m.nome||"")+" "+(m.chave||"")).toLowerCase();
+  if(/reserva|pr[eé]/.test(s))return "Assim que o membro faz a pré-reserva de um evento (confirmação de interesse).";
+  if(/pagamento|pago|confirma|inscri/.test(s))return "Quando o Conselho confirma o pagamento da inscrição no evento.";
+  if(/semana|lembr/.test(s))return "Automático, 1 semana antes do evento.";
+  if(/dia do evento|hoje|v[eé]spera|manh/.test(s))return "Automático, na manhã do dia do evento.";
+  if(/foto/.test(s))return "Quando o Conselho publica as fotos do evento, com agradecimento por ter participado.";
+  if(/acolh|introniza|eleito|comendador eleito/.test(s))return "Quando o Conselho aprova e acolhe um novo Comendador eleito.";
+  if(/indicad|candidat/.test(s))return "Enviado ao indicado quando a indicação é registrada.";
+  if(/indicador|padrinho/.test(s))return "Enviado a quem indicou, confirmando o registro da indicação.";
+  if(/convite|acesso|ativa|boas|vindo/.test(s))return "Quando um novo membro é criado — leva o link de primeiro acesso.";
+  return "Enviado automaticamente pelo sistema, conforme o fluxo da confraria.";}
+function subPrev(t){var v={nome:"Luiz",evento:"Capítulo VI",quando:"12/09/2026, 20h",onde:"Le Petit Bordeaux — São Paulo",indicado:"João Silva",indicador:"Maria Souza",codigo:"0042",data:"02/11/2026",link:"#"};return (""+(t==null?"":t)).replace(/\{(\w+)\}/g,function(_,k){return v[k]!=null?v[k]:("{"+k+"}");});}
+function previewHtml(m){var titulo=subPrev(m.titulo),corpo=subPrev(m.corpo),cta=subPrev(m.cta_label||"");
+  var btn=cta?("<div style=\"text-align:center;margin:22px 0 4px;\"><span style=\"background:#1e2a56;color:#fff;border-radius:9px;padding:12px 26px;font-size:14px;display:inline-block;\">"+esc(cta)+"</span></div>"):"";
+  return "<div class=\"subj\"><b>Assunto:</b> "+esc(subPrev(m.assunto))+"</div>"
+    +"<div style=\"background:#ececec;padding:16px;border-radius:10px;\"><div style=\"max-width:560px;margin:0 auto;background:#fff;border:1px solid #e6dcc2;border-radius:12px;overflow:hidden;\">"
+    +"<div style=\"background:#1e2a56;text-align:center;padding:18px;\"><img src=\"img/brasao.png\" style=\"width:60px;\"></div>"
+    +"<div style=\"padding:24px 26px;\"><h2 style=\"font-family:Georgia,serif;color:#1e2a56;font-weight:normal;font-size:21px;margin:0 0 14px;\">"+esc(titulo)+"</h2>"
+    +"<div style=\"font-size:14px;color:#2a2620;line-height:1.65;\">"+corpo+"</div>"+btn
+    +"<div style=\"margin-top:24px;border-top:1px solid #eee;padding-top:14px;font-size:11px;color:#9a937f;text-align:center;\">Commanderie de Bordeaux do Brasil · Bordeaux, toujours Bordeaux</div>"
+    +"</div></div></div>";}
 async function carregarModelos(){
   var el=document.getElementById("lista");
   var q=await sb.from("email_modelos").select("*").order("ordem",{ascending:true});
   if(q.error){el.innerHTML="<p style=\"color:#9a937f;font-size:13px;\">(rode o SQL da central de e-mails) "+esc(q.error.message)+"</p>";return;}
-  var rows=q.data||[];
-  el.innerHTML=rows.map(function(m){
-    return "<div class=\"card\"><b style=\"font-family:Georgia,serif;color:var(--navy);font-size:16px;\">"+esc(m.nome||m.chave)+"</b>"
-      +"<label class=\"lab\">Assunto</label><input class=\"inp\" id=\"as_"+m.chave+"\" value=\""+esca(m.assunto||"")+"\">"
-      +"<label class=\"lab\">Título (cabeçalho)</label><input class=\"inp\" id=\"ti_"+m.chave+"\" value=\""+esca(m.titulo||"")+"\">"
-      +"<label class=\"lab\">Corpo (HTML)</label><textarea class=\"inp\" id=\"co_"+m.chave+"\" rows=\"6\">"+esc(m.corpo||"")+"</textarea>"
-      +"<label class=\"lab\">Texto do botão</label><input class=\"inp\" id=\"ct_"+m.chave+"\" value=\""+esca(m.cta_label||"")+"\">"
-      +"<div style=\"margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;\"><button class=\"btn-s\" onclick=\"salvarModelo('"+m.chave+"')\">Salvar</button><button class=\"btn-t\" onclick=\"testarModelo('"+m.chave+"')\">Enviar teste para mim</button><span id=\"msg_"+m.chave+"\" style=\"font-size:13px;align-self:center;\"></span></div></div>";
+  var rows=q.data||[];MODELOS={};
+  el.innerHTML=rows.map(function(m){MODELOS[m.chave]=m;
+    return "<div class=\"card\"><div class=\"ehead\"><div><div class=\"ename\">"+esc(m.nome||m.chave)+"</div><div class=\"when\"><span>&#9201;</span><span>"+esc(quandoDesc(m))+"</span></div></div><button class=\"btn-s\" id=\"tg_"+m.chave+"\" onclick=\"toggleEdit('"+m.chave+"')\">Editar</button></div>"
+      +"<div id=\"pv_"+m.chave+"\" style=\"margin-top:12px;\">"+previewHtml(m)+"</div>"
+      +"<div class=\"editor\" id=\"ed_"+m.chave+"\" style=\"display:none;\">"
+      +"<label class=\"lab\">Assunto</label><input class=\"inp\" id=\"as_"+m.chave+"\" value=\""+esca(m.assunto||"")+"\" oninput=\"atualizarPrev('"+m.chave+"')\">"
+      +"<label class=\"lab\">Título (cabeçalho)</label><input class=\"inp\" id=\"ti_"+m.chave+"\" value=\""+esca(m.titulo||"")+"\" oninput=\"atualizarPrev('"+m.chave+"')\">"
+      +"<label class=\"lab\">Corpo (HTML)</label><textarea class=\"inp\" id=\"co_"+m.chave+"\" rows=\"6\" oninput=\"atualizarPrev('"+m.chave+"')\">"+esc(m.corpo||"")+"</textarea>"
+      +"<label class=\"lab\">Texto do botão</label><input class=\"inp\" id=\"ct_"+m.chave+"\" value=\""+esca(m.cta_label||"")+"\" oninput=\"atualizarPrev('"+m.chave+"')\">"
+      +"<div style=\"font-size:11.5px;color:#9a937f;margin-top:8px;line-height:1.5;\">Variáveis: <code>{nome}</code> <code>{evento}</code> <code>{quando}</code> <code>{onde}</code> <code>{link}</code> — o sistema preenche sozinho. Acentos no corpo: use códigos HTML (ex.: <code>&amp;aacute;</code>=á).</div>"
+      +"<div style=\"margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;\"><button class=\"btn-s\" onclick=\"salvarModelo('"+m.chave+"')\">Salvar</button><button class=\"btn-t\" onclick=\"testarModelo('"+m.chave+"')\">Enviar teste para mim</button><span id=\"msg_"+m.chave+"\" style=\"font-size:13px;align-self:center;\"></span></div></div></div>";
   }).join("");
 }
+function camposModelo(chave){var b=MODELOS[chave]||{};var v=function(p){var e=document.getElementById(p+"_"+chave);return e?e.value:"";};return {nome:b.nome,chave:chave,assunto:v("as"),titulo:v("ti"),corpo:v("co"),cta_label:v("ct")};}
+function atualizarPrev(chave){var pv=document.getElementById("pv_"+chave);if(pv)pv.innerHTML=previewHtml(camposModelo(chave));}
+function toggleEdit(chave){var ed=document.getElementById("ed_"+chave);var tg=document.getElementById("tg_"+chave);if(!ed)return;var open=ed.style.display!=="none";ed.style.display=open?"none":"block";if(tg)tg.textContent=open?"Editar":"Fechar edição";}
 async function salvarModelo(chave){
   var g=function(p){var e=document.getElementById(p+"_"+chave);return e?e.value:null;};
   var msg=document.getElementById("msg_"+chave);
   var r=await sb.from("email_modelos").update({assunto:g("as"),titulo:g("ti"),corpo:g("co"),cta_label:g("ct"),updated_at:new Date().toISOString()}).eq("chave",chave);
   if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}
+  var nm=camposModelo(chave);if(MODELOS[chave]){MODELOS[chave].assunto=nm.assunto;MODELOS[chave].titulo=nm.titulo;MODELOS[chave].corpo=nm.corpo;MODELOS[chave].cta_label=nm.cta_label;}atualizarPrev(chave);
   msg.style.color="#2f6b3a";msg.textContent="Salvo!";setTimeout(function(){msg.textContent="";},1800);
 }
 async function testarModelo(chave){

@@ -9,20 +9,26 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .dtop img{width:34px;}
 .dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .dtop .back{margin-left:auto;font-size:13px;color:var(--red);text-decoration:none;}
-.dhead{text-align:center;padding:30px 20px 4px;}
+.dhead{text-align:center;padding:28px 20px 2px;}
 .dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
 .dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:32px;margin:6px 0 2px;}
 .dhead .sub{font-size:12px;color:#9a937f;}
 .wrap{max-width:1080px;margin:0 auto;padding:14px 20px 60px;}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:8px 0 22px;}
-.kpi{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 5px 15px rgba(40,30,10,.05);position:relative;overflow:hidden;}
+.toolbar{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin:6px 0 14px;}
+.toolbar select{padding:7px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;background:#fff;}
+.toolbar button{padding:7px 14px;border:1px solid var(--gold);background:transparent;color:var(--navy);border-radius:9px;font-size:13px;cursor:pointer;}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:8px 0 8px;}
+.kpi{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:0 5px 15px rgba(40,30,10,.05);position:relative;overflow:hidden;}
 .kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-l));}
-.kpi .n{font-family:Georgia,serif;color:var(--navy);font-size:30px;line-height:1;}
-.kpi .l{font-size:12px;color:#8a8270;margin-top:6px;}
+.kpi .n{font-family:Georgia,serif;color:var(--navy);font-size:26px;line-height:1;}
+.kpi .l{font-size:11.5px;color:#8a8270;margin-top:6px;}
+.sec{font-family:Georgia,serif;color:var(--navy);font-size:20px;font-weight:normal;margin:28px 0 4px;}
+.sec-rule{height:1px;background:var(--line);margin:0 0 14px;}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
 .chartcard{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 5px 15px rgba(40,30,10,.05);}
-.chartcard h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:17px;margin:0 0 12px;}
+.chartcard h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:16px;margin:0 0 12px;}
 .chartcard .cv{position:relative;height:260px;}
+.chartcard .empty{height:260px;display:flex;align-items:center;justify-content:center;color:#9a937f;font-size:13px;text-align:center;}
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
 .state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
@@ -35,16 +41,40 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <div id="panel" style="display:none;">
   <div class="dhead"><div class="k">Conselho Diretor</div><h1>Painel de Indicadores</h1><div class="sub" id="geradoEm"></div></div>
   <div class="wrap">
+    <div class="toolbar"><label style="font-size:12px;color:#8a8270;">Ano:</label><select id="anoSel" onchange="renderAno()"></select><button onclick="exportar()">Exportar CSV</button></div>
     <div class="kpis" id="kpis"></div>
+
+    <div class="sec">Financeiro</div><div class="sec-rule"></div>
     <div class="grid">
-      <div class="chartcard"><h3>Membros por núcleo</h3><div class="cv"><canvas id="cNucleo"></canvas></div></div>
-      <div class="chartcard"><h3>Membros por grau</h3><div class="cv"><canvas id="cGrau"></canvas></div></div>
+      <div class="chartcard"><h3>Anuidade a receber por núcleo</h3><div class="cv"><canvas id="cAnuNuc"></canvas></div></div>
+      <div class="chartcard"><h3>Adimplência da anuidade</h3><div class="cv"><canvas id="cAdimp"></canvas></div></div>
+      <div class="chartcard"><h3>Receita projetada por evento <span style="font-size:11px;color:#9a937f;">(ano selecionado)</span></h3><div class="cv"><canvas id="cRecEv"></canvas></div></div>
+      <div class="chartcard"><h3>Receitas lançadas por ano</h3><div class="cv"><canvas id="cRec"></canvas></div></div>
+    </div>
+
+    <div class="sec">Membros</div><div class="sec-rule"></div>
+    <div class="grid">
+      <div class="chartcard"><h3>Por núcleo</h3><div class="cv"><canvas id="cNucleo"></canvas></div></div>
+      <div class="chartcard"><h3>Por grau</h3><div class="cv"><canvas id="cGrau"></canvas></div></div>
       <div class="chartcard"><h3>Crescimento de membros</h3><div class="cv"><canvas id="cCresc"></canvas></div></div>
-      <div class="chartcard"><h3>Eventos por tipo</h3><div class="cv"><canvas id="cTipo"></canvas></div></div>
+    </div>
+
+    <div class="sec">Participação</div><div class="sec-rule"></div>
+    <div class="grid">
+      <div class="chartcard"><h3>Quem mais participa (top 15)</h3><div class="cv"><canvas id="cRank"></canvas></div></div>
+      <div class="chartcard"><h3>Participação por núcleo</h3><div class="cv"><canvas id="cPartNuc"></canvas></div></div>
+    </div>
+
+    <div class="sec">Eventos</div><div class="sec-rule"></div>
+    <div class="grid">
+      <div class="chartcard"><h3>Por tipo</h3><div class="cv"><canvas id="cTipo"></canvas></div></div>
       <div class="chartcard"><h3>Ocupação dos próximos eventos</h3><div class="cv"><canvas id="cOcup"></canvas></div></div>
+      <div class="chartcard"><h3>Comparativo de capítulos <span style="font-size:11px;color:#9a937f;">(confirmados — ano selecionado)</span></h3><div class="cv"><canvas id="cCap"></canvas></div></div>
+    </div>
+
+    <div class="sec">Indicações</div><div class="sec-rule"></div>
+    <div class="grid">
       <div class="chartcard"><h3>Funil de indicações</h3><div class="cv"><canvas id="cInd"></canvas></div></div>
-      <div class="chartcard" id="cardReceitas"><h3>Receitas por ano</h3><div class="cv"><canvas id="cRec"></canvas></div></div>
-      <div class="chartcard"><h3>Parceiros por cidade</h3><div class="cv"><canvas id="cParc"></canvas></div></div>
     </div>
   </div>
 </div>
@@ -53,41 +83,78 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
 var PAL=["#1e2a56","#b08a3a","#8f1d24","#2f6b3a","#5a2d86","#c9a85c","#1e5a86","#8a6a1f","#9a8f72","#c0392b"];
+var FUNIL=["Aguardando avais","Avalizada","Aguardando aprovação","Aprovado","Formulário enviado","Aguardando pagamento","Pago","Membro"];
+var D=null,CH={};
 function st(id){["needLogin","notAllowed","loading","panel"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
 function brl(v){return "R$ "+(Math.round(Number(v)||0)).toLocaleString("pt-BR");}
 function entries(o){o=o||{};return Object.keys(o).map(function(k){return [k,o[k]];});}
 function kpi(n,l){return '<div class="kpi"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';}
 Chart.defaults.font.family="Arial";Chart.defaults.color="#5b5446";
-function doughnut(id,obj){var e=entries(obj);if(!e.length)return;new Chart(document.getElementById(id),{type:"doughnut",data:{labels:e.map(function(x){return x[0];}),datasets:[{data:e.map(function(x){return x[1];}),backgroundColor:PAL,borderColor:"#fffdf7",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"right",labels:{boxWidth:12,font:{size:11}}}}}});}
-function bar(id,obj,cor,horiz){var e=entries(obj);if(!e.length)return;new Chart(document.getElementById(id),{type:"bar",data:{labels:e.map(function(x){return x[0];}),datasets:[{data:e.map(function(x){return x[1];}),backgroundColor:cor||"#1e2a56",borderRadius:6}]},options:{indexAxis:horiz?"y":"x",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:!horiz}},y:{grid:{display:horiz},beginAtZero:true,ticks:{precision:0}}}}});}
+function mk(id,cfg){if(CH[id]){try{CH[id].destroy();}catch(e){}CH[id]=null;}var el=document.getElementById(id);if(el)CH[id]=new Chart(el,cfg);}
+function doughnut(id,obj){var e=entries(obj).filter(function(x){return x[1];});if(!e.length){return;}mk(id,{type:"doughnut",data:{labels:e.map(function(x){return x[0];}),datasets:[{data:e.map(function(x){return x[1];}),backgroundColor:PAL,borderColor:"#fffdf7",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"right",labels:{boxWidth:12,font:{size:11}}}}}});}
+function bar(id,labels,data,cor,horiz,money){if(!labels.length){return;}mk(id,{type:"bar",data:{labels:labels,datasets:[{data:data,backgroundColor:cor||"#1e2a56",borderRadius:6}]},options:{indexAxis:horiz?"y":"x",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return money?brl(c.raw):c.raw;}}}},scales:{x:{beginAtZero:true,ticks:{precision:0}},y:{beginAtZero:true,ticks:{precision:0}}}}});}
 async function init(){
   var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}
   var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){st("notAllowed");return;}
   var q=await sb.rpc("bi_dados");if(q.error||(q.data&&q.data.erro)){st("notAllowed");return;}
-  var d=q.data;render(d);st("panel");
+  D=q.data;st("panel");renderEstatico();popAno();renderAno();
 }
-function render(d){
-  document.getElementById("geradoEm").textContent="Atualizado em "+(d.gerado_em||"");
-  var m=d.membros||{},ev=d.eventos||{},ind=d.indicacoes||{};
+function renderEstatico(){
+  document.getElementById("geradoEm").textContent="Atualizado em "+(D.gerado_em||"");
+  var m=D.membros||{},ev=D.eventos||{},ind=D.indicacoes||{},pa=D.participacao||{};
+  var emdia=m.anuidade_em_dia||0,avenc=m.anuidade_a_vencer||0;var adimp=(emdia+avenc)?Math.round(emdia/(emdia+avenc)*100):100;
+  var ps=ind.por_status||{};var virou=(ps["Membro"]||0)+(ps["Pago"]||0);var taxa=ind.total?Math.round(virou/ind.total*100):0;
   document.getElementById("kpis").innerHTML=
      kpi(m.total||0,"Membros")
-    +kpi(m.eleitos||0,"Comendadores eleitos")
     +kpi(brl(m.anuidade_a_receber||0),"Anuidade a receber")
+    +kpi(adimp+"%","Adimplência (paga/cobrável)")
     +kpi(ev.futuros||0,"Eventos futuros")
-    +kpi(ind.total||0,"Indicações")
-    +kpi((m.ativados||0)+"/"+(m.total||0),"Contas ativadas");
-  doughnut("cNucleo",m.por_nucleo);
-  doughnut("cGrau",m.por_grau);
-  // crescimento acumulado
+    +kpi(pa.total_confirmacoes||0,"Confirmações de presença")
+    +kpi(ind.total||0,"Indicações");
+  // Financeiro (não-ano)
+  var an=entries(m.anuidade_por_nucleo||{});bar("cAnuNuc",an.map(function(x){return x[0];}),an.map(function(x){return x[1];}),"#8f1d24",false,true);
+  doughnut("cAdimp",{"Em dia":emdia,"A vencer":avenc,"Isentos":(m.isentos||0)});
+  var ra=entries((D.receitas&&D.receitas.por_ano)||{});if(ra.length)bar("cRec",ra.map(function(x){return x[0];}),ra.map(function(x){return x[1];}),"#1e5a86",false,true);else document.getElementById("cRec").parentNode.innerHTML='<div class="empty">Sem receitas lançadas ainda.</div>';
+  // Membros
+  doughnut("cNucleo",m.por_nucleo);doughnut("cGrau",m.por_grau);
   var cr=entries(m.crescimento).sort(function(a,b){return a[0].localeCompare(b[0]);});var acc=0;var lbl=cr.map(function(x){return x[0];});var dat=cr.map(function(x){acc+=Number(x[1]);return acc;});
-  if(lbl.length)new Chart(document.getElementById("cCresc"),{type:"line",data:{labels:lbl,datasets:[{data:dat,borderColor:"#b08a3a",backgroundColor:"rgba(176,138,58,.15)",fill:true,tension:.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}});
-  bar("cTipo",ev.por_tipo,"#8f1d24");
-  // ocupacao
-  var oc=ev.ocupacao||[];if(oc.length)new Chart(document.getElementById("cOcup"),{type:"bar",data:{labels:oc.map(function(x){return x.nome;}),datasets:[{label:"Confirmados",data:oc.map(function(x){return x.confirmados;}),backgroundColor:"#2f6b3a",borderRadius:5},{label:"Lugares",data:oc.map(function(x){return x.lugares;}),backgroundColor:"#e6d9b3",borderRadius:5}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"}},scales:{x:{beginAtZero:true,ticks:{precision:0}}}}});
-  bar("cInd",ind.por_status,"#5a2d86");
-  // receitas
-  var rec=(d.receitas&&d.receitas.por_ano)||{};if(entries(rec).length)bar("cRec",rec,"#1e5a86");else document.getElementById("cardReceitas").style.display="none";
-  bar("cParc",(d.parceiros&&d.parceiros.por_cidade)||{},"#8a6a1f");
+  if(lbl.length)mk("cCresc",{type:"line",data:{labels:lbl,datasets:[{data:dat,borderColor:"#b08a3a",backgroundColor:"rgba(176,138,58,.15)",fill:true,tension:.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}});
+  // Participacao
+  var pm=pa.por_membro||[];if(pm.length)bar("cRank",pm.map(function(x){return x.nome;}),pm.map(function(x){return x.n;}),"#2f6b3a",true);else document.getElementById("cRank").parentNode.innerHTML='<div class="empty">Ainda sem confirmações de presença.</div>';
+  var pn=entries(pa.por_nucleo||{});if(pn.length)bar("cPartNuc",pn.map(function(x){return x[0];}),pn.map(function(x){return x[1];}),"#5a2d86");else document.getElementById("cPartNuc").parentNode.innerHTML='<div class="empty">Ainda sem confirmações de presença.</div>';
+  // Eventos (não-ano)
+  bar("cTipo",entries(ev.por_tipo).map(function(x){return x[0];}),entries(ev.por_tipo).map(function(x){return x[1];}),"#8f1d24");
+  var fut=(ev.lista||[]).filter(function(e){return !e.realizado&&e.lugares;});
+  if(fut.length)mk("cOcup",{type:"bar",data:{labels:fut.map(function(x){return x.nome;}),datasets:[{label:"Confirmados",data:fut.map(function(x){return x.confirmados;}),backgroundColor:"#2f6b3a",borderRadius:5},{label:"Lugares",data:fut.map(function(x){return x.lugares;}),backgroundColor:"#e6d9b3",borderRadius:5}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"}},scales:{x:{beginAtZero:true,ticks:{precision:0}}}}});
+  // Indicacoes funil
+  var fo=FUNIL.filter(function(s){return ps[s];});if((ps["Recusado"]||0))fo.push("Recusado");
+  bar("cInd",fo,fo.map(function(s){return ps[s]||0;}),"#5a2d86");
+}
+function popAno(){
+  var anos={};(D.eventos.lista||[]).forEach(function(e){if(e.ano)anos[e.ano]=1;});Object.keys((D.receitas&&D.receitas.por_ano)||{}).forEach(function(a){anos[a]=1;});
+  var arr=Object.keys(anos).sort();var sel=document.getElementById("anoSel");
+  sel.innerHTML='<option value="">Todos</option>'+arr.map(function(a){return '<option>'+a+'</option>';}).join("");
+  if(arr.indexOf("2026")>=0)sel.value="2026";
+}
+function renderAno(){
+  var ano=document.getElementById("anoSel").value;
+  var lst=(D.eventos.lista||[]).filter(function(e){return !ano||(""+e.ano)===ano;});
+  if(CH["cRecEv"]){try{CH["cRecEv"].destroy();}catch(e){}CH["cRecEv"]=null;}
+  if(CH["cCap"]){try{CH["cCap"].destroy();}catch(e){}CH["cCap"]=null;}
+  var rp=lst.filter(function(e){return e.valor>0;});
+  if(rp.length)bar("cRecEv",rp.map(function(x){return x.nome;}),rp.map(function(x){return x.valor*x.confirmados;}),"#b08a3a",false,true);
+  var caps=lst.filter(function(e){return (e.tipo||"")==="Capítulo";});
+  if(caps.length)bar("cCap",caps.map(function(x){return x.nome;}),caps.map(function(x){return x.confirmados;}),"#1e2a56");
+}
+function exportar(){
+  if(!D)return;var L=[];function add(t){L.push(t);}
+  add("Commanderie - Indicadores ("+(D.gerado_em||"")+")");add("");
+  add("MEMBROS POR NUCLEO");entries(D.membros.por_nucleo).forEach(function(x){add(x[0]+";"+x[1]);});add("");
+  add("MEMBROS POR GRAU");entries(D.membros.por_grau).forEach(function(x){add(x[0]+";"+x[1]);});add("");
+  add("ANUIDADE A RECEBER POR NUCLEO (R$)");entries(D.membros.anuidade_por_nucleo).forEach(function(x){add(x[0]+";"+x[1]);});add("");
+  add("EVENTOS;Tipo;Data;Lugares;Confirmados;Valor;Receita projetada");(D.eventos.lista||[]).forEach(function(e){add(e.nome+";"+e.tipo+";"+e.data+";"+(e.lugares||"")+";"+e.confirmados+";"+e.valor+";"+(e.valor*e.confirmados));});add("");
+  add("INDICACOES POR STATUS");entries(D.indicacoes.por_status).forEach(function(x){add(x[0]+";"+x[1]);});
+  var blob=new Blob(["﻿"+L.join("\n")],{type:"text/csv;charset=utf-8;"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="indicadores-commanderie.csv";a.click();
 }
 document.addEventListener("DOMContentLoaded",init);
 </script></body></html>

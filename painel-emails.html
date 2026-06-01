@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>E-mails — Administração — Commanderie de Bordeaux</title>
+<style>
+:root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:13px;color:var(--red);text-decoration:none;cursor:pointer;}
+.dhead{text-align:center;padding:34px 20px 4px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:34px;margin:6px 0 2px;}
+.wrap{max-width:760px;margin:0 auto;padding:14px 20px 60px;}
+.card{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px;}
+.lab{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin:8px 0 3px;display:block;}
+.inp{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13.5px;font-family:inherit;}
+.note{background:#faf6ea;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px;color:#5b5446;line-height:1.6;margin-bottom:18px;}
+.note code{background:#efe7d0;border-radius:5px;padding:1px 6px;font-size:12.5px;color:#5a2d86;}
+.btn-s{background:transparent;color:var(--navy);border:1.5px solid var(--gold);border-radius:9px;padding:7px 16px;font-size:13px;cursor:pointer;}
+.btn-t{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:7px 16px;font-size:13px;cursor:pointer;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
+.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+</style></head><body>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Modelos de E-mail</b><a class="back" href="painel-conselho.html">← Painel do Conselho</a></div>
+<div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para acessar.</p><a class="btn" href="index.html">Entrar</a></div>
+<div id="notAllowed" class="state" style="display:none;"><h2>Apenas o Conselho</h2><p>Esta página é exclusiva para Mestres e Grão-Mestre.</p><a class="btn" href="index.html">Voltar</a></div>
+<div id="loading" class="state">Carregando…</div>
+<div id="panel" style="display:none;">
+  <div class="dhead"><div class="k">Conselho Diretor</div><h1>Modelos de E-mail</h1></div>
+  <div class="wrap">
+    <div class="note">Edite o <b>assunto</b>, o <b>título</b> (aparece no cabeçalho), o <b>corpo</b> e o <b>texto do botão</b>. O sistema preenche as variáveis sozinho:<br>
+      <code>{nome}</code> nome do membro · <code>{evento}</code> nome do evento · <code>{quando}</code> data e hora · <code>{onde}</code> local · <code>{link}</code> link do botão.<br>
+      Para acentos no corpo, use os códigos HTML (ex.: <code>&amp;aacute;</code> = á, <code>&amp;ccedil;</code> = ç). Clique em <b>Enviar teste</b> para receber o modelo no seu e-mail.</div>
+    <div id="lista"></div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+function state(s){["needLogin","notAllowed","loading","panel"].forEach(function(id){var e=document.getElementById(id);if(e)e.style.display=(id===s)?"block":"none";});}
+function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function esca(s){return esc(s).replace(/"/g,"&quot;");}
+async function carregarModelos(){
+  var el=document.getElementById("lista");
+  var q=await sb.from("email_modelos").select("*").order("ordem",{ascending:true});
+  if(q.error){el.innerHTML="<p style=\"color:#9a937f;font-size:13px;\">(rode o SQL da central de e-mails) "+esc(q.error.message)+"</p>";return;}
+  var rows=q.data||[];
+  el.innerHTML=rows.map(function(m){
+    return "<div class=\"card\"><b style=\"font-family:Georgia,serif;color:var(--navy);font-size:16px;\">"+esc(m.nome||m.chave)+"</b>"
+      +"<label class=\"lab\">Assunto</label><input class=\"inp\" id=\"as_"+m.chave+"\" value=\""+esca(m.assunto||"")+"\">"
+      +"<label class=\"lab\">Título (cabeçalho)</label><input class=\"inp\" id=\"ti_"+m.chave+"\" value=\""+esca(m.titulo||"")+"\">"
+      +"<label class=\"lab\">Corpo (HTML)</label><textarea class=\"inp\" id=\"co_"+m.chave+"\" rows=\"6\">"+esc(m.corpo||"")+"</textarea>"
+      +"<label class=\"lab\">Texto do botão</label><input class=\"inp\" id=\"ct_"+m.chave+"\" value=\""+esca(m.cta_label||"")+"\">"
+      +"<div style=\"margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;\"><button class=\"btn-s\" onclick=\"salvarModelo('"+m.chave+"')\">Salvar</button><button class=\"btn-t\" onclick=\"testarModelo('"+m.chave+"')\">Enviar teste para mim</button><span id=\"msg_"+m.chave+"\" style=\"font-size:13px;align-self:center;\"></span></div></div>";
+  }).join("");
+}
+async function salvarModelo(chave){
+  var g=function(p){var e=document.getElementById(p+"_"+chave);return e?e.value:null;};
+  var msg=document.getElementById("msg_"+chave);
+  var r=await sb.from("email_modelos").update({assunto:g("as"),titulo:g("ti"),corpo:g("co"),cta_label:g("ct"),updated_at:new Date().toISOString()}).eq("chave",chave);
+  if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}
+  msg.style.color="#2f6b3a";msg.textContent="Salvo!";setTimeout(function(){msg.textContent="";},1800);
+}
+async function testarModelo(chave){
+  var msg=document.getElementById("msg_"+chave);msg.style.color="#5b5446";msg.textContent="Enviando...";
+  var r=await sb.rpc("email_teste",{p_chave:chave});
+  if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}
+  msg.style.color="#2f6b3a";msg.textContent=""+r.data;setTimeout(function(){msg.textContent="";},4000);
+}
+async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){state("needLogin");return;}var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){state("notAllowed");return;}await carregarModelos();state("panel");}
+document.addEventListener("DOMContentLoaded",init);
+</script></body></html>

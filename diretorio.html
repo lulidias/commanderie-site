@@ -47,11 +47,13 @@ var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","
 var DESDE={1:"11/2025",2:"12/2025",3:"03/2026",4:"03/2026",5:"04/2026"};
 function ini(n){var p=(""+(n||"")).trim().split(/\s+/);return (((p[0]||"")[0]||"")+((p[p.length-1]||"")[0]||"")).toUpperCase();}
 function avatar(m){if(m.foto_url)return '<span class="av"><img src="'+m.foto_url+'"></span>';return '<span class="av">'+ini(m.nome)+'</span>';}
+function fmtData(d){if(!d)return "";var p=(""+d).split("-");return p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):d;}
 function card(m){
-  var d=DESDE[m.capitulo];
-  var meta=(m.codigo||"")+(d?(" · Desde "+d):"");
   var nuc=m.nucleo?('<div class="nuc">'+m.nucleo+'</div>'):"";
-  return '<div class="card">'+avatar(m)+'<div class="info"><b>'+m.nome+'</b>'+nuc+(meta?('<div class="meta">'+meta+'</div>'):"")+'</div></div>';
+  var extra;
+  if(m.eleito){extra='<div class="meta" style="color:var(--gold);font-weight:bold;letter-spacing:.3px;">✦ Eleito'+(m.data_intronizacao?(" · intronização em "+fmtData(m.data_intronizacao)):"")+'</div>';}
+  else{var d=DESDE[m.capitulo];var meta=(m.codigo||"")+(d?(" · Desde "+d):"");extra=meta?('<div class="meta">'+meta+'</div>'):"";}
+  return '<div class="card">'+avatar(m)+'<div class="info"><b>'+m.nome+'</b>'+nuc+extra+'</div></div>';
 }
 function grupo(titulo,itens){
   if(!itens.length)return "";

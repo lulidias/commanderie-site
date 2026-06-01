@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Marca — Commanderie de Bordeaux Brasil</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
+<style>
+:root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:var(--parch);line-height:1.6;}
+a{color:inherit;text-decoration:none;}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:12px 22px;background:rgba(255,253,247,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+.topbar img{width:32px;}
+.topbar b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.topbar .sp{margin-left:auto;display:flex;gap:8px;}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:Arial,sans-serif;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;cursor:pointer;transition:all .15s ease;}
+.pill:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.pill.solid{background:var(--navy);color:#fff;border-color:var(--navy);}.pill.solid:hover{background:#16204a;}
+.sheet{max-width:920px;margin:0 auto;padding:0 24px 70px;}
+.cover{text-align:center;padding:64px 20px 40px;}
+.cover img{width:160px;filter:drop-shadow(0 8px 18px rgba(40,30,10,.12));margin-bottom:10px;}
+.cover .k{font-family:Arial,sans-serif;font-size:12px;letter-spacing:4px;color:var(--red);text-transform:uppercase;}
+.cover h1{font-size:44px;color:var(--navy);font-weight:normal;margin:12px 0 2px;}
+.cover .br{font-style:italic;color:var(--navy);font-size:20px;}
+.cover .motto{font-style:italic;color:var(--gold);font-size:17px;margin-top:14px;letter-spacing:1px;}
+.cover .ver{font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8a8270;margin-top:16px;}
+section{padding:34px 0;border-top:1px solid var(--line);}
+.sec-k{font-family:Arial,sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+h2{font-size:28px;color:var(--navy);font-weight:normal;margin:6px 0 4px;}
+.rule{width:54px;height:2px;background:var(--gold-l);margin:10px 0 22px;}
+p.lead{font-size:16px;color:#4a4438;max-width:680px;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;}
+@media(max-width:680px){.cols{grid-template-columns:1fr;}}
+.logobox{border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;align-items:center;justify-content:center;min-height:170px;}
+.logobox.cream{background:var(--cream);} .logobox.navy{background:linear-gradient(160deg,#243161,#161f3f);} .logobox.parch{background:var(--parch);}
+.logobox img{max-width:150px;max-height:130px;}
+.lcap{font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8a8270;text-align:center;margin-top:7px;}
+.logo3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:680px){.logo3{grid-template-columns:1fr;}}
+.swatches{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+@media(max-width:680px){.swatches{grid-template-columns:1fr;}}
+.sw{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fffdf7;}
+.sw .chip{height:96px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.sw .body{padding:12px 16px;}
+.sw h4{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:17px;}
+.sw .specs{font-family:Arial,sans-serif;font-size:12.5px;color:#5b5446;margin-top:6px;line-height:1.7;}
+.sw .specs b{color:var(--navy);}
+.type-card{border:1px solid var(--line);border-radius:14px;background:#fffdf7;padding:22px 24px;margin-bottom:14px;}
+.type-card .nm{font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.type-card .sample-serif{font-family:Georgia,serif;color:var(--navy);font-size:34px;font-weight:normal;margin:6px 0 4px;}
+.type-card .sample-sans{font-family:Arial,sans-serif;color:var(--ink);font-size:16px;}
+.type-card .glyphs{font-size:22px;color:#5b5446;letter-spacing:2px;margin-top:8px;}
+.apps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:680px){.apps{grid-template-columns:1fr;}}
+.app{border:1px solid var(--line);border-radius:14px;background:#fffdf7;padding:18px;text-align:center;}
+.app .ic{width:44px;height:44px;border-radius:12px;background:#f6efdc;border:1px solid #e6d9b3;color:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;}
+.app h4{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:16px;}
+.app p{font-family:Arial,sans-serif;font-size:12.5px;color:#7a7165;margin-top:3px;}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:680px){.dos{grid-template-columns:1fr;}}
+.dobox{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:#fffdf7;}
+.dobox h4{font-family:Arial,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.dobox.ok h4{color:#2f6b3a;} .dobox.no h4{color:var(--red);}
+.dobox ul{font-family:Arial,sans-serif;font-size:13px;color:#5b5446;padding-left:18px;line-height:1.7;}
+.mini-card{width:170px;height:108px;border-radius:12px;background:linear-gradient(160deg,#243161,#161f3f);border:2px solid var(--gold-l);color:#f3ecd9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;margin:0 auto;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.mini-card .c1{font-family:Arial,sans-serif;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-l);}
+.mini-card .c2{font-family:Georgia,serif;font-size:15px;}
+.note{font-family:Arial,sans-serif;font-size:12.5px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:14px;}
+.foot{text-align:center;font-family:Arial,sans-serif;font-size:12px;color:#8a8270;padding:30px 0 0;}
+@media print{ .topbar{display:none;} body{background:#fff;} section{border-color:#ddd;} }
+</style></head><body>
+
+<div class="topbar"><img src="img/brasao.png" alt="Brasão"><b>Manual de Marca</b><span class="sp"><a class="pill" href="painel-conselho.html">&#8592; Painel</a><a class="pill solid" onclick="window.print()">Imprimir / PDF</a></span></div>
+
+<div class="sheet">
+
+  <div class="cover">
+    <img src="img/brasao.png" alt="Brasão da Commanderie de Bordeaux">
+    <div class="k">Manual de Marca e Identidade Visual</div>
+    <h1>Commanderie de Bordeaux</h1>
+    <div class="br">do Brasil</div>
+    <div class="motto">“Bordeaux, toujours Bordeaux”</div>
+    <div class="ver">Versão 1.0 · Junho 2026</div>
+  </div>
+
+  <section>
+    <div class="sec-k">A marca</div><h2>A Commanderie</h2><div class="rule"></div>
+    <p class="lead">A Commanderie de Bordeaux do Brasil é uma confraria dedicada a apreciar, celebrar e difundir os grandes vinhos de Bordeaux. Herdeira da tradição do <i>Grand Conseil du Vin de Bordeaux</i> (fundado em 1952), foi instituída no Brasil em <b>14 de novembro de 2025</b>, com sede em São Paulo e núcleos em São Paulo, Rio de Janeiro, Porto Alegre, Curitiba e Recife.</p>
+    <p class="lead" style="margin-top:12px;">Sua identidade visual é inspirada nos diplomas do Grand Conseil — pergaminho, azul-marinho e dourado — transmitindo <b>tradição, prestígio e excelência</b>. Este manual reúne os elementos da marca para garantir aplicação consistente em todo material, impresso ou digital.</p>
+  </section>
+
+  <section>
+    <div class="sec-k">Símbolo</div><h2>O brasão</h2><div class="rule"></div>
+    <p class="lead" style="margin-bottom:20px;">O brasão é o principal elemento da marca e deve ser sempre reproduzido com fidelidade, sem distorções. Use preferencialmente a versão colorida. As versões em escala de cinza e negativa atendem a aplicações de uma cor ou fundos escuros.</p>
+    <div class="logo3">
+      <div><div class="logobox cream"><img src="img/brasao.png" alt="Brasão colorido"></div><div class="lcap">Versão principal (cor)</div></div>
+      <div><div class="logobox navy"><img src="img/brasao.png" alt="Brasão sobre fundo escuro"></div><div class="lcap">Negativa / fundo escuro</div></div>
+      <div><div class="logobox parch"><img src="img/brasao-cinza.png" alt="Brasão em escala de cinza"></div><div class="lcap">Escala de cinza</div></div>
+    </div>
+    <div class="note"><b>Área de proteção:</b> mantenha ao redor do brasão um espaço livre mínimo equivalente a <b>½ da sua altura</b>, sem outros elementos. <b>Tamanho mínimo:</b> não reproduzir o brasão com menos de <b>14 mm</b> de altura (impresso) ou <b>40 px</b> (tela), para preservar a legibilidade. Para artes vetoriais e gravação (placas, brindes), solicitar o arquivo original em alta resolução à Secretaria.</div>
+  </section>
+
+  <section>
+    <div class="sec-k">Cores</div><h2>Paleta institucional</h2><div class="rule"></div>
+    <p class="lead" style="margin-bottom:20px;">As cores abaixo definem a identidade. Para impressão, use os valores CMYK; para cor exata em offset/serigrafia, use a referência Pantone. <b>Os Pantones são aproximações</b> — confirme sempre no leque físico antes de imprimir.</p>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#1e2a56;"></div><div class="body"><h4>Azul-marinho</h4><div class="specs"><b>HEX</b> #1E2A56 &nbsp;·&nbsp; <b>RGB</b> 30/42/86<br><b>CMYK</b> 65 · 51 · 0 · 66<br><b>Pantone</b> 2767 C (aprox.)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#b08a3a;"></div><div class="body"><h4>Dourado</h4><div class="specs"><b>HEX</b> #B08A3A &nbsp;·&nbsp; <b>RGB</b> 176/138/58<br><b>CMYK</b> 0 · 22 · 67 · 31<br><b>Pantone</b> 4515 C (ou metálico 871 C)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#c9a85c;"></div><div class="body"><h4>Dourado claro</h4><div class="specs"><b>HEX</b> #C9A85C &nbsp;·&nbsp; <b>RGB</b> 201/168/92<br><b>CMYK</b> 0 · 16 · 54 · 21<br><b>Pantone</b> 465 C (aprox.)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#8f1d24;"></div><div class="body"><h4>Vermelho Bordeaux</h4><div class="specs"><b>HEX</b> #8F1D24 &nbsp;·&nbsp; <b>RGB</b> 143/29/36<br><b>CMYK</b> 0 · 80 · 75 · 44<br><b>Pantone</b> 188 C (aprox.)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#f3ecd9;border-bottom:1px solid var(--line);"></div><div class="body"><h4>Pergaminho</h4><div class="specs"><b>HEX</b> #F3ECD9 &nbsp;·&nbsp; <b>RGB</b> 243/236/217<br><b>CMYK</b> 0 · 3 · 11 · 5<br><b>Pantone</b> 9224 C (aprox.)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#2a2620;"></div><div class="body"><h4>Tinta (texto)</h4><div class="specs"><b>HEX</b> #2A2620 &nbsp;·&nbsp; <b>RGB</b> 42/38/32<br><b>CMYK</b> 0 · 10 · 24 · 84<br><b>Pantone</b> Black 7 C (aprox.)</div></div></div>
+    </div>
+    <div class="note"><b>Uso das cores:</b> fundo em pergaminho/creme; títulos e elementos principais em azul-marinho; detalhes, filetes e selos em dourado; o vermelho Bordeaux apenas em destaques pontuais (rótulos, datas, chamadas). Evite grandes áreas de vermelho.</div>
+  </section>
+
+  <section>
+    <div class="sec-k">Tipografia</div><h2>Fontes da marca</h2><div class="rule"></div>
+    <div class="type-card">
+      <div class="nm">Títulos e nomes — serifada</div>
+      <div class="sample-serif">Georgia</div>
+      <div class="sample-sans" style="color:#7a7165;">Usada em títulos, nomes próprios e no brasão. Transmite tradição e elegância. Peso normal (sem negrito pesado).</div>
+      <div class="glyphs">A B C D E a b c d e &nbsp; 0 1 2 3 4 5</div>
+    </div>
+    <div class="type-card">
+      <div class="nm">Textos e rótulos — sem serifa</div>
+      <div class="sample-serif" style="font-family:Arial,sans-serif;font-size:30px;">Arial / Helvetica</div>
+      <div class="sample-sans">Usada em textos corridos, legendas, rótulos e botões. Em rótulos (kickers), aplicar em <span style="letter-spacing:2px;text-transform:uppercase;">MAIÚSCULAS com espaçamento</span>.</div>
+      <div class="glyphs" style="font-family:Arial,sans-serif;">A B C D E a b c d e &nbsp; 0 1 2 3 4 5</div>
+    </div>
+    <div class="note">Para materiais impressos sofisticados, equivalentes profissionais podem substituir as fontes de sistema: uma serifada clássica (ex.: <i>Garamond, Trajan</i> para títulos) e uma sem serifa neutra (ex.: <i>Helvetica Neue, Montserrat</i>) — mantendo a mesma hierarquia.</div>
+  </section>
+
+  <section>
+    <div class="sec-k">Aplicações</div><h2>Como a marca aparece</h2><div class="rule"></div>
+    <div class="apps">
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div><h4>Carteira do membro</h4><p>Cartão azul-marinho com moldura dourada (Mestre/Grão-Mestre) ou marfim (Commandeur).</p>
+        <div class="mini-card" style="margin-top:12px;"><div class="c1">Commanderie de Bordeaux</div><div class="c2">Comendador</div><div class="c1" style="color:#c9a85c;">CDB-2025-000 · 2026</div></div>
+      </div>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div><h4>E-mails</h4><p>Cabeçalho azul com o brasão sobre creme; selo dourado e rodapé com o lema.</p></div>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div><h4>Placas e selos</h4><p>Placa das melhores cartas de Bordeaux (Ouro/Prata/Bronze) e selo oficial.</p></div>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v13H7l-3 3z"/></svg></div><h4>Papelaria</h4><p>Diplomas, convites e papel timbrado em pergaminho com filetes dourados.</p></div>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.4"/><circle cx="17" cy="7" r="1"/></svg></div><h4>Redes sociais</h4><p>Avatar = brasão sobre bege; capas em azul com tipografia serifada.</p></div>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 22V8l7-5 7 5v14M9 22v-6h6v6"/></svg></div><h4>Site e painéis</h4><p>commanderiedebordeaux.com.br — mesma paleta, Georgia + Arial, cartões dourados.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-k">Cuidados</div><h2>Usos corretos e incorretos</h2><div class="rule"></div>
+    <div class="dos">
+      <div class="dobox ok"><h4>✓ Faça</h4><ul>
+        <li>Use o brasão com proporções originais e área de proteção.</li>
+        <li>Aplique as cores institucionais exatas (HEX/CMYK/Pantone).</li>
+        <li>Prefira fundos pergaminho, creme ou azul-marinho.</li>
+        <li>Mantenha o lema “Bordeaux, toujours Bordeaux”.</li>
+      </ul></div>
+      <div class="dobox no"><h4>✗ Não faça</h4><ul>
+        <li>Não distorça, incline ou recorte o brasão.</li>
+        <li>Não troque as cores nem aplique gradientes estranhos.</li>
+        <li>Não use o brasão pequeno demais ou sobre fundos poluídos.</li>
+        <li>Não substitua as fontes por estilos destoantes.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <div class="foot">Commanderie de Bordeaux do Brasil · São Paulo · Recife · Curitiba · Porto Alegre<br>Dúvidas sobre a marca: Secretaria · secretaria@commanderiebordeaux.com.br · Manual v1.0 — Junho 2026</div>
+
+</div>
+</body></html>

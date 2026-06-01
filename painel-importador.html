@@ -56,6 +56,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
   <div class="dhead"><div class="k">Importador Embaixador</div><h1 id="impNome">—</h1><div class="sub" id="impSub"></div><div class="badge-isento">★ Responsável isento da anuidade</div></div>
   <div class="wrap">
     <div id="impSelWrap" style="display:none;text-align:center;margin:0 0 16px;"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);">Conselho — escolha a importadora</span><br><select id="impSel" onchange="trocarImp()" class="inp" style="max-width:300px;display:inline-block;margin-top:6px;"></select></div>
+    <div id="introWrap" style="display:none;text-align:center;margin:0 0 16px;background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:12px 14px;"><span style="font-size:12px;color:#5b5446;">Data única de intronização dos importadores (definida pelo Conselho):</span><br><input type="date" id="introDate" class="inp" style="max-width:170px;display:inline-block;margin-top:6px;"> <button class="btn-n" style="padding:7px 14px;" onclick="salvarIntro()">Salvar</button> <span id="introMsg" style="font-size:12px;"></span></div>
 
     <div id="menu"><div class="cmenu">
       <a class="ccard" href="?sec=indmembro"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.2"/><path d="M3.5 20c0-3.4 2.9-5.2 6.5-5.2 1 0 2 .14 2.8.4"/><path d="M18 13v6M15 16h6"/></svg></div><b>Indicar membro</b><span>Comendador ou Convidado de Honra (2/ano)</span></a>
@@ -75,7 +76,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
           <input class="inp" id="mEmail" placeholder="E-mail">
           <select class="inp" id="mTipo"><option>Comendador</option><option>Convidado de Honra</option></select>
           <select class="inp" id="mNucleo"><option value="">Núcleo…</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select>
-          <label style="font-size:12px;color:#8a8270;">Data de intronização (se já souber)<input class="inp" id="mDataIntro" type="date" style="margin-top:3px;"></label>
+          <label style="font-size:12px;color:#8a8270;">Data de intronização<select class="inp" id="mDataIntro" style="margin-top:3px;"></select></label>
         </div>
         <div style="margin-top:12px;"><button class="btn-n" id="btnMem" onclick="addMembro()">Indicar membro</button><span class="msg" id="mMsg"></span></div>
         <div id="tabMem"></div>
@@ -140,7 +141,10 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
-var IMP=null;var ANO=new Date().getFullYear();var ehConselho=false;var TODAS=[];
+var IMP=null;var ANO=new Date().getFullYear();var ehConselho=false;var TODAS=[];var DATA_INTRO="";
+async function carregarParam(){try{var r=await sb.from("parametros").select("valor").eq("chave","intronizacao_importadores").maybeSingle();DATA_INTRO=(r&&r.data&&r.data.valor)||"";}catch(e){DATA_INTRO="";}}
+function montarOpcaoData(){var sel=document.getElementById("mDataIntro");if(!sel)return;sel.innerHTML=DATA_INTRO?("<option value=\""+DATA_INTRO+"\">"+fdata(DATA_INTRO)+"</option>"):"<option value=\"\">(a definir pelo Conselho)</option>";}
+async function salvarIntro(){var v=document.getElementById("introDate").value;var msg=document.getElementById("introMsg");msg.style.color="#2f6b3a";msg.textContent="Salvando...";var r=await sb.from("parametros").upsert({chave:"intronizacao_importadores",valor:v||null,atualizado_em:new Date().toISOString()},{onConflict:"chave"});if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}DATA_INTRO=v||"";montarOpcaoData();msg.textContent="Salvo!";setTimeout(function(){msg.textContent="";},1800);}
 function st(id){["needLogin","notImp","loading","panel"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function fdata(d){if(!d)return "—";var p=(""+d).split("-");return p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):d;}
@@ -156,6 +160,8 @@ async function init(){
   if(own.data){IMP=own.data;}else if(ehConselho&&TODAS.length){IMP=TODAS[0];}else{st("notImp");return;}
   st("panel");
   if(ehConselho&&TODAS.length)montarSeletor();
+  await carregarParam();montarOpcaoData();
+  if(ehConselho){var iw=document.getElementById("introWrap");if(iw)iw.style.display="block";var idt=document.getElementById("introDate");if(idt&&DATA_INTRO)idt.value=DATA_INTRO;}
   renderHeader();
   mostrarSecao();
 }

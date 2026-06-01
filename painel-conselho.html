@@ -72,6 +72,7 @@ select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size
     <div id="secFin" class="secblk"><a class="backsec" href="painel-conselho.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
     <div class="sec-title">Financeiro — resumo por ano</div><div class="sec-rule"></div>
     <div id="caixaBox" style="margin-bottom:18px;"></div>
+    <div class="card" style="margin-bottom:18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;"><div><b style="font-family:Georgia,serif;color:var(--navy);font-size:16px;">Vigência da carteira</b><div style="font-size:12.5px;color:#8a8270;margin-top:2px;">Ciclo atual das carteiras: <b id="cicloAtual">—</b>. Em novembro, depois de registrar os pagamentos, vire para o próximo ano para lançar as carteiras novas.</div></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><input id="cicloAno" type="number" placeholder="Ano" style="width:92px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><button onclick="virarCiclo()" style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-size:13px;cursor:pointer;">Virar ciclo</button><span id="cicloMsg" style="font-size:12.5px;"></span></div></div>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;"><label style="font-size:13px;color:#8a8270;">Ano:</label><select id="anoSel" onchange="renderAno()"></select><span id="anoMsg" style="font-size:12px;color:#9a937f;"></span></div>
     <div id="anoGeral" class="fin-grid" style="margin-bottom:14px;"></div>
     <div id="anoCats" class="fin-grid"></div>
@@ -154,8 +155,11 @@ function finBox(titulo,c,p,extra){return "<div class=\"fin\"><h3>"+esc(titulo)+"
   +"<div class=\"n\">Cotizado: <b>"+brl(c)+"</b></div>"
   +"<div class=\"n\"><span class=\"dot\" style=\"background:#3a9a4e;\"></span>Arrecadado: <b>"+brl(p)+"</b></div>"
   +"<div class=\"n\"><span class=\"dot\" style=\"background:#c0392b;\"></span>A receber: <b>"+brl(c-p)+"</b></div>"+(extra||"")+"</div>";}
-var ANO_ANUIDADE=2026;var anuTc=0,anuTp=0;var receitas=[];var despesas=[];
+var ANO_ANUIDADE=2026;var anuTc=0,anuTp=0;var receitas=[];var despesas=[];var CICLO=2026;
+async function carregarCiclo(){try{var r=await sb.from("parametros").select("valor").eq("chave","ciclo_anuidade").maybeSingle();if(!r.error&&r.data&&r.data.valor){CICLO=parseInt(r.data.valor,10)||CICLO;}}catch(e){}var a=document.getElementById("cicloAtual");if(a)a.textContent=CICLO;var inp=document.getElementById("cicloAno");if(inp&&!inp.value)inp.value=CICLO+1;}
+async function virarCiclo(){var inp=document.getElementById("cicloAno");var msg=document.getElementById("cicloMsg");var ano=parseInt(inp.value,10);if(!ano){msg.style.color="#8f1d24";msg.textContent="Informe o ano.";return;}if(!confirm("Virar a vigência da carteira para "+ano+"?\n\nIsso marca TODOS os membros não isentos como 'a pagar' do novo ciclo. Depois você relança quem já pagou no quadro de anuidades, e as carteiras passam a valer para "+ano+".\n\nConfirmar?"))return;msg.style.color="#2f6b3a";msg.textContent="Aplicando...";var r=await sb.rpc("virar_ciclo",{p_ano:ano,p_reset:true});if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}CICLO=ano;var a=document.getElementById("cicloAtual");if(a)a.textContent=ano;inp.value=ano+1;msg.textContent="Ciclo "+ano+" lançado!";carregarFinanceiro();}
 async function carregarFinanceiro(){
+  await carregarCiclo();
   var q=await sb.from("membros").select("codigo,nome,grau,nucleo,anuidade_valor,anuidade_paga").order("nucleo",{ascending:true}).order("codigo",{ascending:true});
   if(q.error){document.getElementById("finResumo").innerHTML="<p style=\"color:#8f1d24;\">Erro: "+esc(q.error.message)+"</p>";}
   else{

@@ -1,175 +1,48 @@
-<!DOCTYPE html><html lang="pt-BR"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ficha de Candidatura — Commanderie de Bordeaux Brasil</title><style>
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ficha de Intronização — Commanderie de Bordeaux</title>
+<style>
 :root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
-*{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:var(--parch);line-height:1.6;}
-a{color:inherit;text-decoration:none;}
-.container{max-width:1080px;margin:0 auto;padding:0 24px;}
-nav{position:sticky;top:0;z-index:50;background:rgba(243,236,217,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
-.nav-in{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;max-width:1120px;margin:0 auto;}
-.brand{display:flex;align-items:center;gap:11px;}
-.brand img{width:38px;}
-.brand b{color:var(--navy);font-size:16px;font-weight:normal;}
-.brand small{display:block;font-family:Arial,sans-serif;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
-.nav-links{display:flex;align-items:center;gap:22px;font-family:Arial,sans-serif;font-size:13.5px;}
-.nav-links a{color:#5b5446;transition:color .2s;}.nav-links a.btn-solid{color:#fff;}
-.nav-links a:hover{color:var(--red);}
-.btn{display:inline-block;font-family:Arial,sans-serif;font-size:13.5px;border-radius:9px;padding:10px 18px;cursor:pointer;transition:all .2s;border:1.5px solid var(--navy);}
-.btn-solid{background:var(--navy);color:#fff;}
-.btn-solid:hover{background:#16204a;}
-.btn-ghost{background:transparent;color:var(--navy);border-color:var(--gold);}
-.btn-ghost:hover{background:#efe6cf;}
-@media(max-width:860px){.nav-links a:not(.btn){display:none;}}
-.hero{text-align:center;padding:70px 24px 80px;background:radial-gradient(120% 80% at 50% 0%,#faf5e8 0%,var(--parch) 60%,var(--parch2) 100%);}
-.hero img{width:200px;margin:0 auto 8px;filter:drop-shadow(0 8px 18px rgba(40,30,10,.12));}
-.kick{font-family:Arial,sans-serif;font-size:12px;letter-spacing:4px;color:var(--red);text-transform:uppercase;}
-.hero h1{font-size:50px;color:var(--navy);font-weight:normal;margin:14px 0 2px;letter-spacing:.5px;}
-.hero .br{font-style:italic;color:var(--navy);font-size:24px;margin-bottom:18px;}
-.hero p.lead{max-width:560px;margin:0 auto 10px;font-size:18px;color:#544c3e;}
-.motto{font-style:italic;color:var(--gold);font-size:18px;margin:18px 0 26px;letter-spacing:1px;}
-.hero .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
-section{padding:72px 0;}
-.sec-k{font-family:Arial,sans-serif;font-size:12px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;text-align:center;}
-h2{font-size:34px;color:var(--navy);font-weight:normal;text-align:center;margin:8px 0 8px;}
-.rule{width:64px;height:2px;background:var(--gold-l);margin:14px auto 34px;}
-.alt{background:linear-gradient(180deg,#f7f1e2,#f1e9d3);}
-.about{max-width:760px;margin:0 auto;text-align:center;font-size:17px;color:#4a4438;}
-.about p{margin-bottom:16px;}
-.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
-.nuc{background:var(--cream);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:12px;padding:22px 14px;text-align:center;}
-.nuc h3{color:var(--navy);font-weight:normal;font-size:19px;margin-bottom:4px;}
-.nuc small{font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;}
-@media(max-width:760px){.grid5{grid-template-columns:repeat(2,1fr);}}
-/* MESTRES */
-.av{width:74px;height:74px;border-radius:50%;background:var(--navy);color:var(--gold-l);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:25px;margin:0 auto 12px;border:2px solid var(--gold);}
-.mesa{max-width:360px;margin:0 auto 26px;text-align:center;background:var(--cream);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:14px;padding:26px 22px;}
-.mesa h3{color:var(--navy);font-weight:normal;font-size:22px;margin-bottom:3px;}
-.grau{font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;color:var(--red);text-transform:uppercase;}
-.mestres{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
-.mcard{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:20px 12px;text-align:center;}
-.mcard .av{width:56px;height:56px;font-size:18px;margin-bottom:10px;}
-.mcard h4{color:var(--navy);font-weight:normal;font-size:15.5px;line-height:1.2;}
-.mcard small{font-family:Arial,sans-serif;font-size:10.5px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;}
-.mcard .badge{display:inline-block;margin-top:8px;font-family:Arial,sans-serif;font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:2px 7px;line-height:1.3;}
-@media(max-width:760px){.mestres{grid-template-columns:repeat(2,1fr);}}
-/* GALERIA */
-.galtabs{display:flex;gap:10px;justify-content:center;margin-bottom:24px;font-family:Arial,sans-serif;font-size:13px;}
-.galtabs span{padding:7px 16px;border:1px solid var(--line);border-radius:20px;color:#6b6253;background:var(--cream);}
-.galtabs span.on{background:var(--navy);color:#fff;border-color:var(--navy);}
-.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.tile{aspect-ratio:4/3;border-radius:12px;position:relative;overflow:hidden;border:1px solid var(--line);display:flex;align-items:flex-end;color:#fff;font-family:Arial,sans-serif;}
-.tile span{position:relative;z-index:2;padding:14px;font-size:13px;line-height:1.3;}
-.tile::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,15,30,0) 40%,rgba(20,15,30,.72));z-index:1;}
-.tile .vid{position:absolute;top:12px;right:12px;z-index:3;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.6);border-radius:20px;font-size:11px;padding:3px 10px;display:flex;align-items:center;gap:5px;}
-.t1{background:linear-gradient(135deg,#5b0a18,#8f1d24);} .t2{background:linear-gradient(135deg,#2a1a46,#5a2d86);}
-.t3{background:linear-gradient(135deg,#6a4a1f,#b08a3a);} .t4{background:linear-gradient(135deg,#1e2a56,#3a4a86);}
-.t5{background:linear-gradient(135deg,#4a1020,#7a2030);} .t6{background:linear-gradient(135deg,#2d2418,#6a5a3a);}
-.gal-note{text-align:center;font-family:Arial,sans-serif;font-size:13px;color:#867c6c;margin-top:18px;}
-@media(max-width:760px){.gal{grid-template-columns:repeat(2,1fr);}}
-/* CALENDARIO */
-.cal{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:840px;margin:0 auto;}
-.ev{display:flex;gap:16px;background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:16px 18px;align-items:center;}
-.ev .m{flex:none;width:62px;text-align:center;border-right:1px solid var(--line);padding-right:14px;}
-.ev .m b{display:block;font-family:Arial,sans-serif;font-size:20px;color:var(--red);}
-.ev .m small{font-family:Arial,sans-serif;font-size:10px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;}
-.ev h4{color:var(--navy);font-weight:normal;font-size:17px;}
-.ev p{font-family:Arial,sans-serif;font-size:12.5px;color:#7a7165;}
-.ev .rn{flex:none;font-family:Georgia,serif;font-size:17px;color:var(--gold);width:34px;text-align:center;}
-.ev.next{border-color:var(--gold-l);border-left:4px solid var(--gold);}
-.ev.done{opacity:.92;}
-.ev .seal{flex:none;font-family:Arial,sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#2f6b3a;background:#eef6ee;border:1px solid #cfe6cf;border-radius:20px;padding:2px 9px;}
-.ev .soon{flex:none;font-family:Arial,sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:2px 9px;}
-.captitle{text-align:center;font-family:Arial,sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:30px 0 16px;}
-@media(max-width:760px){.cal{grid-template-columns:1fr;}}
-/* VIAGEM / PROGRAMA */
-.program{max-width:760px;margin:0 auto;}
-.day{background:var(--cream);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;overflow:hidden;}
-.day h4{background:var(--navy);color:#fff;font-weight:normal;font-size:14px;font-family:Arial,sans-serif;letter-spacing:1px;padding:12px 18px;margin:0;}
-.slot{display:flex;gap:16px;padding:11px 18px;border-bottom:1px solid #ece0c2;font-family:Arial,sans-serif;font-size:14px;align-items:baseline;}
-.slot:last-child{border-bottom:none;}
-.slot .tm{flex:none;width:52px;color:var(--red);font-weight:bold;font-size:13px;}
-.slot .ac{color:#3a342c;}
-.slot.meal{background:#fbf7ec;} .slot.meal .ac{font-style:italic;color:#7a6a4a;}
-.slot.cap .ac{color:var(--navy);font-weight:bold;}
-.tripcard{max-width:760px;margin:0 auto 30px;background:var(--cream);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:14px;padding:24px 26px;text-align:center;}
-.tripcard h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:24px;margin-bottom:4px;}
-.tripcard .meta{font-family:Arial,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
-.tripcard p{color:#4a4438;font-size:15px;}
-/* DIRETORIO */
-.dirgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-.dircard{display:flex;align-items:center;gap:12px;background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
-.diav{flex:none;width:42px;height:42px;border-radius:50%;background:var(--navy);color:var(--gold-l);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:15px;border:1px solid var(--gold);}
-.dinfo b{display:block;font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:15px;line-height:1.2;}
-.dinfo small{font-family:Arial,sans-serif;font-size:11px;color:#9a8f72;}
-.gbadge{display:inline-block;margin-top:8px;font-family:Arial,sans-serif;font-size:8.5px;letter-spacing:.5px;text-transform:uppercase;color:#7a5a12;background:#f1e3bf;border:1px solid #d8c48a;border-radius:20px;padding:2px 8px;}
-.dinfo b{margin-bottom:1px;}
-@media(max-width:760px){.dirgrid{grid-template-columns:1fr;}}
-/* SOCIO */
-.socio-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;}
-.steps{counter-reset:s;}
-.stp{display:flex;gap:16px;margin-bottom:20px;}
-.stp .n{counter-increment:s;flex:none;width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;font-size:15px;}
-.stp .n::before{content:counter(s);}
-.stp h4{color:var(--navy);font-weight:normal;font-size:18px;}
-.stp p{font-size:15px;color:#5b5446;}
-.socio-card img{width:100%;border-radius:18px;filter:drop-shadow(0 16px 32px rgba(40,30,10,.22));}
-.byinvite{max-width:760px;margin:0 auto 30px;text-align:center;font-family:Arial,sans-serif;font-size:13.5px;color:#6b6253;background:#efe6cf;border:1px solid var(--line);border-radius:10px;padding:12px 18px;}
-@media(max-width:760px){.socio-wrap{grid-template-columns:1fr;}}
-/* IMPORTADORAS */
-.imps{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;max-width:880px;margin:0 auto;}
-.imp{font-family:Georgia,serif;font-size:18px;color:var(--navy);background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:16px 26px;letter-spacing:.5px;}
-.imps-note{text-align:center;font-family:Arial,sans-serif;font-size:12.5px;color:#867c6c;margin-top:18px;}
-/* DOACAO */
-.don{max-width:620px;margin:0 auto;text-align:center;background:var(--cream);border:1px dashed var(--gold-l);border-radius:16px;padding:34px 28px;}
-.don h2{font-size:27px;margin-bottom:6px;} .don p{color:#5b5446;font-size:16px;margin-bottom:18px;}
-.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center;}
-.contact h4{font-family:Arial,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
-.contact p{color:#4a4438;font-size:15px;}
-@media(max-width:760px){.contact{grid-template-columns:1fr;}}
-footer{background:var(--navy);color:#e7e0cd;text-align:center;padding:46px 24px;}
-footer img{width:64px;margin-bottom:14px;}
-footer .fmotto{font-style:italic;color:var(--gold-l);letter-spacing:2px;margin:10px 0;}
-footer .fnav{font-family:Arial,sans-serif;font-size:13px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin:16px 0;}
-footer .fnav a{color:#cfc7b2;}
-footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
-/* FORM */
-.formwrap{max-width:680px;margin:0 auto;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:34px 32px;}
-.field{margin-bottom:18px;}
-.field label{display:block;font-family:Arial,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;box-shadow:0 2px 16px rgba(40,30,10,.05);}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:13px;color:var(--red);text-decoration:none;}
+.dhead{text-align:center;padding:38px 20px 6px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:34px;margin:8px 0 2px;}
+.wrap{max-width:680px;margin:0 auto;padding:14px 20px 60px;}
+.note{background:#faf6ea;border:1px solid var(--line);border-radius:12px;padding:13px 16px;font-size:13.5px;color:#5b5446;line-height:1.6;text-align:center;margin-bottom:18px;}
+.card{background:#fffdf7;border:1px solid var(--line);border-radius:16px;padding:26px 24px;box-shadow:0 6px 18px rgba(40,30,10,.06);}
+.field{margin-bottom:16px;}
+.field label{display:block;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
 .field input,.field textarea,.field select{width:100%;font-family:Georgia,serif;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:9px;padding:11px 13px;}
-.field textarea{min-height:90px;resize:vertical;}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.sponsors{border:1px solid var(--line);border-radius:12px;padding:18px;background:#fbf7ec;margin-bottom:18px;}
-.sponsors h4{color:var(--red);font-weight:normal;font-size:16px;margin-bottom:4px;}
-.sponsors p{font-family:Arial,sans-serif;font-size:12.5px;color:#7a7165;margin-bottom:14px;}
-@media(max-width:620px){.two{grid-template-columns:1fr;}}
+.field textarea{min-height:88px;resize:vertical;font-family:Georgia,serif;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.seclbl{color:var(--navy);font-family:Georgia,serif;font-weight:normal;font-size:20px;margin:24px 0 8px;}
+.sponsors{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fbf7ec;margin-bottom:16px;}
+.sponsors h4{color:var(--red);font-weight:normal;font-size:16px;font-family:Georgia,serif;margin:0 0 2px;}
+.sponsors p{font-family:Arial,sans-serif;font-size:12.5px;color:#7a7165;margin:0 0 12px;}
+.chk{display:flex;align-items:flex-start;gap:9px;font-family:Georgia,serif;font-size:14.5px;color:var(--ink);margin-bottom:12px;line-height:1.5;}
+.chk input{width:auto;margin-top:3px;flex:none;}
+.codebox{background:#faf6ea;border:1px solid #e6d9b3;border-radius:10px;padding:10px 13px;}
+.btn-go{display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border:none;border-radius:11px;padding:12px 24px;font-size:15px;cursor:pointer;}
+.okmsg{display:none;max-width:680px;margin:24px auto 0;text-align:center;background:#eef6ee;border:1px solid #cfe6cf;color:#2f6b3a;border-radius:14px;padding:24px;font-family:Arial,sans-serif;line-height:1.6;}
+.foot{text-align:center;padding:26px 20px;color:#9a937f;font-size:12px;}
+@media(max-width:560px){.two{grid-template-columns:1fr;}}
 </style></head><body>
-<nav><div class="nav-in">
-  <a class="brand" href="index.html#topo"><img src="img/logo-topo.png" alt="Brasão"><span><b>Commanderie de Bordeaux</b><small>Brasil</small></span></a>
-  <div class="nav-links">
-    <a href="index.html#commanderie">A Commanderie</a>
-    <a href="index.html#nucleos">Núcleos</a>
-    <a href="capitulos.html">Capítulos</a>
-    <a href="viagens.html">Viagens</a>
-    <a href="index.html#galeria">Galeria</a>
-    <a href="index.html#socio">Tornar-se Membro</a>
-    <a href="index.html#contato">Contato</a>
-    <a class="btn btn-solid" href="login.html">Painel do Comendador</a>
-  </div>
-</div></nav>
-<section><div class="container">
-  <div style="text-align:center;margin-bottom:6px;"><img src="img/logo-topo.png" alt="Brasão" style="width:70px;"></div>
-  <div class="sec-k">Etapa final · após aprovação do Conselho</div>
-  <h2>Ficha de Candidatura à Intronização</h2><div class="rule"></div>
-  <div class="byinvite">Este formulário é preenchido pelo candidato <b>já indicado por dois Commandeurs e aprovado pelo Conselho Diretor</b>. Ele compõe o dossiê apresentado no capítulo de intronização. O acesso é liberado pela Secretaria após a aprovação.</div>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Ficha de Intronização</b><a class="back" href="index.html">← Site</a></div>
+<div class="dhead">
+  <div class="k">Etapa final · após aprovação do Conselho</div>
+  <h1>Ficha de Intronização</h1>
+</div>
+<div class="wrap">
+  <div class="note">Este formulário é preenchido pelo candidato <b>já indicado por dois Commandeurs e aprovado pelo Conselho Diretor</b>. Ele compõe o dossiê apresentado no capítulo de intronização.</div>
+  <form class="card" id="ficha" onsubmit="enviarFicha(event)">
+    <div class="field"><label>Código de acesso (recebido por e-mail)</label><div class="codebox"><input id="fCodigo" required placeholder="CDB-CAND-2026-001" style="border:none;background:transparent;padding:0;font-size:17px;letter-spacing:1px;color:var(--navy);"></div></div>
 
-  <form class="formwrap" onsubmit="event.preventDefault();document.getElementById('okmsg').style.display='block';this.scrollIntoView();this.style.display='none';">
-
-    <div class="field"><label>Código de acesso (enviado pela Secretaria)</label><input required placeholder="Ex.: CDB-CAND-2026-001"></div>
-
-    <h3 style="color:var(--navy);font-weight:normal;font-size:20px;margin:26px 0 6px;">I · Informações pessoais</h3>
+    <div class="seclbl">I · Informações pessoais</div>
     <div class="two">
       <div class="field"><label>Nome</label><input required placeholder="Nome"></div>
       <div class="field"><label>Sobrenome</label><input required placeholder="Sobrenome"></div>
@@ -200,12 +73,12 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
       <h4>Padrinhos</h4>
       <p>Os dois Commandeurs que apresentaram sua candidatura.</p>
       <div class="two">
-        <div class="field"><label>1º Padrinho</label><input required placeholder="Nome · nº de membro"></div>
-        <div class="field"><label>2º Padrinho</label><input required placeholder="Nome · nº de membro"></div>
+        <div class="field" style="margin-bottom:0;"><label>1º Padrinho</label><input required placeholder="Nome · nº de membro"></div>
+        <div class="field" style="margin-bottom:0;"><label>2º Padrinho</label><input required placeholder="Nome · nº de membro"></div>
       </div>
     </div>
 
-    <h3 style="color:var(--navy);font-weight:normal;font-size:20px;margin:26px 0 6px;">II · Currículo &amp; Biografia</h3>
+    <div class="seclbl">II · Currículo &amp; Biografia</div>
     <div class="field"><label>Atividades e interesses ligados a esta candidatura</label><textarea placeholder="Sua atuação atual e o que o aproxima do mundo do vinho."></textarea></div>
     <div class="field"><label>Biografia — sua trajetória</label><textarea placeholder="Um breve relato de sua origem e do trabalho que realiza."></textarea></div>
     <div class="field"><label>Honrarias e confrarias a que pertence</label><textarea placeholder="Distinções e ordens báquicas (ex.: Jurade de Saint-Émilion, Commanderie du Bontemps...)."></textarea></div>
@@ -217,28 +90,23 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
     <div class="field"><label>Uma experiência memorável com um vinho de Bordeaux</label><textarea placeholder="Uma garrafa, um jantar, uma visita a um château."></textarea></div>
     <div class="field"><label>Outras histórias com os vinhos e a gastronomia de Bordeaux</label><textarea placeholder="Fique à vontade para compartilhar."></textarea></div>
 
-    <h3 style="color:var(--navy);font-weight:normal;font-size:20px;margin:26px 0 6px;">III · Autorizações e compromissos</h3>
-    <div class="field"><label style="text-transform:none;letter-spacing:0;color:var(--ink);font-family:Georgia,serif;font-size:15px;"><input type="checkbox" required style="width:auto;margin-right:8px;">Autorizo o contato pela Secretaria e pelos canais de comunicação da Commanderie.</label></div>
-    <div class="field"><label style="text-transform:none;letter-spacing:0;color:var(--ink);font-family:Georgia,serif;font-size:15px;"><input type="checkbox" style="width:auto;margin-right:8px;">Autorizo o uso de fotos em que eu apareça nos eventos, para fins institucionais.</label></div>
-    <div class="field"><label style="text-transform:none;letter-spacing:0;color:var(--ink);font-family:Georgia,serif;font-size:15px;"><input type="checkbox" required style="width:auto;margin-right:8px;">Comprometo-me, sendo aprovado, a pagar a anuidade do exercício e a mantê-la em dia nos termos do Estatuto.</label></div>
-    <div class="field"><label style="text-transform:none;letter-spacing:0;color:var(--ink);font-family:Georgia,serif;font-size:15px;"><input type="checkbox" required style="width:auto;margin-right:8px;">Declaro conhecer e aceitar o Estatuto Social e a Política de Privacidade da Commanderie de Bordeaux no Brasil.</label></div>
-    <div class="field"><label>Local e data</label><input placeholder="São Paulo, ___/___/______"></div>
+    <div class="seclbl">III · Autorizações e compromissos</div>
+    <label class="chk"><input type="checkbox" required>Autorizo o contato pela Secretaria e pelos canais de comunicação da Commanderie.</label>
+    <label class="chk"><input type="checkbox">Autorizo o uso de fotos em que eu apareça nos eventos, para fins institucionais.</label>
+    <label class="chk"><input type="checkbox" required>Comprometo-me, sendo aprovado, a pagar a anuidade do exercício e a mantê-la em dia nos termos do Estatuto.</label>
+    <label class="chk"><input type="checkbox" required>Declaro conhecer e aceitar o Estatuto Social e a Política de Privacidade da Commanderie de Bordeaux no Brasil.</label>
+    <div class="field" style="margin-top:6px;"><label>Local e data</label><input placeholder="São Paulo, ___/___/______"></div>
 
-    <div style="text-align:center;margin-top:10px;"><button class="btn btn-solid" type="submit">Enviar candidatura ao Conselho</button></div>
+    <div style="text-align:center;margin-top:14px;"><button class="btn-go" type="submit">Enviar candidatura ao Conselho</button></div>
   </form>
-  <div id="okmsg" style="display:none;max-width:680px;margin:24px auto 0;text-align:center;background:#eef6ee;border:1px solid #cfe6cf;color:#2f6b3a;border-radius:12px;padding:22px;font-family:Arial,sans-serif;">
-    Candidatura recebida. A Secretaria entrará em contato para a sua intronização no próximo capítulo. <br><b>Bordeaux, toujours Bordeaux.</b>
+  <div id="okmsg" class="okmsg">
+    Candidatura recebida com sucesso. A Secretaria entrará em contato para a sua intronização no próximo capítulo.<br><b>Bordeaux, toujours Bordeaux.</b>
   </div>
-</div></section>
-<footer>
-  <img src="img/logo-topo.png" alt="Brasão">
-  <div class="fmotto">Bordeaux, toujours Bordeaux</div>
-  <div class="fnav">
-    <a href="index.html#commanderie">A Commanderie</a><a href="index.html#nucleos">Núcleos</a>
-    <a href="capitulos.html">Capítulos</a>
-    <a href="viagens.html">Viagens</a><a href="index.html#galeria">Galeria</a>
-    <a href="index.html#socio">Tornar-se Membro</a><a href="login.html">Painel do Comendador</a>
-  </div>
-  <small>© 2026 Commanderie de Bordeaux — Brasil. Todos os direitos reservados.</small>
-<div style="margin:16px 0 0;"><a href="https://www.instagram.com/commanderiedebordeaux_brasil/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;color:#e7d8a8;text-decoration:none;font-size:13px;letter-spacing:.3px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" style="flex:none;"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52.01-4.77.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7-.06 1.25-.07 1.62-.07 4.77s.01 3.52.07 4.77c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.25.06 1.62.07 4.77.07s3.52-.01 4.77-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.25.07-1.62.07-4.77s-.01-3.52-.07-4.77c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 0 0-.68-1.06 2.85 2.85 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.52 4.01 15.15 4 12 4zm0 3.07A4.93 4.93 0 1 1 7.07 12 4.93 4.93 0 0 1 12 7.07zm0 1.8A3.13 3.13 0 1 0 15.13 12 3.13 3.13 0 0 0 12 8.87zm5.13-.99a1.15 1.15 0 1 1-1.15 1.15 1.15 1.15 0 0 1 1.15-1.15z"/></svg>@commanderiedebordeaux_brasil</a></div></footer>
+</div>
+<div class="foot">Commanderie de Bordeaux do Brasil · “Bordeaux, toujours Bordeaux”</div>
+<script>
+// Pré-preenche o código de acesso vindo do link do e-mail (?cod=...)
+(function(){try{var c=new URLSearchParams(location.search).get("cod");if(c){var f=document.getElementById("fCodigo");if(f)f.value=c;}}catch(e){}})();
+function enviarFicha(ev){ev.preventDefault();document.getElementById("ficha").style.display="none";var ok=document.getElementById("okmsg");ok.style.display="block";ok.scrollIntoView({behavior:"smooth"});}
+</script>
 </body></html>

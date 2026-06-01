@@ -8,7 +8,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;box-shadow:0 2px 16px rgba(40,30,10,.05);}
 .dtop img{width:34px;}
 .dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
-.dtop .back{margin-left:auto;font-size:13px;color:var(--red);text-decoration:none;}
+.dtop .back{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;transition:all .15s ease;}.dtop .back:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
 .dhead{text-align:center;padding:40px 20px 6px;}
 .dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
 .dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:36px;margin:6px 0 4px;}
@@ -33,7 +33,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
 .dfoot{text-align:center;padding:26px 20px;font-size:12px;color:#9a937f;}
 </style></head><body>
-<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Dicas de Bordeaux</b><a class="back" href="index.html">← Painel do Comendador</a></div>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Dicas de Bordeaux</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a></div>
 <div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Conteúdo exclusivo dos membros. Entre na sua conta.</p><a class="btn" href="index.html">Entrar</a></div>
 <div id="loading" class="state">Carregando…</div>
 <div id="content" style="display:none;">

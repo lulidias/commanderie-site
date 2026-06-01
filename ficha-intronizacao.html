@@ -8,7 +8,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;box-shadow:0 2px 16px rgba(40,30,10,.05);}
 .dtop img{width:34px;}
 .dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
-.dtop .back{margin-left:auto;font-size:13px;color:var(--red);text-decoration:none;}
+.dtop .back{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;transition:all .15s ease;}.dtop .back:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
 .dhead{text-align:center;padding:38px 20px 6px;}
 .dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
 .dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:34px;margin:8px 0 2px;}
@@ -33,7 +33,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .okmsg{display:none;max-width:680px;margin:0 auto;text-align:center;background:#eef6ee;border:1px solid #cfe6cf;color:#2f6b3a;border-radius:14px;padding:24px;font-family:Arial,sans-serif;line-height:1.6;}
 @media(max-width:560px){.two{grid-template-columns:1fr;}}
 </style></head><body>
-<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Ficha de Intronização</b><a class="back" href="index.html">← Painel do Comendador</a></div>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Ficha de Intronização</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a></div>
 <div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para preencher a ficha.</p><a class="btn" href="index.html">Entrar</a></div>
 <div id="naoEleito" class="state" style="display:none;"><h2>Ficha de Intronização</h2><p>Esta ficha é destinada aos <b>Comendadores eleitos</b> antes da intronização.</p><a class="btn" href="index.html">← Voltar ao Painel</a></div>
 <div id="jaEnviada" class="state" style="display:none;"><h2>Ficha já enviada ✦</h2><p>Recebemos a sua ficha de intronização. A Secretaria entrará em contato.<br><b>Bordeaux, toujours Bordeaux.</b></p><a class="btn" href="index.html">← Voltar ao Painel</a></div>

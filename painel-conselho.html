@@ -87,17 +87,30 @@ async function carregarIndicacoes(){
   if(q.error){el.innerHTML="<p style=\"color:#8f1d24;\">Erro: "+esc(q.error.message)+"</p>";return;}
   var rows=q.data||[];
   if(!rows.length){el.innerHTML="<div class=\"card\" style=\"color:#8a8270;\">Nenhuma indicação por enquanto.</div>";return;}
+  var cq=await sb.from("eventos").select("id,numero,titulo,data").eq("tipo","Capítulo").eq("realizado",false).order("data",{ascending:true});
+  var capOpts="<option value=\"\">Capítulo da intronização…</option>"+((cq.data)||[]).map(function(c){return "<option value=\""+c.id+"\">"+(c.numero?(esc(c.numero)+" · "):"")+esc(c.titulo||"")+(c.data?(" ("+new Date(c.data+"T12:00:00").toLocaleDateString("pt-BR")+")"):"")+"</option>";}).join("");
   el.innerHTML=rows.map(function(r){
     var opts=STATUS.map(function(s){return "<option"+(s===r.status?" selected":"")+">"+s+"</option>";}).join("");
     return "<div class=\"card\"><div class=\"ind-top\"><b>"+esc(r.nome)+"</b><span style=\"font-size:12px;color:#8a8270;\">"+(r.created_at?new Date(r.created_at).toLocaleDateString("pt-BR"):"")+"</span></div>"
     +"<div class=\"ind-meta\">"+esc(r.email||"")+(r.nucleo?(" · Núcleo "+esc(r.nucleo)):"")+(r.indicado_por_nome?(" · indicado por "+esc(r.indicado_por_nome)):"")+"</div>"
     +(r.apresentacao?("<div class=\"ind-apres\">"+esc(r.apresentacao)+"</div>"):"")+avLine(r)
-    +"<div class=\"ind-actions\"><label style=\"font-size:12px;color:#8a8270;\">Status:</label><select onchange=\"setStatus('"+r.id+"',this.value)\">"+opts+"</select></div></div>";
+    +"<div class=\"ind-actions\"><label style=\"font-size:12px;color:#8a8270;\">Status:</label><select onchange=\"setStatus('"+r.id+"',this.value)\">"+opts+"</select></div>"
+    +"<div style=\"margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;\"><select id=\"cap_"+r.id+"\" style=\"padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:12.5px;\">"+capOpts+"</select><button onclick=\"aprovarAcolher('"+r.id+"')\" style=\"background:var(--navy);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12.5px;cursor:pointer;\">Aprovar e acolher</button><span id=\"apm_"+r.id+"\" style=\"font-size:12px;\"></span></div></div>";
   }).join("");
 }
 async function setStatus(id,status){
   var r=await sb.from("indicacoes").update({status:status}).eq("id",id);
   if(r.error)alert("Erro ao atualizar: "+r.error.message);
+  carregarIndicacoes();
+}
+async function aprovarAcolher(id){
+  var s=document.getElementById("cap_"+id),msg=document.getElementById("apm_"+id);
+  if(!s||!s.value){msg.style.color="#8f1d24";msg.textContent="Escolha o capítulo da intronização.";return;}
+  if(!confirm("Aprovar e acolher como Comendador eleito? Será criada a conta e enviado o e-mail de boas-vindas com o acesso ao site."))return;
+  msg.style.color="#2f6b3a";msg.textContent="Processando...";
+  var r=await sb.rpc("aprovar_e_acolher",{p_indicacao:id,p_evento:s.value});
+  if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}
+  var d=r.data||{};msg.style.color="#2f6b3a";msg.textContent="Acolhido! Código "+d.codigo+" · intronização "+d.data;
   carregarIndicacoes();
 }
 function brl(v){return "R$ "+(Math.round(v||0)).toLocaleString("pt-BR");}

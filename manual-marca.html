@@ -65,7 +65,14 @@ p.lead{font-size:16px;color:#4a4438;max-width:680px;}
 .mini-card .c2{font-family:Georgia,serif;font-size:15px;}
 .note{font-family:Arial,sans-serif;font-size:12.5px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:14px;}
 .foot{text-align:center;font-family:Arial,sans-serif;font-size:12px;color:#8a8270;padding:30px 0 0;}
-@media print{ .topbar{display:none;} body{background:#fff;} section{border-color:#ddd;} }
+.dl{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+@media(max-width:680px){.dl{grid-template-columns:1fr;}}
+.dlbtn{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;background:#fffdf7;padding:14px 18px;transition:all .15s ease;}
+.dlbtn:hover{border-color:var(--gold);background:#fbf6ea;}
+.dlbtn .t{font-family:Georgia,serif;color:var(--navy);font-size:16px;}
+.dlbtn .t::after{content:" ↓";color:var(--gold);font-family:Arial,sans-serif;}
+.dlbtn .s{font-family:Arial,sans-serif;font-size:12px;color:#8a8270;margin-top:2px;}
+@media print{ .topbar{display:none;} body{background:#fff;} section{border-color:#ddd;} .dlbtn .t::after{content:"";} }
 </style></head><body>
 
 <div class="topbar"><img src="img/brasao.png" alt="Brasão"><b>Manual de Marca</b><span class="sp"><a class="pill" href="painel-conselho.html">&#8592; Painel</a><a class="pill solid" onclick="window.print()">Imprimir / PDF</a></span></div>
@@ -141,6 +148,18 @@ p.lead{font-size:16px;color:#4a4438;max-width:680px;}
       <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.4"/><circle cx="17" cy="7" r="1"/></svg></div><h4>Redes sociais</h4><p>Avatar = brasão sobre bege; capas em azul com tipografia serifada.</p></div>
       <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 22V8l7-5 7 5v14M9 22v-6h6v6"/></svg></div><h4>Site e painéis</h4><p>commanderiedebordeaux.com.br — mesma paleta, Georgia + Arial, cartões dourados.</p></div>
     </div>
+  </section>
+
+  <section>
+    <div class="sec-k">Arquivos</div><h2>Downloads da marca</h2><div class="rule"></div>
+    <p class="lead" style="margin-bottom:18px;">Arquivos oficiais para enviar à gráfica ou usar em peças. Para impressão em grande formato (placas, banners), prefira o vetor.</p>
+    <div class="dl">
+      <a class="dlbtn" href="img/brasao-alta.png" download="brasao-commanderie-alta.png"><span class="t">Brasão · cor (alta)</span><span class="s">PNG 435 px · fundo transparente</span></a>
+      <a class="dlbtn" href="img/brasao.png" download="brasao-commanderie.png"><span class="t">Brasão · cor</span><span class="s">PNG 220 px · fundo transparente</span></a>
+      <a class="dlbtn" href="img/brasao-cinza.png" download="brasao-commanderie-cinza.png"><span class="t">Brasão · escala de cinza</span><span class="s">PNG · fundo transparente</span></a>
+      <a class="dlbtn" href="img/logo-topo.png" download="logo-commanderie.png"><span class="t">Logo do topo</span><span class="s">PNG</span></a>
+    </div>
+    <div class="note"><b>Vetor (.ai / .eps / .svg / .pdf):</b> ideal para impressão em qualquer tamanho sem perda de qualidade. Ainda não disponível — assim que a Secretaria localizar o arquivo original do brasão, ele será adicionado aqui para download. (Basta enviar o vetor ao responsável pelo site para liberar o botão.)</div>
   </section>
 
   <section>

@@ -77,8 +77,10 @@ async function init(){
   if(!u){state("needLogin");return;}
   var ic=await sb.rpc("is_conselho");
   if(ic.error||!ic.data){state("notAllowed");return;}
-  await carregarIndicacoes(); await carregarFinanceiro(); await carregarEventos();
   state("panel");
+  try{await carregarIndicacoes();}catch(e){console.error("indicacoes",e);}
+  try{await carregarFinanceiro();}catch(e){console.error("financeiro",e);}
+  try{await carregarEventos();}catch(e){console.error("eventos",e);}
 }
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function avPill(nm,ok){var c=ok==="Avalizado"?"#2f6b3a":(ok==="Recusado"?"#8f1d24":"#9a937f");var t=ok==="Avalizado"?"✓":(ok==="Recusado"?"✗":"…");return "<span style=\"color:"+c+";\">"+t+" "+esc(nm||"—")+"</span>";}

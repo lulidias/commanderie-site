@@ -9,13 +9,26 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .dtop img{width:34px;}
 .dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .dtop .back{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;transition:all .15s ease;}.dtop .back:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
-.dhead{text-align:center;padding:30px 20px 4px;}
+.dhead{text-align:center;padding:28px 20px 4px;}
 .dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
 .dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:30px;margin:6px 0 2px;}
 .dhead .sub{font-size:13px;color:#8a8270;}
 .badge-isento{display:inline-block;margin-top:8px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;border-radius:20px;padding:4px 12px;}
-.wrap{max-width:780px;margin:0 auto;padding:14px 20px 60px;}
-.sec-title{font-family:Georgia,serif;color:var(--navy);font-size:21px;font-weight:normal;margin:26px 0 4px;}
+.wrap{max-width:840px;margin:0 auto;padding:14px 20px 60px;}
+.cmenu{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:6px;}
+.ccard{position:relative;background:#fffdf7;border:1px solid var(--line);border-radius:16px;padding:18px 16px 16px;text-decoration:none;color:var(--navy);box-shadow:0 6px 18px rgba(40,30,10,.06);overflow:hidden;transition:transform .16s ease,box-shadow .16s ease;display:block;}
+.ccard::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#b08a3a,#c9a85c);}
+.ccard:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgba(40,30,10,.14);}
+.ccard .ic{width:40px;height:40px;border-radius:11px;background:#f6efdc;border:1px solid #e6d9b3;display:flex;align-items:center;justify-content:center;color:#b08a3a;margin-bottom:11px;}
+.ccard b{font-family:Georgia,serif;font-weight:normal;font-size:16px;display:block;}
+.ccard span{font-size:12px;color:#8a8270;display:block;margin-top:2px;}
+.ccard.hl{background:linear-gradient(160deg,#243161,#161f3f);border-color:#37436f;}
+.ccard.hl::before{background:linear-gradient(90deg,#c9a85c,#e7d8a8);}
+.ccard.hl .ic{background:rgba(201,168,92,.16);border-color:rgba(201,168,92,.4);color:#c9a85c;}
+.ccard.hl b{color:#f3ecd9;}.ccard.hl span{color:#c9bfa0;}
+.backsec{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;transition:all .15s ease;margin-bottom:14px;}.backsec:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.secblk{display:none;}
+.sec-title{font-family:Georgia,serif;color:var(--navy);font-size:21px;font-weight:normal;margin:6px 0 4px;}
 .sec-rule{height:1px;background:var(--line);margin:0 0 14px;}
 .card{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px;}
 .cota{font-size:12.5px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:4px 12px;display:inline-block;}
@@ -33,7 +46,6 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
 .info{font-size:13.5px;color:#5b5446;line-height:1.6;}
-.info li{margin-bottom:5px;}
 .msg{font-size:13px;margin-left:8px;}
 </style></head><body>
 <div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Painel do Importador</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a></div>
@@ -45,59 +57,83 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
   <div class="wrap">
     <div id="impSelWrap" style="display:none;text-align:center;margin:0 0 16px;"><span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);">Conselho — escolha a importadora</span><br><select id="impSel" onchange="trocarImp()" class="inp" style="max-width:300px;display:inline-block;margin-top:6px;"></select></div>
 
-    <div class="sec-title">Indicar novo membro</div><div class="sec-rule"></div>
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;"><span style="font-size:13px;color:#5b5446;">Comendadores ou Convidados de Honra — 1ª anuidade incluída.</span><span class="cota" id="cotaMem">—</span></div>
-      <div class="grid">
-        <input class="inp" id="mNome" placeholder="Nome do indicado">
-        <input class="inp" id="mEmail" placeholder="E-mail">
-        <select class="inp" id="mTipo"><option>Comendador</option><option>Convidado de Honra</option></select>
-        <select class="inp" id="mNucleo"><option value="">Núcleo…</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select>
+    <div id="menu"><div class="cmenu">
+      <a class="ccard" href="?sec=indmembro"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.2"/><path d="M3.5 20c0-3.4 2.9-5.2 6.5-5.2 1 0 2 .14 2.8.4"/><path d="M18 13v6M15 16h6"/></svg></div><b>Indicar membro</b><span>Comendador ou Convidado de Honra (2/ano)</span></a>
+      <a class="ccard" href="?sec=indrest"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M5 9l1-4h12l1 4M5 9v10h14V9"/></svg></div><b>Indicar restaurante</b><span>Placa da Commanderie (2/ano)</span></a>
+      <a class="ccard" href="?sec=beneficios"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 7v14M12 7S9 3 6.5 4.5 9 9 12 7zM12 7s3-4 5.5-2.5S15 9 12 7z"/></svg></div><b>Benefícios</b><span>Ofertas aos Comendadores</span></a>
+      <a class="ccard hl" href="?sec=comendadores"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.2 2.7-4.8 6-4.8s6 1.6 6 4.8"/><path d="M16 5.2A3 3 0 0 1 16 11"/></svg></div><b>Comendadores indicados</b><span>Lista comum de todas as importadoras</span></a>
+      <a class="ccard hl" href="?sec=restaurantes"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M5 9l1-4h12l1 4M5 9v10h14V9"/></svg></div><b>Restaurantes indicados</b><span>Lista comum de todas as importadoras</span></a>
+      <a class="ccard" href="?sec=programa"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg></div><b>Reunião & programa</b><span>Encontro anual e benefícios</span></a>
+    </div></div>
+
+    <div id="secIndMem" class="secblk"><a class="backsec" href="painel-importador.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
+      <div class="sec-title">Indicar novo membro</div><div class="sec-rule"></div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;"><span style="font-size:13px;color:#5b5446;">Comendadores ou Convidados de Honra — 1ª anuidade incluída.</span><span class="cota" id="cotaMem">—</span></div>
+        <div class="grid">
+          <input class="inp" id="mNome" placeholder="Nome do indicado">
+          <input class="inp" id="mEmail" placeholder="E-mail">
+          <select class="inp" id="mTipo"><option>Comendador</option><option>Convidado de Honra</option></select>
+          <select class="inp" id="mNucleo"><option value="">Núcleo…</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select>
+          <label style="font-size:12px;color:#8a8270;">Data de intronização (se já souber)<input class="inp" id="mDataIntro" type="date" style="margin-top:3px;"></label>
+        </div>
+        <div style="margin-top:12px;"><button class="btn-n" id="btnMem" onclick="addMembro()">Indicar membro</button><span class="msg" id="mMsg"></span></div>
+        <div id="tabMem"></div>
       </div>
-      <div style="margin-top:12px;"><button class="btn-n" id="btnMem" onclick="addMembro()">Indicar membro</button><span class="msg" id="mMsg"></span></div>
-      <div id="tabMem"></div>
     </div>
 
-    <div class="sec-title">Indicar restaurante para a Placa</div><div class="sec-rule"></div>
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;"><span style="font-size:13px;color:#5b5446;">Para a placa das melhores cartas de vinhos de Bordeaux.</span><span class="cota" id="cotaRest">—</span></div>
-      <div class="grid">
-        <input class="inp" id="rNome" placeholder="Nome do restaurante">
-        <input class="inp" id="rCidade" placeholder="Cidade">
-        <input class="inp" id="rContato" placeholder="Contato (telefone/e-mail)">
+    <div id="secIndRest" class="secblk"><a class="backsec" href="painel-importador.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
+      <div class="sec-title">Indicar restaurante para a Placa</div><div class="sec-rule"></div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;"><span style="font-size:13px;color:#5b5446;">Para a placa das melhores cartas de vinhos de Bordeaux.</span><span class="cota" id="cotaRest">—</span></div>
+        <div class="grid">
+          <input class="inp" id="rNome" placeholder="Nome do restaurante">
+          <input class="inp" id="rCidade" placeholder="Cidade">
+          <input class="inp" id="rContato" placeholder="Contato (telefone/e-mail)">
+        </div>
+        <div style="margin-top:12px;"><button class="btn-n" id="btnRest" onclick="addRest()">Indicar restaurante</button><span class="msg" id="rMsg"></span></div>
+        <div id="tabRest"></div>
       </div>
-      <div style="margin-top:12px;"><button class="btn-n" id="btnRest" onclick="addRest()">Indicar restaurante</button><span class="msg" id="rMsg"></span></div>
-      <div id="tabRest"></div>
     </div>
 
-    <div class="sec-title">Benefícios aos Comendadores</div><div class="sec-rule"></div>
-    <div class="card">
-      <p style="font-size:13px;color:#5b5446;margin:0 0 10px;">Cadastre ofertas e condições especiais para os Comendadores de todo o Brasil.</p>
-      <div class="grid">
-        <input class="inp" id="bTit" placeholder="Título (ex.: 15% em Bordeaux)">
-        <input class="inp" id="bDesc" placeholder="Descrição">
-        <input class="inp" id="bDesconto" placeholder="Desconto / condição">
-        <input class="inp" id="bVal" placeholder="Validade (ex.: até 12/2026)">
+    <div id="secBenef" class="secblk"><a class="backsec" href="painel-importador.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
+      <div class="sec-title">Benefícios aos Comendadores</div><div class="sec-rule"></div>
+      <div class="card">
+        <p style="font-size:13px;color:#5b5446;margin:0 0 10px;">Ofertas e condições especiais para os Comendadores de todo o Brasil.</p>
+        <div class="grid">
+          <input class="inp" id="bTit" placeholder="Título (ex.: 15% em Bordeaux)">
+          <input class="inp" id="bDesc" placeholder="Descrição">
+          <input class="inp" id="bDesconto" placeholder="Desconto / condição">
+          <input class="inp" id="bVal" placeholder="Validade (ex.: até 12/2026)">
+        </div>
+        <div style="margin-top:12px;"><button class="btn-n" onclick="addBenef()">Adicionar benefício</button><span class="msg" id="bMsg"></span></div>
+        <div id="tabBenef"></div>
       </div>
-      <div style="margin-top:12px;"><button class="btn-n" onclick="addBenef()">Adicionar benefício</button><span class="msg" id="bMsg"></span></div>
-      <div id="tabBenef"></div>
     </div>
 
-    <div class="sec-title">Reunião anual dos Embaixadores</div><div class="sec-rule"></div>
-    <div class="card info">
-      <p>Os Importadores Embaixadores se reúnem ao menos <b>uma vez por ano</b> para deliberar sobre o programa, votar novas entronizações de importadores e alinhar o Road Show da Commanderie.</p>
-      <p style="margin-top:6px;color:#8a8270;">A data e o local da próxima reunião serão comunicados por aqui e por e-mail.</p>
+    <div id="secComend" class="secblk"><a class="backsec" href="painel-importador.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
+      <div class="sec-title">Comendadores indicados — todas as importadoras</div><div class="sec-rule"></div>
+      <div class="card"><div id="tabComend"><p style="color:#8a8270;font-size:13px;">Carregando…</p></div></div>
     </div>
 
-    <div class="sec-title">Seus benefícios no programa</div><div class="sec-rule"></div>
-    <div class="card info"><ul style="margin:0;padding-left:18px;">
-      <li>Anuidade isenta para o responsável (pessoa física).</li>
-      <li>Indicar 2 membros e 2 restaurantes por ano.</li>
-      <li>Curso “Disciple de la Commanderie” para clientes B2B.</li>
-      <li>Acesso à Semaine des Primeurs e aos eventos da Commanderie.</li>
-      <li>Logo divulgada nas comunicações · voto nas entronizações.</li>
-      <li><b>BI dos vinhos de Bordeaux no Brasil</b> — em breve neste painel.</li>
-    </ul></div>
+    <div id="secRest" class="secblk"><a class="backsec" href="painel-importador.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
+      <div class="sec-title">Restaurantes indicados — todas as importadoras</div><div class="sec-rule"></div>
+      <div class="card"><div id="tabRestAll"><p style="color:#8a8270;font-size:13px;">Carregando…</p></div></div>
+    </div>
+
+    <div id="secProg" class="secblk"><a class="backsec" href="painel-importador.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
+      <div class="sec-title">Reunião anual dos Embaixadores</div><div class="sec-rule"></div>
+      <div class="card info"><p>Os Importadores Embaixadores se reúnem ao menos <b>uma vez por ano</b> para deliberar sobre o programa, votar novas entronizações de importadores e alinhar o Road Show da Commanderie.</p><p style="margin-top:6px;color:#8a8270;">A data e o local da próxima reunião serão comunicados por aqui e por e-mail.</p></div>
+      <div class="sec-title">Seus benefícios no programa</div><div class="sec-rule"></div>
+      <div class="card info"><ul style="margin:0;padding-left:18px;">
+        <li>Anuidade isenta para o responsável (pessoa física).</li>
+        <li>Indicar 2 membros e 2 restaurantes por ano.</li>
+        <li>Curso “Disciple de la Commanderie” para clientes B2B.</li>
+        <li>Acesso à Semaine des Primeurs e aos eventos da Commanderie.</li>
+        <li>Logo divulgada nas comunicações · voto nas entronizações.</li>
+        <li><b>BI dos vinhos de Bordeaux no Brasil</b> — em breve neste painel.</li>
+      </ul></div>
+    </div>
 
   </div>
 </div>
@@ -107,67 +143,96 @@ var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","
 var IMP=null;var ANO=new Date().getFullYear();var ehConselho=false;var TODAS=[];
 function st(id){["needLogin","notImp","loading","panel"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function renderHeader(){
-  document.getElementById("impNome").textContent=IMP?IMP.nome:"—";
-  document.getElementById("impSub").textContent=IMP?[IMP.responsavel_nome,IMP.cidade].filter(Boolean).join(" · "):"";
-}
-function montarSeletor(){
-  var sel=document.getElementById("impSel");if(!sel)return;
-  sel.innerHTML=TODAS.map(function(x){return "<option value=\""+x.id+"\">"+esc(x.nome)+(x.responsavel_nome?(" — "+esc(x.responsavel_nome)):"")+"</option>";}).join("");
-  if(IMP)sel.value=IMP.id;
-  document.getElementById("impSelWrap").style.display="block";
-}
-function trocarImp(){var sel=document.getElementById("impSel");var x=TODAS.find(function(t){return t.id===sel.value;});if(!x)return;IMP=x;renderHeader();carregar();}
+function fdata(d){if(!d)return "—";var p=(""+d).split("-");return p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):d;}
+function renderHeader(){document.getElementById("impNome").textContent=IMP?IMP.nome:"—";document.getElementById("impSub").textContent=IMP?[IMP.responsavel_nome,IMP.cidade].filter(Boolean).join(" · "):"";}
+function montarSeletor(){var sel=document.getElementById("impSel");if(!sel)return;sel.innerHTML=TODAS.map(function(x){return "<option value=\""+x.id+"\">"+esc(x.nome)+(x.responsavel_nome?(" — "+esc(x.responsavel_nome)):"")+"</option>";}).join("");if(IMP)sel.value=IMP.id;document.getElementById("impSelWrap").style.display="block";}
+function curSec(){return new URLSearchParams(location.search).get("sec");}
+function trocarImp(){var sel=document.getElementById("impSel");var x=TODAS.find(function(t){return t.id===sel.value;});if(!x)return;IMP=x;renderHeader();var s=curSec();if(s)loadSec(s);}
 async function init(){
   var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}
   var own=await sb.from("importadoras").select("*").eq("owner_user_id",u.id).maybeSingle();
   var ic=await sb.rpc("is_conselho");ehConselho=(!ic.error&&!!ic.data);
   if(ehConselho){var all=await sb.from("importadoras").select("*").order("nome",{ascending:true});TODAS=all.data||[];}
-  if(own.data){IMP=own.data;}
-  else if(ehConselho&&TODAS.length){IMP=TODAS[0];}
-  else{st("notImp");return;}
+  if(own.data){IMP=own.data;}else if(ehConselho&&TODAS.length){IMP=TODAS[0];}else{st("notImp");return;}
   st("panel");
   if(ehConselho&&TODAS.length)montarSeletor();
   renderHeader();
-  await carregar();
+  mostrarSecao();
 }
-async function carregar(){
-  var mm=await sb.from("importadora_membros").select("*").eq("importadora_id",IMP.id).order("created_at",{ascending:false});
-  var rr=await sb.from("importadora_restaurantes").select("*").eq("importadora_id",IMP.id).order("created_at",{ascending:false});
-  var bb=await sb.from("importadora_beneficios").select("*").eq("importadora_id",IMP.id).order("created_at",{ascending:false});
-  renderMembros(mm.data||[]);renderRest(rr.data||[]);renderBenef(bb.data||[]);
+function mostrarSecao(){
+  var sec=curSec();
+  var map={indmembro:"secIndMem",indrest:"secIndRest",beneficios:"secBenef",comendadores:"secComend",restaurantes:"secRest",programa:"secProg"};
+  Object.keys(map).forEach(function(k){var e=document.getElementById(map[k]);if(e)e.style.display="none";});
+  var menu=document.getElementById("menu");
+  if(sec&&map[sec]){if(menu)menu.style.display="none";var b=document.getElementById(map[sec]);if(b)b.style.display="block";loadSec(sec);}
+  else{if(menu)menu.style.display="block";}
 }
-function cotaBox(id,usado,cota,btnId){var rest=cota-usado;var el=document.getElementById(id);el.textContent=usado+" de "+cota+" usadas em "+ANO;el.className="cota"+(rest<=0?" full":"");var b=document.getElementById(btnId);if(b)b.disabled=rest<=0;return rest;}
-function renderMembros(rows){
-  var doAno=rows.filter(function(x){return Number(x.ano)===ANO;});
+function loadSec(sec){
+  try{
+    if(sec==="indmembro")carregarMeusMembros();
+    else if(sec==="indrest")carregarMeusRest();
+    else if(sec==="beneficios")carregarBeneficios();
+    else if(sec==="comendadores")carregarComendadores();
+    else if(sec==="restaurantes")carregarRestaurantes();
+  }catch(e){console.error(e);}
+}
+function cotaBox(id,usado,cota,btnId){var rest=cota-usado;var el=document.getElementById(id);if(el){el.textContent=usado+" de "+cota+" usadas em "+ANO;el.className="cota"+(rest<=0?" full":"");}var b=document.getElementById(btnId);if(b)b.disabled=rest<=0;return rest;}
+function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
+async function carregarMeusMembros(){
+  if(!IMP)return;
+  var q=await sb.from("importadora_membros").select("*").eq("importadora_id",IMP.id).order("created_at",{ascending:false});
+  var rows=q.data||[];var doAno=rows.filter(function(x){return Number(x.ano)===ANO;});
   cotaBox("cotaMem",doAno.length,IMP.cota_membros||2,"btnMem");
   if(!rows.length){document.getElementById("tabMem").innerHTML="";return;}
-  var tb="<table class=\"tbl\"><thead><tr><th>Ano</th><th>Nome</th><th>Tipo</th><th>Núcleo</th><th>Status</th><th></th></tr></thead><tbody>";
-  rows.forEach(function(x){tb+="<tr><td>"+esc(x.ano)+"</td><td>"+esc(x.nome)+"<br><small style=\"color:#9a937f;\">"+esc(x.email||"")+"</small></td><td>"+esc(x.tipo)+"</td><td>"+esc(x.nucleo||"")+"</td><td><span class=\"pill\">"+esc(x.status)+"</span></td><td><a class=\"rm\" onclick=\"delRow('importadora_membros','"+x.id+"')\">remover</a></td></tr>";});
+  var tb="<table class=\"tbl\"><thead><tr><th>Ano</th><th>Nome</th><th>Tipo</th><th>Intronização</th><th>Status</th><th></th></tr></thead><tbody>";
+  rows.forEach(function(x){tb+="<tr><td>"+esc(x.ano)+"</td><td>"+esc(x.nome)+"<br><small style=\"color:#9a937f;\">"+esc(x.email||"")+"</small></td><td>"+esc(x.tipo)+"</td><td>"+fdata(x.data_intronizacao)+"</td><td><span class=\"pill\">"+esc(x.status)+"</span></td><td><a class=\"rm\" onclick=\"delRow('importadora_membros','"+x.id+"')\">remover</a></td></tr>";});
   tb+="</tbody></table>";document.getElementById("tabMem").innerHTML=tb;
 }
-function renderRest(rows){
-  var doAno=rows.filter(function(x){return Number(x.ano)===ANO;});
+async function carregarMeusRest(){
+  if(!IMP)return;
+  var q=await sb.from("importadora_restaurantes").select("*").eq("importadora_id",IMP.id).order("created_at",{ascending:false});
+  var rows=q.data||[];var doAno=rows.filter(function(x){return Number(x.ano)===ANO;});
   cotaBox("cotaRest",doAno.length,IMP.cota_restaurantes||2,"btnRest");
   if(!rows.length){document.getElementById("tabRest").innerHTML="";return;}
   var tb="<table class=\"tbl\"><thead><tr><th>Ano</th><th>Restaurante</th><th>Cidade</th><th>Contato</th><th>Status</th><th></th></tr></thead><tbody>";
   rows.forEach(function(x){tb+="<tr><td>"+esc(x.ano)+"</td><td>"+esc(x.nome)+"</td><td>"+esc(x.cidade||"")+"</td><td>"+esc(x.contato||"")+"</td><td><span class=\"pill\">"+esc(x.status)+"</span></td><td><a class=\"rm\" onclick=\"delRow('importadora_restaurantes','"+x.id+"')\">remover</a></td></tr>";});
   tb+="</tbody></table>";document.getElementById("tabRest").innerHTML=tb;
 }
-function renderBenef(rows){
+async function carregarBeneficios(){
+  if(!IMP)return;
+  var q=await sb.from("importadora_beneficios").select("*").eq("importadora_id",IMP.id).order("created_at",{ascending:false});
+  var rows=q.data||[];
   if(!rows.length){document.getElementById("tabBenef").innerHTML="";return;}
   var tb="<table class=\"tbl\"><thead><tr><th>Título</th><th>Descrição</th><th>Desconto</th><th>Validade</th><th></th></tr></thead><tbody>";
   rows.forEach(function(x){tb+="<tr><td>"+esc(x.titulo)+"</td><td>"+esc(x.descricao||"")+"</td><td>"+esc(x.desconto||"")+"</td><td>"+esc(x.validade||"")+"</td><td><a class=\"rm\" onclick=\"delRow('importadora_beneficios','"+x.id+"')\">remover</a></td></tr>";});
   tb+="</tbody></table>";document.getElementById("tabBenef").innerHTML=tb;
 }
-function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
+async function carregarComendadores(){
+  var q=await sb.from("importadora_membros").select("*,importadoras(nome)").order("data_intronizacao",{ascending:false,nullsFirst:false}).order("created_at",{ascending:false});
+  if(q.error){document.getElementById("tabComend").innerHTML="<p style=\"color:#9a937f;font-size:13px;\">(rode o SQL da lista comum) "+esc(q.error.message)+"</p>";return;}
+  var rows=q.data||[];
+  if(!rows.length){document.getElementById("tabComend").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhum comendador indicado ainda.</p>";return;}
+  var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Indicado</th><th>Tipo</th><th>Núcleo</th><th>Intronização</th><th>Status</th></tr></thead><tbody>";
+  rows.forEach(function(x){var imp=(x.importadoras&&x.importadoras.nome)||"—";tb+="<tr><td><b>"+esc(imp)+"</b></td><td>"+esc(x.nome)+"</td><td>"+esc(x.tipo)+"</td><td>"+esc(x.nucleo||"")+"</td><td>"+fdata(x.data_intronizacao)+"</td><td><span class=\"pill\">"+esc(x.status)+"</span></td></tr>";});
+  tb+="</tbody></table>";document.getElementById("tabComend").innerHTML=tb;
+}
+async function carregarRestaurantes(){
+  var q=await sb.from("importadora_restaurantes").select("*,importadoras(nome)").order("created_at",{ascending:false});
+  if(q.error){document.getElementById("tabRestAll").innerHTML="<p style=\"color:#9a937f;font-size:13px;\">(rode o SQL da lista comum) "+esc(q.error.message)+"</p>";return;}
+  var rows=q.data||[];
+  if(!rows.length){document.getElementById("tabRestAll").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhum restaurante indicado ainda.</p>";return;}
+  var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Restaurante</th><th>Cidade</th><th>Ano</th><th>Status</th></tr></thead><tbody>";
+  rows.forEach(function(x){var imp=(x.importadoras&&x.importadoras.nome)||"—";tb+="<tr><td><b>"+esc(imp)+"</b></td><td>"+esc(x.nome)+"</td><td>"+esc(x.cidade||"")+"</td><td>"+esc(x.ano||"")+"</td><td><span class=\"pill\">"+esc(x.status)+"</span></td></tr>";});
+  tb+="</tbody></table>";document.getElementById("tabRestAll").innerHTML=tb;
+}
 async function addMembro(){
   var msg=document.getElementById("mMsg");var nome=val("mNome");
   if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o nome.";return;}
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
-  var r=await sb.from("importadora_membros").insert({importadora_id:IMP.id,ano:ANO,nome:nome,email:val("mEmail")||null,tipo:val("mTipo"),nucleo:val("mNucleo")||null});
+  var rec={importadora_id:IMP.id,ano:ANO,nome:nome,email:val("mEmail")||null,tipo:val("mTipo"),nucleo:val("mNucleo")||null,data_intronizacao:val("mDataIntro")||null};
+  var r=await sb.from("importadora_membros").insert(rec);
   if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}
-  msg.textContent="Indicado!";["mNome","mEmail","mNucleo"].forEach(function(id){document.getElementById(id).value="";});carregar();
+  msg.textContent="Indicado!";["mNome","mEmail","mNucleo","mDataIntro"].forEach(function(id){document.getElementById(id).value="";});carregarMeusMembros();
 }
 async function addRest(){
   var msg=document.getElementById("rMsg");var nome=val("rNome");
@@ -175,7 +240,7 @@ async function addRest(){
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
   var r=await sb.from("importadora_restaurantes").insert({importadora_id:IMP.id,ano:ANO,nome:nome,cidade:val("rCidade")||null,contato:val("rContato")||null});
   if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}
-  msg.textContent="Indicado!";["rNome","rCidade","rContato"].forEach(function(id){document.getElementById(id).value="";});carregar();
+  msg.textContent="Indicado!";["rNome","rCidade","rContato"].forEach(function(id){document.getElementById(id).value="";});carregarMeusRest();
 }
 async function addBenef(){
   var msg=document.getElementById("bMsg");var tit=val("bTit");
@@ -183,13 +248,14 @@ async function addBenef(){
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
   var r=await sb.from("importadora_beneficios").insert({importadora_id:IMP.id,titulo:tit,descricao:val("bDesc")||null,desconto:val("bDesconto")||null,validade:val("bVal")||null});
   if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}
-  msg.textContent="Adicionado!";["bTit","bDesc","bDesconto","bVal"].forEach(function(id){document.getElementById(id).value="";});carregar();
+  msg.textContent="Adicionado!";["bTit","bDesc","bDesconto","bVal"].forEach(function(id){document.getElementById(id).value="";});carregarBeneficios();
 }
 async function delRow(tabela,id){
   if(!confirm("Remover este item?"))return;
   var r=await sb.from(tabela).delete().eq("id",id);
   if(r.error){alert("Erro: "+r.error.message);return;}
-  carregar();
+  var s=curSec();if(s)loadSec(s);
 }
+window.addEventListener("popstate",mostrarSecao);
 document.addEventListener("DOMContentLoaded",init);
 </script></body></html>

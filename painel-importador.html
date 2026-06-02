@@ -68,7 +68,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 
     <div id="secComend" class="secblk"><a class="backsec" href="painel-importador.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
       <div class="sec-title">Comendadores</div><div class="sec-rule"></div>
-      <div class="card">
+      <div class="card imp-form">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;"><span style="font-size:13px;color:#5b5446;">Indicar Comendador ou Convidado de Honra — 1ª anuidade incluída.</span><span class="cota" id="cotaMem">—</span></div>
         <div class="grid">
           <input class="inp" id="mNome" placeholder="Nome do indicado">
@@ -85,7 +85,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 
     <div id="secEmb" class="secblk"><a class="backsec" href="painel-importador.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
       <div class="sec-title">Embaixadas</div><div class="sec-rule"></div>
-      <div class="card">
+      <div class="card imp-form">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;"><span style="font-size:13px;color:#5b5446;">Restaurantes com carta de Bordeaux (Placa de Embaixada).</span><span class="cota" id="cotaEmb">—</span></div>
         <div class="grid">
           <input class="inp" id="eNome" placeholder="Nome do restaurante">
@@ -102,7 +102,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 
     <div id="secParc" class="secblk"><a class="backsec" href="painel-importador.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a>
       <div class="sec-title">Restaurantes parceiros</div><div class="sec-rule"></div>
-      <div class="card">
+      <div class="card imp-form">
         <p style="font-size:13px;color:#5b5446;margin:0 0 10px;">Oferecem <b>rolha grátis</b> aos Comendadores. É diferente da Placa de Embaixada (toda embaixada é também parceira). Sem limite de sugestões.</p>
         <div class="grid">
           <input class="inp" id="pNome" placeholder="Nome do restaurante">
@@ -120,13 +120,15 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       <div class="sec-title">Benefícios aos Comendadores</div><div class="sec-rule"></div>
       <div class="card">
         <p style="font-size:13px;color:#5b5446;margin:0 0 10px;">Ofertas e condições especiais para os Comendadores de todo o Brasil.</p>
-        <div class="grid">
-          <input class="inp" id="bTit" placeholder="Título (ex.: 15% em Bordeaux)">
-          <input class="inp" id="bDesc" placeholder="Descrição">
-          <input class="inp" id="bDesconto" placeholder="Desconto / condição">
-          <input class="inp" id="bVal" placeholder="Validade (ex.: até 12/2026)">
+        <div class="imp-form">
+          <div class="grid">
+            <input class="inp" id="bTit" placeholder="Título (ex.: 15% em Bordeaux)">
+            <input class="inp" id="bDesc" placeholder="Descrição">
+            <input class="inp" id="bDesconto" placeholder="Desconto / condição">
+            <input class="inp" id="bVal" placeholder="Validade (ex.: até 12/2026)">
+          </div>
+          <div style="margin-top:12px;"><button class="btn-n" onclick="addBenef()">Adicionar benefício</button><span class="msg" id="bMsg"></span></div>
         </div>
-        <div style="margin-top:12px;"><button class="btn-n" onclick="addBenef()">Adicionar benefício</button><span class="msg" id="bMsg"></span></div>
         <div id="tabBenef"></div>
       </div>
     </div>
@@ -154,7 +156,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
-var IMP=null;var ANO=new Date().getFullYear();var MEUS_MEM=[];var MINHAS_EMB=[];
+var IMP=null;var IS_CONSELHO=false;var ANO=new Date().getFullYear();var MEUS_MEM=[];var MINHAS_EMB=[];
 function st(id){["needLogin","notImp","loading","panel"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function fdata(d){if(!d)return "—";var p=(""+d).split("T")[0].split("-");return p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):d;}
@@ -165,10 +167,20 @@ function rmLink(tabela,x){return (x.importadora_id===IMP.id)?("<a class=\"rm\" o
 async function init(){
   var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}
   var own=await sb.from("importadoras").select("*").eq("owner_user_id",u.id).maybeSingle();
-  if(own.error||!own.data){st("notImp");return;}
-  IMP=own.data;
-  document.getElementById("impNome").textContent=IMP.nome;
-  document.getElementById("impSub").textContent=[IMP.responsavel_nome,IMP.cidade].filter(Boolean).join(" · ");
+  if(own.data){
+    IMP=own.data;
+    document.getElementById("impNome").textContent=IMP.nome;
+    document.getElementById("impSub").textContent=[IMP.responsavel_nome,IMP.cidade].filter(Boolean).join(" · ");
+  } else {
+    var c=await sb.rpc("is_conselho");
+    if(c.error||!c.data){st("notImp");return;}
+    IS_CONSELHO=true;
+    IMP={id:null,nome:"Conselho — visão geral"};
+    var kEl=document.querySelector(".dhead .k");if(kEl)kEl.textContent="Conselho";
+    document.getElementById("impNome").textContent="Painel dos Importadores";
+    document.getElementById("impSub").textContent="Visão geral do programa — somente leitura";
+    document.querySelectorAll(".imp-form").forEach(function(e){e.style.display="none";});
+  }
   st("panel");
   mostrarSecao();
 }
@@ -220,11 +232,14 @@ async function carregarParceiros(){
   document.getElementById("tabParc").innerHTML=tb+"</tbody></table>";
 }
 async function carregarBeneficios(){
-  var q=await sb.from("importadora_beneficios").select("*").eq("importadora_id",IMP.id).order("created_at",{ascending:false});
+  var q=IS_CONSELHO
+    ? await sb.from("importadora_beneficios").select("*,importadoras(nome)").order("created_at",{ascending:false})
+    : await sb.from("importadora_beneficios").select("*").eq("importadora_id",IMP.id).order("created_at",{ascending:false});
   var rows=q.data||[];
   if(!rows.length){document.getElementById("tabBenef").innerHTML="";return;}
-  var tb="<table class=\"tbl\"><thead><tr><th>Título</th><th>Descrição</th><th>Desconto</th><th>Validade</th><th></th></tr></thead><tbody>";
-  rows.forEach(function(x){tb+="<tr><td>"+esc(x.titulo)+"</td><td>"+esc(x.descricao||"")+"</td><td>"+esc(x.desconto||"")+"</td><td>"+esc(x.validade||"")+"</td><td><a class=\"rm\" onclick=\"delRow('importadora_beneficios','"+x.id+"')\">remover</a></td></tr>";});
+  var impTh=IS_CONSELHO?"<th>Importadora</th>":"";
+  var tb="<table class=\"tbl\"><thead><tr>"+impTh+"<th>Título</th><th>Descrição</th><th>Desconto</th><th>Validade</th><th></th></tr></thead><tbody>";
+  rows.forEach(function(x){var impTd=IS_CONSELHO?("<td><b>"+esc((x.importadoras&&x.importadoras.nome)||"—")+"</b></td>"):"";var rm=IS_CONSELHO?"":"<a class=\"rm\" onclick=\"delRow('importadora_beneficios','"+x.id+"')\">remover</a>";tb+="<tr>"+impTd+"<td>"+esc(x.titulo)+"</td><td>"+esc(x.descricao||"")+"</td><td>"+esc(x.desconto||"")+"</td><td>"+esc(x.validade||"")+"</td><td>"+rm+"</td></tr>";});
   document.getElementById("tabBenef").innerHTML=tb+"</tbody></table>";
 }
 async function carregarImportadoras(){

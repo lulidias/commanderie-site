@@ -115,8 +115,9 @@ function mostrarSecao(){
   if(sec&&map[sec]){if(menu)menu.style.display="none";var b=document.getElementById(map[sec]);if(b)b.style.display="block";try{if(sec==="indicacoes")carregarIndicacoes();else if(sec==="eventos")carregarEventos();else if(sec==="financeiro")carregarFinanceiro();}catch(e){console.error(e);}}else{if(menu)menu.style.display="block";}
 }
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function avPill(nm,ok){var c=ok==="Avalizado"?"#2f6b3a":(ok==="Recusado"?"#8f1d24":"#9a937f");var t=ok==="Avalizado"?"✓":(ok==="Recusado"?"✗":"…");return "<span style=\"color:"+c+";\">"+t+" "+esc(nm||"—")+"</span>";}
-function avLine(r){if(!r.padrinho2_nome&&!r.mestre_nome)return "";return "<div style=\"font-size:12.5px;color:#8a8270;margin:6px 0;\">Avais: "+avPill(r.padrinho2_nome,r.padrinho2_ok)+" · "+avPill(r.mestre_nome,r.mestre_ok)+"</div>";}
+function avTxt(ok){return ok==="Avalizado"?"Avalizado":(ok==="Recusado"?"Recusado":"Pendente");}
+function avCor(ok){return ok==="Avalizado"?"#2f6b3a":(ok==="Recusado"?"#8f1d24":"#9a937f");}
+function avLine(r){if(!r.padrinho2_nome&&!r.mestre_nome)return "";var p2=r.padrinho2_ok;var meTxt,meCor;if(p2!=="Avalizado"){meTxt="Aguardando 2º padrinho";meCor="#9a937f";}else{meTxt=avTxt(r.mestre_ok);meCor=avCor(r.mestre_ok);}return "<div style=\"font-size:12.5px;color:#5b5446;margin:6px 0;background:#faf6ea;border:1px solid var(--line);border-radius:9px;padding:8px 11px;\"><div><b>2º padrinho:</b> "+esc(r.padrinho2_nome||"—")+" — <span style=\"color:"+avCor(p2)+";font-weight:bold;\">"+avTxt(p2)+"</span></div><div style=\"margin-top:2px;\"><b>Mestre:</b> "+esc(r.mestre_nome||"—")+" — <span style=\"color:"+meCor+";font-weight:bold;\">"+meTxt+"</span></div></div>";}
 async function carregarIndicacoes(){
   var el=document.getElementById("indList");
   var q=await sb.from("indicacoes").select("*").order("created_at",{ascending:false});

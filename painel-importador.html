@@ -166,20 +166,21 @@ function curSec(){return new URLSearchParams(location.search).get("sec");}
 function rmLink(tabela,x){return (x.importadora_id===IMP.id)?("<a class=\"rm\" onclick=\"delRow('"+tabela+"','"+x.id+"')\">remover</a>"):"";}
 async function init(){
   var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}
-  var own=await sb.from("importadoras").select("*").eq("owner_user_id",u.id).maybeSingle();
-  if(own.data){
-    IMP=own.data;
-    document.getElementById("impNome").textContent=IMP.nome;
-    document.getElementById("impSub").textContent=[IMP.responsavel_nome,IMP.cidade].filter(Boolean).join(" · ");
-  } else {
-    var c=await sb.rpc("is_conselho");
-    if(c.error||!c.data){st("notImp");return;}
+  // Conselho (Mestres + fundadores) prevalece: acesso a tudo, mesmo se tambem for dono de importadora.
+  var c=await sb.rpc("is_conselho");
+  if(!c.error&&c.data){
     IS_CONSELHO=true;
     IMP={id:null,nome:"Conselho — visão geral"};
     var kEl=document.querySelector(".dhead .k");if(kEl)kEl.textContent="Conselho";
     document.getElementById("impNome").textContent="Painel dos Importadores";
     document.getElementById("impSub").textContent="Visão geral do programa — somente leitura";
     document.querySelectorAll(".imp-form").forEach(function(e){e.style.display="none";});
+  } else {
+    var own=await sb.from("importadoras").select("*").eq("owner_user_id",u.id).maybeSingle();
+    if(own.error||!own.data){st("notImp");return;}
+    IMP=own.data;
+    document.getElementById("impNome").textContent=IMP.nome;
+    document.getElementById("impSub").textContent=[IMP.responsavel_nome,IMP.cidade].filter(Boolean).join(" · ");
   }
   st("panel");
   mostrarSecao();

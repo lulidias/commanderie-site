@@ -67,7 +67,21 @@ function esca(s){return esc(s).replace(/"/g,"&quot;");}
 function brl(v){return "R$ "+(Number(v)||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 function inic(n){var p=(""+(n||"")).trim().split(/\s+/);return (((p[0]||"")[0]||"")+((p[1]||"")[0]||"")).toUpperCase()||"·";}
 function state(s){["needLogin","notAllowed","loading","panel"].forEach(function(id){var e=document.getElementById(id);if(e)e.style.display=(id===s)?"block":"none";});}
-function comprimir(file,maxDim,q){return new Promise(function(res){var img=new Image();img.onload=function(){var w=img.naturalWidth,h=img.naturalHeight;var sc=Math.min(1,maxDim/Math.max(w,h));var cw=Math.round(w*sc),ch=Math.round(h*sc);var cv=document.createElement("canvas");cv.width=cw;cv.height=ch;cv.getContext("2d").drawImage(img,0,0,cw,ch);cv.toBlob(function(b){res(b||file);},"image/jpeg",q);};img.onerror=function(){res(file);};var r=new FileReader();r.onload=function(e){img.src=e.target.result;};r.readAsDataURL(file);});}
+// Enquadra a foto no formato do campo (4:3), centralizada, com margem,
+// preenchendo o fundo com a cor de fundo da propria foto (cantos) — sem cortar.
+function enquadrar(file){return new Promise(function(res){var img=new Image();img.onload=function(){
+  var TW=1000,TH=750,PAD=0.06;var w=img.naturalWidth,h=img.naturalHeight;
+  var t=document.createElement("canvas");t.width=w;t.height=h;var tc=t.getContext("2d");tc.drawImage(img,0,0);
+  function corner(x,y){try{var d=tc.getImageData(x,y,1,1).data;return [d[0],d[1],d[2]];}catch(e){return [255,255,255];}}
+  var cs=[corner(1,1),corner(w-2,1),corner(1,h-2),corner(w-2,h-2)];
+  var R=Math.round((cs[0][0]+cs[1][0]+cs[2][0]+cs[3][0])/4),G=Math.round((cs[0][1]+cs[1][1]+cs[2][1]+cs[3][1])/4),B=Math.round((cs[0][2]+cs[1][2]+cs[2][2]+cs[3][2])/4);
+  var cv=document.createElement("canvas");cv.width=TW;cv.height=TH;var cx=cv.getContext("2d");
+  cx.fillStyle="rgb("+R+","+G+","+B+")";cx.fillRect(0,0,TW,TH);
+  var aw=TW*(1-2*PAD),ah=TH*(1-2*PAD);var sc=Math.min(aw/w,ah/h);var dw=w*sc,dh=h*sc;
+  cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality="high";
+  cx.drawImage(img,(TW-dw)/2,(TH-dh)/2,dw,dh);
+  cv.toBlob(function(bl){res(bl||file);},"image/jpeg",0.88);
+};img.onerror=function(){res(file);};var rd=new FileReader();rd.onload=function(e){img.src=e.target.result;};rd.readAsDataURL(file);});}
 function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
 async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){state("needLogin");return;}var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){state("notAllowed");return;}state("panel");await carregar();await carregarPedidos();}
 async function addProduto(){
@@ -97,7 +111,7 @@ async function carregar(){
 }
 async function setPreco(id,v){var pr=parseFloat(v);var r=await sb.from("loja_produtos").update({preco:isNaN(pr)?null:pr}).eq("id",id);if(r.error)alert("Erro: "+r.error.message);}
 async function setAtivo(id,v){var r=await sb.from("loja_produtos").update({ativo:v}).eq("id",id);if(r.error)alert("Erro: "+r.error.message);}
-async function upFoto(id,files){if(!files||!files.length)return;var blob=await comprimir(files[0],1100,0.84);var path=id+"_"+Date.now()+".jpg";var up=await sb.storage.from("loja").upload(path,blob,{contentType:"image/jpeg",upsert:true});if(up.error){alert("Erro ao enviar foto: "+up.error.message);return;}var url=sb.storage.from("loja").getPublicUrl(path).data.publicUrl;var r=await sb.from("loja_produtos").update({foto_url:url}).eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}carregar();}
+async function upFoto(id,files){if(!files||!files.length)return;var blob=await enquadrar(files[0]);var path=id+"_"+Date.now()+".jpg";var up=await sb.storage.from("loja").upload(path,blob,{contentType:"image/jpeg",upsert:true});if(up.error){alert("Erro ao enviar foto: "+up.error.message);return;}var url=sb.storage.from("loja").getPublicUrl(path).data.publicUrl;var r=await sb.from("loja_produtos").update({foto_url:url}).eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}carregar();}
 async function delProduto(id){if(!confirm("Remover este produto?"))return;var r=await sb.from("loja_produtos").delete().eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}carregar();}
 async function carregarPedidos(){
   var el=document.getElementById("pedidos");

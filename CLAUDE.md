@@ -50,10 +50,16 @@ Site da **Commanderie de Bordeaux do Brasil**, uma confraria dedicada aos vinhos
 - Importadoras parceiras (seção "Apoio" no index): Epice, Mistral, World Wine, Enclos, Chez France, Interfood, Casa Santa Luzia (logos a inserir).
 - As páginas foram geradas originalmente por um script Python no ambiente Cowork (não incluído neste repositório). Daqui em diante, editar os `.html` diretamente.
 
+## Já concluído (estava listado como pendência)
+- **Backend no ar** (Supabase): login real por e-mail + ativação por código, cadastro/CRM, storage de fotos (buckets `fotos`/`eventos`/`parceiros`/`dicas`/`loja`), RLS, pg_cron e pg_net.
+- **Galeria real** populada: eventos `realizado=true` + tabela `evento_fotos` + lightbox (7 eventos, centenas de fotos).
+- **Logos das importadoras** (monocromáticas) na home + página `importadores.html`.
+- **Open Graph / compartilhamento** (`img/og-card.png` 1200×630) nas páginas públicas; **PWA instalável** (manifest + ícones + tela cheia no iPhone).
+
 ## Pendências / próximos passos
-- Backend (login real + cadastro/CRM + Asaas + storage de fotos).
-- Logos reais das importadoras.
-- Tradução PT/EN/FR com seletor de idiomas.
+- **Pagamento real (Asaas/PIX)**: hoje `pagamentos.html` só mostra a chave PIX. Falta integrar Asaas (anuidade/eventos/doação) + webhook "pagou → marca pago → libera carteira".
+- Tradução PT/EN/FR com seletor de idiomas (há base de `data-i18n`).
+- Carteira digital de verdade (Apple Wallet .pkpass / Google Wallet) — hoje é visual.
 - gcvb.com.br redirecionando para o domínio principal.
-- Galeria com fotos/vídeos reais dos eventos e viagens.
 - Fotos dos demais membros no diretório.
+- Ligar logins dos outros 5 responsáveis das importadoras (só a Épice está vinculada).

@@ -33,68 +33,68 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .okmsg{display:none;max-width:680px;margin:0 auto;text-align:center;background:#eef6ee;border:1px solid #cfe6cf;color:#2f6b3a;border-radius:14px;padding:24px;font-family:Arial,sans-serif;line-height:1.6;}
 @media(max-width:560px){.two{grid-template-columns:1fr;}}
 </style></head><body>
-<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Ficha de Intronização</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a></div>
-<div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para preencher a ficha.</p><a class="btn" href="index.html">Entrar</a></div>
-<div id="naoEleito" class="state" style="display:none;"><h2>Ficha de Intronização</h2><p>Esta ficha é destinada aos <b>Comendadores eleitos</b> antes da intronização.</p><a class="btn" href="index.html">← Voltar ao Painel</a></div>
-<div id="jaEnviada" class="state" style="display:none;"><h2>Ficha já enviada ✦</h2><p>Recebemos a sua ficha de intronização. A Secretaria entrará em contato.<br><b>Bordeaux, toujours Bordeaux.</b></p><a class="btn" href="index.html">← Voltar ao Painel</a></div>
-<div id="loading" class="state">Carregando…</div>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b data-i18n="fi_brand">Ficha de Intronização</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}" data-i18n="fi_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">FR</a></span></div>
+<div id="needLogin" class="state" style="display:none;"><h2 data-i18n="fi_nl_h">Acesso restrito</h2><p data-i18n="fi_nl_p">Entre na sua conta para preencher a ficha.</p><a class="btn" href="index.html" data-i18n="fi_nl_btn">Entrar</a></div>
+<div id="naoEleito" class="state" style="display:none;"><h2 data-i18n="fi_ne_h">Ficha de Intronização</h2><p data-i18n="fi_ne_p">Esta ficha é destinada aos <b>Comendadores eleitos</b> antes da intronização.</p><a class="btn" href="index.html" data-i18n="fi_ne_btn">← Voltar ao Painel</a></div>
+<div id="jaEnviada" class="state" style="display:none;"><h2 data-i18n="fi_je_h">Ficha já enviada ✦</h2><p data-i18n="fi_je_p">Recebemos a sua ficha de intronização. A Secretaria entrará em contato.<br><b>Bordeaux, toujours Bordeaux.</b></p><a class="btn" href="index.html" data-i18n="fi_je_btn">← Voltar ao Painel</a></div>
+<div id="loading" class="state" data-i18n="fi_loading">Carregando…</div>
 <div id="content" style="display:none;">
-  <div class="dhead"><div class="k">Comendador eleito</div><h1>Ficha de Intronização</h1></div>
+  <div class="dhead"><div class="k" data-i18n="fi_k">Comendador eleito</div><h1 data-i18n="fi_h1">Ficha de Intronização</h1></div>
   <div class="wrap">
-    <div class="note">Você já faz parte da Commanderie como <b>Comendador eleito</b>. Complete sua ficha — ela compõe o dossiê apresentado no seu capítulo de intronização.</div>
+    <div class="note" data-i18n="fi_note">Você já faz parte da Commanderie como <b>Comendador eleito</b>. Complete sua ficha — ela compõe o dossiê apresentado no seu capítulo de intronização.</div>
     <form class="card" id="ficha" onsubmit="enviarFicha(event)">
-      <div class="seclbl">I · Informações pessoais</div>
+      <div class="seclbl" data-i18n="fi_sec1">I · Informações pessoais</div>
       <div class="two">
-        <div class="field"><label>Nome</label><input id="f_nome" required placeholder="Nome"></div>
-        <div class="field"><label>Sobrenome</label><input id="f_sobrenome" required placeholder="Sobrenome"></div>
+        <div class="field"><label data-i18n="fi_l_nome">Nome</label><input id="f_nome" required placeholder="Nome" data-i18n-ph="ph_nome"></div>
+        <div class="field"><label data-i18n="fi_l_sobre">Sobrenome</label><input id="f_sobrenome" required placeholder="Sobrenome" data-i18n-ph="ph_sobre"></div>
       </div>
       <div class="two">
-        <div class="field"><label>Data de nascimento</label><input id="f_nasc" required placeholder="dd/mm/aaaa"></div>
-        <div class="field"><label>Tratamento</label><select id="f_trat"><option>Sr.</option><option>Sra.</option><option>Dr.</option><option>Dra.</option></select></div>
+        <div class="field"><label data-i18n="fi_l_nasc">Data de nascimento</label><input id="f_nasc" required placeholder="dd/mm/aaaa"></div>
+        <div class="field"><label data-i18n="fi_l_trat">Tratamento</label><select id="f_trat"><option>Sr.</option><option>Sra.</option><option>Dr.</option><option>Dra.</option></select></div>
       </div>
-      <div class="field"><label>Endereço completo</label><input id="f_end" required placeholder="Rua, nº, complemento, bairro"></div>
+      <div class="field"><label data-i18n="fi_l_end">Endereço completo</label><input id="f_end" required placeholder="Rua, nº, complemento, bairro" data-i18n-ph="ph_end"></div>
       <div class="two">
-        <div class="field"><label>Cidade</label><input id="f_cidade" required placeholder="Cidade"></div>
-        <div class="field"><label>CEP</label><input id="f_cep" required placeholder="00000-000"></div>
-      </div>
-      <div class="two">
-        <div class="field"><label>Nacionalidade</label><input id="f_nac" required placeholder="Brasileira"></div>
-        <div class="field"><label>Núcleo</label><select id="f_nucleo"><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select></div>
+        <div class="field"><label data-i18n="fi_l_cidade">Cidade</label><input id="f_cidade" required placeholder="Cidade" data-i18n-ph="ph_cidade"></div>
+        <div class="field"><label data-i18n="fi_l_cep">CEP</label><input id="f_cep" required placeholder="00000-000"></div>
       </div>
       <div class="two">
-        <div class="field"><label>Profissão</label><input id="f_prof" required placeholder="Profissão"></div>
-        <div class="field"><label>Telefone / WhatsApp</label><input id="f_tel" required placeholder="(11) 90000-0000"></div>
+        <div class="field"><label data-i18n="fi_l_nac">Nacionalidade</label><input id="f_nac" required placeholder="Brasileira" data-i18n-ph="ph_nac"></div>
+        <div class="field"><label data-i18n="fi_l_nucleo">Núcleo</label><select id="f_nucleo"><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select></div>
       </div>
       <div class="two">
-        <div class="field"><label>E-mail</label><input id="f_email" type="email" required placeholder="email@exemplo.com"></div>
-        <div class="field"><label>Restrições alimentares</label><input id="f_rest" required placeholder="Nenhuma"></div>
+        <div class="field"><label data-i18n="fi_l_prof">Profissão</label><input id="f_prof" required placeholder="Profissão" data-i18n-ph="ph_prof"></div>
+        <div class="field"><label data-i18n="fi_l_tel">Telefone / WhatsApp</label><input id="f_tel" required placeholder="(11) 90000-0000"></div>
+      </div>
+      <div class="two">
+        <div class="field"><label data-i18n="fi_l_email">E-mail</label><input id="f_email" type="email" required placeholder="email@exemplo.com" data-i18n-ph="ph_email"></div>
+        <div class="field"><label data-i18n="fi_l_rest">Restrições alimentares</label><input id="f_rest" required placeholder="Nenhuma" data-i18n-ph="ph_rest"></div>
       </div>
       <div class="sponsors">
-        <h4>Padrinhos</h4>
-        <p>Os dois Commandeurs que apresentaram sua candidatura.</p>
+        <h4 data-i18n="fi_sp_h">Padrinhos</h4>
+        <p data-i18n="fi_sp_p">Os dois Commandeurs que apresentaram sua candidatura.</p>
         <div class="two">
-          <div class="field" style="margin-bottom:0;"><label>1º Padrinho</label><input id="f_pad1" required placeholder="Nome · nº de membro"></div>
-          <div class="field" style="margin-bottom:0;"><label>2º Padrinho</label><input id="f_pad2" required placeholder="Nome · nº de membro"></div>
+          <div class="field" style="margin-bottom:0;"><label data-i18n="fi_l_p1">1º Padrinho</label><input id="f_pad1" required placeholder="Nome · nº de membro" data-i18n-ph="ph_pad"></div>
+          <div class="field" style="margin-bottom:0;"><label data-i18n="fi_l_p2">2º Padrinho</label><input id="f_pad2" required placeholder="Nome · nº de membro" data-i18n-ph="ph_pad"></div>
         </div>
       </div>
-      <div class="seclbl">II · Currículo &amp; Biografia</div>
-      <div class="field"><label>Atividades e interesses ligados a esta candidatura</label><textarea id="f_ativ" required placeholder="Sua atuação atual e o que o aproxima do mundo do vinho."></textarea></div>
-      <div class="field"><label>Biografia — sua trajetória</label><textarea id="f_bio" required placeholder="Um breve relato de sua origem e do trabalho que realiza."></textarea></div>
-      <div class="field"><label>Honrarias e confrarias a que pertence</label><textarea id="f_hon" required placeholder="Distinções e ordens báquicas."></textarea></div>
-      <div class="field"><label>Sua ligação particular com Bordeaux</label><textarea id="f_lig" required placeholder="Viagens, châteaux, appellations, amizades na região."></textarea></div>
+      <div class="seclbl" data-i18n="fi_sec2">II · Currículo &amp; Biografia</div>
+      <div class="field"><label data-i18n="fi_l_ativ">Atividades e interesses ligados a esta candidatura</label><textarea id="f_ativ" required placeholder="Sua atuação atual e o que o aproxima do mundo do vinho." data-i18n-ph="ph_ativ"></textarea></div>
+      <div class="field"><label data-i18n="fi_l_bio">Biografia — sua trajetória</label><textarea id="f_bio" required placeholder="Um breve relato de sua origem e do trabalho que realiza." data-i18n-ph="ph_bio"></textarea></div>
+      <div class="field"><label data-i18n="fi_l_honra">Honrarias e confrarias a que pertence</label><textarea id="f_hon" required placeholder="Distinções e ordens báquicas." data-i18n-ph="ph_honra"></textarea></div>
+      <div class="field"><label data-i18n="fi_l_ligacao">Sua ligação particular com Bordeaux</label><textarea id="f_lig" required placeholder="Viagens, châteaux, appellations, amizades na região." data-i18n-ph="ph_ligacao"></textarea></div>
       <div class="two">
-        <div class="field"><label>Quando provou seu primeiro Bordeaux?</label><input id="f_prim" required placeholder="Ano e contexto"></div>
-        <div class="field"><label>Seu Bordeaux preferido — e por quê?</label><input id="f_pref" required placeholder="Ex.: Saint-Émilion, Margaux..."></div>
+        <div class="field"><label data-i18n="fi_l_primeiro">Quando provou seu primeiro Bordeaux?</label><input id="f_prim" required placeholder="Ano e contexto" data-i18n-ph="ph_primeiro"></div>
+        <div class="field"><label data-i18n="fi_l_pref">Seu Bordeaux preferido — e por quê?</label><input id="f_pref" required placeholder="Ex.: Saint-Émilion, Margaux..." data-i18n-ph="ph_pref"></div>
       </div>
-      <div class="field"><label>Uma experiência memorável com um vinho de Bordeaux</label><textarea id="f_exp" required placeholder="Uma garrafa, um jantar, uma visita a um château."></textarea></div>
-      <div class="field"><label>Outras histórias com os vinhos e a gastronomia de Bordeaux</label><textarea id="f_outras" required placeholder="Fique à vontade para compartilhar."></textarea></div>
-      <div class="seclbl">III · Autorizações e compromissos</div>
-      <label class="chk"><input id="f_c1" type="checkbox" required>Autorizo o contato pela Secretaria e pelos canais de comunicação da Commanderie.</label>
-      <label class="chk"><input id="f_c2" type="checkbox" required>Autorizo o uso de fotos em que eu apareça nos eventos, para fins institucionais.</label>
-      <label class="chk"><input id="f_c3" type="checkbox" required>Comprometo-me a pagar a anuidade do exercício e a mantê-la em dia nos termos do Estatuto.</label>
-      <label class="chk"><input id="f_c4" type="checkbox" required>Declaro conhecer e aceitar o Estatuto Social e a Política de Privacidade da Commanderie de Bordeaux no Brasil.</label>
-      <div class="field" style="margin-top:6px;"><label>Local e data</label><input id="f_ld" required placeholder="São Paulo, ___/___/______"></div>
-      <div style="text-align:center;margin-top:14px;"><button class="btn-go" type="submit" id="btnEnviar">Enviar minha ficha</button><div id="fmsg" style="margin-top:10px;font-size:13.5px;"></div></div>
+      <div class="field"><label data-i18n="fi_l_exp">Uma experiência memorável com um vinho de Bordeaux</label><textarea id="f_exp" required placeholder="Uma garrafa, um jantar, uma visita a um château." data-i18n-ph="ph_exp"></textarea></div>
+      <div class="field"><label data-i18n="fi_l_outras">Outras histórias com os vinhos e a gastronomia de Bordeaux</label><textarea id="f_outras" required placeholder="Fique à vontade para compartilhar." data-i18n-ph="ph_outras"></textarea></div>
+      <div class="seclbl" data-i18n="fi_sec3">III · Autorizações e compromissos</div>
+      <label class="chk"><input id="f_c1" type="checkbox" required><span data-i18n="fi_chk1">Autorizo o contato pela Secretaria e pelos canais de comunicação da Commanderie.</span></label>
+      <label class="chk"><input id="f_c2" type="checkbox" required><span data-i18n="fi_chk2">Autorizo o uso de fotos em que eu apareça nos eventos, para fins institucionais.</span></label>
+      <label class="chk"><input id="f_c3" type="checkbox" required><span data-i18n="fi_chk3">Comprometo-me a pagar a anuidade do exercício e a mantê-la em dia nos termos do Estatuto.</span></label>
+      <label class="chk"><input id="f_c4" type="checkbox" required><span data-i18n="fi_chk4">Declaro conhecer e aceitar o Estatuto Social e a Política de Privacidade da Commanderie de Bordeaux no Brasil.</span></label>
+      <div class="field" style="margin-top:6px;"><label data-i18n="fi_l_local">Local e data</label><input id="f_ld" required placeholder="São Paulo, ___/___/______" data-i18n-ph="ph_local"></div>
+      <div style="text-align:center;margin-top:14px;"><button class="btn-go" type="submit" id="btnEnviar" data-i18n="fi_btn">Enviar minha ficha</button><div id="fmsg" style="margin-top:10px;font-size:13.5px;"></div></div>
     </form>
   </div>
 </div>
@@ -132,4 +132,13 @@ async function enviarFicha(ev){
   window.scrollTo(0,0);
 }
 document.addEventListener("DOMContentLoaded",carregar);
-</script></body></html>
+</script><script>
+var I18N={
+ en:{fi_brand:"Induction Form",fi_back:"&#8592; Back",fi_nl_h:"Restricted access",fi_nl_p:"Sign in to complete the form.",fi_nl_btn:"Sign in",fi_ne_h:"Induction Form",fi_ne_p:"This form is intended for <b>elected Commanders</b> before induction.",fi_ne_btn:"← Back to Panel",fi_je_h:"Form already submitted ✦",fi_je_p:"We have received your induction form. The Secretariat will be in touch.<br><b>Bordeaux, toujours Bordeaux.</b>",fi_je_btn:"← Back to Panel",fi_loading:"Loading…",fi_k:"Elected Commander",fi_h1:"Induction Form",fi_note:"You are already part of the Commanderie as an <b>elected Commander</b>. Complete your form — it forms the dossier presented at your induction chapter.",fi_sec1:"I · Personal information",fi_sec2:"II · Résumé & Biography",fi_sec3:"III · Authorisations and commitments",fi_sp_h:"Sponsors",fi_sp_p:"The two Commandeurs who presented your candidacy.",fi_chk1:"I authorise contact by the Secretariat and through the Commanderie’s communication channels.",fi_chk2:"I authorise the use of photos in which I appear at events, for institutional purposes.",fi_chk3:"I undertake to pay the annual fee for the year and to keep it up to date under the terms of the Statute.",fi_chk4:"I declare that I know and accept the Social Statute and the Privacy Policy of the Commanderie de Bordeaux in Brazil.",fi_btn:"Submit my form",fi_l_nome:"First name",fi_l_sobre:"Surname",fi_l_nasc:"Date of birth",fi_l_trat:"Title",fi_l_end:"Full address",fi_l_cidade:"City",fi_l_cep:"Postal code",fi_l_nac:"Nationality",fi_l_nucleo:"Chapter",fi_l_prof:"Profession",fi_l_tel:"Phone / WhatsApp",fi_l_email:"E-mail",fi_l_rest:"Dietary restrictions",fi_l_p1:"1st Sponsor",fi_l_p2:"2nd Sponsor",fi_l_ativ:"Activities and interests related to this candidacy",fi_l_bio:"Biography — your background",fi_l_honra:"Honours and brotherhoods you belong to",fi_l_ligacao:"Your personal connection with Bordeaux",fi_l_primeiro:"When did you taste your first Bordeaux?",fi_l_pref:"Your favourite Bordeaux — and why?",fi_l_exp:"A memorable experience with a Bordeaux wine",fi_l_outras:"Other stories with Bordeaux wines and cuisine",fi_l_local:"Place and date",ph_nome:"First name",ph_sobre:"Surname",ph_end:"Street, no., unit, neighbourhood",ph_cidade:"City",ph_nac:"Brazilian",ph_prof:"Profession",ph_email:"email@example.com",ph_rest:"None",ph_ativ:"Your current work and what draws you to the world of wine.",ph_bio:"A brief account of your origins and the work you do.",ph_honra:"Distinctions and bacchic orders.",ph_ligacao:"Trips, châteaux, appellations, friendships in the region.",ph_primeiro:"Year and context",ph_pref:"E.g. Saint-Émilion, Margaux...",ph_exp:"A bottle, a dinner, a visit to a château.",ph_outras:"Feel free to share.",ph_local:"São Paulo, ___/___/______",ph_pad:"Name · member no."},
+ fr:{fi_brand:"Fiche d’Intronisation",fi_back:"&#8592; Retour",fi_nl_h:"Accès restreint",fi_nl_p:"Connectez-vous pour remplir la fiche.",fi_nl_btn:"Se connecter",fi_ne_h:"Fiche d’Intronisation",fi_ne_p:"Cette fiche est destinée aux <b>Commandeurs élus</b> avant l’intronisation.",fi_ne_btn:"← Retour à l’Espace",fi_je_h:"Fiche déjà envoyée ✦",fi_je_p:"Nous avons reçu votre fiche d’intronisation. Le Secrétariat vous contactera.<br><b>Bordeaux, toujours Bordeaux.</b>",fi_je_btn:"← Retour à l’Espace",fi_loading:"Chargement…",fi_k:"Commandeur élu",fi_h1:"Fiche d’Intronisation",fi_note:"Vous faites déjà partie de la Commanderie en tant que <b>Commandeur élu</b>. Complétez votre fiche — elle compose le dossier présenté à votre chapitre d’intronisation.",fi_sec1:"I · Informations personnelles",fi_sec2:"II · Parcours & Biographie",fi_sec3:"III · Autorisations et engagements",fi_sp_h:"Parrains",fi_sp_p:"Les deux Commandeurs qui ont présenté votre candidature.",fi_chk1:"J’autorise le contact par le Secrétariat et par les canaux de communication de la Commanderie.",fi_chk2:"J’autorise l’utilisation de photos sur lesquelles j’apparais lors des événements, à des fins institutionnelles.",fi_chk3:"Je m’engage à payer la cotisation de l’exercice et à la maintenir à jour selon les termes du Statut.",fi_chk4:"Je déclare connaître et accepter le Statut Social et la Politique de Confidentialité de la Commanderie de Bordeaux au Brésil.",fi_btn:"Envoyer ma fiche",fi_l_nome:"Prénom",fi_l_sobre:"Nom",fi_l_nasc:"Date de naissance",fi_l_trat:"Civilité",fi_l_end:"Adresse complète",fi_l_cidade:"Ville",fi_l_cep:"Code postal",fi_l_nac:"Nationalité",fi_l_nucleo:"Cercle",fi_l_prof:"Profession",fi_l_tel:"Téléphone / WhatsApp",fi_l_email:"E-mail",fi_l_rest:"Restrictions alimentaires",fi_l_p1:"1er Parrain",fi_l_p2:"2e Parrain",fi_l_ativ:"Activités et intérêts liés à cette candidature",fi_l_bio:"Biographie — votre parcours",fi_l_honra:"Distinctions et confréries auxquelles vous appartenez",fi_l_ligacao:"Votre lien particulier avec Bordeaux",fi_l_primeiro:"Quand avez-vous goûté votre premier Bordeaux ?",fi_l_pref:"Votre Bordeaux préféré — et pourquoi ?",fi_l_exp:"Une expérience mémorable avec un vin de Bordeaux",fi_l_outras:"D’autres histoires avec les vins et la gastronomie de Bordeaux",fi_l_local:"Lieu et date",ph_nome:"Prénom",ph_sobre:"Nom",ph_end:"Rue, n°, complément, quartier",ph_cidade:"Ville",ph_nac:"Brésilienne",ph_prof:"Profession",ph_email:"email@exemple.com",ph_rest:"Aucune",ph_ativ:"Votre activité actuelle et ce qui vous rapproche du monde du vin.",ph_bio:"Un bref récit de vos origines et du travail que vous accomplissez.",ph_honra:"Distinctions et ordres bachiques.",ph_ligacao:"Voyages, châteaux, appellations, amitiés dans la région.",ph_primeiro:"Année et contexte",ph_pref:"Ex. : Saint-Émilion, Margaux...",ph_exp:"Une bouteille, un dîner, une visite dans un château.",ph_outras:"N’hésitez pas à partager.",ph_local:"São Paulo, ___/___/______",ph_pad:"Nom · n° de membre"}
+};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var ph=document.querySelectorAll("[data-i18n-ph]");for(var p=0;p<ph.length;p++){var pk=ph[p].getAttribute("data-i18n-ph"),ok="ph:"+pk;if(!(ok in _orig))_orig[ok]=ph[p].getAttribute("placeholder");ph[p].setAttribute("placeholder",(l==="pt"||!d||d[pk]==null)?_orig[ok]:d[pk]);}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
+</body></html>

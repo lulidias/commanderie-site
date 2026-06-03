@@ -91,6 +91,8 @@ select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size
     <div id="impGeral" class="fin-grid" style="margin-bottom:14px;"></div>
     <div id="impTabela"></div>
     <div style="text-align:center;"><div style="margin:20px 0 0;"><a href="https://www.instagram.com/commanderiedebordeauxbr/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;color:#1e2a56;text-decoration:none;font-size:13px;letter-spacing:.3px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" style="flex:none;"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52.01-4.77.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7-.06 1.25-.07 1.62-.07 4.77s.01 3.52.07 4.77c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.25.06 1.62.07 4.77.07s3.52-.01 4.77-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.25.07-1.62.07-4.77s-.01-3.52-.07-4.77c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 0 0-.68-1.06 2.85 2.85 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.52 4.01 15.15 4 12 4zm0 3.07A4.93 4.93 0 1 1 7.07 12 4.93 4.93 0 0 1 12 7.07zm0 1.8A3.13 3.13 0 1 0 15.13 12 3.13 3.13 0 0 0 12 8.87zm5.13-.99a1.15 1.15 0 1 1-1.15 1.15 1.15 1.15 0 0 1 1.15-1.15z"/></svg>@commanderiedebordeauxbr</a></div></div>
+    <div class="sec-title">Balancete / Demonstrativo (PDF)</div><div class="sec-rule"></div>
+    <div class="card"><b style="font-family:Georgia,serif;color:var(--navy);font-size:16px;">Publicar balancete</b><p style="font-size:12.5px;color:#8a8270;margin:4px 0 10px;">Anexe o PDF do contador. Ele fica disponível para todos os membros baixarem na página de Transparência.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:center;"><input id="balTitulo" placeholder="Título (ex.: Balancete 2026 — 1º semestre)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="balAno" type="number" placeholder="Ano" value="2026" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><label style="cursor:pointer;color:var(--navy);border:1.5px dashed var(--gold);border-radius:9px;padding:8px 14px;font-size:13px;text-align:center;">Escolher PDF<input id="balFile" type="file" accept="application/pdf" style="display:none" onchange="addBalancete(this.files[0])"></label></div><span id="balMsg" style="font-size:13px;display:inline-block;margin-top:8px;"></span><div id="balLista" style="margin-top:12px;"></div></div>
     </div>
   </div>
 </div>
@@ -166,8 +168,41 @@ var ANO_ANUIDADE=2026;var anuTc=0,anuTp=0;var receitas=[];var despesas=[];var CI
 async function carregarCiclo(){try{var r=await sb.from("parametros").select("valor").eq("chave","ciclo_anuidade").maybeSingle();if(!r.error&&r.data&&r.data.valor){CICLO=parseInt(r.data.valor,10)||CICLO;}}catch(e){}var a=document.getElementById("cicloAtual");if(a)a.textContent=CICLO;var inp=document.getElementById("cicloAno");if(inp&&!inp.value)inp.value=CICLO+1;}
 async function virarCiclo(){var inp=document.getElementById("cicloAno");var msg=document.getElementById("cicloMsg");var ano=parseInt(inp.value,10);if(!ano){msg.style.color="#8f1d24";msg.textContent="Informe o ano.";return;}if(!confirm("Virar a vigência da carteira para "+ano+"?\n\nIsso marca TODOS os membros não isentos como 'a pagar' do novo ciclo. Depois você relança quem já pagou no quadro de anuidades, e as carteiras passam a valer para "+ano+".\n\nConfirmar?"))return;msg.style.color="#2f6b3a";msg.textContent="Aplicando...";var r=await sb.rpc("virar_ciclo",{p_ano:ano,p_reset:true});if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}CICLO=ano;var a=document.getElementById("cicloAtual");if(a)a.textContent=ano;inp.value=ano+1;msg.textContent="Ciclo "+ano+" lançado!";carregarFinanceiro();}
 async function togglePago(cod,pago){var r=await sb.rpc("marcar_anuidade",{p_codigo:cod,p_pago:pago});if(r.error){alert("Erro: "+r.error.message);return;}carregarFinanceiro();}
+async function carregarBalancetes(){
+  var box=document.getElementById("balLista");if(!box)return;
+  var r=await sb.from("balancetes").select("*").order("ano",{ascending:false}).order("created_at",{ascending:false});
+  if(r.error){box.innerHTML="<p style=\"font-size:12px;color:#9a937f;\">(rode o SQL ‘balancetes’ no Supabase) "+esc(r.error.message)+"</p>";return;}
+  var rows=r.data||[];
+  if(!rows.length){box.innerHTML="<p style=\"font-size:12.5px;color:#8a8270;\">Nenhum balancete publicado ainda.</p>";return;}
+  box.innerHTML=rows.map(function(b){return "<div style=\"display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #ece0c2;\"><a href=\""+b.url+"\" target=\"_blank\" rel=\"noopener\" style=\"color:#1e2a56;text-decoration:none;font-size:13.5px;\">\u{1F4C4} "+esc(b.titulo||("Balancete "+(b.ano||"")))+(b.ano?(" <small style=\\\"color:#8a8270;\\\">("+b.ano+")</small>"):"")+"</a><a onclick=\"delBalancete('"+b.id+"','"+encodeURIComponent(b.url)+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;\">remover</a></div>";}).join("");
+}
+async function addBalancete(file){
+  var msg=document.getElementById("balMsg");if(!file){return;}
+  if(file.type!=="application/pdf"){msg.style.color="#8f1d24";msg.textContent="Envie um arquivo PDF.";return;}
+  var tit=(document.getElementById("balTitulo")||{}).value||"";
+  var ano=parseInt((document.getElementById("balAno")||{}).value,10)||null;
+  msg.style.color="#2f6b3a";msg.textContent="Enviando...";
+  var safe=(file.name||"balancete.pdf").replace(/[^a-zA-Z0-9._-]/g,"_");
+  var path=(ano||"sem-ano")+"/"+Date.now()+"_"+safe;
+  var up=await sb.storage.from("transparencia").upload(path,file,{contentType:"application/pdf",upsert:false});
+  if(up.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+up.error.message;return;}
+  var url=sb.storage.from("transparencia").getPublicUrl(path).data.publicUrl;
+  var ins=await sb.from("balancetes").insert({ano:ano,titulo:tit||null,url:url});
+  if(ins.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+ins.error.message;return;}
+  msg.textContent="Publicado!";
+  var t=document.getElementById("balTitulo");if(t)t.value="";var f=document.getElementById("balFile");if(f)f.value="";
+  carregarBalancetes();
+}
+async function delBalancete(id,urlEnc){
+  if(!confirm("Remover este balancete?"))return;
+  var r=await sb.from("balancetes").delete().eq("id",id);
+  if(r.error){alert("Erro: "+r.error.message);return;}
+  try{var url=decodeURIComponent(urlEnc);var m=url.split("/transparencia/");if(m[1])await sb.storage.from("transparencia").remove([m[1].split("?")[0]]);}catch(e){}
+  carregarBalancetes();
+}
 async function carregarFinanceiro(){
   await carregarCiclo();
+  carregarBalancetes();
   var q=await sb.from("membros").select("codigo,nome,grau,nucleo,anuidade_valor,anuidade_paga").order("nucleo",{ascending:true}).order("codigo",{ascending:true});
   if(q.error){document.getElementById("finResumo").innerHTML="<p style=\"color:#8f1d24;\">Erro: "+esc(q.error.message)+"</p>";}
   else{

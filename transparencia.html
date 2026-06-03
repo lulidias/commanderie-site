@@ -82,6 +82,11 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       </div>
     </div>
 
+    <div class="card" style="margin-top:14px;">
+      <div class="sec-h" style="margin-top:0;" data-i18n="tr_bal_h">Balancete oficial</div>
+      <div id="balDocs"></div>
+    </div>
+
     <div class="note" data-i18n="tr_note">Valores conforme os registros atuais no sistema. O balancete oficial da contabilidade será incorporado assim que estiver disponível.</div>
     <div class="upd"><span data-i18n="tr_updated">Última atualização dos dados:</span> <span id="ger">—</span></div>
     <div class="foot">Bordeaux, toujours Bordeaux</div>
@@ -132,13 +137,23 @@ async function carregar(){
   if(r.error||!r.data){document.getElementById("needLogin").style.display="block";return;}
   render(r.data);
   document.getElementById("content").style.display="block";
+  loadBalancetes();
   var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);
+}
+function lblBalVazio(){var l="pt";try{l=localStorage.getItem("lang")||"pt";}catch(e){}return l==="en"?"Not published yet.":(l==="fr"?"Pas encore publié.":"Ainda não publicado.");}
+async function loadBalancetes(){
+  var box=document.getElementById("balDocs");if(!box)return;
+  var r=await sb.from("balancetes").select("ano,titulo,url").order("ano",{ascending:false}).order("created_at",{ascending:false});
+  if(r.error){box.innerHTML='<div class="empty">'+lblBalVazio()+'</div>';return;}
+  var rows=r.data||[];
+  if(!rows.length){box.innerHTML='<div class="empty">'+lblBalVazio()+'</div>';return;}
+  box.innerHTML=rows.map(function(b){return '<div class="row"><a href="'+b.url+'" target="_blank" rel="noopener" style="color:#1e2a56;text-decoration:none;font-size:14px;">\u{1F4C4} '+(b.titulo||('Balancete '+(b.ano||'')))+'</a><span class="v">'+(b.ano||'')+'</span></div>';}).join("");
 }
 document.addEventListener("DOMContentLoaded",function(){carregar();});
 </script><script>
 var I18N={
- en:{tr_brand:"Transparency",tr_back:"&#8592; Back",tr_nl_h:"Restricted access",tr_nl_p:"Sign in to view the financial report.",tr_nl_btn:"Sign in",tr_loading:"Loading…",tr_k:"Financial report",tr_h1:"Transparency Panel",tr_intro:"The Commanderie is committed to full transparency with its members. Here you can follow, in summary form, the confraternity’s revenues, expenses and balance.",tr_caixa:"Cash balance",tr_entradas:"Income",tr_saidas:"Expenses",tr_receber:"Receivable",tr_pagar:"Payable",tr_rec_h:"Revenues",tr_des_h:"Expenses",tr_pano_h:"Confraternity overview",tr_membros:"Members",tr_ev_real:"Events held",tr_ev_fut:"Upcoming events",tr_ciclo:"Dues cycle",tr_note:"Figures based on the current records in the system. The official accounting statement will be incorporated as soon as it is available.",tr_updated:"Data last updated:"},
- fr:{tr_brand:"Transparence",tr_back:"&#8592; Retour",tr_nl_h:"Accès restreint",tr_nl_p:"Connectez-vous pour consulter le rapport financier.",tr_nl_btn:"Se connecter",tr_loading:"Chargement…",tr_k:"Reddition de comptes",tr_h1:"Espace Transparence",tr_intro:"La Commanderie s’engage à une transparence totale envers ses membres. Vous suivez ici, de façon résumée, les recettes, les dépenses et le solde de la confrérie.",tr_caixa:"Solde de caisse",tr_entradas:"Entrées",tr_saidas:"Sorties",tr_receber:"À recevoir",tr_pagar:"À payer",tr_rec_h:"Recettes",tr_des_h:"Dépenses",tr_pano_h:"Panorama de la confrérie",tr_membros:"Membres",tr_ev_real:"Événements réalisés",tr_ev_fut:"Prochains événements",tr_ciclo:"Cycle de cotisation",tr_note:"Montants selon les enregistrements actuels du système. Le bilan comptable officiel sera intégré dès qu’il sera disponible.",tr_updated:"Dernière mise à jour des données :"}
+ en:{tr_brand:"Transparency",tr_back:"&#8592; Back",tr_nl_h:"Restricted access",tr_nl_p:"Sign in to view the financial report.",tr_nl_btn:"Sign in",tr_loading:"Loading…",tr_k:"Financial report",tr_h1:"Transparency Panel",tr_intro:"The Commanderie is committed to full transparency with its members. Here you can follow, in summary form, the confraternity’s revenues, expenses and balance.",tr_caixa:"Cash balance",tr_entradas:"Income",tr_saidas:"Expenses",tr_receber:"Receivable",tr_pagar:"Payable",tr_rec_h:"Revenues",tr_des_h:"Expenses",tr_pano_h:"Confraternity overview",tr_membros:"Members",tr_ev_real:"Events held",tr_ev_fut:"Upcoming events",tr_ciclo:"Dues cycle",tr_note:"Figures based on the current records in the system. The official accounting statement will be incorporated as soon as it is available.",tr_bal_h:"Official statement",tr_updated:"Data last updated:"},
+ fr:{tr_brand:"Transparence",tr_back:"&#8592; Retour",tr_nl_h:"Accès restreint",tr_nl_p:"Connectez-vous pour consulter le rapport financier.",tr_nl_btn:"Se connecter",tr_loading:"Chargement…",tr_k:"Reddition de comptes",tr_h1:"Espace Transparence",tr_intro:"La Commanderie s’engage à une transparence totale envers ses membres. Vous suivez ici, de façon résumée, les recettes, les dépenses et le solde de la confrérie.",tr_caixa:"Solde de caisse",tr_entradas:"Entrées",tr_saidas:"Sorties",tr_receber:"À recevoir",tr_pagar:"À payer",tr_rec_h:"Recettes",tr_des_h:"Dépenses",tr_pano_h:"Panorama de la confrérie",tr_membros:"Membres",tr_ev_real:"Événements réalisés",tr_ev_fut:"Prochains événements",tr_ciclo:"Cycle de cotisation",tr_note:"Montants selon les enregistrements actuels du système. Le bilan comptable officiel sera intégré dès qu’il sera disponible.",tr_bal_h:"Bilan officiel",tr_updated:"Dernière mise à jour des données :"}
 };
 var _orig={};
 function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}

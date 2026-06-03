@@ -33,11 +33,11 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
 </style></head><body>
-<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Eventos</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a></div>
-<div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para ver os eventos.</p><a class="btn" href="index.html">Entrar</a></div>
-<div id="loading" class="state">Carregando…</div>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b data-i18n="ev_brand">Eventos</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}" data-i18n="ev_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
+<div id="needLogin" class="state" style="display:none;"><h2 data-i18n="ev_nl_h">Acesso restrito</h2><p data-i18n="ev_nl_p">Entre na sua conta para ver os eventos.</p><a class="btn" href="index.html" data-i18n="ev_nl_btn">Entrar</a></div>
+<div id="loading" class="state" data-i18n="ev_loading">Carregando…</div>
 <div id="content" style="display:none;">
-  <div class="dhead"><div class="k">Confraria</div><h1>Eventos</h1><p style="max-width:540px;margin:0 auto;color:#5b5446;line-height:1.6;">Capítulos, viagens, jantares e almoços da Commanderie — realizados e por vir.</p></div>
+  <div class="dhead"><div class="k" data-i18n="ev_k">Confraria</div><h1 data-i18n="ev_h1">Eventos</h1><p style="max-width:540px;margin:0 auto;color:#5b5446;line-height:1.6;" data-i18n="ev_intro">Capítulos, viagens, jantares e almoços da Commanderie — realizados e por vir.</p></div>
   <div class="wrap" id="evWrap"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -85,4 +85,10 @@ document.addEventListener("DOMContentLoaded",carregar);
 </script>
 <div id="lightbox" onclick="if(event.target===this)lbClose()" style="display:none;position:fixed;inset:0;background:rgba(10,8,5,.93);z-index:60;align-items:center;justify-content:center;"><span onclick="lbClose()" style="position:absolute;top:12px;right:20px;color:#fff;font-size:32px;cursor:pointer;line-height:1;">&times;</span><span onclick="lbNav(-1,event)" style="position:absolute;left:6px;top:50%;transform:translateY(-50%);color:#fff;font-size:44px;cursor:pointer;padding:10px 16px;user-select:none;">&#8249;</span><img id="lightboxImg" alt="" style="max-width:90%;max-height:90vh;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.6);"><span onclick="lbNav(1,event)" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);color:#fff;font-size:44px;cursor:pointer;padding:10px 16px;user-select:none;">&#8250;</span><div id="lbCount" style="position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#e7d8a8;font-size:13px;letter-spacing:1px;"></div></div>
 <script>0;
-</script></body></html>
+</script><script>
+var I18N={en:{ev_brand:"Events",ev_back:"&#8592; Back",ev_nl_h:"Restricted access",ev_nl_p:"Sign in to view events.",ev_nl_btn:"Sign in",ev_loading:"Loading…",ev_k:"Brotherhood",ev_h1:"Events",ev_intro:"Chapters, trips, dinners and lunches of the Commanderie — past and upcoming."},fr:{ev_brand:"Événements",ev_back:"&#8592; Retour",ev_nl_h:"Accès restreint",ev_nl_p:"Connectez-vous pour voir les événements.",ev_nl_btn:"Se connecter",ev_loading:"Chargement…",ev_k:"Confrérie",ev_h1:"Événements",ev_intro:"Chapitres, voyages, dîners et déjeuners de la Commanderie — passés et à venir."}};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
+</body></html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Transparência — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
+<style>
+:root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;transition:all .15s ease;}.dtop .back:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.dhead{text-align:center;padding:34px 20px 4px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:32px;margin:6px 0 2px;}
+.wrap{max-width:680px;margin:0 auto;padding:14px 20px 60px;}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0;}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 18px;}
+.kpi .lab{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8a8270;}
+.kpi .val{font-family:Georgia,serif;font-size:23px;color:var(--navy);margin-top:5px;}
+.kpi.big{grid-column:1 / -1;text-align:center;background:linear-gradient(160deg,#243161,#161f3f);border:none;}
+.kpi.big .lab{color:var(--gold-l);}
+.kpi.big .val{color:var(--parch);font-size:34px;}
+.pos{color:#2f6b3a;}.neg{color:#8f1d24;}
+.sec-h{font-family:Georgia,serif;color:var(--navy);font-size:19px;margin:22px 0 8px;}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #ece0c2;}
+.row:last-child{border-bottom:none;}
+.row .t{color:#2a2620;font-size:14px;}
+.row .v{font-family:Georgia,serif;font-size:15px;color:var(--navy);white-space:nowrap;}
+.row.tot{border-top:2px solid var(--line);border-bottom:none;margin-top:2px;padding-top:12px;}
+.row.tot .t{font-weight:bold;color:var(--navy);}
+.row.tot .v{font-weight:bold;}
+.empty{color:#9a937f;font-size:13.5px;padding:12px 0;}
+.mini{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;margin-top:6px;}
+.mini div{text-align:center;}
+.mini .n{font-family:Georgia,serif;font-size:22px;color:var(--navy);}
+.mini .l{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8a8270;}
+.note{font-size:12px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-top:18px;line-height:1.5;}
+.upd{text-align:center;font-size:11.5px;color:#9a937f;margin-top:14px;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
+.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+.foot{text-align:center;margin:26px auto 0;font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+</style></head><body>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b data-i18n="tr_brand">Transparência</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}" data-i18n="tr_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
+
+<div id="needLogin" class="state" style="display:none;"><h2 data-i18n="tr_nl_h">Acesso restrito</h2><p data-i18n="tr_nl_p">Entre na sua conta para ver a prestação de contas.</p><a class="btn" href="index.html" data-i18n="tr_nl_btn">Entrar</a></div>
+<div id="loading" class="state" data-i18n="tr_loading">Carregando…</div>
+
+<div id="content" style="display:none;">
+  <div class="dhead"><div class="k" data-i18n="tr_k">Prestação de contas</div><h1 data-i18n="tr_h1">Painel da Transparência</h1></div>
+  <div class="wrap">
+    <div class="card">
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.6;margin:0;" data-i18n="tr_intro">A Commanderie preza pela transparência total com seus membros. Aqui você acompanha, de forma resumida, as receitas, as despesas e o saldo da confraria.</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi big"><div class="lab" data-i18n="tr_caixa">Saldo em caixa</div><div class="val" id="kCaixa">—</div></div>
+      <div class="kpi"><div class="lab" data-i18n="tr_entradas">Entradas</div><div class="val pos" id="kEntradas">—</div></div>
+      <div class="kpi"><div class="lab" data-i18n="tr_saidas">Saídas</div><div class="val neg" id="kSaidas">—</div></div>
+      <div class="kpi"><div class="lab" data-i18n="tr_receber">A receber</div><div class="val" id="kReceber">—</div></div>
+      <div class="kpi"><div class="lab" data-i18n="tr_pagar">A pagar</div><div class="val" id="kPagar">—</div></div>
+    </div>
+
+    <div class="card">
+      <div class="sec-h" style="margin-top:0;" data-i18n="tr_rec_h">Receitas</div>
+      <div id="recList"></div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="sec-h" style="margin-top:0;" data-i18n="tr_des_h">Despesas</div>
+      <div id="desList"></div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="sec-h" style="margin-top:0;" data-i18n="tr_pano_h">Panorama da confraria</div>
+      <div class="mini">
+        <div><div class="n" id="pMembros">—</div><div class="l" data-i18n="tr_membros">Membros</div></div>
+        <div><div class="n" id="pReal">—</div><div class="l" data-i18n="tr_ev_real">Eventos realizados</div></div>
+        <div><div class="n" id="pFut">—</div><div class="l" data-i18n="tr_ev_fut">Próximos eventos</div></div>
+        <div><div class="n" id="pCiclo">—</div><div class="l" data-i18n="tr_ciclo">Ciclo da anuidade</div></div>
+      </div>
+    </div>
+
+    <div class="note" data-i18n="tr_note">Valores conforme os registros atuais no sistema. O balancete oficial da contabilidade será incorporado assim que estiver disponível.</div>
+    <div class="upd"><span data-i18n="tr_updated">Última atualização dos dados:</span> <span id="ger">—</span></div>
+    <div class="foot">Bordeaux, toujours Bordeaux</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+function brl(v){return (Number(v)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
+function setTxt(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
+function lblAnuidade(){var l="pt";try{l=localStorage.getItem("lang")||"pt";}catch(e){}return l==="en"?"Members’ annual dues":(l==="fr"?"Cotisations des membres":"Anuidades de membros");}
+function lblVazio(){var l="pt";try{l=localStorage.getItem("lang")||"pt";}catch(e){}return l==="en"?"No entries recorded yet.":(l==="fr"?"Aucune écriture enregistrée pour l’instant.":"Sem lançamentos registrados ainda.");}
+function lblTotal(){var l="pt";try{l=localStorage.getItem("lang")||"pt";}catch(e){}return l==="en"?"Total":(l==="fr"?"Total":"Total");}
+function renderList(id,pairs,total){
+  var box=document.getElementById(id);if(!box)return;
+  if(!pairs.length){box.innerHTML='<div class="empty">'+lblVazio()+'</div>';return;}
+  var h="";
+  for(var i=0;i<pairs.length;i++){h+='<div class="row"><span class="t">'+pairs[i][0]+'</span><span class="v">'+brl(pairs[i][1])+'</span></div>';}
+  h+='<div class="row tot"><span class="t">'+lblTotal()+'</span><span class="v">'+total+'</span></div>';
+  box.innerHTML=h;
+}
+function render(d){
+  var f=d.financeiro||{};
+  setTxt("kCaixa",brl(f.caixa));
+  setTxt("kEntradas",brl(f.entradas));
+  setTxt("kSaidas",brl(f.saidas));
+  setTxt("kReceber",brl(f.a_receber));
+  setTxt("kPagar",brl(f.a_pagar));
+  var rec=[];
+  if((f.anuidade_recebida||0)>0) rec.push([lblAnuidade(), f.anuidade_recebida]);
+  var rc=d.receitas_por_categoria||{}; for(var k in rc){ if(rc[k]) rec.push([k,rc[k]]); }
+  renderList("recList", rec, brl(f.entradas));
+  var des=[]; var dc=d.despesas_por_categoria||{}; for(var k2 in dc){ if(dc[k2]) des.push([k2,dc[k2]]); }
+  renderList("desList", des, brl(f.saidas));
+  var mb=d.membros||{}, ev=d.eventos||{};
+  setTxt("pMembros", mb.total||0);
+  setTxt("pReal", ev.realizados||0);
+  setTxt("pFut", ev.futuros||0);
+  setTxt("pCiclo", d.ciclo||"—");
+  setTxt("ger", d.gerado_em||"—");
+}
+async function carregar(){
+  var u=(await sb.auth.getUser()).data.user;
+  document.getElementById("loading").style.display="none";
+  if(!u){document.getElementById("needLogin").style.display="block";return;}
+  var r=await sb.rpc("bi_transparencia");
+  if(r.error||!r.data){document.getElementById("needLogin").style.display="block";return;}
+  render(r.data);
+  document.getElementById("content").style.display="block";
+  var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);
+}
+document.addEventListener("DOMContentLoaded",function(){carregar();});
+</script><script>
+var I18N={
+ en:{tr_brand:"Transparency",tr_back:"&#8592; Back",tr_nl_h:"Restricted access",tr_nl_p:"Sign in to view the financial report.",tr_nl_btn:"Sign in",tr_loading:"Loading…",tr_k:"Financial report",tr_h1:"Transparency Panel",tr_intro:"The Commanderie is committed to full transparency with its members. Here you can follow, in summary form, the confraternity’s revenues, expenses and balance.",tr_caixa:"Cash balance",tr_entradas:"Income",tr_saidas:"Expenses",tr_receber:"Receivable",tr_pagar:"Payable",tr_rec_h:"Revenues",tr_des_h:"Expenses",tr_pano_h:"Confraternity overview",tr_membros:"Members",tr_ev_real:"Events held",tr_ev_fut:"Upcoming events",tr_ciclo:"Dues cycle",tr_note:"Figures based on the current records in the system. The official accounting statement will be incorporated as soon as it is available.",tr_updated:"Data last updated:"},
+ fr:{tr_brand:"Transparence",tr_back:"&#8592; Retour",tr_nl_h:"Accès restreint",tr_nl_p:"Connectez-vous pour consulter le rapport financier.",tr_nl_btn:"Se connecter",tr_loading:"Chargement…",tr_k:"Reddition de comptes",tr_h1:"Espace Transparence",tr_intro:"La Commanderie s’engage à une transparence totale envers ses membres. Vous suivez ici, de façon résumée, les recettes, les dépenses et le solde de la confrérie.",tr_caixa:"Solde de caisse",tr_entradas:"Entrées",tr_saidas:"Sorties",tr_receber:"À recevoir",tr_pagar:"À payer",tr_rec_h:"Recettes",tr_des_h:"Dépenses",tr_pano_h:"Panorama de la confrérie",tr_membros:"Membres",tr_ev_real:"Événements réalisés",tr_ev_fut:"Prochains événements",tr_ciclo:"Cycle de cotisation",tr_note:"Montants selon les enregistrements actuels du système. Le bilan comptable officiel sera intégré dès qu’il sera disponible.",tr_updated:"Dernière mise à jour des données :"}
+};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
+</body></html>

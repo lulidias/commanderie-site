@@ -36,14 +36,14 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
 </style></head><body>
-<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Boutique</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a></div>
-<div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para acessar a Boutique.</p><a class="btn" href="index.html">Entrar</a></div>
-<div id="loading" class="state">Carregando…</div>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Boutique</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}" data-i18n="lj_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
+<div id="needLogin" class="state" style="display:none;"><h2 data-i18n="lj_nl_h">Acesso restrito</h2><p data-i18n="lj_nl_p">Entre na sua conta para acessar a Boutique.</p><a class="btn" href="index.html" data-i18n="lj_nl_btn">Entrar</a></div>
+<div id="loading" class="state" data-i18n="lj_loading">Carregando…</div>
 <div id="content" style="display:none;">
-  <div class="dhead"><div class="k">Commanderie de Bordeaux</div><h1>Boutique</h1><p>Produtos oficiais com a marca da Commanderie. Encomende e pague por PIX — o Conselho confirma e organiza a entrega.</p></div>
+  <div class="dhead"><div class="k">Commanderie de Bordeaux</div><h1>Boutique</h1><p data-i18n="lj_intro">Produtos oficiais com a marca da Commanderie. Encomende e pague por PIX — o Conselho confirma e organiza a entrega.</p></div>
   <div class="wrap">
     <div id="catalogo"></div>
-    <div class="sec-title">Meus pedidos</div><div class="sec-rule"></div>
+    <div class="sec-title" data-i18n="lj_meus">Meus pedidos</div><div class="sec-rule"></div>
     <div id="meusPedidos"></div>
   </div>
 </div>
@@ -104,4 +104,10 @@ async function meusPedidos(){
   el.innerHTML=tb+"</tbody></table><div class=\"note\">Pagamento por PIX (em <a href=\"pagamentos.html\" style=\"color:#1e2a56;\">Pagamentos</a>) — envie o comprovante à Secretaria. Cartão e recorrência entram quando a conta da associação estiver ativa.</div>";
 }
 document.addEventListener("DOMContentLoaded",init);
-</script></body></html>
+</script><script>
+var I18N={en:{lj_back:"&#8592; Back",lj_nl_h:"Restricted access",lj_nl_p:"Sign in to access the Boutique.",lj_nl_btn:"Sign in",lj_loading:"Loading…",lj_intro:"Official products bearing the Commanderie’s mark. Order and pay by PIX — the Council confirms and arranges delivery.",lj_meus:"My orders"},fr:{lj_back:"&#8592; Retour",lj_nl_h:"Accès restreint",lj_nl_p:"Connectez-vous pour accéder à la Boutique.",lj_nl_btn:"Se connecter",lj_loading:"Chargement…",lj_intro:"Produits officiels à la marque de la Commanderie. Commandez et payez par PIX — le Conseil confirme et organise la livraison.",lj_meus:"Mes commandes"}};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
+</body></html>

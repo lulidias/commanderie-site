@@ -44,7 +44,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
-var DESDE={1:"11/2025",2:"12/2025",3:"03/2026",4:"03/2026",5:"04/2026"};
+var DESDE={1:"Nov 2025",2:"Dez 2025",3:"Mar 2026",4:"Mar 2026",5:"Abr 2026"};
 function ini(n){var p=(""+(n||"")).trim().split(/\s+/);return (((p[0]||"")[0]||"")+((p[p.length-1]||"")[0]||"")).toUpperCase();}
 function avatar(m){if(m.foto_url)return '<span class="av"><img src="'+m.foto_url+'"></span>';return '<span class="av">'+ini(m.nome)+'</span>';}
 function fmtData(d){if(!d)return "";var p=(""+d).split("-");return p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):d;}

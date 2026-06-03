@@ -63,14 +63,15 @@
     <div class="top">
       <img src="img/brasao.png" alt="Brasão Commanderie de Bordeaux">
       <div class="kicker">Commanderie de Bordeaux</div>
-      <div class="kicker2">Brasil &middot; Grão-Mestre</div>
+      <div class="kicker2" data-i18n="as_kicker2">Brasil &middot; Grão-Mestre</div>
+      <span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-top:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">FR</a></span>
     </div>
 
-    <h1>Bem-vindo, <b>Manuel&nbsp;Brandão</b></h1>
-    <p class="sub">Sua carteira de membro está pronta.</p>
+    <h1><span data-i18n="as_welcome">Bem-vindo,</span> <b>Manuel&nbsp;Brandão</b></h1>
+    <p class="sub" data-i18n="as_sub">Sua carteira de membro está pronta.</p>
 
     <div class="status">
-      <span class="dot"></span> Anuidade em dia &middot; válida até 12/2026
+      <span class="dot"></span> <span data-i18n="as_status">Anuidade em dia &middot; válida até 12/2026</span>
     </div>
 
     <div class="cardwrap">
@@ -80,92 +81,92 @@
     <div class="btns">
       <a class="btn btn-apple" href="CDB-2026-001.pkpass">
         <svg viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm12.5 5a2 2 0 0 0 0 4H22v-4h-5.5z"/></svg>
-        <span><small>Adicionar à</small>Apple Wallet</span>
+        <span><small data-i18n="as_addto">Adicionar à</small>Apple Wallet</span>
       </a>
-      <a class="btn btn-dl" href="CDB-2026-001.pkpass" download>Baixar carteira (.pkpass)</a>
+      <a class="btn btn-dl" href="CDB-2026-001.pkpass" download data-i18n="as_dl">Baixar carteira (.pkpass)</a>
     </div>
 
     <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px;font-family:Arial,Helvetica,sans-serif;">
-      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;">Sugerir um nome ao Conselho</div>
-      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;">A entrada é por indicação. Sugira um nome ao Conselho — se aprovado, o Conselho envia o formulário diretamente ao candidato e conduz as próximas etapas. Você acompanha tudo pelo status, abaixo.</p>
+      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;" data-i18n="as_sug_t">Sugerir um nome ao Conselho</div>
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;" data-i18n="as_sug_p">A entrada é por indicação. Sugira um nome ao Conselho — se aprovado, o Conselho envia o formulário diretamente ao candidato e conduz as próximas etapas. Você acompanha tudo pelo status, abaixo.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-        <input id="candNome" placeholder="Nome do indicado" style="font-family:Georgia,serif;font-size:14px;color:#2a2620;background:#fbf7ec;border:1px solid var(--line);border-radius:9px;padding:10px 12px;">
-        <input id="candEmail" type="email" placeholder="E-mail do indicado" style="font-family:Georgia,serif;font-size:14px;color:#2a2620;background:#fbf7ec;border:1px solid var(--line);border-radius:9px;padding:10px 12px;">
+        <input id="candNome" placeholder="Nome do indicado" data-i18n-ph="ph_candNome" style="font-family:Georgia,serif;font-size:14px;color:#2a2620;background:#fbf7ec;border:1px solid var(--line);border-radius:9px;padding:10px 12px;">
+        <input id="candEmail" type="email" placeholder="E-mail do indicado" data-i18n-ph="ph_candEmail" style="font-family:Georgia,serif;font-size:14px;color:#2a2620;background:#fbf7ec;border:1px solid var(--line);border-radius:9px;padding:10px 12px;">
       </div>
-      <textarea id="candJust" placeholder="Breve justificativa (opcional)" style="width:100%;font-family:Georgia,serif;font-size:14px;color:#2a2620;background:#fbf7ec;border:1px solid var(--line);border-radius:9px;padding:10px 12px;min-height:62px;margin-bottom:12px;"></textarea>
-      <a href="#" onclick="var n=document.getElementById('candNome').value,e=document.getElementById('candEmail').value;var o=document.getElementById('convOk');if(n&&e){o.style.display='block';o.style.color='#2f6b3a';o.textContent='Sugestão enviada ao Conselho: '+n+' ('+e+'). Você poderá acompanhar o status abaixo.';}else{o.style.display='block';o.style.color='#8f1d24';o.textContent='Preencha o nome e o e-mail do indicado.';}return false;" style="display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border-radius:11px;padding:11px 18px;font-size:15px;">Enviar sugestão ao Conselho</a>
+      <textarea id="candJust" placeholder="Breve justificativa (opcional)" data-i18n-ph="ph_candJust" style="width:100%;font-family:Georgia,serif;font-size:14px;color:#2a2620;background:#fbf7ec;border:1px solid var(--line);border-radius:9px;padding:10px 12px;min-height:62px;margin-bottom:12px;"></textarea>
+      <a href="#" onclick="var n=document.getElementById('candNome').value,e=document.getElementById('candEmail').value;var o=document.getElementById('convOk');if(n&&e){o.style.display='block';o.style.color='#2f6b3a';o.textContent='Sugestão enviada ao Conselho: '+n+' ('+e+'). Você poderá acompanhar o status abaixo.';}else{o.style.display='block';o.style.color='#8f1d24';o.textContent='Preencha o nome e o e-mail do indicado.';}return false;" style="display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border-radius:11px;padding:11px 18px;font-size:15px;" data-i18n="as_sug_btn">Enviar sugestão ao Conselho</a>
       <div id="convOk" style="display:none;margin-top:12px;font-size:13px;color:#2f6b3a;background:#eef6ee;border:1px solid #cfe6cf;border-radius:9px;padding:10px 12px;"></div>
     </div>
 
     <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px;font-family:Arial,Helvetica,sans-serif;">
-      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;">Minhas sugestões</div>
-      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;">Acompanhe o status dos nomes que você sugeriu ao Conselho.</p>
+      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;" data-i18n="as_mine_t">Minhas sugestões</div>
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;" data-i18n="as_mine_p">Acompanhe o status dos nomes que você sugeriu ao Conselho.</p>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #ece0c2;">
         <span style="color:#2a2620;font-size:14px;">Carlos Menezes</span>
-        <span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:3px 10px;">Aguardando aprovação</span>
+        <span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:3px 10px;" data-i18n="as_st_aguard">Aguardando aprovação</span>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #ece0c2;">
         <span style="color:#2a2620;font-size:14px;">Ana Beatriz Rocha</span>
-        <span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#1e2a56;background:#eef2f8;border:1px solid #cdd6e6;border-radius:20px;padding:3px 10px;">Aprovado</span>
+        <span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#1e2a56;background:#eef2f8;border:1px solid #cdd6e6;border-radius:20px;padding:3px 10px;" data-i18n="as_st_aprov">Aprovado</span>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #ece0c2;">
         <span style="color:#2a2620;font-size:14px;">João Pereira</span>
-        <span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#5a2d86;background:#efe7f6;border:1px solid #ddcdec;border-radius:20px;padding:3px 10px;">Formulário enviado</span>
+        <span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#5a2d86;background:#efe7f6;border:1px solid #ddcdec;border-radius:20px;padding:3px 10px;" data-i18n="as_st_form">Formulário enviado</span>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #ece0c2;">
         <span style="color:#2a2620;font-size:14px;">Marina Santos</span>
-        <span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8f1d24;background:#f7e9e9;border:1px solid #e6cccc;border-radius:20px;padding:3px 10px;">Aguardando pagamento</span>
+        <span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8f1d24;background:#f7e9e9;border:1px solid #e6cccc;border-radius:20px;padding:3px 10px;" data-i18n="as_st_pag">Aguardando pagamento</span>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;">
         <span style="color:#2a2620;font-size:14px;">Helena Costa</span>
-        <span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#7a5a12;background:#f1e3bf;border:1px solid #d8c48a;border-radius:20px;padding:3px 10px;">Membro</span>
+        <span style="font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#7a5a12;background:#f1e3bf;border:1px solid #d8c48a;border-radius:20px;padding:3px 10px;" data-i18n="as_st_membro">Membro</span>
       </div>
-      <p style="font-size:11.5px;color:#9a937f;margin-top:12px;">Exemplos ilustrativos — a lista real será alimentada pelo Painel do Conselho quando o site estiver no ar.</p>
+      <p style="font-size:11.5px;color:#9a937f;margin-top:12px;" data-i18n="as_mine_note">Exemplos ilustrativos — a lista real será alimentada pelo Painel do Conselho quando o site estiver no ar.</p>
     </div>
 
     <div style="background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:14px;padding:18px 20px;margin-bottom:26px;font-family:Arial,Helvetica,sans-serif;">
-      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;">Candidato aprovado pelo Conselho?</div>
-      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;">Se sua indicação foi aprovada, preencha a <b>Ficha de Candidatura à Intronização</b> com o código de acesso enviado pela Secretaria. É a etapa final antes do capítulo.</p>
-      <a href="candidatura.html" style="display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border-radius:11px;padding:12px 18px;font-size:15px;">Preencher ficha de intronização</a>
+      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;" data-i18n="as_appr_t">Candidato aprovado pelo Conselho?</div>
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;" data-i18n="as_appr_p">Se sua indicação foi aprovada, preencha a <b>Ficha de Candidatura à Intronização</b> com o código de acesso enviado pela Secretaria. É a etapa final antes do capítulo.</p>
+      <a href="candidatura.html" style="display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border-radius:11px;padding:12px 18px;font-size:15px;" data-i18n="as_appr_btn">Preencher ficha de intronização</a>
     </div>
 
     <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px;font-family:Arial,Helvetica,sans-serif;">
-      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;">Sua foto de Comendador</div>
-      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;">Adicione sua foto — ela aparece no lugar das iniciais no diretório e na sua área. Pode trocá-la quando quiser; o Conselho também pode atualizá-la.</p>
+      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;" data-i18n="as_photo_t">Sua foto de Comendador</div>
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;" data-i18n="as_photo_p">Adicione sua foto — ela aparece no lugar das iniciais no diretório e na sua área. Pode trocá-la quando quiser; o Conselho também pode atualizá-la.</p>
       <div style="display:flex;align-items:center;gap:16px;">
         <div id="avatarPrev" style="flex:none;width:72px;height:72px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:24px;border:2px solid var(--gold);overflow:hidden;"><img src="img/socio-a.png" style="width:100%;height:100%;object-fit:cover;"></div>
-        <label style="cursor:pointer;display:inline-block;background:transparent;color:var(--navy);border:1.5px solid var(--gold);border-radius:11px;padding:11px 18px;font-size:15px;">Escolher foto
+        <label style="cursor:pointer;display:inline-block;background:transparent;color:var(--navy);border:1.5px solid var(--gold);border-radius:11px;padding:11px 18px;font-size:15px;"><span data-i18n="as_photo_btn">Escolher foto</span>
           <input type="file" accept="image/*" style="display:none" onchange="var f=this.files[0];if(f){var r=new FileReader();r.onload=function(e){document.getElementById('avatarPrev').innerHTML='<img src=&quot;'+e.target.result+'&quot; style=&quot;width:100%;height:100%;object-fit:cover;&quot;>';};r.readAsDataURL(f);}">
         </label>
       </div>
-      <p style="font-size:11.5px;color:#9a937f;margin-top:12px;">Pré-visualização — a foto fica salva de verdade quando o cadastro estiver no ar.</p>
+      <p style="font-size:11.5px;color:#9a937f;margin-top:12px;" data-i18n="as_photo_note">Pré-visualização — a foto fica salva de verdade quando o cadastro estiver no ar.</p>
     </div>
 
     <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px;font-family:Arial,Helvetica,sans-serif;">
-      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;">Diretório de membros</div>
-      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;">Consulte os Commandeurs da confraria, por capítulo de intronização.</p>
-      <a href="diretorio.html" style="display:inline-block;text-decoration:none;background:transparent;color:var(--navy);border:1.5px solid var(--gold);border-radius:11px;padding:11px 18px;font-size:15px;">Abrir o diretório</a>
+      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;" data-i18n="as_dir_t">Diretório de membros</div>
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;" data-i18n="as_dir_p">Consulte os Commandeurs da confraria, por capítulo de intronização.</p>
+      <a href="diretorio.html" style="display:inline-block;text-decoration:none;background:transparent;color:var(--navy);border:1.5px solid var(--gold);border-radius:11px;padding:11px 18px;font-size:15px;" data-i18n="as_dir_btn">Abrir o diretório</a>
     </div>
 
     <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:26px;font-family:Arial,Helvetica,sans-serif;">
-      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;">Documentos da confraria</div>
-      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;">Consulte o Estatuto Social da Commanderie de Bordeaux no Brasil.</p>
-      <a href="Estatuto_Commanderie_Bordeaux_Brasil.pdf" target="_blank" style="display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border-radius:11px;padding:11px 18px;font-size:15px;margin:0 8px 8px 0;">Ler o Estatuto</a>
-      <a href="Estatuto_Commanderie_Bordeaux_Brasil.docx" download style="display:inline-block;text-decoration:none;background:transparent;color:var(--navy);border:1.5px solid var(--gold);border-radius:11px;padding:11px 18px;font-size:15px;">Baixar (.docx)</a>
+      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:4px;" data-i18n="as_doc_t">Documentos da confraria</div>
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;" data-i18n="as_doc_p">Consulte o Estatuto Social da Commanderie de Bordeaux no Brasil.</p>
+      <a href="Estatuto_Commanderie_Bordeaux_Brasil.pdf" target="_blank" style="display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border-radius:11px;padding:11px 18px;font-size:15px;margin:0 8px 8px 0;" data-i18n="as_doc_btn1">Ler o Estatuto</a>
+      <a href="Estatuto_Commanderie_Bordeaux_Brasil.docx" download style="display:inline-block;text-decoration:none;background:transparent;color:var(--navy);border:1.5px solid var(--gold);border-radius:11px;padding:11px 18px;font-size:15px;" data-i18n="as_doc_btn2">Baixar (.docx)</a>
     </div>
 
     <div class="help">
       <details open>
-        <summary>Como adicionar no iPhone</summary>
-        <p>Toque em <b>Adicionar à Apple Wallet</b> acima. A carteira abre na tela do Wallet — toque em <b>Adicionar</b> no canto superior. Pronto: ela fica salva no seu iPhone e o QR pode ser apresentado na entrada de eventos e nos restaurantes associados.</p>
+        <summary data-i18n="as_h_iph_s">Como adicionar no iPhone</summary>
+        <p data-i18n="as_h_iph_p">Toque em <b>Adicionar à Apple Wallet</b> acima. A carteira abre na tela do Wallet — toque em <b>Adicionar</b> no canto superior. Pronto: ela fica salva no seu iPhone e o QR pode ser apresentado na entrada de eventos e nos restaurantes associados.</p>
       </details>
       <details>
-        <summary>Estou no Android</summary>
-        <p>Use o botão <b>Baixar carteira</b> para guardar o arquivo, ou apresente esta própria página com o QR. Em breve disponibilizaremos a versão para Google Wallet.</p>
+        <summary data-i18n="as_h_and_s">Estou no Android</summary>
+        <p data-i18n="as_h_and_p">Use o botão <b>Baixar carteira</b> para guardar o arquivo, ou apresente esta própria página com o QR. Em breve disponibilizaremos a versão para Google Wallet.</p>
       </details>
       <details>
-        <summary>Sobre a anuidade</summary>
-        <p>A carteira é válida enquanto a anuidade estiver em dia. Na renovação, a validade é estendida automaticamente. Dúvidas: <b>secretaria@commanderiebordeaux.com.br</b>.</p>
+        <summary data-i18n="as_h_anu_s">Sobre a anuidade</summary>
+        <p data-i18n="as_h_anu_p">A carteira é válida enquanto a anuidade estiver em dia. Na renovação, a validade é estendida automaticamente. Dúvidas: <b>sac@commanderiedebordeaux.com.br</b>.</p>
       </details>
     </div>
 
@@ -174,5 +175,14 @@
       Bordeaux, toujours Bordeaux
     </div>
   </div>
+<script>
+var I18N={
+ en:{as_kicker2:"Brazil &middot; Grand Master",as_welcome:"Welcome,",as_sub:"Your membership card is ready.",as_status:"Annual dues paid &middot; valid until 12/2026",as_addto:"Add to",as_dl:"Download card (.pkpass)",as_sug_t:"Suggest a name to the Council",as_sug_p:"Membership is by nomination. Suggest a name to the Council — if approved, the Council sends the form directly to the candidate and conducts the next steps. You follow everything through the status, below.",as_sug_btn:"Send suggestion to the Council",as_mine_t:"My suggestions",as_mine_p:"Follow the status of the names you have suggested to the Council.",as_st_aguard:"Awaiting approval",as_st_aprov:"Approved",as_st_form:"Form sent",as_st_pag:"Awaiting payment",as_st_membro:"Member",as_mine_note:"Illustrative examples — the real list will be fed by the Council Panel once the site is live.",as_appr_t:"Candidate approved by the Council?",as_appr_p:"If your nomination was approved, fill in the <b>Induction Candidacy Form</b> with the access code sent by the Secretariat. It is the final step before the chapter.",as_appr_btn:"Fill in the induction form",as_photo_t:"Your Commandeur photo",as_photo_p:"Add your photo — it appears in place of the initials in the directory and in your area. You can change it whenever you like; the Council can also update it.",as_photo_btn:"Choose photo",as_photo_note:"Preview — the photo is saved for real once registration is live.",as_dir_t:"Member directory",as_dir_p:"Browse the Commanderie’s Commandeurs, by induction chapter.",as_dir_btn:"Open the directory",as_doc_t:"Confraternity documents",as_doc_p:"Consult the Bylaws of the Commanderie de Bordeaux in Brazil.",as_doc_btn1:"Read the Bylaws",as_doc_btn2:"Download (.docx)",as_h_iph_s:"How to add on iPhone",as_h_iph_p:"Tap <b>Add to Apple Wallet</b> above. The card opens on the Wallet screen — tap <b>Add</b> in the top corner. Done: it is saved on your iPhone and the QR can be shown at event entrances and at associated restaurants.",as_h_and_s:"I’m on Android",as_h_and_p:"Use the <b>Download card</b> button to save the file, or present this page itself with the QR. We will soon offer the Google Wallet version.",as_h_anu_s:"About the annual dues",as_h_anu_p:"The card is valid while the annual dues are paid. On renewal, validity is extended automatically. Questions: <b>sac@commanderiedebordeaux.com.br</b>.",ph_candNome:"Nominee’s name",ph_candEmail:"Nominee’s e-mail",ph_candJust:"Brief justification (optional)"},
+ fr:{as_kicker2:"Brésil &middot; Grand Maître",as_welcome:"Bienvenue,",as_sub:"Votre carte de membre est prête.",as_status:"Cotisation à jour &middot; valable jusqu’au 12/2026",as_addto:"Ajouter à",as_dl:"Télécharger la carte (.pkpass)",as_sug_t:"Suggérer un nom au Conseil",as_sug_p:"L’adhésion se fait par parrainage. Suggérez un nom au Conseil — s’il est approuvé, le Conseil envoie le formulaire directement au candidat et conduit les étapes suivantes. Vous suivez tout grâce au statut, ci-dessous.",as_sug_btn:"Envoyer la suggestion au Conseil",as_mine_t:"Mes suggestions",as_mine_p:"Suivez le statut des noms que vous avez suggérés au Conseil.",as_st_aguard:"En attente d’approbation",as_st_aprov:"Approuvé",as_st_form:"Formulaire envoyé",as_st_pag:"En attente de paiement",as_st_membro:"Membre",as_mine_note:"Exemples illustratifs — la liste réelle sera alimentée par l’Espace du Conseil une fois le site en ligne.",as_appr_t:"Candidat approuvé par le Conseil ?",as_appr_p:"Si votre parrainage a été approuvé, remplissez la <b>Fiche de Candidature à l’Intronisation</b> avec le code d’accès envoyé par le Secrétariat. C’est l’étape finale avant le chapitre.",as_appr_btn:"Remplir la fiche d’intronisation",as_photo_t:"Votre photo de Commandeur",as_photo_p:"Ajoutez votre photo — elle apparaît à la place des initiales dans l’annuaire et dans votre espace. Vous pouvez la changer quand vous le souhaitez ; le Conseil peut aussi la mettre à jour.",as_photo_btn:"Choisir une photo",as_photo_note:"Aperçu — la photo est réellement enregistrée une fois l’inscription en ligne.",as_dir_t:"Annuaire des membres",as_dir_p:"Consultez les Commandeurs de la confrérie, par chapitre d’intronisation.",as_dir_btn:"Ouvrir l’annuaire",as_doc_t:"Documents de la confrérie",as_doc_p:"Consultez les Statuts de la Commanderie de Bordeaux au Brésil.",as_doc_btn1:"Lire les Statuts",as_doc_btn2:"Télécharger (.docx)",as_h_iph_s:"Comment ajouter sur iPhone",as_h_iph_p:"Touchez <b>Ajouter à Apple Wallet</b> ci-dessus. La carte s’ouvre sur l’écran Wallet — touchez <b>Ajouter</b> dans le coin supérieur. Voilà : elle est enregistrée sur votre iPhone et le QR peut être présenté à l’entrée des événements et dans les restaurants associés.",as_h_and_s:"Je suis sur Android",as_h_and_p:"Utilisez le bouton <b>Télécharger la carte</b> pour enregistrer le fichier, ou présentez cette page elle-même avec le QR. Nous proposerons bientôt la version Google Wallet.",as_h_anu_s:"À propos de la cotisation",as_h_anu_p:"La carte est valable tant que la cotisation est à jour. Au renouvellement, la validité est prolongée automatiquement. Questions : <b>sac@commanderiedebordeaux.com.br</b>.",ph_candNome:"Nom du filleul",ph_candEmail:"E-mail du filleul",ph_candJust:"Brève justification (facultatif)"}
+};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var ph=document.querySelectorAll("[data-i18n-ph]");for(var p=0;p<ph.length;p++){var pk=ph[p].getAttribute("data-i18n-ph"),ok="ph:"+pk;if(!(ok in _orig))_orig[ok]=ph[p].getAttribute("placeholder");ph[p].setAttribute("placeholder",(l==="pt"||!d||d[pk]==null)?_orig[ok]:d[pk]);}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
 </body>
 </html>

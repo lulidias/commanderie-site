@@ -70,9 +70,9 @@ async function carregar(){
   var rows=q.data||[];
   var mestres=[],comend=[],honra=[];
   rows.forEach(function(m){var g=(""+(m.grau||"")).toLowerCase();if(g.indexOf("honra")>=0)honra.push(m);else if(g.indexOf("mestre")>=0)mestres.push(m);else comend.push(m);});
-  mestres.sort(function(a,b){return rank(a.grau)-rank(b.grau)||a.nome.localeCompare(b.nome);});
-  comend.sort(function(a,b){return (a.codigo||"").localeCompare(b.codigo||"");});
-  honra.sort(function(a,b){return a.nome.localeCompare(b.nome);});
+  mestres.sort(function(a,b){return rank(a.grau)-rank(b.grau)||(a.nome||"").localeCompare(b.nome||"","pt");});
+  comend.sort(function(a,b){return (a.nome||"").localeCompare(b.nome||"","pt");});
+  honra.sort(function(a,b){return (a.nome||"").localeCompare(b.nome||"","pt");});
   document.getElementById("wrap").innerHTML=grupo("Mestres",mestres)+grupo("Comendadores",comend)+grupo("Membros de Honra",honra);
   document.getElementById("dir").style.display="block";
 }

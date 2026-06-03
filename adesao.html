@@ -149,48 +149,48 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
 <nav><div class="nav-in">
   <a class="brand" href="index.html#topo"><img src="img/logo-topo.png" alt="Brasão"><span><b>Commanderie de Bordeaux</b><small>Brasil</small></span></a>
   <div class="nav-links">
-    <a href="index.html#commanderie">A Commanderie</a>
-    <a href="index.html#nucleos">Núcleos</a>
-    <a href="capitulos.html">Capítulos</a>
-    <a href="viagens.html">Viagens</a>
-    <a href="index.html#galeria">Galeria</a>
-    <a href="index.html#socio">Tornar-se Membro</a>
-    <a href="index.html#contato">Contato</a>
-    <a class="btn btn-solid" href="login.html">Painel do Comendador</a>
+    <a href="index.html#commanderie" data-i18n="ad_nav_comm">A Commanderie</a>
+    <a href="index.html#nucleos" data-i18n="ad_nav_nuc">Núcleos</a>
+    <a href="capitulos.html" data-i18n="ad_nav_cap">Capítulos</a>
+    <a href="viagens.html" data-i18n="ad_nav_via">Viagens</a>
+    <a href="index.html#galeria" data-i18n="ad_nav_gal">Galeria</a>
+    <a href="index.html#socio" data-i18n="ad_nav_socio">Tornar-se Membro</a>
+    <a href="index.html#contato" data-i18n="ad_nav_cont">Contato</a>
+    <a class="btn btn-solid" href="login.html" data-i18n="ad_nav_painel">Painel do Comendador</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">FR</a></span>
   </div>
 </div></nav>
 <section><div class="container">
-  <div class="sec-k">Adesão por indicação</div>
-  <h2>Ficha de indicação de novo membro</h2><div class="rule"></div>
-  <div class="byinvite">Esta ficha é exclusiva para candidatos <b>indicados por dois Commandeurs</b>. A Commanderie não aceita adesões abertas ao público — toda candidatura passa pela apresentação de dois padrinhos e pela aprovação do Conselho Diretor.</div>
+  <div class="sec-k" data-i18n="ad_sk">Adesão por indicação</div>
+  <h2 data-i18n="ad_h2">Ficha de indicação de novo membro</h2><div class="rule"></div>
+  <div class="byinvite" data-i18n="ad_byinvite">Esta ficha é exclusiva para candidatos <b>indicados por dois Commandeurs</b>. A Commanderie não aceita adesões abertas ao público — toda candidatura passa pela apresentação de dois padrinhos e pela aprovação do Conselho Diretor.</div>
   <form class="formwrap" onsubmit="event.preventDefault();document.getElementById('okmsg').style.display='block';this.style.display='none';">
-    <div class="field"><label>Nome completo do candidato</label><input required placeholder="Nome do indicado"></div>
+    <div class="field"><label data-i18n="ad_l_nome">Nome completo do candidato</label><input required placeholder="Nome do indicado" data-i18n-ph="ph_nome"></div>
     <div class="two">
-      <div class="field"><label>E-mail</label><input type="email" required placeholder="email@exemplo.com"></div>
-      <div class="field"><label>Telefone / WhatsApp</label><input required placeholder="(11) 90000-0000"></div>
+      <div class="field"><label data-i18n="ad_l_email">E-mail</label><input type="email" required placeholder="email@exemplo.com" data-i18n-ph="ph_email"></div>
+      <div class="field"><label data-i18n="ad_l_tel">Telefone / WhatsApp</label><input required placeholder="(11) 90000-0000"></div>
     </div>
     <div class="two">
-      <div class="field"><label>Cidade</label><input required placeholder="Cidade"></div>
-      <div class="field"><label>Núcleo de interesse</label><select>
+      <div class="field"><label data-i18n="ad_l_cidade">Cidade</label><input required placeholder="Cidade" data-i18n-ph="ph_cidade"></div>
+      <div class="field"><label data-i18n="ad_l_nucleo">Núcleo de interesse</label><select>
         <option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option>
       </select></div>
     </div>
-    <div class="field"><label>Relação com os vinhos de Bordeaux</label><textarea placeholder="Conte brevemente sua trajetória e seu apreço pelos vinhos de Bordeaux."></textarea></div>
+    <div class="field"><label data-i18n="ad_l_relacao">Relação com os vinhos de Bordeaux</label><textarea placeholder="Conte brevemente sua trajetória e seu apreço pelos vinhos de Bordeaux." data-i18n-ph="ph_relacao"></textarea></div>
 
     <div class="sponsors">
-      <h4>Padrinhos (obrigatório)</h4>
-      <p>Informe os dois Commandeurs que apresentam a candidatura e o Mestre (ou o Grão-Mestre) que a referenda. Sem os dois padrinhos e o aval de um Mestre, a ficha não pode ser submetida.</p>
+      <h4 data-i18n="ad_sp_h">Padrinhos (obrigatório)</h4>
+      <p data-i18n="ad_sp_p">Informe os dois Commandeurs que apresentam a candidatura e o Mestre (ou o Grão-Mestre) que a referenda. Sem os dois padrinhos e o aval de um Mestre, a ficha não pode ser submetida.</p>
       <div class="two">
-        <div class="field"><label>1º Padrinho — nome</label><input required placeholder="Nome do Commandeur"></div>
-        <div class="field"><label>1º Padrinho — nº de membro</label><input required placeholder="CDB-__-____"></div>
+        <div class="field"><label data-i18n="ad_l_p1n">1º Padrinho — nome</label><input required placeholder="Nome do Commandeur" data-i18n-ph="ph_pnome"></div>
+        <div class="field"><label data-i18n="ad_l_p1m">1º Padrinho — nº de membro</label><input required placeholder="CDB-__-____"></div>
       </div>
       <div class="two">
-        <div class="field"><label>2º Padrinho — nome</label><input required placeholder="Nome do Commandeur"></div>
-        <div class="field"><label>2º Padrinho — nº de membro</label><input required placeholder="CDB-__-____"></div>
+        <div class="field"><label data-i18n="ad_l_p2n">2º Padrinho — nome</label><input required placeholder="Nome do Commandeur" data-i18n-ph="ph_pnome"></div>
+        <div class="field"><label data-i18n="ad_l_p2m">2º Padrinho — nº de membro</label><input required placeholder="CDB-__-____"></div>
       </div>
-      <div class="field"><label>Mestre ou Grão-Mestre que referenda</label>
+      <div class="field"><label data-i18n="ad_l_mestre">Mestre ou Grão-Mestre que referenda</label>
         <select required>
-          <option value="">Selecione…</option>
+          <option value="" data-i18n="ad_opt_sel">Selecione…</option>
           <option>Manuel Brandão — Grão-Mestre · Brasil</option>
           <option>Luli Dias — Mestre · São Paulo</option>
           <option>Tito Dias — Mestre · Recife</option>
@@ -200,9 +200,9 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
       </div>
     </div>
 
-    <div style="text-align:center;margin-top:8px;"><button class="btn btn-solid" type="submit">Enviar indicação ao Conselho</button></div>
+    <div style="text-align:center;margin-top:8px;"><button class="btn btn-solid" type="submit" data-i18n="ad_btn">Enviar indicação ao Conselho</button></div>
   </form>
-  <div id="okmsg" style="display:none;max-width:680px;margin:24px auto 0;text-align:center;background:#eef6ee;border:1px solid #cfe6cf;color:#2f6b3a;border-radius:12px;padding:20px;font-family:Arial,sans-serif;">
+  <div id="okmsg" style="display:none;max-width:680px;margin:24px auto 0;text-align:center;background:#eef6ee;border:1px solid #cfe6cf;color:#2f6b3a;border-radius:12px;padding:20px;font-family:Arial,sans-serif;" data-i18n="ad_okmsg">
     Indicação registrada. O Conselho Diretor analisará a candidatura e entrará em contato com os padrinhos. <br><b>Bordeaux, toujours Bordeaux.</b>
   </div>
 </div></section>
@@ -210,11 +210,20 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
   <img src="img/logo-topo.png" alt="Brasão">
   <div class="fmotto">Bordeaux, toujours Bordeaux</div>
   <div class="fnav">
-    <a href="index.html#commanderie">A Commanderie</a><a href="index.html#nucleos">Núcleos</a>
-    <a href="capitulos.html">Capítulos</a>
-    <a href="viagens.html">Viagens</a><a href="index.html#galeria">Galeria</a>
-    <a href="index.html#socio">Tornar-se Membro</a><a href="login.html">Painel do Comendador</a>
+    <a href="index.html#commanderie" data-i18n="ad_nav_comm">A Commanderie</a><a href="index.html#nucleos" data-i18n="ad_nav_nuc">Núcleos</a>
+    <a href="capitulos.html" data-i18n="ad_nav_cap">Capítulos</a>
+    <a href="viagens.html" data-i18n="ad_nav_via">Viagens</a><a href="index.html#galeria" data-i18n="ad_nav_gal">Galeria</a>
+    <a href="index.html#socio" data-i18n="ad_nav_socio">Tornar-se Membro</a><a href="login.html" data-i18n="ad_nav_painel">Painel do Comendador</a>
   </div>
-  <small>© 2026 Commanderie de Bordeaux — Brasil. Todos os direitos reservados.</small>
+  <small data-i18n="ad_f_copy">© 2026 Commanderie de Bordeaux — Brasil. Todos os direitos reservados.</small>
 <div style="margin:16px 0 0;"><a href="https://www.instagram.com/commanderiedebordeauxbr/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;color:#e7d8a8;text-decoration:none;font-size:13px;letter-spacing:.3px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" style="flex:none;"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52.01-4.77.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7-.06 1.25-.07 1.62-.07 4.77s.01 3.52.07 4.77c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.25.06 1.62.07 4.77.07s3.52-.01 4.77-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.25.07-1.62.07-4.77s-.01-3.52-.07-4.77c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 0 0-.68-1.06 2.85 2.85 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.52 4.01 15.15 4 12 4zm0 3.07A4.93 4.93 0 1 1 7.07 12 4.93 4.93 0 0 1 12 7.07zm0 1.8A3.13 3.13 0 1 0 15.13 12 3.13 3.13 0 0 0 12 8.87zm5.13-.99a1.15 1.15 0 1 1-1.15 1.15 1.15 1.15 0 0 1 1.15-1.15z"/></svg>@commanderiedebordeauxbr</a></div></footer>
+<script>
+var I18N={
+ en:{ad_nav_comm:"The Commanderie",ad_nav_nuc:"Regions",ad_nav_cap:"Chapters",ad_nav_via:"Trips",ad_nav_gal:"Gallery",ad_nav_socio:"Become a Member",ad_nav_cont:"Contact",ad_nav_painel:"Commander’s Panel",ad_sk:"Membership by nomination",ad_h2:"New member nomination form",ad_byinvite:"This form is exclusively for candidates <b>nominated by two Commandeurs</b>. The Commanderie does not accept applications open to the public — every candidacy goes through the presentation of two sponsors and the approval of the Governing Council.",ad_l_nome:"Candidate’s full name",ad_l_email:"E-mail",ad_l_tel:"Phone / WhatsApp",ad_l_cidade:"City",ad_l_nucleo:"Chapter of interest",ad_l_relacao:"Connection to Bordeaux wines",ad_sp_h:"Sponsors (required)",ad_sp_p:"Provide the two Commandeurs presenting the candidacy and the Master (or Grand Master) endorsing it. Without both sponsors and a Master’s endorsement, the form cannot be submitted.",ad_l_p1n:"1st Sponsor — name",ad_l_p1m:"1st Sponsor — member no.",ad_l_p2n:"2nd Sponsor — name",ad_l_p2m:"2nd Sponsor — member no.",ad_l_mestre:"Endorsing Master or Grand Master",ad_opt_sel:"Select…",ad_btn:"Send nomination to the Council",ad_f_copy:"© 2026 Commanderie de Bordeaux — Brazil. All rights reserved.",ad_okmsg:"Nomination registered. The Governing Council will review the candidacy and contact the sponsors. <br><b>Bordeaux, toujours Bordeaux.</b>",ph_nome:"Nominee’s name",ph_email:"email@example.com",ph_cidade:"City",ph_relacao:"Briefly describe your background and your appreciation for Bordeaux wines.",ph_pnome:"Commandeur’s name"},
+ fr:{ad_nav_comm:"La Commanderie",ad_nav_nuc:"Cercles",ad_nav_cap:"Chapitres",ad_nav_via:"Voyages",ad_nav_gal:"Galerie",ad_nav_socio:"Devenir Membre",ad_nav_cont:"Contact",ad_nav_painel:"Espace du Commandeur",ad_sk:"Adhésion par parrainage",ad_h2:"Fiche de parrainage d’un nouveau membre",ad_byinvite:"Cette fiche est exclusivement réservée aux candidats <b>parrainés par deux Commandeurs</b>. La Commanderie n’accepte pas d’adhésions ouvertes au public — chaque candidature passe par la présentation de deux parrains et l’approbation du Conseil de Direction.",ad_l_nome:"Nom complet du candidat",ad_l_email:"E-mail",ad_l_tel:"Téléphone / WhatsApp",ad_l_cidade:"Ville",ad_l_nucleo:"Cercle d’intérêt",ad_l_relacao:"Lien avec les vins de Bordeaux",ad_sp_h:"Parrains (obligatoire)",ad_sp_p:"Indiquez les deux Commandeurs qui présentent la candidature et le Maître (ou le Grand Maître) qui la garantit. Sans les deux parrains et l’aval d’un Maître, la fiche ne peut être soumise.",ad_l_p1n:"1er Parrain — nom",ad_l_p1m:"1er Parrain — n° de membre",ad_l_p2n:"2e Parrain — nom",ad_l_p2m:"2e Parrain — n° de membre",ad_l_mestre:"Maître ou Grand Maître garant",ad_opt_sel:"Sélectionnez…",ad_btn:"Envoyer le parrainage au Conseil",ad_f_copy:"© 2026 Commanderie de Bordeaux — Brésil. Tous droits réservés.",ad_okmsg:"Parrainage enregistré. Le Conseil de Direction examinera la candidature et contactera les parrains. <br><b>Bordeaux, toujours Bordeaux.</b>",ph_nome:"Nom du filleul",ph_email:"email@exemple.com",ph_cidade:"Ville",ph_relacao:"Décrivez brièvement votre parcours et votre goût pour les vins de Bordeaux.",ph_pnome:"Nom du Commandeur"}
+};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var ph=document.querySelectorAll("[data-i18n-ph]");for(var p=0;p<ph.length;p++){var pk=ph[p].getAttribute("data-i18n-ph"),ok="ph:"+pk;if(!(ok in _orig))_orig[ok]=ph[p].getAttribute("placeholder");ph[p].setAttribute("placeholder",(l==="pt"||!d||d[pk]==null)?_orig[ok]:d[pk]);}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
 </body></html>

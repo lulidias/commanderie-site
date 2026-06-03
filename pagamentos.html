@@ -29,36 +29,36 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
 </style></head><body>
-<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Pagamentos</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a></div>
-<div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para acessar seus pagamentos.</p><a class="btn" href="index.html">Entrar</a></div>
-<div id="loading" class="state">Carregando…</div>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b data-i18n="pg_brand">Pagamentos</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}" data-i18n="pg_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
+<div id="needLogin" class="state" style="display:none;"><h2 data-i18n="pg_nl_h">Acesso restrito</h2><p data-i18n="pg_nl_p">Entre na sua conta para acessar seus pagamentos.</p><a class="btn" href="index.html" data-i18n="pg_nl_btn">Entrar</a></div>
+<div id="loading" class="state" data-i18n="pg_loading">Carregando…</div>
 <div id="content" style="display:none;">
-  <div class="dhead"><div class="k">Comendador</div><h1>Pagamentos</h1></div>
+  <div class="dhead"><div class="k" data-i18n="pg_k">Comendador</div><h1 data-i18n="pg_h1">Pagamentos</h1></div>
   <div class="wrap"><div class="card">
-    <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin:0 0 12px;">Anuidade, jantares e viagens — acompanhe o que está em dia e o que está por vencer.</p>
+    <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin:0 0 12px;" data-i18n="pg_intro">Anuidade, jantares e viagens — acompanhe o que está em dia e o que está por vencer.</p>
     <div style="text-align:left;margin-bottom:6px;"><span class="m-status" id="mStatusPill"><span class="m-dot" id="mDot"></span> <span id="mStatusTxt">—</span></span></div>
     <div id="anuidadeBox"></div>
     <div style="margin-top:18px;border-top:1px solid #ece0c2;padding-top:16px;">
-      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:10px;">Pagar por PIX</div>
+      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:10px;" data-i18n="pg_pix_h">Pagar por PIX</div>
       <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
-        <div style="text-align:center;flex:none;"><img id="pixQR" alt="QR Code PIX" style="width:176px;height:176px;border:1px solid var(--line);border-radius:12px;padding:8px;background:#fff;display:block;"><div style="font-size:11px;color:#9a937f;margin-top:5px;">Escaneie no app do seu banco</div></div>
+        <div style="text-align:center;flex:none;"><img id="pixQR" alt="QR Code PIX" style="width:176px;height:176px;border:1px solid var(--line);border-radius:12px;padding:8px;background:#fff;display:block;"><div style="font-size:11px;color:#9a937f;margin-top:5px;" data-i18n="pg_scan">Escaneie no app do seu banco</div></div>
         <div style="flex:1;min-width:210px;font-size:14px;color:#2a2620;line-height:1.7;">
-          <div><span style="color:#8a8270;font-size:12px;">FAVORECIDO</span><br><b>Manuel Roberto Brandão</b></div>
-          <div style="margin-top:8px;"><span style="color:#8a8270;font-size:12px;">CHAVE PIX (CPF)</span><br><b>010.091.449-79</b></div>
-          <div style="margin-top:8px;"><span style="color:#8a8270;font-size:12px;">BANCO</span><br>Bradesco · Ag. 3220 · C/C 100483-2</div>
-          <div style="margin-top:12px;"><button onclick="copiarPix()" style="background:var(--navy);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;cursor:pointer;">Copiar código PIX</button><span id="pixMsg" style="font-size:12px;margin-left:8px;color:#2f6b3a;"></span></div>
+          <div><span style="color:#8a8270;font-size:12px;" data-i18n="pg_fav">FAVORECIDO</span><br><b>Manuel Roberto Brandão</b></div>
+          <div style="margin-top:8px;"><span style="color:#8a8270;font-size:12px;" data-i18n="pg_chave">CHAVE PIX (CPF)</span><br><b>010.091.449-79</b></div>
+          <div style="margin-top:8px;"><span style="color:#8a8270;font-size:12px;" data-i18n="pg_banco">BANCO</span><br>Bradesco · Ag. 3220 · C/C 100483-2</div>
+          <div style="margin-top:12px;"><button onclick="copiarPix()" style="background:var(--navy);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;cursor:pointer;" data-i18n="pg_copiar">Copiar código PIX</button><span id="pixMsg" style="font-size:12px;margin-left:8px;color:#2f6b3a;"></span></div>
         </div>
       </div>
-      <p style="font-size:12px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:14px;">Após o pagamento, envie o comprovante à Secretaria. O Conselho confirma e a sua anuidade/participação fica registrada como <b>paga</b>.</p>
+      <p style="font-size:12px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:14px;" data-i18n="pg_note1">Após o pagamento, envie o comprovante à Secretaria. O Conselho confirma e a sua anuidade/participação fica registrada como <b>paga</b>.</p>
     </div>
-    <p style="font-size:11.5px;color:#9a937f;margin-top:14px;">A anuidade vence no 1º dia útil de novembro. No ano da intronização, ela já está incluída nos eventos de intronização — a cobrança anual começa no ano seguinte. O pagamento por cartão e a cobrança recorrente entrarão quando a conta da associação (CNPJ) estiver ativa.</p>
+    <p style="font-size:11.5px;color:#9a937f;margin-top:14px;" data-i18n="pg_note2">A anuidade vence no 1º dia útil de novembro. No ano da intronização, ela já está incluída nos eventos de intronização — a cobrança anual começa no ano seguinte. O pagamento por cartão e a cobrança recorrente entrarão quando a conta da associação (CNPJ) estiver ativa.</p>
   </div>
   <div class="card" style="margin-top:14px;text-align:center;border:1px dashed var(--gold-l);">
-    <div style="font-family:Georgia,serif;color:var(--navy);font-size:21px;margin-bottom:4px;">Doação</div>
-    <p style="font-size:13.5px;color:#5b5446;line-height:1.6;max-width:480px;margin:0 auto 14px;">Contribua espontaneamente para fortalecer a Commanderie — eventos, viagens e a difusão dos vinhos de Bordeaux no Brasil. Toda doação é bem-vinda.</p>
-    <button onclick="copiarPix('doaMsg')" style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:14px;cursor:pointer;">Doar via PIX</button>
+    <div style="font-family:Georgia,serif;color:var(--navy);font-size:21px;margin-bottom:4px;" data-i18n="pg_doa_h">Doação</div>
+    <p style="font-size:13.5px;color:#5b5446;line-height:1.6;max-width:480px;margin:0 auto 14px;" data-i18n="pg_doa_p">Contribua espontaneamente para fortalecer a Commanderie — eventos, viagens e a difusão dos vinhos de Bordeaux no Brasil. Toda doação é bem-vinda.</p>
+    <button onclick="copiarPix('doaMsg')" style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:14px;cursor:pointer;" data-i18n="pg_doa_btn">Doar via PIX</button>
     <span id="doaMsg" style="font-size:12px;margin-left:8px;color:#2f6b3a;"></span>
-    <p style="font-size:11.5px;color:#8a8270;margin-top:12px;">Usa o mesmo PIX acima (Manuel Roberto Brandão). Após doar, envie o comprovante à Secretaria.</p>
+    <p style="font-size:11.5px;color:#8a8270;margin-top:12px;" data-i18n="pg_doa_note">Usa o mesmo PIX acima (Manuel Roberto Brandão). Após doar, envie o comprovante à Secretaria.</p>
   </div>
   </div>
 </div>
@@ -109,4 +109,13 @@ async function carregar(){
   document.getElementById("content").style.display="block";
 }
 document.addEventListener("DOMContentLoaded",function(){carregar();pixInit();});
-</script></body></html>
+</script><script>
+var I18N={
+ en:{pg_brand:"Payments",pg_back:"&#8592; Back",pg_nl_h:"Restricted access",pg_nl_p:"Sign in to access your payments.",pg_nl_btn:"Sign in",pg_loading:"Loading…",pg_k:"Commander",pg_h1:"Payments",pg_intro:"Annual fee, dinners and trips — keep track of what is paid and what is due.",pg_pix_h:"Pay by PIX",pg_scan:"Scan in your banking app",pg_fav:"PAYEE",pg_chave:"PIX KEY (CPF)",pg_banco:"BANK",pg_copiar:"Copy PIX code",pg_note1:"After payment, send the receipt to the Secretariat. The Council confirms and your annual fee/participation is recorded as <b>paid</b>.",pg_note2:"The annual fee is due on the first business day of November. In the induction year, it is already included in the induction events — annual billing begins the following year. Card payment and recurring billing will start once the association’s account (CNPJ) is active.",pg_doa_h:"Donation",pg_doa_p:"Contribute freely to strengthen the Commanderie — events, trips and the promotion of Bordeaux wines in Brazil. Every donation is welcome.",pg_doa_btn:"Donate via PIX",pg_doa_note:"Uses the same PIX above (Manuel Roberto Brandão). After donating, send the receipt to the Secretariat."},
+ fr:{pg_brand:"Paiements",pg_back:"&#8592; Retour",pg_nl_h:"Accès restreint",pg_nl_p:"Connectez-vous pour accéder à vos paiements.",pg_nl_btn:"Se connecter",pg_loading:"Chargement…",pg_k:"Commandeur",pg_h1:"Paiements",pg_intro:"Cotisation, dîners et voyages — suivez ce qui est réglé et ce qui est à échéance.",pg_pix_h:"Payer par PIX",pg_scan:"Scannez dans votre application bancaire",pg_fav:"BÉNÉFICIAIRE",pg_chave:"CLÉ PIX (CPF)",pg_banco:"BANQUE",pg_copiar:"Copier le code PIX",pg_note1:"Après le paiement, envoyez le justificatif au Secrétariat. Le Conseil confirme et votre cotisation/participation est enregistrée comme <b>payée</b>.",pg_note2:"La cotisation est due le premier jour ouvré de novembre. L’année de l’intronisation, elle est déjà incluse dans les événements d’intronisation — la facturation annuelle commence l’année suivante. Le paiement par carte et le prélèvement récurrent débuteront dès que le compte de l’association (CNPJ) sera actif.",pg_doa_h:"Don",pg_doa_p:"Contribuez librement au rayonnement de la Commanderie — événements, voyages et diffusion des vins de Bordeaux au Brésil. Chaque don est bienvenu.",pg_doa_btn:"Faire un don par PIX",pg_doa_note:"Utilise le même PIX ci-dessus (Manuel Roberto Brandão). Après le don, envoyez le justificatif au Secrétariat."}
+};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
+</body></html>

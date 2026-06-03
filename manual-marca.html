@@ -75,112 +75,121 @@ p.lead{font-size:16px;color:#4a4438;max-width:680px;}
 @media print{ .topbar{display:none;} body{background:#fff;} section{border-color:#ddd;} .dlbtn .t::after{content:"";} }
 </style></head><body>
 
-<div class="topbar"><img src="img/brasao.png" alt="Brasão"><b>Manual de Marca</b><span class="sp"><a class="pill" href="painel-conselho.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Painel</a><a class="pill solid" onclick="window.print()">Imprimir / PDF</a></span></div>
+<div class="topbar"><img src="img/brasao.png" alt="Brasão"><b data-i18n="mr_brand">Manual de Marca</b><span class="sp"><a class="pill" href="painel-conselho.html" onclick="if(history.length>1){history.back();return false;}" data-i18n="mr_painel">&#8592; Painel</a><a class="pill solid" onclick="window.print()" data-i18n="mr_pdf">Imprimir / PDF</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">FR</a></span></span></div>
 
 <div class="sheet">
 
   <div class="cover">
     <img src="img/brasao.png" alt="Brasão da Commanderie de Bordeaux">
-    <div class="k">Manual de Marca e Identidade Visual</div>
+    <div class="k" data-i18n="mr_cover_k">Manual de Marca e Identidade Visual</div>
     <h1>Commanderie de Bordeaux</h1>
-    <div class="br">do Brasil</div>
+    <div class="br" data-i18n="mr_br">do Brasil</div>
     <div class="motto">“Bordeaux, toujours Bordeaux”</div>
-    <div class="ver">Versão 1.0 · Junho 2026</div>
+    <div class="ver" data-i18n="mr_ver">Versão 1.0 · Junho 2026</div>
   </div>
 
   <section>
-    <div class="sec-k">A marca</div><h2>A Commanderie</h2><div class="rule"></div>
-    <p class="lead">A Commanderie de Bordeaux do Brasil é uma confraria dedicada a apreciar, celebrar e difundir os grandes vinhos de Bordeaux. Herdeira da tradição do <i>Grand Conseil du Vin de Bordeaux</i> (fundado em 1952), foi instituída no Brasil em <b>14 de novembro de 2025</b>, com sede em São Paulo e núcleos em São Paulo, Rio de Janeiro, Porto Alegre, Curitiba e Recife.</p>
-    <p class="lead" style="margin-top:12px;">Sua identidade visual é inspirada nos diplomas do Grand Conseil — pergaminho, azul-marinho e dourado — transmitindo <b>tradição, prestígio e excelência</b>. Este manual reúne os elementos da marca para garantir aplicação consistente em todo material, impresso ou digital.</p>
+    <div class="sec-k" data-i18n="mr_sk1">A marca</div><h2 data-i18n="mr_h1">A Commanderie</h2><div class="rule"></div>
+    <p class="lead"><span data-i18n="mr_lead1">A Commanderie de Bordeaux do Brasil é uma confraria dedicada a apreciar, celebrar e difundir os grandes vinhos de Bordeaux. Herdeira da tradição do <i>Grand Conseil du Vin de Bordeaux</i> (fundado em 1952), foi instituída no Brasil em <b>14 de novembro de 2025</b>, com sede em São Paulo e núcleos em São Paulo, Rio de Janeiro, Porto Alegre, Curitiba e Recife.</span></p>
+    <p class="lead" style="margin-top:12px;"><span data-i18n="mr_lead2">Sua identidade visual é inspirada nos diplomas do Grand Conseil — pergaminho, azul-marinho e dourado — transmitindo <b>tradição, prestígio e excelência</b>. Este manual reúne os elementos da marca para garantir aplicação consistente em todo material, impresso ou digital.</span></p>
   </section>
 
   <section>
-    <div class="sec-k">Símbolo</div><h2>O brasão</h2><div class="rule"></div>
-    <p class="lead" style="margin-bottom:20px;">O brasão é o principal elemento da marca e deve ser sempre reproduzido com fidelidade, sem distorções. Use preferencialmente a versão colorida, sobre fundo bege ou branco. A versão em preto e branco atende a impressões de uma só cor.</p>
+    <div class="sec-k" data-i18n="mr_sk2">Símbolo</div><h2 data-i18n="mr_h2b">O brasão</h2><div class="rule"></div>
+    <p class="lead" style="margin-bottom:20px;"><span data-i18n="mr_lead_bras">O brasão é o principal elemento da marca e deve ser sempre reproduzido com fidelidade, sem distorções. Use preferencialmente a versão colorida, sobre fundo bege ou branco. A versão em preto e branco atende a impressões de uma só cor.</span></p>
     <div class="logo3">
-      <div><div class="logobox cream"><img src="img/brasao.png" alt="Brasão sobre fundo bege"></div><div class="lcap">Fundo bege (principal)</div></div>
-      <div><div class="logobox white"><img src="img/brasao.png" alt="Brasão sobre fundo branco"></div><div class="lcap">Fundo branco</div></div>
-      <div><div class="logobox parch"><img src="img/brasao-cinza.png" alt="Brasão em preto e branco"></div><div class="lcap">Preto e branco</div></div>
+      <div><div class="logobox cream"><img src="img/brasao.png" alt="Brasão sobre fundo bege"></div><div class="lcap" data-i18n="mr_cap1">Fundo bege (principal)</div></div>
+      <div><div class="logobox white"><img src="img/brasao.png" alt="Brasão sobre fundo branco"></div><div class="lcap" data-i18n="mr_cap2">Fundo branco</div></div>
+      <div><div class="logobox parch"><img src="img/brasao-cinza.png" alt="Brasão em preto e branco"></div><div class="lcap" data-i18n="mr_cap3">Preto e branco</div></div>
     </div>
-    <div class="note"><b>Área de proteção:</b> mantenha ao redor do brasão um espaço livre mínimo equivalente a <b>½ da sua altura</b>, sem outros elementos. <b>Tamanho mínimo:</b> não reproduzir o brasão com menos de <b>14 mm</b> de altura (impresso) ou <b>40 px</b> (tela), para preservar a legibilidade. Para artes vetoriais e gravação (placas, brindes), solicitar o arquivo original em alta resolução à Secretaria.</div>
+    <div class="note" data-i18n="mr_note_bras"><b>Área de proteção:</b> mantenha ao redor do brasão um espaço livre mínimo equivalente a <b>½ da sua altura</b>, sem outros elementos. <b>Tamanho mínimo:</b> não reproduzir o brasão com menos de <b>14 mm</b> de altura (impresso) ou <b>40 px</b> (tela), para preservar a legibilidade. Para artes vetoriais e gravação (placas, brindes), solicitar o arquivo original em alta resolução à Secretaria.</div>
   </section>
 
   <section>
-    <div class="sec-k">Cores</div><h2>Paleta institucional</h2><div class="rule"></div>
-    <p class="lead" style="margin-bottom:20px;">As cores abaixo definem a identidade. Para impressão, use os valores CMYK; para cor exata em offset/serigrafia, use a referência Pantone. <b>Os Pantones são aproximações</b> — confirme sempre no leque físico antes de imprimir.</p>
+    <div class="sec-k" data-i18n="mr_sk3">Cores</div><h2 data-i18n="mr_h3">Paleta institucional</h2><div class="rule"></div>
+    <p class="lead" style="margin-bottom:20px;"><span data-i18n="mr_lead_cores">As cores abaixo definem a identidade. Para impressão, use os valores CMYK; para cor exata em offset/serigrafia, use a referência Pantone. <b>Os Pantones são aproximações</b> — confirme sempre no leque físico antes de imprimir.</span></p>
     <div class="swatches">
-      <div class="sw"><div class="chip" style="background:#1e2a56;"></div><div class="body"><h4>Azul-marinho</h4><div class="specs"><b>HEX</b> #1E2A56 &nbsp;·&nbsp; <b>RGB</b> 30/42/86<br><b>CMYK</b> 65 · 51 · 0 · 66<br><b>Pantone</b> 2767 C (aprox.)</div></div></div>
-      <div class="sw"><div class="chip" style="background:#b08a3a;"></div><div class="body"><h4>Dourado</h4><div class="specs"><b>HEX</b> #B08A3A &nbsp;·&nbsp; <b>RGB</b> 176/138/58<br><b>CMYK</b> 0 · 22 · 67 · 31<br><b>Pantone</b> 4515 C (ou metálico 871 C)</div></div></div>
-      <div class="sw"><div class="chip" style="background:#c9a85c;"></div><div class="body"><h4>Dourado claro</h4><div class="specs"><b>HEX</b> #C9A85C &nbsp;·&nbsp; <b>RGB</b> 201/168/92<br><b>CMYK</b> 0 · 16 · 54 · 21<br><b>Pantone</b> 465 C (aprox.)</div></div></div>
-      <div class="sw"><div class="chip" style="background:#8f1d24;"></div><div class="body"><h4>Vermelho Bordeaux</h4><div class="specs"><b>HEX</b> #8F1D24 &nbsp;·&nbsp; <b>RGB</b> 143/29/36<br><b>CMYK</b> 0 · 80 · 75 · 44<br><b>Pantone</b> 188 C (aprox.)</div></div></div>
-      <div class="sw"><div class="chip" style="background:#f3ecd9;border-bottom:1px solid var(--line);"></div><div class="body"><h4>Pergaminho</h4><div class="specs"><b>HEX</b> #F3ECD9 &nbsp;·&nbsp; <b>RGB</b> 243/236/217<br><b>CMYK</b> 0 · 3 · 11 · 5<br><b>Pantone</b> 9224 C (aprox.)</div></div></div>
-      <div class="sw"><div class="chip" style="background:#2a2620;"></div><div class="body"><h4>Tinta (texto)</h4><div class="specs"><b>HEX</b> #2A2620 &nbsp;·&nbsp; <b>RGB</b> 42/38/32<br><b>CMYK</b> 0 · 10 · 24 · 84<br><b>Pantone</b> Black 7 C (aprox.)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#1e2a56;"></div><div class="body"><h4 data-i18n="mr_c1">Azul-marinho</h4><div class="specs"><b>HEX</b> #1E2A56 &nbsp;·&nbsp; <b>RGB</b> 30/42/86<br><b>CMYK</b> 65 · 51 · 0 · 66<br><b>Pantone</b> 2767 C (aprox.)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#b08a3a;"></div><div class="body"><h4 data-i18n="mr_c2">Dourado</h4><div class="specs"><b>HEX</b> #B08A3A &nbsp;·&nbsp; <b>RGB</b> 176/138/58<br><b>CMYK</b> 0 · 22 · 67 · 31<br><b>Pantone</b> 4515 C (ou metálico 871 C)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#c9a85c;"></div><div class="body"><h4 data-i18n="mr_c3">Dourado claro</h4><div class="specs"><b>HEX</b> #C9A85C &nbsp;·&nbsp; <b>RGB</b> 201/168/92<br><b>CMYK</b> 0 · 16 · 54 · 21<br><b>Pantone</b> 465 C (aprox.)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#8f1d24;"></div><div class="body"><h4 data-i18n="mr_c4">Vermelho Bordeaux</h4><div class="specs"><b>HEX</b> #8F1D24 &nbsp;·&nbsp; <b>RGB</b> 143/29/36<br><b>CMYK</b> 0 · 80 · 75 · 44<br><b>Pantone</b> 188 C (aprox.)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#f3ecd9;border-bottom:1px solid var(--line);"></div><div class="body"><h4 data-i18n="mr_c5">Pergaminho</h4><div class="specs"><b>HEX</b> #F3ECD9 &nbsp;·&nbsp; <b>RGB</b> 243/236/217<br><b>CMYK</b> 0 · 3 · 11 · 5<br><b>Pantone</b> 9224 C (aprox.)</div></div></div>
+      <div class="sw"><div class="chip" style="background:#2a2620;"></div><div class="body"><h4 data-i18n="mr_c6">Tinta (texto)</h4><div class="specs"><b>HEX</b> #2A2620 &nbsp;·&nbsp; <b>RGB</b> 42/38/32<br><b>CMYK</b> 0 · 10 · 24 · 84<br><b>Pantone</b> Black 7 C (aprox.)</div></div></div>
     </div>
-    <div class="note"><b>Uso das cores:</b> fundo em pergaminho/creme; títulos e elementos principais em azul-marinho; detalhes, filetes e selos em dourado; o vermelho Bordeaux apenas em destaques pontuais (rótulos, datas, chamadas). Evite grandes áreas de vermelho.</div>
+    <div class="note" data-i18n="mr_note_cores"><b>Uso das cores:</b> fundo em pergaminho/creme; títulos e elementos principais em azul-marinho; detalhes, filetes e selos em dourado; o vermelho Bordeaux apenas em destaques pontuais (rótulos, datas, chamadas). Evite grandes áreas de vermelho.</div>
   </section>
 
   <section>
-    <div class="sec-k">Tipografia</div><h2>Fontes da marca</h2><div class="rule"></div>
+    <div class="sec-k" data-i18n="mr_sk4">Tipografia</div><h2 data-i18n="mr_h4">Fontes da marca</h2><div class="rule"></div>
     <div class="type-card">
-      <div class="nm">Títulos e nomes — serifada</div>
+      <div class="nm" data-i18n="mr_ty1">Títulos e nomes — serifada</div>
       <div class="sample-serif">Georgia</div>
-      <div class="sample-sans" style="color:#7a7165;">Usada em títulos, nomes próprios e no brasão. Transmite tradição e elegância. Peso normal (sem negrito pesado).</div>
+      <div class="sample-sans" style="color:#7a7165;" data-i18n="mr_ty1d">Usada em títulos, nomes próprios e no brasão. Transmite tradição e elegância. Peso normal (sem negrito pesado).</div>
       <div class="glyphs">A B C D E a b c d e &nbsp; 0 1 2 3 4 5</div>
     </div>
     <div class="type-card">
-      <div class="nm">Textos e rótulos — sem serifa</div>
+      <div class="nm" data-i18n="mr_ty2">Textos e rótulos — sem serifa</div>
       <div class="sample-serif" style="font-family:Arial,sans-serif;font-size:30px;">Arial / Helvetica</div>
-      <div class="sample-sans">Usada em textos corridos, legendas, rótulos e botões. Em rótulos (kickers), aplicar em <span style="letter-spacing:2px;text-transform:uppercase;">MAIÚSCULAS com espaçamento</span>.</div>
+      <div class="sample-sans" data-i18n="mr_ty2d">Usada em textos corridos, legendas, rótulos e botões. Em rótulos (kickers), aplicar em <span style="letter-spacing:2px;text-transform:uppercase;">MAIÚSCULAS com espaçamento</span>.</div>
       <div class="glyphs" style="font-family:Arial,sans-serif;">A B C D E a b c d e &nbsp; 0 1 2 3 4 5</div>
     </div>
-    <div class="note">Para materiais impressos sofisticados, equivalentes profissionais podem substituir as fontes de sistema: uma serifada clássica (ex.: <i>Garamond, Trajan</i> para títulos) e uma sem serifa neutra (ex.: <i>Helvetica Neue, Montserrat</i>) — mantendo a mesma hierarquia.</div>
+    <div class="note" data-i18n="mr_note_ty">Para materiais impressos sofisticados, equivalentes profissionais podem substituir as fontes de sistema: uma serifada clássica (ex.: <i>Garamond, Trajan</i> para títulos) e uma sem serifa neutra (ex.: <i>Helvetica Neue, Montserrat</i>) — mantendo a mesma hierarquia.</div>
   </section>
 
   <section>
-    <div class="sec-k">Aplicações</div><h2>Como a marca aparece</h2><div class="rule"></div>
+    <div class="sec-k" data-i18n="mr_sk5">Aplicações</div><h2 data-i18n="mr_h5">Como a marca aparece</h2><div class="rule"></div>
     <div class="apps">
-      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div><h4>Carteira do membro</h4><p>Cartão azul-marinho com moldura dourada (Mestre/Grão-Mestre) ou marfim (Commandeur).</p>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div><h4 data-i18n="mr_a1h">Carteira do membro</h4><p data-i18n="mr_a1p">Cartão azul-marinho com moldura dourada (Mestre/Grão-Mestre) ou marfim (Commandeur).</p>
         <div class="mini-card" style="margin-top:12px;"><div class="c1">Commanderie de Bordeaux</div><div class="c2">Comendador</div><div class="c1" style="color:#c9a85c;">CDB-2025-000 · 2026</div></div>
       </div>
-      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div><h4>E-mails</h4><p>Cabeçalho azul com o brasão sobre creme; selo dourado e rodapé com o lema.</p></div>
-      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div><h4>Placas e selos</h4><p>Placa das melhores cartas de Bordeaux (Ouro/Prata/Bronze) e selo oficial.</p></div>
-      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v13H7l-3 3z"/></svg></div><h4>Papelaria</h4><p>Diplomas, convites e papel timbrado em pergaminho com filetes dourados.</p></div>
-      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.4"/><circle cx="17" cy="7" r="1"/></svg></div><h4>Redes sociais</h4><p>Avatar = brasão sobre bege; capas em azul com tipografia serifada.</p></div>
-      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 22V8l7-5 7 5v14M9 22v-6h6v6"/></svg></div><h4>Site e painéis</h4><p>commanderiedebordeaux.com.br — mesma paleta, Georgia + Arial, cartões dourados.</p></div>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div><h4 data-i18n="mr_a2h">E-mails</h4><p data-i18n="mr_a2p">Cabeçalho azul com o brasão sobre creme; selo dourado e rodapé com o lema.</p></div>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div><h4 data-i18n="mr_a3h">Placas e selos</h4><p data-i18n="mr_a3p">Placa das melhores cartas de Bordeaux (Ouro/Prata/Bronze) e selo oficial.</p></div>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v13H7l-3 3z"/></svg></div><h4 data-i18n="mr_a4h">Papelaria</h4><p data-i18n="mr_a4p">Diplomas, convites e papel timbrado em pergaminho com filetes dourados.</p></div>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.4"/><circle cx="17" cy="7" r="1"/></svg></div><h4 data-i18n="mr_a5h">Redes sociais</h4><p data-i18n="mr_a5p">Avatar = brasão sobre bege; capas em azul com tipografia serifada.</p></div>
+      <div class="app"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 22V8l7-5 7 5v14M9 22v-6h6v6"/></svg></div><h4 data-i18n="mr_a6h">Site e painéis</h4><p data-i18n="mr_a6p">commanderiedebordeaux.com.br — mesma paleta, Georgia + Arial, cartões dourados.</p></div>
     </div>
   </section>
 
   <section>
-    <div class="sec-k">Arquivos</div><h2>Downloads da marca</h2><div class="rule"></div>
-    <p class="lead" style="margin-bottom:18px;">Arquivos oficiais para enviar à gráfica ou usar em peças. Para impressão em grande formato (placas, banners), prefira o vetor.</p>
+    <div class="sec-k" data-i18n="mr_sk6">Arquivos</div><h2 data-i18n="mr_h6">Downloads da marca</h2><div class="rule"></div>
+    <p class="lead" style="margin-bottom:18px;"><span data-i18n="mr_lead_dl">Arquivos oficiais para enviar à gráfica ou usar em peças. Para impressão em grande formato (placas, banners), prefira o vetor.</span></p>
     <div class="dl">
       <a class="dlbtn" href="img/brasao-alta.png" download="brasao-commanderie-alta.png"><span class="t">Brasão · cor (alta)</span><span class="s">PNG 435 px · fundo transparente</span></a>
       <a class="dlbtn" href="img/brasao.png" download="brasao-commanderie.png"><span class="t">Brasão · cor</span><span class="s">PNG 220 px · fundo transparente</span></a>
       <a class="dlbtn" href="img/brasao-cinza.png" download="brasao-commanderie-pb.png"><span class="t">Brasão · preto e branco</span><span class="s">PNG · fundo transparente</span></a>
       <a class="dlbtn" href="img/logo-topo.png" download="logo-commanderie.png"><span class="t">Logo do topo</span><span class="s">PNG</span></a>
     </div>
-    <div class="note"><b>Vetor (.ai / .eps / .svg / .pdf):</b> ideal para impressão em qualquer tamanho sem perda de qualidade. Ainda não disponível — assim que a Secretaria localizar o arquivo original do brasão, ele será adicionado aqui para download. (Basta enviar o vetor ao responsável pelo site para liberar o botão.)</div>
+    <div class="note" data-i18n="mr_note_dl"><b>Vetor (.ai / .eps / .svg / .pdf):</b> ideal para impressão em qualquer tamanho sem perda de qualidade. Ainda não disponível — assim que a Secretaria localizar o arquivo original do brasão, ele será adicionado aqui para download. (Basta enviar o vetor ao responsável pelo site para liberar o botão.)</div>
   </section>
 
   <section>
-    <div class="sec-k">Cuidados</div><h2>Usos corretos e incorretos</h2><div class="rule"></div>
+    <div class="sec-k" data-i18n="mr_sk7">Cuidados</div><h2 data-i18n="mr_h7">Usos corretos e incorretos</h2><div class="rule"></div>
     <div class="dos">
-      <div class="dobox ok"><h4>✓ Faça</h4><ul>
-        <li>Use o brasão com proporções originais e área de proteção.</li>
-        <li>Aplique as cores institucionais exatas (HEX/CMYK/Pantone).</li>
-        <li>Prefira fundos pergaminho, creme ou azul-marinho.</li>
-        <li>Mantenha o lema “Bordeaux, toujours Bordeaux”.</li>
+      <div class="dobox ok"><h4 data-i18n="mr_do_h">✓ Faça</h4><ul>
+        <li data-i18n="mr_do1">Use o brasão com proporções originais e área de proteção.</li>
+        <li data-i18n="mr_do2">Aplique as cores institucionais exatas (HEX/CMYK/Pantone).</li>
+        <li data-i18n="mr_do3">Prefira fundos pergaminho, creme ou azul-marinho.</li>
+        <li data-i18n="mr_do4">Mantenha o lema “Bordeaux, toujours Bordeaux”.</li>
       </ul></div>
-      <div class="dobox no"><h4>✗ Não faça</h4><ul>
-        <li>Não distorça, incline ou recorte o brasão.</li>
-        <li>Não troque as cores nem aplique gradientes estranhos.</li>
-        <li>Não use o brasão pequeno demais ou sobre fundos poluídos.</li>
-        <li>Não substitua as fontes por estilos destoantes.</li>
+      <div class="dobox no"><h4 data-i18n="mr_no_h">✗ Não faça</h4><ul>
+        <li data-i18n="mr_no1">Não distorça, incline ou recorte o brasão.</li>
+        <li data-i18n="mr_no2">Não troque as cores nem aplique gradientes estranhos.</li>
+        <li data-i18n="mr_no3">Não use o brasão pequeno demais ou sobre fundos poluídos.</li>
+        <li data-i18n="mr_no4">Não substitua as fontes por estilos destoantes.</li>
       </ul></div>
     </div>
   </section>
 
-  <div class="foot">Commanderie de Bordeaux do Brasil · São Paulo · Recife · Curitiba · Porto Alegre<br>Dúvidas sobre a marca: Secretaria · secretaria@commanderiebordeaux.com.br · Manual v1.0 — Junho 2026</div>
+  <div class="foot" data-i18n="mr_foot">Commanderie de Bordeaux do Brasil · São Paulo · Recife · Curitiba · Porto Alegre<br>Dúvidas sobre a marca: Secretaria · sac@commanderiedebordeaux.com.br · Manual v1.0 — Junho 2026</div>
 
 </div>
+<script>
+var I18N={
+ en:{mr_brand:"Brand Manual",mr_painel:"&#8592; Panel",mr_pdf:"Print / PDF",mr_cover_k:"Brand & Visual Identity Manual",mr_br:"of Brazil",mr_ver:"Version 1.0 · June 2026",mr_sk1:"The brand",mr_h1:"The Commanderie",mr_lead1:"The Commanderie de Bordeaux do Brasil is a brotherhood dedicated to appreciating, celebrating and promoting the great wines of Bordeaux. Heir to the tradition of the <i>Grand Conseil du Vin de Bordeaux</i> (founded in 1952), it was established in Brazil on <b>14 November 2025</b>, headquartered in São Paulo with chapters in São Paulo, Rio de Janeiro, Porto Alegre, Curitiba and Recife.",mr_lead2:"Its visual identity is inspired by the Grand Conseil diplomas — parchment, navy and gold — conveying <b>tradition, prestige and excellence</b>. This manual brings together the brand elements to ensure consistent application across all materials, printed or digital.",mr_sk2:"Symbol",mr_h2b:"The emblem",mr_lead_bras:"The emblem is the main brand element and must always be reproduced faithfully, without distortion. Preferably use the colour version, on a beige or white background. The black-and-white version is for single-colour printing.",mr_cap1:"Beige background (primary)",mr_cap2:"White background",mr_cap3:"Black and white",mr_note_bras:"<b>Clear space:</b> keep a minimum clear area around the emblem equal to <b>½ of its height</b>, with no other elements. <b>Minimum size:</b> do not reproduce the emblem smaller than <b>14 mm</b> high (print) or <b>40 px</b> (screen), to preserve legibility. For vector artwork and engraving (plaques, gifts), request the original high-resolution file from the Secretariat.",mr_sk3:"Colours",mr_h3:"Institutional palette",mr_lead_cores:"The colours below define the identity. For printing, use the CMYK values; for exact colour in offset/screen printing, use the Pantone reference. <b>Pantones are approximations</b> — always confirm with the physical swatch book before printing.",mr_c1:"Navy blue",mr_c2:"Gold",mr_c3:"Light gold",mr_c4:"Bordeaux red",mr_c5:"Parchment",mr_c6:"Ink (text)",mr_note_cores:"<b>Colour use:</b> parchment/cream backgrounds; titles and main elements in navy; details, rules and seals in gold; Bordeaux red only for occasional highlights (labels, dates, call-outs). Avoid large red areas.",mr_sk4:"Typography",mr_h4:"Brand fonts",mr_ty1:"Titles and names — serif",mr_ty1d:"Used in titles, proper names and the emblem. Conveys tradition and elegance. Normal weight (no heavy bold).",mr_ty2:"Body text and labels — sans-serif",mr_ty2d:"Used in body text, captions, labels and buttons. In kickers, apply in <span style=\"letter-spacing:2px;text-transform:uppercase;\">SPACED UPPERCASE</span>.",mr_note_ty:"For sophisticated printed materials, professional equivalents may replace the system fonts: a classic serif (e.g. <i>Garamond, Trajan</i> for titles) and a neutral sans-serif (e.g. <i>Helvetica Neue, Montserrat</i>) — keeping the same hierarchy.",mr_sk5:"Applications",mr_h5:"How the brand appears",mr_a1h:"Member card",mr_a1p:"Navy card with gold frame (Master/Grand Master) or ivory (Commandeur).",mr_a2h:"E-mails",mr_a2p:"Navy header with the emblem on cream; gold seal and footer with the motto.",mr_a3h:"Plaques and seals",mr_a3p:"Plaque for the best Bordeaux lists (Gold/Silver/Bronze) and official seal.",mr_a4h:"Stationery",mr_a4p:"Diplomas, invitations and letterhead on parchment with gold rules.",mr_a5h:"Social media",mr_a5p:"Avatar = emblem on beige; covers in navy with serif typography.",mr_a6h:"Website and panels",mr_a6p:"commanderiedebordeaux.com.br — same palette, Georgia + Arial, gold cards.",mr_sk6:"Files",mr_h6:"Brand downloads",mr_lead_dl:"Official files to send to the printer or use in materials. For large-format printing (plaques, banners), prefer the vector.",mr_note_dl:"<b>Vector (.ai / .eps / .svg / .pdf):</b> ideal for printing at any size without loss of quality. Not yet available — as soon as the Secretariat locates the original emblem file, it will be added here for download. (Just send the vector to the site administrator to enable the button.)",mr_sk7:"Care",mr_h7:"Correct and incorrect uses",mr_do_h:"✓ Do",mr_do1:"Use the emblem with its original proportions and clear space.",mr_do2:"Apply the exact institutional colours (HEX/CMYK/Pantone).",mr_do3:"Prefer parchment, cream or navy backgrounds.",mr_do4:"Keep the motto “Bordeaux, toujours Bordeaux”.",mr_no_h:"✗ Don’t",mr_no1:"Do not distort, tilt or crop the emblem.",mr_no2:"Do not change the colours or apply odd gradients.",mr_no3:"Do not use the emblem too small or over cluttered backgrounds.",mr_no4:"Do not replace the fonts with clashing styles.",mr_foot:"Commanderie de Bordeaux do Brasil · São Paulo · Recife · Curitiba · Porto Alegre<br>Brand enquiries: Secretariat · sac@commanderiedebordeaux.com.br · Manual v1.0 — June 2026"},
+ fr:{mr_brand:"Manuel de Marque",mr_painel:"&#8592; Espace",mr_pdf:"Imprimer / PDF",mr_cover_k:"Manuel de Marque et d’Identité Visuelle",mr_br:"du Brésil",mr_ver:"Version 1.0 · Juin 2026",mr_sk1:"La marque",mr_h1:"La Commanderie",mr_lead1:"La Commanderie de Bordeaux do Brasil est une confrérie dédiée à apprécier, célébrer et diffuser les grands vins de Bordeaux. Héritière de la tradition du <i>Grand Conseil du Vin de Bordeaux</i> (fondé en 1952), elle a été instituée au Brésil le <b>14 novembre 2025</b>, avec son siège à São Paulo et des cercles à São Paulo, Rio de Janeiro, Porto Alegre, Curitiba et Recife.",mr_lead2:"Son identité visuelle s’inspire des diplômes du Grand Conseil — parchemin, bleu marine et doré — exprimant <b>tradition, prestige et excellence</b>. Ce manuel rassemble les éléments de la marque pour garantir une application cohérente sur tous les supports, imprimés ou numériques.",mr_sk2:"Symbole",mr_h2b:"L’emblème",mr_lead_bras:"L’emblème est l’élément principal de la marque et doit toujours être reproduit fidèlement, sans déformation. Utilisez de préférence la version en couleur, sur fond beige ou blanc. La version en noir et blanc convient aux impressions en une seule couleur.",mr_cap1:"Fond beige (principal)",mr_cap2:"Fond blanc",mr_cap3:"Noir et blanc",mr_note_bras:"<b>Zone de protection :</b> conservez autour de l’emblème un espace libre minimal égal à <b>½ de sa hauteur</b>, sans autres éléments. <b>Taille minimale :</b> ne reproduisez pas l’emblème à moins de <b>14 mm</b> de hauteur (impression) ou <b>40 px</b> (écran), pour préserver la lisibilité. Pour les fichiers vectoriels et la gravure (plaques, cadeaux), demandez le fichier original haute résolution au Secrétariat.",mr_sk3:"Couleurs",mr_h3:"Palette institutionnelle",mr_lead_cores:"Les couleurs ci-dessous définissent l’identité. Pour l’impression, utilisez les valeurs CMJN ; pour une couleur exacte en offset/sérigraphie, utilisez la référence Pantone. <b>Les Pantone sont des approximations</b> — vérifiez toujours sur le nuancier physique avant d’imprimer.",mr_c1:"Bleu marine",mr_c2:"Doré",mr_c3:"Doré clair",mr_c4:"Rouge Bordeaux",mr_c5:"Parchemin",mr_c6:"Encre (texte)",mr_note_cores:"<b>Usage des couleurs :</b> fonds parchemin/crème ; titres et éléments principaux en bleu marine ; détails, filets et sceaux en doré ; le rouge Bordeaux uniquement pour des accents ponctuels (étiquettes, dates, accroches). Évitez les grandes surfaces de rouge.",mr_sk4:"Typographie",mr_h4:"Polices de la marque",mr_ty1:"Titres et noms — serif",mr_ty1d:"Utilisée pour les titres, les noms propres et l’emblème. Exprime tradition et élégance. Graisse normale (pas de gras lourd).",mr_ty2:"Textes et étiquettes — sans-serif",mr_ty2d:"Utilisée pour les textes courants, légendes, étiquettes et boutons. Pour les accroches, en <span style=\"letter-spacing:2px;text-transform:uppercase;\">MAJUSCULES espacées</span>.",mr_note_ty:"Pour des supports imprimés haut de gamme, des équivalents professionnels peuvent remplacer les polices système : une serif classique (ex. <i>Garamond, Trajan</i> pour les titres) et une sans-serif neutre (ex. <i>Helvetica Neue, Montserrat</i>) — en conservant la même hiérarchie.",mr_sk5:"Applications",mr_h5:"Comment la marque apparaît",mr_a1h:"Carte du membre",mr_a1p:"Carte bleu marine à cadre doré (Maître/Grand Maître) ou ivoire (Commandeur).",mr_a2h:"E-mails",mr_a2p:"En-tête bleu avec l’emblème sur crème ; sceau doré et pied de page avec la devise.",mr_a3h:"Plaques et sceaux",mr_a3p:"Plaque des meilleures cartes de Bordeaux (Or/Argent/Bronze) et sceau officiel.",mr_a4h:"Papeterie",mr_a4p:"Diplômes, invitations et papier à en-tête sur parchemin avec filets dorés.",mr_a5h:"Réseaux sociaux",mr_a5p:"Avatar = emblème sur beige ; couvertures en bleu avec typographie serif.",mr_a6h:"Site et espaces",mr_a6p:"commanderiedebordeaux.com.br — même palette, Georgia + Arial, cartes dorées.",mr_sk6:"Fichiers",mr_h6:"Téléchargements de la marque",mr_lead_dl:"Fichiers officiels à envoyer à l’imprimeur ou à utiliser sur les supports. Pour l’impression grand format (plaques, bannières), privilégiez le vectoriel.",mr_note_dl:"<b>Vectoriel (.ai / .eps / .svg / .pdf) :</b> idéal pour l’impression à toute taille sans perte de qualité. Pas encore disponible — dès que le Secrétariat retrouvera le fichier original de l’emblème, il sera ajouté ici en téléchargement. (Il suffit d’envoyer le vectoriel au responsable du site pour activer le bouton.)",mr_sk7:"Précautions",mr_h7:"Usages corrects et incorrects",mr_do_h:"✓ À faire",mr_do1:"Utilisez l’emblème avec ses proportions originales et sa zone de protection.",mr_do2:"Appliquez les couleurs institutionnelles exactes (HEX/CMJN/Pantone).",mr_do3:"Préférez les fonds parchemin, crème ou bleu marine.",mr_do4:"Conservez la devise « Bordeaux, toujours Bordeaux ».",mr_no_h:"✗ À éviter",mr_no1:"Ne déformez, n’inclinez ni ne recadrez l’emblème.",mr_no2:"Ne changez pas les couleurs et n’appliquez pas de dégradés étranges.",mr_no3:"N’utilisez pas l’emblème trop petit ou sur des fonds chargés.",mr_no4:"Ne remplacez pas les polices par des styles discordants.",mr_foot:"Commanderie de Bordeaux do Brasil · São Paulo · Recife · Curitiba · Porto Alegre<br>Questions sur la marque : Secrétariat · sac@commanderiedebordeaux.com.br · Manuel v1.0 — Juin 2026"}
+};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
 </body></html>

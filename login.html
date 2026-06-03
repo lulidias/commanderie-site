@@ -159,51 +159,60 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
 <nav><div class="nav-in">
   <a class="brand" href="index.html#topo"><img src="img/logo-topo.png" alt="Brasão"><span><b>Commanderie de Bordeaux</b><small>Brasil</small></span></a>
   <div class="nav-links">
-    <a href="index.html#commanderie">A Commanderie</a>
-    <a href="index.html#nucleos">Núcleos</a>
-    <a href="capitulos.html">Capítulos</a>
-    <a href="viagens.html">Viagens</a>
-    <a href="index.html#galeria">Galeria</a>
-    <a href="index.html#socio">Tornar-se Membro</a>
-    <a href="index.html#contato">Contato</a>
-    <a class="btn btn-solid" href="login.html">Painel do Comendador</a>
+    <a href="index.html#commanderie" data-i18n="lg_nav_comm">A Commanderie</a>
+    <a href="index.html#nucleos" data-i18n="lg_nav_nuc">Núcleos</a>
+    <a href="capitulos.html" data-i18n="lg_nav_cap">Capítulos</a>
+    <a href="viagens.html" data-i18n="lg_nav_via">Viagens</a>
+    <a href="index.html#galeria" data-i18n="lg_nav_gal">Galeria</a>
+    <a href="index.html#socio" data-i18n="lg_nav_socio">Tornar-se Membro</a>
+    <a href="index.html#contato" data-i18n="lg_nav_cont">Contato</a>
+    <a class="btn btn-solid" href="login.html" data-i18n="lg_nav_painel">Painel do Comendador</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">FR</a></span>
   </div>
 </div></nav>
 <section><div class="login-wrap">
   <img src="img/logo-topo.png" alt="Brasão">
-  <div class="sec-k">Acesso reservado</div>
-  <h2 style="margin-bottom:0;">Painel do Comendador</h2>
+  <div class="sec-k" data-i18n="lg_k">Acesso reservado</div>
+  <h2 style="margin-bottom:0;" data-i18n="lg_h2">Painel do Comendador</h2>
 
   <form class="login-card" onsubmit="event.preventDefault();window.location.href='area-do-socio.html';">
-    <label>E-mail ou nº de membro</label>
-    <input required placeholder="email@exemplo.com  ·  CDB-SP-1001">
-    <label>Senha</label>
-    <input type="password" required placeholder="Sua senha">
-    <button class="btn btn-solid full" type="submit">Entrar</button>
-    <div class="linkrow"><a onclick="document.getElementById('first').style.display='block';this.style.display='none';">Primeiro acesso? Alterar senha padrão</a></div>
+    <label data-i18n="lg_l_email">E-mail ou nº de membro</label>
+    <input required placeholder="email@exemplo.com  ·  CDB-SP-1001" data-i18n-ph="ph_emailnum">
+    <label data-i18n="lg_l_senha">Senha</label>
+    <input type="password" required placeholder="Sua senha" data-i18n-ph="ph_senha">
+    <button class="btn btn-solid full" type="submit" data-i18n="lg_entrar">Entrar</button>
+    <div class="linkrow"><a onclick="document.getElementById('first').style.display='block';this.style.display='none';" data-i18n="lg_first_link">Primeiro acesso? Alterar senha padrão</a></div>
 
     <div id="first" style="display:none;">
-      <div class="note">No primeiro acesso, use a <b>senha padrão</b> enviada pela Secretaria e defina a sua nova senha abaixo.</div>
-      <label>Senha padrão</label><input type="password" placeholder="Senha enviada pela Secretaria">
-      <label>Nova senha</label><input type="password" placeholder="Crie uma senha">
-      <label>Confirmar nova senha</label><input type="password" placeholder="Repita a nova senha">
-      <button class="btn btn-ghost full" type="button" onclick="window.location.href='area-do-socio.html';">Salvar e entrar</button>
+      <div class="note" data-i18n="lg_note">No primeiro acesso, use a <b>senha padrão</b> enviada pela Secretaria e defina a sua nova senha abaixo.</div>
+      <label data-i18n="lg_l_senhapad">Senha padrão</label><input type="password" placeholder="Senha enviada pela Secretaria" data-i18n-ph="ph_senhapad">
+      <label data-i18n="lg_l_nova">Nova senha</label><input type="password" placeholder="Crie uma senha" data-i18n-ph="ph_nova">
+      <label data-i18n="lg_l_conf">Confirmar nova senha</label><input type="password" placeholder="Repita a nova senha" data-i18n-ph="ph_conf">
+      <button class="btn btn-ghost full" type="button" onclick="window.location.href='area-do-socio.html';" data-i18n="lg_salvar">Salvar e entrar</button>
     </div>
   </form>
 
-  <div class="linkrow"><a>Esqueci minha senha</a></div>
-  <p class="gal-note" style="margin-top:24px;">Acesso exclusivo para membros da Commanderie. Em caso de dúvida, escreva à Secretaria.</p>
-  <div class="linkrow" style="margin-top:8px;"><a href="painel-conselho.html" style="color:#9a937f;font-size:12px;">Acesso do Conselho</a></div>
+  <div class="linkrow"><a data-i18n="lg_esqueci">Esqueci minha senha</a></div>
+  <p class="gal-note" style="margin-top:24px;" data-i18n="lg_excl">Acesso exclusivo para membros da Commanderie. Em caso de dúvida, escreva à Secretaria.</p>
+  <div class="linkrow" style="margin-top:8px;"><a href="painel-conselho.html" style="color:#9a937f;font-size:12px;" data-i18n="lg_conselho">Acesso do Conselho</a></div>
 </div></section>
 <footer>
   <img src="img/logo-topo.png" alt="Brasão">
   <div class="fmotto">Bordeaux, toujours Bordeaux</div>
   <div class="fnav">
-    <a href="index.html#commanderie">A Commanderie</a><a href="index.html#nucleos">Núcleos</a>
-    <a href="capitulos.html">Capítulos</a>
-    <a href="viagens.html">Viagens</a><a href="index.html#galeria">Galeria</a>
-    <a href="index.html#socio">Tornar-se Membro</a><a href="login.html">Painel do Comendador</a>
+    <a href="index.html#commanderie" data-i18n="lg_nav_comm">A Commanderie</a><a href="index.html#nucleos" data-i18n="lg_nav_nuc">Núcleos</a>
+    <a href="capitulos.html" data-i18n="lg_nav_cap">Capítulos</a>
+    <a href="viagens.html" data-i18n="lg_nav_via">Viagens</a><a href="index.html#galeria" data-i18n="lg_nav_gal">Galeria</a>
+    <a href="index.html#socio" data-i18n="lg_nav_socio">Tornar-se Membro</a><a href="login.html" data-i18n="lg_nav_painel">Painel do Comendador</a>
   </div>
-  <small>© 2026 Commanderie de Bordeaux — Brasil. Todos os direitos reservados.</small>
+  <small data-i18n="lg_copy">© 2026 Commanderie de Bordeaux — Brasil. Todos os direitos reservados.</small>
 <div style="margin:16px 0 0;"><a href="https://www.instagram.com/commanderiedebordeauxbr/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;color:#e7d8a8;text-decoration:none;font-size:13px;letter-spacing:.3px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" style="flex:none;"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52.01-4.77.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7-.06 1.25-.07 1.62-.07 4.77s.01 3.52.07 4.77c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.25.06 1.62.07 4.77.07s3.52-.01 4.77-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.25.07-1.62.07-4.77s-.01-3.52-.07-4.77c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 0 0-.68-1.06 2.85 2.85 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.52 4.01 15.15 4 12 4zm0 3.07A4.93 4.93 0 1 1 7.07 12 4.93 4.93 0 0 1 12 7.07zm0 1.8A3.13 3.13 0 1 0 15.13 12 3.13 3.13 0 0 0 12 8.87zm5.13-.99a1.15 1.15 0 1 1-1.15 1.15 1.15 1.15 0 0 1 1.15-1.15z"/></svg>@commanderiedebordeauxbr</a></div></footer>
+<script>
+var I18N={
+ en:{lg_nav_comm:"The Commanderie",lg_nav_nuc:"Regions",lg_nav_cap:"Chapters",lg_nav_via:"Trips",lg_nav_gal:"Gallery",lg_nav_socio:"Become a Member",lg_nav_cont:"Contact",lg_nav_painel:"Commander’s Panel",lg_k:"Reserved access",lg_h2:"Commander’s Panel",lg_l_email:"E-mail or member no.",lg_l_senha:"Password",lg_entrar:"Sign in",lg_first_link:"First access? Change default password",lg_note:"On first access, use the <b>default password</b> sent by the Secretariat and set your new password below.",lg_l_senhapad:"Default password",lg_l_nova:"New password",lg_l_conf:"Confirm new password",lg_salvar:"Save and sign in",lg_esqueci:"I forgot my password",lg_excl:"Exclusive access for Commanderie members. If in doubt, write to the Secretariat.",lg_conselho:"Council access",lg_copy:"© 2026 Commanderie de Bordeaux — Brazil. All rights reserved.",ph_emailnum:"email@example.com  ·  CDB-SP-1001",ph_senha:"Your password",ph_senhapad:"Password sent by the Secretariat",ph_nova:"Create a password",ph_conf:"Repeat the new password"},
+ fr:{lg_nav_comm:"La Commanderie",lg_nav_nuc:"Cercles",lg_nav_cap:"Chapitres",lg_nav_via:"Voyages",lg_nav_gal:"Galerie",lg_nav_socio:"Devenir Membre",lg_nav_cont:"Contact",lg_nav_painel:"Espace du Commandeur",lg_k:"Accès réservé",lg_h2:"Espace du Commandeur",lg_l_email:"E-mail ou n° de membre",lg_l_senha:"Mot de passe",lg_entrar:"Se connecter",lg_first_link:"Première connexion ? Modifier le mot de passe par défaut",lg_note:"Lors de la première connexion, utilisez le <b>mot de passe par défaut</b> envoyé par le Secrétariat et définissez votre nouveau mot de passe ci-dessous.",lg_l_senhapad:"Mot de passe par défaut",lg_l_nova:"Nouveau mot de passe",lg_l_conf:"Confirmer le nouveau mot de passe",lg_salvar:"Enregistrer et se connecter",lg_esqueci:"J’ai oublié mon mot de passe",lg_excl:"Accès exclusif aux membres de la Commanderie. En cas de doute, écrivez au Secrétariat.",lg_conselho:"Accès du Conseil",lg_copy:"© 2026 Commanderie de Bordeaux — Brésil. Tous droits réservés.",ph_emailnum:"email@exemple.com  ·  CDB-SP-1001",ph_senha:"Votre mot de passe",ph_senhapad:"Mot de passe envoyé par le Secrétariat",ph_nova:"Créez un mot de passe",ph_conf:"Répétez le nouveau mot de passe"}
+};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var ph=document.querySelectorAll("[data-i18n-ph]");for(var p=0;p<ph.length;p++){var pk=ph[p].getAttribute("data-i18n-ph"),ok="ph:"+pk;if(!(ok in _orig))_orig[ok]=ph[p].getAttribute("placeholder");ph[p].setAttribute("placeholder",(l==="pt"||!d||d[pk]==null)?_orig[ok]:d[pk]);}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
 </body></html>

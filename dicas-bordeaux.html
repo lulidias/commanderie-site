@@ -33,13 +33,13 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
 .dfoot{text-align:center;padding:26px 20px;font-size:12px;color:#9a937f;}
 </style></head><body>
-<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Dicas de Bordeaux</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a></div>
-<div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Conteúdo exclusivo dos membros. Entre na sua conta.</p><a class="btn" href="index.html">Entrar</a></div>
-<div id="loading" class="state">Carregando…</div>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b data-i18n="dc_brand">Dicas de Bordeaux</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}" data-i18n="dc_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
+<div id="needLogin" class="state" style="display:none;"><h2 data-i18n="dc_nl_h">Acesso restrito</h2><p data-i18n="dc_nl_p">Conteúdo exclusivo dos membros. Entre na sua conta.</p><a class="btn" href="index.html" data-i18n="dc_nl_btn">Entrar</a></div>
+<div id="loading" class="state" data-i18n="dc_loading">Carregando…</div>
 <div id="content" style="display:none;">
-  <div class="dhead"><div class="k">Guia dos Comendadores</div><h1>Dicas de Bordeaux</h1><p>Onde comer e beber bem em Bordeaux e na Gironde — uma curadoria de Luli Dias para os membros da Commanderie. Apresente-se e bon appétit.</p></div>
+  <div class="dhead"><div class="k" data-i18n="dc_k">Guia dos Comendadores</div><h1 data-i18n="dc_h1">Dicas de Bordeaux</h1><p data-i18n="dc_intro">Onde comer e beber bem em Bordeaux e na Gironde — uma curadoria de Luli Dias para os membros da Commanderie. Apresente-se e bon appétit.</p></div>
   <div class="wrap" id="dwrap"></div>
-  <div class="dfoot">Curadoria “Na Mesa com Luli Dias”. Informações sujeitas a alteração — confirme horários e reservas.</div>
+  <div class="dfoot" data-i18n="dc_foot">Curadoria “Na Mesa com Luli Dias”. Informações sujeitas a alteração — confirme horários e reservas.</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -79,4 +79,10 @@ async function carregar(){
   document.getElementById("content").style.display="block";
 }
 document.addEventListener("DOMContentLoaded",carregar);
-</script></body></html>
+</script><script>
+var I18N={en:{dc_brand:"Bordeaux Tips",dc_back:"&#8592; Back",dc_nl_h:"Restricted access",dc_nl_p:"Members-only content. Sign in.",dc_nl_btn:"Sign in",dc_loading:"Loading…",dc_k:"Commanders’ Guide",dc_h1:"Bordeaux Tips",dc_intro:"Where to eat and drink well in Bordeaux and the Gironde — a selection by Luli Dias for Commanderie members. Introduce yourself and bon appétit.",dc_foot:"Curated by “Na Mesa com Luli Dias”. Information subject to change — please confirm hours and reservations."},fr:{dc_brand:"Bonnes adresses de Bordeaux",dc_back:"&#8592; Retour",dc_nl_h:"Accès restreint",dc_nl_p:"Contenu réservé aux membres. Connectez-vous.",dc_nl_btn:"Se connecter",dc_loading:"Chargement…",dc_k:"Guide des Commandeurs",dc_h1:"Bonnes adresses de Bordeaux",dc_intro:"Où bien manger et boire à Bordeaux et en Gironde — une sélection de Luli Dias pour les membres de la Commanderie. Présentez-vous et bon appétit.",dc_foot:"Sélection « Na Mesa com Luli Dias ». Informations susceptibles de changer — confirmez horaires et réservations."}};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
+</body></html>

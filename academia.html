@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Academia de Bordeaux — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
+<meta property="og:title" content="Academia de Bordeaux — Commanderie de Bordeaux"><meta property="og:description" content="Um guia essencial para apreciar, entender e falar sobre os grandes vinhos de Bordeaux."><meta property="og:image" content="https://commanderiedebordeaux.com.br/img/og-card.png"><meta property="og:type" content="website">
+<style>
+:root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;transition:all .15s ease;}.dtop .back:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.dhead{text-align:center;padding:38px 20px 6px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:33px;margin:6px 0 2px;}
+.wrap{max-width:720px;margin:0 auto;padding:14px 20px 60px;}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;}
+.lead{font-size:15px;color:#5b5446;line-height:1.7;margin:0;}
+.sec-h{font-family:Georgia,serif;color:var(--navy);font-size:22px;margin:30px 0 4px;}
+.sec-rule{height:2px;width:54px;background:var(--gold);border-radius:2px;margin-bottom:12px;}
+.p{font-size:14.5px;color:#5b5446;line-height:1.7;}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;}
+.tile{background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px 17px;}
+.tile.gold{border-left:4px solid var(--gold);}
+.tile h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:17px;margin:0 0 5px;}
+.tile p{font-size:13.5px;color:#5b5446;line-height:1.55;margin:0;}
+.cru{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:11px 0;border-bottom:1px solid #ece0c2;}
+.cru:last-child{border-bottom:none;}
+.cru b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:15.5px;}
+.cru span{font-size:12px;color:#8a8270;white-space:nowrap;}
+.vt{width:100%;border-collapse:collapse;font-size:14px;}
+.vt td{padding:9px 6px;border-bottom:1px solid #ece0c2;}
+.vt td:first-child{font-family:Georgia,serif;color:var(--navy);font-size:16px;width:80px;}
+.vt td:last-child{text-align:right;}
+.tag{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:3px 10px;white-space:nowrap;}
+.t-leg{color:#7a5a12;background:#f1e3bf;border:1px solid #d8c48a;}
+.t-exc{color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;}
+.steps{counter-reset:s;margin:6px 0 0;padding:0;list-style:none;}
+.steps li{position:relative;padding:9px 0 9px 40px;border-bottom:1px solid #ece0c2;font-size:14px;color:#5b5446;line-height:1.5;}
+.steps li:last-child{border-bottom:none;}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:8px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:var(--gold);font-family:Georgia,serif;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.steps li b{color:var(--navy);}
+.plist{margin:0;padding:0;list-style:none;}
+.plist li{padding:11px 0;border-bottom:1px solid #ece0c2;font-size:14px;color:#5b5446;line-height:1.55;}
+.plist li:last-child{border-bottom:none;}
+.plist li b{color:var(--navy);font-family:Georgia,serif;font-weight:normal;}
+details{border-bottom:1px solid var(--line);}
+details:last-child{border-bottom:none;}
+summary{padding:13px 0;cursor:pointer;font-size:15px;color:var(--navy);font-family:Georgia,serif;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+summary::-webkit-details-marker{display:none;}
+summary::after{content:'+';color:var(--gold);font-size:20px;}
+details[open] summary::after{content:'\2212';}
+details .d{font-size:13.5px;line-height:1.6;color:#5b5446;padding:0 0 13px;}
+.note{font-size:12.5px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-top:14px;line-height:1.55;}
+.foot{text-align:center;margin:34px auto 0;font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+</style></head><body>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b data-i18n="ac_brand">Academia de Bordeaux</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}" data-i18n="ac_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
+
+<div class="dhead"><div class="k" data-i18n="ac_k">Aprenda</div><h1 data-i18n="ac_h1">Academia de Bordeaux</h1></div>
+<div class="wrap">
+  <div class="card"><p class="lead" data-i18n="ac_intro">Bordeaux é a maior região de vinhos finos do mundo — e o coração da nossa confraria. Esta é a nossa academia: um guia essencial para apreciar, entender e falar com propriedade sobre os vinhos que nos unem.</p></div>
+
+  <div class="sec-h" data-i18n="ac_reg_h">A região</div><div class="sec-rule"></div>
+  <p class="p" data-i18n="ac_reg_p">Cortada pelo rio Garonne e pelo estuário da Gironde, Bordeaux divide-se em duas grandes margens, cada uma com seu solo e seu estilo.</p>
+  <div class="grid2">
+    <div class="tile gold"><h3 data-i18n="ac_left_h">Margem Esquerda</h3><p data-i18n="ac_left_p">Solos de cascalho que aquecem as raízes. Reino do Cabernet Sauvignon: vinhos estruturados, firmes e de longa guarda. Aqui ficam o Médoc e Graves.</p></div>
+    <div class="tile gold"><h3 data-i18n="ac_right_h">Margem Direita</h3><p data-i18n="ac_right_p">Solos de argila e calcário. Reino do Merlot: vinhos mais macios e sedutores já na juventude. Aqui ficam Saint-Émilion e Pomerol.</p></div>
+  </div>
+
+  <div class="sec-h" data-i18n="ac_1855_h">A Classificação de 1855</div><div class="sec-rule"></div>
+  <p class="p" data-i18n="ac_1855_p">A pedido de Napoleão III, os corretores de Bordeaux classificaram os melhores châteaux do Médoc em cinco níveis (os Crus Classés). No topo, os cinco Premiers Crus — até hoje uma referência mundial:</p>
+  <div class="card" style="margin-top:6px;">
+    <div class="cru"><b>Château Lafite Rothschild</b><span>Pauillac</span></div>
+    <div class="cru"><b>Château Latour</b><span>Pauillac</span></div>
+    <div class="cru"><b>Château Margaux</b><span>Margaux</span></div>
+    <div class="cru"><b>Château Haut-Brion</b><span>Pessac · Graves</span></div>
+    <div class="cru"><b>Château Mouton Rothschild</b><span data-i18n="ac_mouton">Pauillac · elevado em 1973</span></div>
+  </div>
+  <div class="note" data-i18n="ac_1855_note">Saint-Émilion tem a sua própria classificação, revista periodicamente. Pomerol, por tradição, não possui classificação oficial — e ainda assim abriga alguns dos vinhos mais cobiçados do mundo.</div>
+
+  <div class="sec-h" data-i18n="ac_app_h">Principais denominações</div><div class="sec-rule"></div>
+  <p class="p" data-i18n="ac_app_p">Cada <i>appellation</i> (AOC) tem caráter próprio. As essenciais:</p>
+  <div class="grid2">
+    <div class="tile"><h3>Pauillac</h3><p data-i18n="ac_a_pauillac">Berço de três dos cinco Premiers. Cabernet potente, austero e longevo.</p></div>
+    <div class="tile"><h3>Margaux</h3><p data-i18n="ac_a_margaux">Elegância e perfume. Os tintos mais delicados e florais do Médoc.</p></div>
+    <div class="tile"><h3>Saint-Julien</h3><p data-i18n="ac_a_stjulien">O equilíbrio clássico do Médoc: estrutura com finesse.</p></div>
+    <div class="tile"><h3>Saint-Estèphe</h3><p data-i18n="ac_a_stestephe">Firmeza e estrutura. Tintos robustos, feitos para envelhecer.</p></div>
+    <div class="tile"><h3>Pessac-Léognan · Graves</h3><p data-i18n="ac_a_graves">Tintos e brancos secos de alto nível. Casa do Haut-Brion.</p></div>
+    <div class="tile"><h3>Saint-Émilion</h3><p data-i18n="ac_a_stemilion">Margem direita, base de Merlot. Vilarejo medieval Patrimônio da Humanidade.</p></div>
+    <div class="tile"><h3>Pomerol</h3><p data-i18n="ac_a_pomerol">Merlot sedoso e opulento. Pequena área, grandes lendas — como o Pétrus.</p></div>
+    <div class="tile"><h3>Sauternes</h3><p data-i18n="ac_a_sauternes">Brancos doces nascidos da “podridão nobre” (botrytis). O mítico Yquem.</p></div>
+  </div>
+
+  <div class="sec-h" data-i18n="ac_grapes_h">As uvas de Bordeaux</div><div class="sec-rule"></div>
+  <ul class="plist">
+    <li><b data-i18n="ac_g_tintas">Tintas</b><br><span data-i18n="ac_g_tintas_p"><b>Cabernet Sauvignon</b> — espinha dorsal da margem esquerda: estrutura, cassis e longevidade. <b>Merlot</b> — maciez e fruta, domina a margem direita. <b>Cabernet Franc</b> — perfume e frescor. <b>Petit Verdot</b> — cor e especiarias, em pequena dose no corte.</span></li>
+    <li><b data-i18n="ac_g_brancas">Brancas</b><br><span data-i18n="ac_g_brancas_p"><b>Sémillon</b> — corpo e mel, a base dos Sauternes. <b>Sauvignon Blanc</b> — acidez e notas cítricas. <b>Muscadelle</b> — toque floral e aromático.</span></li>
+  </ul>
+
+  <div class="sec-h" data-i18n="ac_vint_h">Grandes safras</div><div class="sec-rule"></div>
+  <p class="p" data-i18n="ac_vint_p">Anos memoráveis para os tintos de Bordeaux — uma referência para a adega e a mesa:</p>
+  <div class="card" style="margin-top:6px;"><table class="vt"><tbody>
+    <tr><td>1982</td><td><span class="tag t-leg" data-i18n="ac_v_leg">Lendária</span></td></tr>
+    <tr><td>1990</td><td><span class="tag t-leg" data-i18n="ac_v_leg2">Lendária</span></td></tr>
+    <tr><td>2000</td><td><span class="tag t-leg" data-i18n="ac_v_leg3">Lendária</span></td></tr>
+    <tr><td>2005</td><td><span class="tag t-exc" data-i18n="ac_v_exc">Excelente</span></td></tr>
+    <tr><td>2009</td><td><span class="tag t-leg" data-i18n="ac_v_leg4">Lendária</span></td></tr>
+    <tr><td>2010</td><td><span class="tag t-leg" data-i18n="ac_v_leg5">Lendária</span></td></tr>
+    <tr><td>2016</td><td><span class="tag t-leg" data-i18n="ac_v_leg6">Lendária</span></td></tr>
+    <tr><td>2018</td><td><span class="tag t-exc" data-i18n="ac_v_exc2">Excelente</span></td></tr>
+    <tr><td>2019</td><td><span class="tag t-exc" data-i18n="ac_v_exc3">Excelente</span></td></tr>
+    <tr><td>2020</td><td><span class="tag t-exc" data-i18n="ac_v_exc4">Excelente</span></td></tr>
+  </tbody></table></div>
+  <div class="note" data-i18n="ac_vint_note">A safra é um guia, não uma regra: grandes produtores fazem vinhos notáveis mesmo em anos difíceis.</div>
+
+  <div class="sec-h" data-i18n="ac_pair_h">À mesa</div><div class="sec-rule"></div>
+  <ul class="plist">
+    <li><b>Pauillac · Médoc</b> <span data-i18n="ac_p_medoc">(Cabernet) — carnes vermelhas, cordeiro, caça e queijos curados.</span></li>
+    <li><b>Saint-Émilion · Pomerol</b> <span data-i18n="ac_p_right">(Merlot) — aves, carne de porco, cogumelos e massas encorpadas.</span></li>
+    <li><b data-i18n="ac_p_graves_t">Graves branco</b> <span data-i18n="ac_p_graves">— peixes, frutos do mar e aves delicadas.</span></li>
+    <li><b>Sauternes</b> <span data-i18n="ac_p_sauternes">— foie gras, queijos azuis e sobremesas de fruta.</span></li>
+  </ul>
+
+  <div class="sec-h" data-i18n="ac_serve_h">Serviço &amp; degustação</div><div class="sec-rule"></div>
+  <ul class="plist">
+    <li><b data-i18n="ac_s_temp_t">Temperatura</b><br><span data-i18n="ac_s_temp">Tintos: 16–18 °C. Brancos secos: 8–10 °C. Sauternes: 8–10 °C. Tinto quente demais perde o frescor; gelado demais fecha os aromas.</span></li>
+    <li><b data-i18n="ac_s_dec_t">Decantação</b><br><span data-i18n="ac_s_dec">Tintos jovens e encorpados ganham ao respirar. Vinhos antigos: decante com cuidado para separar a borra.</span></li>
+    <li><b data-i18n="ac_s_glass_t">A taça</b><br><span data-i18n="ac_s_glass">Um bojo amplo concentra os aromas e valoriza o vinho. Sirva até cerca de um terço da taça.</span></li>
+  </ul>
+  <p class="p" style="margin-top:14px;font-weight:bold;color:var(--navy);" data-i18n="ac_steps_h">Os quatro passos da degustação</p>
+  <ol class="steps">
+    <li><b data-i18n="ac_st1_t">Ver</b> <span data-i18n="ac_st1">— observe a cor e a limpidez contra a luz; a borda revela a idade.</span></li>
+    <li><b data-i18n="ac_st2_t">Girar</b> <span data-i18n="ac_st2">— rode o vinho na taça para liberar os aromas.</span></li>
+    <li><b data-i18n="ac_st3_t">Cheirar</b> <span data-i18n="ac_st3">— busque frutas, especiarias, flores, madeira e terra.</span></li>
+    <li><b data-i18n="ac_st4_t">Provar</b> <span data-i18n="ac_st4">— sinta o ataque, o meio de boca e o final; quanto mais longo, maior o vinho.</span></li>
+  </ol>
+
+  <div class="sec-h" data-i18n="ac_glos_h">Glossário</div><div class="sec-rule"></div>
+  <div class="card">
+    <details open><summary data-i18n="ac_gl_terroir_t">Terroir</summary><div class="d" data-i18n="ac_gl_terroir">A combinação de solo, clima, relevo e mão humana que dá identidade a um vinho. É o que torna cada lugar único.</div></details>
+    <details><summary data-i18n="ac_gl_assemblage_t">Assemblage (corte)</summary><div class="d" data-i18n="ac_gl_assemblage">A arte de combinar diferentes uvas (e parcelas) para criar o vinho final. Em Bordeaux, quase tudo é um corte.</div></details>
+    <details><summary data-i18n="ac_gl_cru_t">Cru Classé</summary><div class="d" data-i18n="ac_gl_cru">“Vinhedo classificado” — château reconhecido por uma classificação oficial (como a de 1855).</div></details>
+    <details><summary data-i18n="ac_gl_chateau_t">Château</summary><div class="d" data-i18n="ac_gl_chateau">A propriedade vinícola em Bordeaux — nem sempre um castelo, mas sempre uma marca e um terroir.</div></details>
+    <details><summary data-i18n="ac_gl_aoc_t">Appellation (AOC)</summary><div class="d" data-i18n="ac_gl_aoc">Denominação de Origem Controlada: define de onde vem o vinho e as regras que ele segue.</div></details>
+    <details><summary data-i18n="ac_gl_grandvin_t">Grand Vin &amp; segundo vinho</summary><div class="d" data-i18n="ac_gl_grandvin">O Grand Vin é o rótulo principal do château; o segundo vinho usa as parcelas mais jovens — ótimo custo-benefício.</div></details>
+    <details><summary data-i18n="ac_gl_barrique_t">Barrique</summary><div class="d" data-i18n="ac_gl_barrique">A barrica bordalesa de 225 litros, onde o vinho amadurece e ganha estrutura e notas de madeira.</div></details>
+    <details><summary data-i18n="ac_gl_tanino_t">Tanino</summary><div class="d" data-i18n="ac_gl_tanino">Composto da casca e da semente que dá a sensação de “amarrar” a boca — e sustenta a guarda do vinho.</div></details>
+    <details><summary data-i18n="ac_gl_guarda_t">Guarda</summary><div class="d" data-i18n="ac_gl_guarda">A capacidade de envelhecer e melhorar com o tempo. Os grandes Bordeaux podem guardar por décadas.</div></details>
+    <details><summary data-i18n="ac_gl_primeurs_t">Primeurs (en primeur)</summary><div class="d" data-i18n="ac_gl_primeurs">A venda do vinho ainda na barrica, antes de engarrafado — uma tradição comercial de Bordeaux.</div></details>
+  </div>
+
+  <div class="foot">Bordeaux, toujours Bordeaux</div>
+</div>
+
+<script>
+var I18N={
+ en:{ac_brand:"Bordeaux Academy",ac_back:"&#8592; Back",ac_k:"Learn",ac_h1:"Bordeaux Academy",ac_intro:"Bordeaux is the world’s largest fine-wine region — and the heart of our confraternity. This is our academy: an essential guide to appreciate, understand and speak with confidence about the wines that unite us.",ac_reg_h:"The region",ac_reg_p:"Crossed by the Garonne river and the Gironde estuary, Bordeaux is split into two great banks, each with its own soil and style.",ac_left_h:"Left Bank",ac_left_p:"Gravel soils that warm the roots. The realm of Cabernet Sauvignon: structured, firm, long-ageing wines. Home to the Médoc and Graves.",ac_right_h:"Right Bank",ac_right_p:"Clay and limestone soils. The realm of Merlot: softer, more seductive wines even when young. Home to Saint-Émilion and Pomerol.",ac_1855_h:"The 1855 Classification",ac_1855_p:"At the request of Napoleon III, the brokers of Bordeaux ranked the finest Médoc châteaux into five tiers (the Crus Classés). At the very top, the five First Growths — a world reference to this day:",ac_mouton:"Pauillac · promoted in 1973",ac_1855_note:"Saint-Émilion has its own classification, revised periodically. Pomerol, by tradition, has no official classification — and yet is home to some of the most sought-after wines in the world.",ac_app_h:"Key appellations",ac_app_p:"Each <i>appellation</i> (AOC) has its own character. The essentials:",ac_a_pauillac:"Birthplace of three of the five First Growths. Powerful, austere, long-lived Cabernet.",ac_a_margaux:"Elegance and perfume. The most delicate, floral reds of the Médoc.",ac_a_stjulien:"The classic balance of the Médoc: structure with finesse.",ac_a_stestephe:"Firmness and structure. Robust reds built to age.",ac_a_graves:"Top-level reds and dry whites. Home of Haut-Brion.",ac_a_stemilion:"Right Bank, Merlot-based. Medieval village, a World Heritage Site.",ac_a_pomerol:"Silky, opulent Merlot. A small area, great legends — such as Pétrus.",ac_a_sauternes:"Sweet whites born of “noble rot” (botrytis). The mythical Yquem.",ac_grapes_h:"The grapes of Bordeaux",ac_g_tintas:"Reds",ac_g_tintas_p:"<b>Cabernet Sauvignon</b> — backbone of the Left Bank: structure, blackcurrant and longevity. <b>Merlot</b> — softness and fruit, ruling the Right Bank. <b>Cabernet Franc</b> — perfume and freshness. <b>Petit Verdot</b> — colour and spice, in small doses in the blend.",ac_g_brancas:"Whites",ac_g_brancas_p:"<b>Sémillon</b> — body and honey, the base of Sauternes. <b>Sauvignon Blanc</b> — acidity and citrus notes. <b>Muscadelle</b> — a floral, aromatic touch.",ac_vint_h:"Great vintages",ac_vint_p:"Memorable years for the reds of Bordeaux — a reference for the cellar and the table:",ac_v_leg:"Legendary",ac_v_leg2:"Legendary",ac_v_leg3:"Legendary",ac_v_exc:"Excellent",ac_v_leg4:"Legendary",ac_v_leg5:"Legendary",ac_v_leg6:"Legendary",ac_v_exc2:"Excellent",ac_v_exc3:"Excellent",ac_v_exc4:"Excellent",ac_vint_note:"The vintage is a guide, not a rule: great producers make remarkable wines even in difficult years.",ac_pair_h:"At the table",ac_p_medoc:"(Cabernet) — red meats, lamb, game and cured cheeses.",ac_p_right:"(Merlot) — poultry, pork, mushrooms and rich pasta.",ac_p_graves_t:"White Graves",ac_p_graves:"— fish, seafood and delicate poultry.",ac_p_sauternes:"— foie gras, blue cheeses and fruit desserts.",ac_serve_h:"Service &amp; tasting",ac_s_temp_t:"Temperature",ac_s_temp:"Reds: 16–18 °C. Dry whites: 8–10 °C. Sauternes: 8–10 °C. Too warm, a red loses its freshness; too cold, the aromas shut down.",ac_s_dec_t:"Decanting",ac_s_dec:"Young, full-bodied reds gain from breathing. Old wines: decant carefully to separate the sediment.",ac_s_glass_t:"The glass",ac_s_glass:"A wide bowl concentrates the aromas and flatters the wine. Pour to about a third of the glass.",ac_steps_h:"The four steps of tasting",ac_st1_t:"Look",ac_st1:"— observe the colour and clarity against the light; the rim hints at the age.",ac_st2_t:"Swirl",ac_st2:"— swirl the wine in the glass to release the aromas.",ac_st3_t:"Smell",ac_st3:"— seek fruit, spice, flowers, oak and earth.",ac_st4_t:"Taste",ac_st4:"— feel the attack, the mid-palate and the finish; the longer it lasts, the greater the wine.",ac_glos_h:"Glossary",ac_gl_terroir_t:"Terroir",ac_gl_terroir:"The combination of soil, climate, relief and human hand that gives a wine its identity. It is what makes each place unique.",ac_gl_assemblage_t:"Assemblage (blend)",ac_gl_assemblage:"The art of combining different grapes (and plots) to create the final wine. In Bordeaux, almost everything is a blend.",ac_gl_cru_t:"Cru Classé",ac_gl_cru:"“Classified growth” — a château recognised by an official classification (such as the 1855).",ac_gl_chateau_t:"Château",ac_gl_chateau:"The wine estate in Bordeaux — not always a castle, but always a brand and a terroir.",ac_gl_aoc_t:"Appellation (AOC)",ac_gl_aoc:"Controlled Designation of Origin: it defines where the wine comes from and the rules it follows.",ac_gl_grandvin_t:"Grand Vin &amp; second wine",ac_gl_grandvin:"The Grand Vin is the château’s main label; the second wine uses the younger plots — great value for money.",ac_gl_barrique_t:"Barrique",ac_gl_barrique:"The 225-litre Bordeaux barrel, where the wine matures and gains structure and notes of oak.",ac_gl_tanino_t:"Tannin",ac_gl_tanino:"A compound from the skin and seeds that gives the “grippy” feel in the mouth — and underpins the wine’s ageing.",ac_gl_guarda_t:"Ageing potential",ac_gl_guarda:"The ability to age and improve over time. The great Bordeaux can keep for decades.",ac_gl_primeurs_t:"Primeurs (en primeur)",ac_gl_primeurs:"The sale of wine still in barrel, before bottling — a commercial tradition of Bordeaux."},
+ fr:{ac_brand:"Académie de Bordeaux",ac_back:"&#8592; Retour",ac_k:"Apprendre",ac_h1:"Académie de Bordeaux",ac_intro:"Bordeaux est la plus grande région de vins fins du monde — et le cœur de notre confrérie. Voici notre académie : un guide essentiel pour apprécier, comprendre et parler avec aisance des vins qui nous unissent.",ac_reg_h:"La région",ac_reg_p:"Traversée par la Garonne et l’estuaire de la Gironde, Bordeaux se partage en deux grandes rives, chacune avec son sol et son style.",ac_left_h:"Rive Gauche",ac_left_p:"Sols de graves qui réchauffent les racines. Le royaume du Cabernet Sauvignon : des vins structurés, fermes et de longue garde. On y trouve le Médoc et les Graves.",ac_right_h:"Rive Droite",ac_right_p:"Sols d’argile et de calcaire. Le royaume du Merlot : des vins plus souples et séduisants dès la jeunesse. On y trouve Saint-Émilion et Pomerol.",ac_1855_h:"Le Classement de 1855",ac_1855_p:"À la demande de Napoléon III, les courtiers de Bordeaux ont classé les meilleurs châteaux du Médoc en cinq niveaux (les Crus Classés). Au sommet, les cinq Premiers Crus — une référence mondiale encore aujourd’hui :",ac_mouton:"Pauillac · élevé en 1973",ac_1855_note:"Saint-Émilion possède son propre classement, révisé périodiquement. Pomerol, par tradition, n’a pas de classement officiel — et abrite pourtant certains des vins les plus convoités du monde.",ac_app_h:"Principales appellations",ac_app_p:"Chaque <i>appellation</i> (AOC) a son caractère. Les essentielles :",ac_a_pauillac:"Berceau de trois des cinq Premiers. Cabernet puissant, austère et de longue garde.",ac_a_margaux:"Élégance et parfum. Les rouges les plus délicats et floraux du Médoc.",ac_a_stjulien:"L’équilibre classique du Médoc : structure et finesse.",ac_a_stestephe:"Fermeté et structure. Des rouges robustes, faits pour vieillir.",ac_a_graves:"Rouges et blancs secs de haut niveau. Berceau de Haut-Brion.",ac_a_stemilion:"Rive droite, à base de Merlot. Village médiéval inscrit au Patrimoine mondial.",ac_a_pomerol:"Merlot soyeux et opulent. Petite aire, grandes légendes — comme Pétrus.",ac_a_sauternes:"Blancs liquoreux nés de la « pourriture noble » (botrytis). Le mythique Yquem.",ac_grapes_h:"Les cépages de Bordeaux",ac_g_tintas:"Rouges",ac_g_tintas_p:"<b>Cabernet Sauvignon</b> — colonne vertébrale de la rive gauche : structure, cassis et longévité. <b>Merlot</b> — souplesse et fruit, il règne sur la rive droite. <b>Cabernet Franc</b> — parfum et fraîcheur. <b>Petit Verdot</b> — couleur et épices, à petite dose dans l’assemblage.",ac_g_brancas:"Blancs",ac_g_brancas_p:"<b>Sémillon</b> — corps et miel, la base des Sauternes. <b>Sauvignon Blanc</b> — acidité et notes d’agrumes. <b>Muscadelle</b> — une touche florale et aromatique.",ac_vint_h:"Grands millésimes",ac_vint_p:"Des années mémorables pour les rouges de Bordeaux — une référence pour la cave et la table :",ac_v_leg:"Légendaire",ac_v_leg2:"Légendaire",ac_v_leg3:"Légendaire",ac_v_exc:"Excellent",ac_v_leg4:"Légendaire",ac_v_leg5:"Légendaire",ac_v_leg6:"Légendaire",ac_v_exc2:"Excellent",ac_v_exc3:"Excellent",ac_v_exc4:"Excellent",ac_vint_note:"Le millésime est un guide, non une règle : les grands producteurs font des vins remarquables même dans les années difficiles.",ac_pair_h:"À table",ac_p_medoc:"(Cabernet) — viandes rouges, agneau, gibier et fromages affinés.",ac_p_right:"(Merlot) — volailles, porc, champignons et pâtes généreuses.",ac_p_graves_t:"Graves blanc",ac_p_graves:"— poissons, fruits de mer et volailles délicates.",ac_p_sauternes:"— foie gras, fromages bleus et desserts aux fruits.",ac_serve_h:"Service &amp; dégustation",ac_s_temp_t:"Température",ac_s_temp:"Rouges : 16–18 °C. Blancs secs : 8–10 °C. Sauternes : 8–10 °C. Trop chaud, un rouge perd sa fraîcheur ; trop froid, les arômes se ferment.",ac_s_dec_t:"Décantation",ac_s_dec:"Les rouges jeunes et charpentés gagnent à respirer. Vins anciens : décantez avec soin pour séparer le dépôt.",ac_s_glass_t:"Le verre",ac_s_glass:"Un calice large concentre les arômes et met le vin en valeur. Servez jusqu’au tiers du verre environ.",ac_steps_h:"Les quatre étapes de la dégustation",ac_st1_t:"Voir",ac_st1:"— observez la couleur et la limpidité à la lumière ; le bord trahit l’âge.",ac_st2_t:"Faire tourner",ac_st2:"— faites tourner le vin dans le verre pour libérer les arômes.",ac_st3_t:"Sentir",ac_st3:"— cherchez fruits, épices, fleurs, bois et terre.",ac_st4_t:"Goûter",ac_st4:"— ressentez l’attaque, le milieu de bouche et la finale ; plus elle dure, plus le vin est grand.",ac_glos_h:"Glossaire",ac_gl_terroir_t:"Terroir",ac_gl_terroir:"La combinaison du sol, du climat, du relief et de la main humaine qui donne son identité à un vin. C’est ce qui rend chaque lieu unique.",ac_gl_assemblage_t:"Assemblage",ac_gl_assemblage:"L’art de combiner différents cépages (et parcelles) pour créer le vin final. À Bordeaux, presque tout est un assemblage.",ac_gl_cru_t:"Cru Classé",ac_gl_cru:"« Vignoble classé » — château reconnu par un classement officiel (comme celui de 1855).",ac_gl_chateau_t:"Château",ac_gl_chateau:"La propriété viticole à Bordeaux — pas toujours un château, mais toujours une marque et un terroir.",ac_gl_aoc_t:"Appellation (AOC)",ac_gl_aoc:"Appellation d’Origine Contrôlée : elle définit d’où vient le vin et les règles qu’il suit.",ac_gl_grandvin_t:"Grand Vin &amp; second vin",ac_gl_grandvin:"Le Grand Vin est l’étiquette principale du château ; le second vin utilise les parcelles plus jeunes — un excellent rapport qualité-prix.",ac_gl_barrique_t:"Barrique",ac_gl_barrique:"Le fût bordelais de 225 litres, où le vin s’élève et gagne en structure et en notes boisées.",ac_gl_tanino_t:"Tanin",ac_gl_tanino:"Composé de la peau et des pépins qui donne la sensation d’« accrocher » la bouche — et soutient la garde du vin.",ac_gl_guarda_t:"Potentiel de garde",ac_gl_guarda:"La capacité à vieillir et à s’améliorer avec le temps. Les grands Bordeaux peuvent se garder des décennies.",ac_gl_primeurs_t:"Primeurs (en primeur)",ac_gl_primeurs:"La vente du vin encore en barrique, avant la mise en bouteille — une tradition commerciale de Bordeaux."}
+};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
+</body></html>

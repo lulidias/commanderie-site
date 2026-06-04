@@ -59,7 +59,7 @@ grant execute on function public.intro_marcar_pagamento(text,text) to anon, auth
 
 -- 4) E-mail de pagamento confirmado + acesso ao site
 insert into public.email_modelos (chave,nome,assunto,titulo,corpo,cta_label,ordem) values
-('intro_pagamento_ok','Intronizacao - pagamento confirmado + acesso','Pagamento confirmado &mdash; bem-vindo!','Pagamento confirmado!',
+('intro_pagamento_ok','Intronizacao - pagamento confirmado + acesso','Pagamento confirmado '||chr(8212)||' bem-vindo!','Pagamento confirmado!',
  '<p>Prezado(a) {nome},</p>'
  '<p>Confirmamos o <b>recebimento do seu pagamento</b>. Muito obrigado &mdash; &eacute; uma alegria t&ecirc;-lo(a) na Commanderie de Bordeaux do Brasil! &#127863;</p>'
  '<p>Agora &eacute; s&oacute; <b>criar o seu acesso ao site</b>. No primeiro acesso vamos pedir que voc&ecirc; <b>complete o seu cadastro</b>.</p>',
@@ -96,7 +96,7 @@ grant execute on function public.marcar_anuidade(text,boolean) to authenticated;
 insert into public.email_modelos (chave,nome,assunto,titulo,corpo,cta_label,ordem) values
 ('ind_aprovado_candidato',
  'Indicacao - aprovado: ficha + pagamento (candidato)',
- 'Aprovado &mdash; sua introniza&ccedil;&atilde;o na Commanderie',
+ 'Aprovado '||chr(8212)||' sua introniza'||chr(231)||chr(227)||'o na Commanderie',
  'Voc&ecirc; foi aprovado &mdash; bem-vindo!',
  '<p>Prezado(a) {nome},</p>'
  '<p>&Eacute; com grande satisfa&ccedil;&atilde;o que comunicamos: a sua indica&ccedil;&atilde;o foi <b>aprovada pelo Conselho Diretor</b> da Commanderie de Bordeaux do Brasil. &#127863;</p>'

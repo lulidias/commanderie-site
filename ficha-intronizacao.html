@@ -58,7 +58,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
         <div class="field"><label data-i18n="fi_l_cep">CEP</label><input id="f_cep" required placeholder="00000-000"></div>
       </div>
       <div class="two">
-        <div class="field"><label data-i18n="fi_l_nac">Nacionalidade</label><input id="f_nac" required placeholder="Brasileira" data-i18n-ph="ph_nac"></div>
+        <div class="field"><label data-i18n="fi_l_nac">Nacionalidade</label><input id="f_nac" placeholder="Brasileira (padrão se vazio)" data-i18n-ph="ph_nac"></div>
         <div class="field"><label data-i18n="fi_l_nucleo">Núcleo</label><select id="f_nucleo"><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select></div>
       </div>
       <div class="two">
@@ -67,15 +67,12 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       </div>
       <div class="two">
         <div class="field"><label data-i18n="fi_l_email">E-mail</label><input id="f_email" type="email" required placeholder="email@exemplo.com" data-i18n-ph="ph_email"></div>
-        <div class="field"><label data-i18n="fi_l_rest">Restrições alimentares</label><input id="f_rest" required placeholder="Nenhuma" data-i18n-ph="ph_rest"></div>
+        <div class="field"><label data-i18n="fi_l_rest">Restrições alimentares</label><input id="f_rest" placeholder="Nenhuma (padrão se vazio)" data-i18n-ph="ph_rest"></div>
       </div>
       <div class="sponsors">
-        <h4 data-i18n="fi_sp_h">Padrinhos</h4>
-        <p data-i18n="fi_sp_p">Os dois Commandeurs que apresentaram sua candidatura.</p>
-        <div class="two">
-          <div class="field" style="margin-bottom:0;"><label data-i18n="fi_l_p1">1º Padrinho</label><input id="f_pad1" required placeholder="Nome · nº de membro" data-i18n-ph="ph_pad"></div>
-          <div class="field" style="margin-bottom:0;"><label data-i18n="fi_l_p2">2º Padrinho</label><input id="f_pad2" required placeholder="Nome · nº de membro" data-i18n-ph="ph_pad"></div>
-        </div>
+        <h4>Apresentação</h4>
+        <p>Seus padrinhos e o Mestre que aprovou a sua indicação (preenchido automaticamente).</p>
+        <div id="padrinhosInfo" style="font-size:14px;color:#2a2620;line-height:1.8;">—</div>
       </div>
       <div class="seclbl" data-i18n="fi_sec2">II · Currículo &amp; Biografia</div>
       <div class="field"><label data-i18n="fi_l_ativ">Atividades e interesses ligados a esta candidatura</label><textarea id="f_ativ" required placeholder="Sua atuação atual e o que o aproxima do mundo do vinho." data-i18n-ph="ph_ativ"></textarea></div>
@@ -122,8 +119,9 @@ function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
 function chk(id){var e=document.getElementById(id);return e?e.checked:false;}
 function setv(id,v){var e=document.getElementById(id);if(e&&v!=null)e.value=v;}
 function qp(k){return new URLSearchParams(location.search).get(k);}
-var TOK=null,DADOS=null;
+var TOK=null,DADOS=null,PADRINHOS={};
 function prefillFicha(d){var p=(""+(d.nome||"")).trim().split(/\s+/);setv("f_nome",p[0]||"");setv("f_sobrenome",p.slice(1).join(" "));setv("f_email",d.email);if(d.nucleo)setv("f_nucleo",d.nucleo);}
+function mostrarPadrinhos(){var el=document.getElementById("padrinhosInfo");if(!el)return;var L=[];if(PADRINHOS.padrinho1)L.push("<b>1º Padrinho:</b> "+PADRINHOS.padrinho1);if(PADRINHOS.padrinho2)L.push("<b>2º Padrinho:</b> "+PADRINHOS.padrinho2);if(PADRINHOS.mestre)L.push("<b>Mestre que aprovou:</b> "+PADRINHOS.mestre);el.innerHTML=L.length?L.join("<br>"):"<span style=\"color:#9a937f;\">A confirmar com a Secretaria.</span>";}
 function preencherPagamento(d){var v=(d&&d.anuidade)?d.anuidade:1200;var el=document.getElementById("pgValor");if(el)el.textContent="R$ "+(""+v).replace(/\B(?=(\d{3})+(?!\d))/g,".")+",00";}
 async function carregar(){
   var ac=qp("ac"),at=qp("at");
@@ -146,13 +144,15 @@ async function carregar(){
   if(!m.eleito){st("naoEleito");return;}
   if(m.ficha){st("jaEnviada");return;}
   prefillFicha(m);
+  try{var pr=await sb.rpc("meus_padrinhos");if(!pr.error&&pr.data)PADRINHOS=pr.data;}catch(e){}
+  mostrarPadrinhos();
   st("content");
 }
 async function enviarFicha(ev){
   ev.preventDefault();
   var b=document.getElementById("btnEnviar"),msg=document.getElementById("fmsg");
   b.disabled=true;msg.style.color="#5b5446";msg.textContent="Enviando...";
-  var ficha={nome:val("f_nome"),sobrenome:val("f_sobrenome"),nascimento:val("f_nasc"),tratamento:val("f_trat"),endereco:val("f_end"),cidade:val("f_cidade"),cep:val("f_cep"),nacionalidade:val("f_nac"),nucleo:val("f_nucleo"),profissao:val("f_prof"),telefone:val("f_tel"),email:val("f_email"),restricoes:val("f_rest"),padrinho1:val("f_pad1"),padrinho2:val("f_pad2"),atividades:val("f_ativ"),biografia:val("f_bio"),honrarias:val("f_hon"),ligacao_bordeaux:val("f_lig"),primeiro_bordeaux:val("f_prim"),bordeaux_preferido:val("f_pref"),experiencia:val("f_exp"),outras_historias:val("f_outras"),autoriza_contato:chk("f_c1"),autoriza_fotos:chk("f_c2"),compromisso_anuidade:chk("f_c3"),aceite_estatuto:chk("f_c4"),local_data:val("f_ld"),enviada_em:new Date().toISOString()};
+  var ficha={nome:val("f_nome"),sobrenome:val("f_sobrenome"),nascimento:val("f_nasc"),tratamento:val("f_trat"),endereco:val("f_end"),cidade:val("f_cidade"),cep:val("f_cep"),nacionalidade:val("f_nac")||"Brasileira",nucleo:val("f_nucleo"),profissao:val("f_prof"),telefone:val("f_tel"),email:val("f_email"),restricoes:val("f_rest")||"Nenhuma",padrinho1:PADRINHOS.padrinho1||null,padrinho2:PADRINHOS.padrinho2||null,mestre:PADRINHOS.mestre||null,atividades:val("f_ativ"),biografia:val("f_bio"),honrarias:val("f_hon"),ligacao_bordeaux:val("f_lig"),primeiro_bordeaux:val("f_prim"),bordeaux_preferido:val("f_pref"),experiencia:val("f_exp"),outras_historias:val("f_outras"),autoriza_contato:chk("f_c1"),autoriza_fotos:chk("f_c2"),compromisso_anuidade:chk("f_c3"),aceite_estatuto:chk("f_c4"),local_data:val("f_ld"),enviada_em:new Date().toISOString()};
   var r=TOK?(await sb.rpc("intro_salvar_ficha",{p_codigo:TOK.ac,p_token:TOK.at,p_ficha:ficha})):(await sb.rpc("salvar_ficha",{p_ficha:ficha}));
   if(r.error){b.disabled=false;msg.style.color="#8f1d24";msg.textContent="Erro ao enviar: "+r.error.message;return;}
   b.disabled=false;

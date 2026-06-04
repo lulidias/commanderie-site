@@ -57,8 +57,30 @@ function nrm(s){return (""+(s||"")).toLowerCase().normalize("NFD").replace(/[̀-
 function anuidadePill(m){var g=(""+(m.grau||"")).toLowerCase();if(g.indexOf("honra")>=0||g.indexOf("mestre")>=0)return "<span class=\"pill p-isento\">Isento</span>";if(m.anuidade_paga)return "<span class=\"pill p-pago\">Anuidade em dia</span>";return "<span class=\"pill p-aberto\">"+esc(m.anuidade_status||"Em aberto")+"</span>";}
 function row(k,v){if(v==null||v==="")return "";return "<div><div class=\"k\">"+esc(k)+"</div><div class=\"v\">"+esc(v)+"</div></div>";}
 function fichaHtml(f){if(!f)return "<div style=\"font-size:12.5px;color:#9a937f;\">Ficha de intronização ainda não preenchida.</div>";
-  var L=[["Tratamento",f.tratamento],["Nascimento",fdata(f.nascimento)],["Nacionalidade",f.nacionalidade],["Profissão",f.profissao],["Restrições alimentares",f.restricoes],["1º Padrinho",f.padrinho1],["2º Padrinho",f.padrinho2],["Atividades e interesses",f.atividades],["Biografia",f.biografia],["Honrarias e confrarias",f.honrarias],["Ligação com Bordeaux",f.ligacao_bordeaux],["Primeiro Bordeaux",f.primeiro_bordeaux],["Bordeaux preferido",f.bordeaux_preferido],["Experiência memorável",f.experiencia],["Outras histórias",f.outras_historias],["Local e data",f.local_data]];
+  var L=[["Tratamento",f.tratamento],["Nascimento",fdata(f.nascimento)],["Nacionalidade",f.nacionalidade],["Profissão",f.profissao],["Restrições alimentares",f.restricoes],["1º Padrinho",f.padrinho1],["2º Padrinho",f.padrinho2],["Mestre que aprovou",f.mestre],["Atividades e interesses",f.atividades],["Biografia",f.biografia],["Honrarias e confrarias",f.honrarias],["Ligação com Bordeaux",f.ligacao_bordeaux],["Primeiro Bordeaux",f.primeiro_bordeaux],["Bordeaux preferido",f.bordeaux_preferido],["Experiência memorável",f.experiencia],["Outras histórias",f.outras_historias],["Local e data",f.local_data]];
   return "<div class=\"grp\">Ficha de Intronização</div><div class=\"kv\">"+L.map(function(x){return row(x[0],x[1]);}).join("")+"</div>";}
+function ucfirst(s){s=(""+(s||"")).trim();return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+function lcfirst(s){s=(""+(s||"")).trim();return s?s.charAt(0).toLowerCase()+s.slice(1):s;}
+function pnome(n){return (""+(n||"")).trim().split(/\s+/)[0]||n;}
+function textoIntro(m){
+  var f=m.ficha;if(!f)return "";
+  var nome=m.nome||((f.nome||"")+" "+(f.sobrenome||"")).trim();var pn=pnome(nome);
+  var s=[];
+  s.push("Senhoras e senhores Comendadores, é com grande honra que a Commanderie de Bordeaux do Brasil recebe hoje, no núcleo "+esc(f.nucleo||m.nucleo||"—")+", <b>"+esc(nome)+"</b>.");
+  if(f.profissao)s.push(esc(pn)+", "+esc(lcfirst((""+f.profissao).replace(/\.+$/,"")))+", traz consigo uma trajetória que muito nos honra.");
+  if(f.biografia)s.push(esc((""+f.biografia).trim()));
+  if(f.ligacao_bordeaux)s.push("A sua ligação com Bordeaux revela-se em cada gesto: "+esc(lcfirst(f.ligacao_bordeaux)));
+  if(f.primeiro_bordeaux)s.push("Guarda o seu primeiro Bordeaux — "+esc(lcfirst(f.primeiro_bordeaux))+" — como um instante precioso.");
+  if(f.bordeaux_preferido)s.push("Entre todos os rótulos, é "+esc(f.bordeaux_preferido)+" que faz o seu coração bater mais forte.");
+  if(f.experiencia)s.push("E há de recordar sempre aquela experiência inesquecível: "+esc(lcfirst(f.experiencia)));
+  var ap=[f.padrinho1,f.padrinho2].filter(Boolean);var fr=[];
+  if(ap.length)fr.push("apresentado por "+esc(ap.join(" e ")));
+  if(f.mestre)fr.push("com a aprovação do Mestre "+esc(f.mestre));
+  if(fr.length)s.push(ucfirst(fr.join(", "))+", "+esc(pn)+" cruza hoje o limiar da nossa confraria.");
+  s.push("Que "+esc(pn)+" encontre aqui amizade, conhecimento e a alegria de celebrar, capítulo após capítulo, os grandes vinhos de Bordeaux. Erga a sua taça, caro Comendador, e repita conosco: <b>Bordeaux, toujours Bordeaux!</b>");
+  return s.join(" ");
+}
+function copiarIntro(id){var el=document.getElementById("intro_"+id);if(!el)return;var t=el.innerText||el.textContent;if(navigator.clipboard)navigator.clipboard.writeText(t);}
 function card(m){
   var foto=m.foto_url?("<img src=\""+esc(m.foto_url)+"\" alt=\"\">"):esc(ini(m.nome));
   var tel=(m.telefone_ddi?m.telefone_ddi+" ":"")+(m.telefone||"");
@@ -66,7 +88,8 @@ function card(m){
   var meta=[m.grau,m.codigo].filter(Boolean).join(" · ");
   var head="<div class=\"mhead\" onclick=\"toggle(this)\"><div class=\"mav\">"+foto+"</div><div style=\"flex:1;min-width:0;\"><div class=\"mname\">"+esc(m.nome)+"</div><div class=\"mmeta\">"+esc(meta)+(contato?(" · "+esc(contato)):"")+"</div></div>"+anuidadePill(m)+"</div>";
   var cad="<div class=\"grp\">Cadastro</div><div class=\"kv\">"+row("E-mail",m.email)+row("Telefone",tel)+row("Nascimento",fdata(m.nascimento))+row("Documento",m.documento)+row("Endereço",m.endereco)+row("Bairro",m.bairro)+row("Cidade",m.cidade)+row("CEP",m.cep)+row("País",m.pais)+row("Núcleo",m.nucleo)+row("Capítulo",m.capitulo)+row("Intronização",fdata(m.data_intronizacao))+"</div>";
-  var body="<div class=\"mbody\">"+cad+"<div class=\"fichabox\">"+fichaHtml(m.ficha)+"</div></div>";
+  var texto=m.ficha?("<div class=\"grp\" style=\"margin-top:14px;\">Texto de Intronização <a onclick=\"copiarIntro('"+m.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:10px;font-weight:normal;text-transform:none;letter-spacing:0;margin-left:8px;\">copiar</a></div><div id=\"intro_"+m.id+"\" style=\"font-size:14px;color:#2a2620;line-height:1.75;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:13px 15px;font-family:Georgia,serif;\">"+textoIntro(m)+"</div>"):"";
+  var body="<div class=\"mbody\">"+cad+"<div class=\"fichabox\">"+fichaHtml(m.ficha)+"</div>"+texto+"</div>";
   return "<div class=\"mcard\">"+head+body+"</div>";
 }
 function toggle(el){var b=el.nextElementSibling;if(b)b.style.display=(b.style.display==="block")?"none":"block";}

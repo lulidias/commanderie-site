@@ -53,7 +53,7 @@ function quandoDesc(m){var s=((m.nome||"")+" "+(m.chave||"")).toLowerCase();
   if(/semana|lembr/.test(s))return "Automático, 1 semana antes do evento.";
   if(/dia do evento|hoje|v[eé]spera|manh/.test(s))return "Automático, na manhã do dia do evento.";
   if(/foto/.test(s))return "Quando o Conselho publica as fotos do evento, com agradecimento por ter participado.";
-  if(/acolh|introniza|eleito|comendador eleito/.test(s))return "Quando o Conselho aprova e acolhe um novo Comendador eleito.";
+  if(/acolh|introniza|eleito|comendador eleito/.test(s))return "Quando o Conselho aprova um novo Comendador eleito.";
   if(/indicad|candidat/.test(s))return "Enviado ao indicado quando a indicação é registrada.";
   if(/indicador|padrinho/.test(s))return "Enviado a quem indicou, confirmando o registro da indicação.";
   if(/convite|acesso|ativa|boas|vindo/.test(s))return "Quando um novo membro é criado — leva o link de primeiro acesso.";

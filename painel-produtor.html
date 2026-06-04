@@ -137,6 +137,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       <div class="sec-title">Agendar visita ao Brasil</div><div class="sec-rule"></div>
       <p class="lead">Monte sua solicitação de visita: objetivo, voo, chegada e saída, e as cidades com as datas pretendidas. O Conselho organiza a agenda com os importadores.</p>
       <div class="card prod-form">
+        <div class="cons-prod" style="display:none;margin-bottom:12px;"><label class="flbl">Em nome do produtor</label><select class="inp" id="visProd"></select></div>
         <label class="flbl">Objetivo da visita</label>
         <textarea class="inp" id="visObjetivo" placeholder="Ex.: apresentar a nova safra aos importadores e Comendadores, prospectar distribuição..." style="min-height:60px;"></textarea>
 
@@ -172,6 +173,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       <div class="sec-title">Solicitar evento aos Comendadores</div><div class="sec-rule"></div>
       <p class="lead">Proponha um jantar harmonizado, degustação ou masterclass para os Comendadores. Quanto mais detalhes, mais rápido o Conselho organiza.</p>
       <div class="card prod-form">
+        <div class="cons-prod" style="display:none;margin-bottom:12px;"><label class="flbl">Em nome do produtor</label><select class="inp" id="evProd"></select></div>
         <div class="grid">
           <div><label class="flbl">Tipo de evento</label><select class="inp" id="evTipo"><option>Jantar harmonizado</option><option>Degustação</option><option>Masterclass</option><option>Lançamento de safra</option><option>Outro</option></select></div>
           <div><label class="flbl">Cidade</label><select class="inp" id="evCidade"><option value="">Cidade…</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select></div>
@@ -195,6 +197,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       <div class="sec-title">Cadastrar benefício aos Comendadores</div><div class="sec-rule"></div>
       <p class="lead">Ofereça uma vantagem exclusiva aos Comendadores (desconto, visita ao château, garrafa especial...). Aparece para os membros.</p>
       <div class="card prod-form">
+        <div class="cons-prod" style="display:none;margin-bottom:12px;"><label class="flbl">Em nome do produtor</label><select class="inp" id="benProd"></select></div>
         <div class="grid">
           <input class="inp" id="benTit" placeholder="Título (ex.: 15% na compra direta)">
           <input class="inp" id="benDesc" placeholder="Descrição">
@@ -298,6 +301,13 @@ function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&
 function val(id){var e=document.getElementById(id);return e?(""+e.value).trim():"";}
 function fdata(d){if(!d)return "—";var p=(""+d).split("T")[0].split("-");return p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):d;}
 function curSec(){return new URLSearchParams(location.search).get("sec");}
+async function loadProdSelects(){
+  var q=await sb.from("produtores").select("id,nome").order("nome",{ascending:true});
+  var rows=(q&&q.data)||[];
+  var opts="<option value=\"\">Selecione o produtor…</option>"+rows.map(function(p){return "<option value=\""+p.id+"\">"+esc(p.nome)+"</option>";}).join("");
+  ["visProd","evProd","benProd"].forEach(function(id){var e=document.getElementById(id);if(e)e.innerHTML=opts;});
+}
+function prodId(selId){return IS_CONSELHO?val(selId):(PROD&&PROD.id);}
 async function init(){
   var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}
   var c=await sb.rpc("is_conselho");
@@ -307,9 +317,10 @@ async function init(){
     var kEl=document.querySelector(".dhead .k");if(kEl)kEl.textContent="Conselho";
     document.getElementById("prNome").textContent="Painel dos Produtores";
     document.getElementById("prSub").textContent="Visão geral — Conselho";
-    document.querySelectorAll(".prod-form").forEach(function(e){e.style.display="none";});
+    document.querySelectorAll(".cons-prod").forEach(function(e){e.style.display="block";});
     document.querySelectorAll(".cons-form").forEach(function(e){e.style.display="block";});
     var cp=document.getElementById("cardProds");if(cp)cp.style.display="block";
+    loadProdSelects();
   } else if(own.data){
     PROD=own.data;
     document.getElementById("prNome").textContent=PROD.nome;
@@ -375,16 +386,30 @@ function renderLogos(){
   var lista=IMP_LOGOS.slice().sort(function(a,b){return a.nome.localeCompare(b.nome,"pt");});
   el.innerHTML=lista.map(function(i){return "<div class=\"lg\">"+(i.logo?("<img src=\""+i.logo+"\" alt=\""+esc(i.nome)+"\">"):("<span>"+esc(i.nome)+"</span>"))+"</div>";}).join("");
 }
+var IMP_ROWS=[];
 async function carregarImportadores(){
   renderLogos();
-  var q=await sb.from("importadoras").select("*").order("nome",{ascending:true});
   var el=document.getElementById("tabImp");
-  if(q.error){el.innerHTML="<p style=\"color:#9a937f;font-size:13px;\">"+esc(q.error.message)+"</p>";return;}
-  var rows=q.data||[];if(!rows.length){el.innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma importadora.</p>";return;}
-  function g(x,keys){for(var i=0;i<keys.length;i++){if(x[keys[i]])return x[keys[i]];}return "";}
-  var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Responsável</th><th>Cidade</th><th>Contato</th></tr></thead><tbody>";
-  rows.forEach(function(x){var contato=[g(x,["email","contato_email"]),g(x,["telefone","whatsapp","contato"])].filter(Boolean).join(" · ");tb+="<tr><td><b>"+esc(x.nome)+"</b></td><td>"+esc(g(x,["responsavel_nome","responsavel"]))+"</td><td>"+esc(g(x,["cidade"]))+"</td><td>"+esc(contato)+"</td></tr>";});
+  var q=await sb.rpc("contatos_importadores");
+  if(q.error){el.innerHTML="<p style=\"color:#9a937f;font-size:13px;\">(rode o SQL importadores_contato.sql) "+esc(q.error.message)+"</p>";return;}
+  IMP_ROWS=q.data||[];
+  if(!IMP_ROWS.length){el.innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma importadora.</p>";return;}
+  var rm=IS_CONSELHO;
+  var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Responsável</th><th>Cidade</th><th>E-mail</th><th>Telefone</th>"+(rm?"<th></th>":"")+"</tr></thead><tbody>";
+  IMP_ROWS.forEach(function(x){
+    var mail=x.email?("<a href=\"mailto:"+esc(x.email)+"\" style=\"color:var(--navy);\">"+esc(x.email)+"</a>"):"<span style=\"color:#b9b2a0;\">—</span>";
+    tb+="<tr><td><b>"+esc(x.nome)+"</b></td><td>"+esc(x.responsavel||"")+"</td><td>"+esc(x.cidade||"")+"</td><td>"+mail+"</td><td>"+esc(x.telefone||"—")+"</td>"+(rm?("<td><a style=\"color:var(--navy);cursor:pointer;font-size:12px;\" onclick=\"editImpContato('"+x.id+"')\">editar</a></td>"):"")+"</tr>";
+  });
   el.innerHTML=tb+"</tbody></table>";
+}
+async function editImpContato(id){
+  var x=IMP_ROWS.filter(function(r){return String(r.id)===String(id);})[0];if(!x)return;
+  var e=prompt("E-mail do importador "+x.nome+":",x.email||"");if(e===null)return;
+  var t=prompt("Telefone:",x.telefone||"");if(t===null)return;
+  var i=prompt("Instagram (opcional):",x.instagram||"");if(i===null)return;
+  var r=await sb.rpc("set_importadora_contato",{p_id:id,p_email:e,p_tel:t,p_insta:i});
+  if(r.error){alert("Erro: "+r.error.message);return;}
+  carregarImportadores();
 }
 
 // ---- VISITAS ----
@@ -414,9 +439,10 @@ async function carregarVisitas(){
 async function addVisita(){
   var m=document.getElementById("visMsg");
   var cidsTxt=visCidsTexto();
+  var pid=prodId("visProd");if(!pid){m.style.color="#8f1d24";m.textContent=IS_CONSELHO?"Selecione o produtor.":"Sem produtor vinculado.";return;}
   if(!cidsTxt&&!val("visChegData")&&!val("visObjetivo")){m.style.color="#8f1d24";m.textContent="Informe ao menos o objetivo, a chegada ou uma cidade.";return;}
   m.style.color="#2f6b3a";m.textContent="Enviando...";
-  var r=await sb.from("produtor_visitas").insert({produtor_id:PROD.id,objetivo:val("visObjetivo")||null,voo:val("visVoo")||null,chegada_data:val("visChegData")||null,chegada_local:val("visChegLocal")||null,saida_data:val("visSaiData")||null,saida_local:val("visSaiLocal")||null,cidades:cidsTxt||null,importadoras:val("visImps")||null,obs:val("visObs")||null});
+  var r=await sb.from("produtor_visitas").insert({produtor_id:pid,objetivo:val("visObjetivo")||null,voo:val("visVoo")||null,chegada_data:val("visChegData")||null,chegada_local:val("visChegLocal")||null,saida_data:val("visSaiData")||null,saida_local:val("visSaiLocal")||null,cidades:cidsTxt||null,importadoras:val("visImps")||null,obs:val("visObs")||null});
   if(r.error){m.style.color="#8f1d24";m.textContent=r.error.message;return;}
   m.textContent="Solicitação enviada!";VIS_CIDS=[];renderVisCids();["visObjetivo","visVoo","visChegData","visChegLocal","visSaiData","visSaiLocal","visImps","visObs"].forEach(function(id){document.getElementById(id).value="";});carregarVisitas();
 }
@@ -440,8 +466,9 @@ async function carregarEventos(){
 }
 async function addEvento(){
   var m=document.getElementById("evMsg");
+  var pid=prodId("evProd");if(!pid){m.style.color="#8f1d24";m.textContent=IS_CONSELHO?"Selecione o produtor.":"Sem produtor vinculado.";return;}
   m.style.color="#2f6b3a";m.textContent="Enviando...";
-  var r=await sb.from("produtor_eventos").insert({produtor_id:PROD.id,tipo:val("evTipo"),cidade:val("evCidade")||null,data_desejada:val("evData")||null,quantidade:parseInt(val("evQtd"),10)||null,local:val("evLocal")||null,restaurante:val("evRest")||null,estilo_menu:val("evMenu")||null,vinhos:val("evVinhos")||null,obs:val("evObs")||null});
+  var r=await sb.from("produtor_eventos").insert({produtor_id:pid,tipo:val("evTipo"),cidade:val("evCidade")||null,data_desejada:val("evData")||null,quantidade:parseInt(val("evQtd"),10)||null,local:val("evLocal")||null,restaurante:val("evRest")||null,estilo_menu:val("evMenu")||null,vinhos:val("evVinhos")||null,obs:val("evObs")||null});
   if(r.error){m.style.color="#8f1d24";m.textContent=r.error.message;return;}
   m.textContent="Solicitação enviada!";["evCidade","evData","evQtd","evLocal","evRest","evMenu","evVinhos","evObs"].forEach(function(id){document.getElementById(id).value="";});carregarEventos();
 }
@@ -460,8 +487,9 @@ async function carregarBeneficios(){
 async function addBeneficio(){
   var m=document.getElementById("benMsg");var tit=val("benTit");
   if(!tit){m.style.color="#8f1d24";m.textContent="Informe o título.";return;}
+  var pid=prodId("benProd");if(!pid){m.style.color="#8f1d24";m.textContent=IS_CONSELHO?"Selecione o produtor.":"Sem produtor vinculado.";return;}
   m.style.color="#2f6b3a";m.textContent="Salvando...";
-  var r=await sb.from("produtor_beneficios").insert({produtor_id:PROD.id,titulo:tit,descricao:val("benDesc")||null,desconto:val("benDesconto")||null,validade:val("benVal")||null});
+  var r=await sb.from("produtor_beneficios").insert({produtor_id:pid,titulo:tit,descricao:val("benDesc")||null,desconto:val("benDesconto")||null,validade:val("benVal")||null});
   if(r.error){m.style.color="#8f1d24";m.textContent=r.error.message;return;}
   m.textContent="Adicionado!";["benTit","benDesc","benDesconto","benVal"].forEach(function(id){document.getElementById(id).value="";});carregarBeneficios();
 }

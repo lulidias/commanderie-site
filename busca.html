@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Busca — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
+<style>
+:root{--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--ink-lt:#5b5446;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;}.dtop .back:hover{background:var(--navy);color:#fff;}
+.dhead{text-align:center;padding:34px 20px 6px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:32px;margin:6px 0 2px;}
+.wrap{max-width:680px;margin:0 auto;padding:14px 20px 60px;}
+.sbox{position:relative;}
+#q{width:100%;font-size:16px;padding:14px 16px;border:1px solid var(--line);border-radius:13px;background:#fffdf7;color:var(--ink);font-family:inherit;}
+#q:focus{outline:none;border-color:var(--gold);}
+.grp{margin-top:22px;}
+.grp h2{font-family:Georgia,serif;color:var(--navy);font-size:16px;font-weight:normal;margin:0 0 6px;}
+.grp h2 span{font-size:11px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-left:8px;}
+.res{display:block;background:#fff;border:1px solid var(--line);border-radius:11px;border-left:4px solid var(--gold);padding:11px 14px;margin-bottom:8px;text-decoration:none;transition:all .15s;}
+.res:hover{background:#fffdf7;border-left-color:var(--navy);}
+.res b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:15px;}
+.res .sub{font-size:12.5px;color:var(--ink-lt);margin-top:2px;}
+.empty{text-align:center;color:#9a8f72;font-size:14px;padding:36px 10px;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
+.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+</style></head><body>
+<div class="dtop"><img src="img/brasao.png" alt="Brasão"><b data-i18n="bu_brand">Busca</b><a class="back" href="index.html" data-i18n="bu_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
+<div id="needLogin" class="state" style="display:none;"><h2 data-i18n="bu_nl_h">Acesso restrito</h2><p data-i18n="bu_nl_p">Entre na sua conta para usar a busca.</p><a class="btn" href="index.html" data-i18n="bu_nl_btn">Entrar</a></div>
+<div id="loading" class="state" data-i18n="bu_loading">Carregando…</div>
+<div id="content" style="display:none;">
+  <div class="dhead"><div class="k" data-i18n="bu_k">Comendadores</div><h1 data-i18n="bu_h1">Busca</h1></div>
+  <div class="wrap">
+    <div class="sbox"><input id="q" autocomplete="off" placeholder="Buscar vinhos, châteaux, restaurantes, membros…" data-i18n-ph="bu_ph"></div>
+    <div id="res"></div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+var ACAD=[
+ {t:"História de Bordeaux",s:"Academia · História",h:"apresentacao-bordeaux.html",k:"historia romana aliénor plantagenet claret guerra cem anos castillon chartrons jefferson napoleão dom pedro burdigala biturica"},
+ {t:"Região, terroir e solos",s:"Academia · Terroir",h:"academia.html?sec=Terroir",k:"margem esquerda direita garonne dordogne gironde solos cascalho graves argila calcário clima terroir savoir-faire"},
+ {t:"As cepas / uvas",s:"Academia · Terroir",h:"academia.html?sec=Terroir",k:"cabernet sauvignon merlot cabernet franc petit verdot malbec carménère sémillon sauvignon blanc muscadelle aromas assemblage"},
+ {t:"AOC & rótulos",s:"Academia · AOC",h:"academia.html?sec=Aoc",k:"appellation denominação origem controlada rótulo etiqueta mise en bouteille château segundo vinho millésime"},
+ {t:"Safras por região",s:"Academia · Safras",h:"academia.html?sec=Safras",k:"safra vintage millésime 1982 1990 2000 2005 2009 2010 2016 2018 2019 2020 2022 2025 lendária"},
+ {t:"As 6 famílias de vinhos",s:"Academia · Famílias",h:"academia.html?sec=Familias",k:"brancos secos bordeaux supérieur côtes médoc graves saint-émilion pomerol fronsac sauternes licorosos rosé clairet"},
+ {t:"Classificação de 1855",s:"Academia · Classificações",h:"academia.html?sec=Classif",k:"1855 premiers crus lafite latour margaux haut-brion mouton rothschild médoc sauternes yquem barsac"},
+ {t:"Classificação de Saint-Émilion (2022)",s:"Academia · Classificações",h:"academia.html?sec=Classif",k:"saint-émilion 2022 grand cru classé figeac pavie cheval blanc ausone angélus la commanderie"},
+ {t:"Classificação de Graves (1953)",s:"Academia · Classificações",h:"academia.html?sec=Classif",k:"graves 1953 pessac-léognan haut-brion haut-bailly pape clément smith haut lafitte chevalier"},
+ {t:"Pomerol & notas Parker 100",s:"Academia · Classificações",h:"academia.html?sec=Classif",k:"pomerol pétrus lafleur le pin vieux château certan trotanoy la conseillante parker 100"},
+ {t:"Crus Artisans do Médoc",s:"Academia · Classificações",h:"academia.html?sec=Classif",k:"crus artisans médoc haut-médoc propriedades familiares"},
+ {t:"Servir, degustar e guardar",s:"Academia · Servir",h:"academia.html?sec=Servir",k:"temperatura taça tulipa decantação carafer decanter guarda adega chai barrica magnum jéroboam degustação"},
+ {t:"A vinha — estações e vinificação",s:"Academia · A vinha",h:"academia.html?sec=Vinha",k:"estações primavera verão outono inverno enxerto poda gobelet guyot cordon royat vinificação fermentação colheita vindima filoxera"}
+];
+var DICAS=[],DIR=[];
+function nrm(s){return (""+(s==null?"":s)).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
+function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function tr(k){var l="pt";try{l=localStorage.getItem("lang")||"pt";}catch(e){}var d=(window.I18N&&I18N[l])||{};return d[k]||({"bu_g_acad":"Academia","bu_g_dicas":"Dicas de Bordeaux","bu_g_dir":"Diretório","bu_empty":"Nada encontrado.","bu_start":"Digite para buscar em toda a Commanderie."}[k]||k);}
+function grupo(titulo,itens){
+  if(!itens.length)return "";
+  return '<div class="grp"><h2>'+esc(titulo)+'<span>'+itens.length+'</span></h2>'+itens.map(function(r){
+    return '<a class="res" href="'+r.h+'"><b>'+esc(r.t)+'</b>'+(r.sub?'<div class="sub">'+esc(r.sub)+'</div>':'')+'</a>';
+  }).join('')+'</div>';
+}
+function buscar(){
+  var qv=nrm(document.getElementById("q").value.trim());
+  var box=document.getElementById("res");
+  if(qv.length<2){box.innerHTML='<div class="empty">'+tr("bu_start")+'</div>';return;}
+  var ac=ACAD.filter(function(x){return nrm(x.t+" "+x.k).indexOf(qv)>=0;}).map(function(x){return {t:x.t,sub:x.s,h:x.h};});
+  var dc=DICAS.filter(function(p){return nrm((p.nome||"")+" "+(p.categoria||"")+" "+(p.cidade||"")+" "+(p.descricao||"")).indexOf(qv)>=0;})
+    .slice(0,30).map(function(p){return {t:p.nome,sub:[p.categoria,p.cidade].filter(Boolean).join(" · "),h:"mapa-dicas.html?focus="+encodeURIComponent(p.nome)};});
+  var di=DIR.filter(function(m){return nrm((m.nome||"")+" "+(m.nucleo||"")+" "+(m.grau||"")).indexOf(qv)>=0;})
+    .slice(0,30).map(function(m){return {t:m.nome,sub:[m.grau,m.nucleo].filter(Boolean).join(" · "),h:"diretorio.html"};});
+  var html=grupo(tr("bu_g_acad"),ac)+grupo(tr("bu_g_dicas"),dc)+grupo(tr("bu_g_dir"),di);
+  box.innerHTML=html||('<div class="empty">'+tr("bu_empty")+'</div>');
+}
+async function carregar(){
+  var u=(await sb.auth.getUser()).data.user;
+  document.getElementById("loading").style.display="none";
+  if(!u){document.getElementById("needLogin").style.display="block";return;}
+  document.getElementById("content").style.display="block";
+  try{var a=await sb.from("dicas").select("nome,categoria,cidade,descricao");if(!a.error&&a.data)DICAS=a.data;}catch(e){}
+  try{var b=await sb.from("diretorio").select("nome,nucleo,grau");if(!b.error&&b.data)DIR=b.data;}catch(e){}
+  var inp=document.getElementById("q");inp.addEventListener("input",buscar);buscar();inp.focus();
+}
+document.addEventListener("DOMContentLoaded",carregar);
+</script><script>
+var I18N={
+ en:{bu_brand:"Search",bu_back:"&#8592; Back",bu_nl_h:"Restricted access",bu_nl_p:"Sign in to use the search.",bu_nl_btn:"Sign in",bu_loading:"Loading…",bu_k:"Commanders",bu_h1:"Search",bu_ph:"Search wines, châteaux, restaurants, members…",bu_g_acad:"Academy",bu_g_dicas:"Bordeaux Tips",bu_g_dir:"Directory",bu_empty:"Nothing found.",bu_start:"Type to search across the whole Commanderie."},
+ fr:{bu_brand:"Recherche",bu_back:"&#8592; Retour",bu_nl_h:"Accès restreint",bu_nl_p:"Connectez-vous pour utiliser la recherche.",bu_nl_btn:"Se connecter",bu_loading:"Chargement…",bu_k:"Commandeurs",bu_h1:"Recherche",bu_ph:"Rechercher vins, châteaux, restaurants, membres…",bu_g_acad:"Académie",bu_g_dicas:"Bonnes adresses",bu_g_dir:"Annuaire",bu_empty:"Aucun résultat.",bu_start:"Tapez pour rechercher dans toute la Commanderie."}
+};
+var _orig={};
+function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var ph=document.querySelectorAll("[data-i18n-ph]");for(var p=0;p<ph.length;p++){var pk=ph[p].getAttribute("data-i18n-ph"),ok="ph:"+pk;if(!(ok in _orig))_orig[ok]=ph[p].getAttribute("placeholder");ph[p].setAttribute("placeholder",(l==="pt"||!d||d[pk]==null)?_orig[ok]:d[pk]);}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}var bx=document.getElementById("res");if(bx&&document.getElementById("content").style.display!=="none")buscar();}
+document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
+</script>
+</body></html>

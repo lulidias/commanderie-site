@@ -55,11 +55,12 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     </div>
 
     <div class="kpis">
-      <div class="kpi big"><div class="lab" data-i18n="tr_caixa">Saldo em caixa</div><div class="val" id="kCaixa">—</div></div>
-      <div class="kpi"><div class="lab" data-i18n="tr_entradas">Entradas</div><div class="val pos" id="kEntradas">—</div></div>
-      <div class="kpi"><div class="lab" data-i18n="tr_saidas">Saídas</div><div class="val neg" id="kSaidas">—</div></div>
+      <div class="kpi big"><div class="lab" data-i18n="tr_saldo">Saldo atual</div><div class="val" id="kSaldo">—</div></div>
+      <div class="kpi"><div class="lab" data-i18n="tr_recebido">Recebido</div><div class="val pos" id="kRecebido">—</div></div>
       <div class="kpi"><div class="lab" data-i18n="tr_receber">A receber</div><div class="val" id="kReceber">—</div></div>
-      <div class="kpi"><div class="lab" data-i18n="tr_pagar">A pagar</div><div class="val" id="kPagar">—</div></div>
+      <div class="kpi"><div class="lab" data-i18n="tr_pago">Despesas pagas</div><div class="val neg" id="kPago">—</div></div>
+      <div class="kpi"><div class="lab" data-i18n="tr_pagar">A pagar</div><div class="val" id="kApagar">—</div></div>
+      <div class="kpi"><div class="lab" data-i18n="tr_desptotal">Despesas totais</div><div class="val" id="kDespTotal">—</div></div>
     </div>
 
     <div class="card">
@@ -110,24 +111,24 @@ function renderList(id,pairs,total){
   box.innerHTML=h;
 }
 function render(d){
-  var f=d.financeiro||{};
-  setTxt("kCaixa",brl(f.caixa));
-  setTxt("kEntradas",brl(f.entradas));
-  setTxt("kSaidas",brl(f.saidas));
-  setTxt("kReceber",brl(f.a_receber));
-  setTxt("kPagar",brl(f.a_pagar));
+  var R=d.resumo||{};
+  setTxt("kSaldo", brl(-(Number(R.saldoneg)||0)));
+  setTxt("kRecebido", brl(R.recebido));
+  setTxt("kReceber", brl(R.areceber));
+  setTxt("kPago", brl(R.pago));
+  setTxt("kApagar", brl(R.apagar));
+  setTxt("kDespTotal", brl(R.desptotal));
   var rec=[];
-  if((f.anuidade_recebida||0)>0) rec.push([lblAnuidade(), f.anuidade_recebida]);
   var rc=d.receitas_por_categoria||{}; for(var k in rc){ if(rc[k]) rec.push([k,rc[k]]); }
-  renderList("recList", rec, brl(f.entradas));
+  renderList("recList", rec, brl(R.recebido));
   var des=[]; var dc=d.despesas_por_categoria||{}; for(var k2 in dc){ if(dc[k2]) des.push([k2,dc[k2]]); }
-  renderList("desList", des, brl(f.saidas));
+  renderList("desList", des, brl(R.pago));
   var mb=d.membros||{}, ev=d.eventos||{};
   setTxt("pMembros", mb.total||0);
   setTxt("pReal", ev.realizados||0);
   setTxt("pFut", ev.futuros||0);
   setTxt("pCiclo", d.ciclo||"—");
-  setTxt("ger", d.gerado_em||"—");
+  setTxt("ger", (d.resumo&&d.resumo.atualizado)||d.gerado_em||"—");
 }
 async function carregar(){
   var u=(await sb.auth.getUser()).data.user;
@@ -152,8 +153,8 @@ async function loadBalancetes(){
 document.addEventListener("DOMContentLoaded",function(){carregar();});
 </script><script>
 var I18N={
- en:{tr_brand:"Transparency",tr_back:"&#8592; Back",tr_nl_h:"Restricted access",tr_nl_p:"Sign in to view the financial report.",tr_nl_btn:"Sign in",tr_loading:"Loading…",tr_k:"Financial report",tr_h1:"Transparency Panel",tr_intro:"The Commanderie is committed to full transparency with its members. Here you can follow, in summary form, the confraternity’s revenues, expenses and balance.",tr_caixa:"Cash balance",tr_entradas:"Income",tr_saidas:"Expenses",tr_receber:"Receivable",tr_pagar:"Payable",tr_rec_h:"Revenues",tr_des_h:"Expenses",tr_pano_h:"Confraternity overview",tr_membros:"Members",tr_ev_real:"Events held",tr_ev_fut:"Upcoming events",tr_ciclo:"Dues cycle",tr_note:"Figures based on the accounting statement. The current balance is negative as it includes the founding and first-chapter expenses, still being settled.",tr_bal_h:"Official statement",tr_updated:"Data last updated:"},
- fr:{tr_brand:"Transparence",tr_back:"&#8592; Retour",tr_nl_h:"Accès restreint",tr_nl_p:"Connectez-vous pour consulter le rapport financier.",tr_nl_btn:"Se connecter",tr_loading:"Chargement…",tr_k:"Reddition de comptes",tr_h1:"Espace Transparence",tr_intro:"La Commanderie s’engage à une transparence totale envers ses membres. Vous suivez ici, de façon résumée, les recettes, les dépenses et le solde de la confrérie.",tr_caixa:"Solde de caisse",tr_entradas:"Entrées",tr_saidas:"Sorties",tr_receber:"À recevoir",tr_pagar:"À payer",tr_rec_h:"Recettes",tr_des_h:"Dépenses",tr_pano_h:"Panorama de la confrérie",tr_membros:"Membres",tr_ev_real:"Événements réalisés",tr_ev_fut:"Prochains événements",tr_ciclo:"Cycle de cotisation",tr_note:"Montants d’après le bilan comptable. Le solde actuel est négatif car il inclut les dépenses de fondation et du premier chapitre, encore en cours de règlement.",tr_bal_h:"Bilan officiel",tr_updated:"Dernière mise à jour des données :"}
+ en:{tr_brand:"Transparency",tr_back:"&#8592; Back",tr_nl_h:"Restricted access",tr_nl_p:"Sign in to view the financial report.",tr_nl_btn:"Sign in",tr_loading:"Loading…",tr_k:"Financial report",tr_h1:"Transparency Panel",tr_intro:"The Commanderie is committed to full transparency with its members. Here you can follow, in summary form, the confraternity’s revenues, expenses and balance.",tr_saldo:"Current balance",tr_recebido:"Received",tr_pago:"Expenses paid",tr_desptotal:"Total expenses",tr_receber:"Receivable",tr_pagar:"Payable",tr_rec_h:"Revenues",tr_des_h:"Expenses",tr_pano_h:"Confraternity overview",tr_membros:"Members",tr_ev_real:"Events held",tr_ev_fut:"Upcoming events",tr_ciclo:"Dues cycle",tr_note:"Figures based on the accounting statement. The current balance is negative as it includes the founding and first-chapter expenses, still being settled.",tr_bal_h:"Official statement",tr_updated:"Data last updated:"},
+ fr:{tr_brand:"Transparence",tr_back:"&#8592; Retour",tr_nl_h:"Accès restreint",tr_nl_p:"Connectez-vous pour consulter le rapport financier.",tr_nl_btn:"Se connecter",tr_loading:"Chargement…",tr_k:"Reddition de comptes",tr_h1:"Espace Transparence",tr_intro:"La Commanderie s’engage à une transparence totale envers ses membres. Vous suivez ici, de façon résumée, les recettes, les dépenses et le solde de la confrérie.",tr_saldo:"Solde actuel",tr_recebido:"Encaissé",tr_pago:"Dépenses payées",tr_desptotal:"Dépenses totales",tr_receber:"À recevoir",tr_pagar:"À payer",tr_rec_h:"Recettes",tr_des_h:"Dépenses",tr_pano_h:"Panorama de la confrérie",tr_membros:"Membres",tr_ev_real:"Événements réalisés",tr_ev_fut:"Prochains événements",tr_ciclo:"Cycle de cotisation",tr_note:"Montants d’après le bilan comptable. Le solde actuel est négatif car il inclut les dépenses de fondation et du premier chapitre, encore en cours de règlement.",tr_bal_h:"Bilan officiel",tr_updated:"Dernière mise à jour des données :"}
 };
 var _orig={};
 function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}

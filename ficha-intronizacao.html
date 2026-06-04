@@ -91,6 +91,12 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       <label class="chk"><input id="f_c3" type="checkbox" required><span data-i18n="fi_chk3">Comprometo-me a pagar a anuidade do exercício e a mantê-la em dia nos termos do Estatuto.</span></label>
       <label class="chk"><input id="f_c4" type="checkbox" required><span data-i18n="fi_chk4">Declaro conhecer e aceitar o Estatuto Social e a Política de Privacidade da Commanderie de Bordeaux no Brasil.</span></label>
       <div class="field" style="margin-top:6px;"><label data-i18n="fi_l_local">Local e data</label><input id="f_ld" required placeholder="São Paulo, ___/___/______" data-i18n-ph="ph_local"></div>
+      <div class="seclbl">IV · Comprovante de pagamento</div>
+      <div style="background:#faf6ea;border:1px solid #e6d9b3;border-radius:12px;padding:14px 16px;margin-bottom:12px;line-height:1.7;">
+        <div style="font-size:13.5px;color:#5b5446;">Faça o PIX da <b>anuidade</b> e <b>anexe o comprovante</b> abaixo — é obrigatório para enviar a ficha.</div>
+        <div style="margin-top:10px;"><span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8a8270;">Chave PIX (CPF)</span><br><b style="font-size:18px;color:var(--navy);font-family:Georgia,serif;">010.091.449-79</b><div style="font-size:12.5px;color:#5b5446;margin-top:2px;">Manuel Roberto Brandão · Bradesco · Ag. 3220 · C/C 100483-2</div></div>
+      </div>
+      <div class="field"><label>Comprovante do PIX (imagem ou PDF) *</label><input id="f_comp" type="file" accept="image/*,application/pdf"></div>
       <div style="text-align:center;margin-top:14px;"><button class="btn-go" type="submit" id="btnEnviar" data-i18n="fi_btn">Enviar minha ficha</button><div id="fmsg" style="margin-top:10px;font-size:13.5px;"></div></div>
     </form>
   </div>
@@ -148,11 +154,22 @@ async function carregar(){
   mostrarPadrinhos();
   st("content");
 }
+async function uploadComprovante(){
+  var inp=document.getElementById("f_comp");var f=inp&&inp.files&&inp.files[0];if(!f)return null;
+  var u=(await sb.auth.getUser()).data.user;if(!u)return null;
+  var ext=(""+(f.name||"")).split(".").pop().toLowerCase();if(!ext||ext.length>5)ext="jpg";
+  var path=u.id+"/comprovante."+ext;
+  var up=await sb.storage.from("comprovantes").upload(path,f,{upsert:true,contentType:f.type||"application/octet-stream"});
+  if(up.error)throw up.error;
+  return sb.storage.from("comprovantes").getPublicUrl(path).data.publicUrl;
+}
 async function enviarFicha(ev){
   ev.preventDefault();
   var b=document.getElementById("btnEnviar"),msg=document.getElementById("fmsg");
+  if(!TOK){var ci=document.getElementById("f_comp");if(!ci||!ci.files||!ci.files.length){msg.style.color="#8f1d24";msg.textContent="Anexe o comprovante do PIX para enviar a ficha.";return;}}
   b.disabled=true;msg.style.color="#5b5446";msg.textContent="Enviando...";
   var ficha={nome:val("f_nome"),sobrenome:val("f_sobrenome"),nascimento:val("f_nasc"),tratamento:val("f_trat"),endereco:val("f_end"),cidade:val("f_cidade"),cep:val("f_cep"),nacionalidade:val("f_nac")||"Brasileira",nucleo:val("f_nucleo"),profissao:val("f_prof"),telefone:val("f_tel"),email:val("f_email"),restricoes:val("f_rest")||"Nenhuma",padrinho1:PADRINHOS.padrinho1||null,padrinho2:PADRINHOS.padrinho2||null,mestre:PADRINHOS.mestre||null,atividades:val("f_ativ"),biografia:val("f_bio"),honrarias:val("f_hon"),ligacao_bordeaux:val("f_lig"),primeiro_bordeaux:val("f_prim"),bordeaux_preferido:val("f_pref"),experiencia:val("f_exp"),outras_historias:val("f_outras"),autoriza_contato:chk("f_c1"),autoriza_fotos:chk("f_c2"),compromisso_anuidade:chk("f_c3"),aceite_estatuto:chk("f_c4"),local_data:val("f_ld"),enviada_em:new Date().toISOString()};
+  if(!TOK){try{var curl=await uploadComprovante();if(curl)ficha.comprovante_url=curl;}catch(e){b.disabled=false;msg.style.color="#8f1d24";msg.textContent="Erro ao enviar o comprovante: "+(e.message||e);return;}}
   var r=TOK?(await sb.rpc("intro_salvar_ficha",{p_codigo:TOK.ac,p_token:TOK.at,p_ficha:ficha})):(await sb.rpc("salvar_ficha",{p_ficha:ficha}));
   if(r.error){b.disabled=false;msg.style.color="#8f1d24";msg.textContent="Erro ao enviar: "+r.error.message;return;}
   b.disabled=false;

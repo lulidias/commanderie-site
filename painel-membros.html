@@ -90,7 +90,8 @@ function card(m){
   var head="<div class=\"mhead\" onclick=\"toggle(this)\"><div class=\"mav\">"+foto+"</div><div style=\"flex:1;min-width:0;\"><div class=\"mname\">"+esc(m.nome)+"</div><div class=\"mmeta\">"+esc(meta)+(contato?(" · "+esc(contato)):"")+"</div></div>"+anuidadePill(m)+"</div>";
   var cad="<div class=\"grp\">Cadastro</div><div class=\"kv\">"+row("E-mail",m.email)+row("Telefone",tel)+row("Nascimento",fdata(m.nascimento))+row("Documento",m.documento)+row("Endereço",m.endereco)+row("Bairro",m.bairro)+row("Cidade",m.cidade)+row("CEP",m.cep)+row("País",m.pais)+row("Núcleo",m.nucleo)+row("Capítulo",m.capitulo)+row("Intronização",fdata(m.data_intronizacao))+"</div>";
   var texto=m.ficha?("<div class=\"grp\" style=\"margin-top:14px;\">Texto de Intronização <a onclick=\"copiarIntro('"+m.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:10px;font-weight:normal;text-transform:none;letter-spacing:0;margin-left:8px;\">copiar</a></div><div id=\"intro_"+m.id+"\" style=\"font-size:14px;color:#2a2620;line-height:1.75;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:13px 15px;font-family:Georgia,serif;\">"+textoIntro(m)+"</div>"):"";
-  var body="<div class=\"mbody\">"+cad+"<div class=\"fichabox\">"+fichaHtml(m.ficha)+"</div>"+texto+"</div>";
+  var comp=m.comprovante_url?("<div style=\"margin-top:10px;\"><a href=\""+esc(m.comprovante_url)+"\" target=\"_blank\" style=\"color:var(--navy);font-size:13px;font-weight:bold;text-decoration:none;\">&#128206; Ver comprovante de pagamento</a></div>"):"";
+  var body="<div class=\"mbody\">"+cad+comp+"<div class=\"fichabox\">"+fichaHtml(m.ficha)+"</div>"+texto+"</div>";
   return "<div class=\"mcard\">"+head+body+"</div>";
 }
 function toggle(el){var b=el.nextElementSibling;if(b)b.style.display=(b.style.display==="block")?"none":"block";}

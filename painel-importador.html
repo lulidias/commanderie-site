@@ -57,6 +57,12 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
   <div class="dhead"><div class="k">Importador Embaixador</div><h1 id="impNome">—</h1><div class="sub" id="impSub"></div></div>
   <div class="wrap">
 
+    <div id="impAsWrap" style="display:none;background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 16px;text-align:center;">
+      <label style="font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:var(--gold);font-weight:bold;display:block;margin-bottom:6px;">Presidente / Vice — atuar como importadora</label>
+      <select class="inp" id="impAs" onchange="trocarImp()" style="max-width:360px;display:inline-block;"><option value="">— Visão geral (somente leitura)</option></select>
+      <div style="font-size:11.5px;color:#8a8270;margin-top:6px;">Escolha uma importadora para liberar os formulários de indicação e indicar em nome dela.</div>
+    </div>
+
     <div id="menu"><div class="cmenu">
       <a class="ccard" href="?sec=comendadores"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.2 2.7-4.8 6-4.8s6 1.6 6 4.8"/><path d="M16 5.2A3 3 0 0 1 16 11"/></svg></div><b>Indicar Comendadores</b><span>Indicar e ver todos os indicados</span></a>
       <a class="ccard" href="?sec=embaixadas"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V5l7-2v18M12 8l7 2v11M3 21h18"/></svg></div><b>Indicar Embaixadas</b><span>Placas Ouro/Prata/Bronze</span></a>
@@ -161,7 +167,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
-var IMP=null;var IS_CONSELHO=false;var ANO=new Date().getFullYear();var MEUS_MEM=[];var MINHAS_EMB=[];
+var IMP=null;var IS_CONSELHO=false;var ANO=new Date().getFullYear();var MEUS_MEM=[];var MINHAS_EMB=[];var CONSELHO_FULL=false;var IMPS_BY_ID={};
 function st(id){["needLogin","notImp","loading","panel"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function fdata(d){if(!d)return "—";var p=(""+d).split("T")[0].split("-");return p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):d;}
@@ -180,6 +186,14 @@ async function init(){
     document.getElementById("impNome").textContent="Painel dos Importadores";
     document.getElementById("impSub").textContent="Visão geral do programa — somente leitura";
     document.querySelectorAll(".imp-form").forEach(function(e){e.style.display="none";});
+    var me=await sb.from("membros").select("pode_honra").eq("user_id",u.id).maybeSingle();
+    CONSELHO_FULL=!!(me&&me.data&&me.data.pode_honra);
+    if(CONSELHO_FULL){
+      var li=await sb.from("importadoras").select("*").order("nome",{ascending:true});
+      var selImp=document.getElementById("impAs");
+      if(!li.error&&selImp){(li.data||[]).forEach(function(im){IMPS_BY_ID[im.id]=im;selImp.innerHTML+="<option value=\""+im.id+"\">"+esc(im.nome)+"</option>";});}
+      var w=document.getElementById("impAsWrap");if(w)w.style.display="block";
+    }
   } else {
     var own=await sb.from("importadoras").select("*").eq("owner_user_id",u.id).maybeSingle();
     if(own.error||!own.data){st("notImp");return;}
@@ -189,6 +203,21 @@ async function init(){
   }
   st("panel");
   mostrarSecao();
+}
+function trocarImp(){
+  var sel=document.getElementById("impAs");var id=sel?sel.value:"";
+  if(id&&IMPS_BY_ID[id]){
+    IMP=IMPS_BY_ID[id];
+    document.getElementById("impNome").textContent=IMP.nome;
+    document.getElementById("impSub").textContent="Atuando como "+IMP.nome+" — Presidente/Vice";
+    document.querySelectorAll(".imp-form").forEach(function(e){e.style.display="block";});
+  } else {
+    IMP={id:null,nome:"Conselho — visão geral"};
+    document.getElementById("impNome").textContent="Painel dos Importadores";
+    document.getElementById("impSub").textContent="Visão geral do programa — somente leitura";
+    document.querySelectorAll(".imp-form").forEach(function(e){e.style.display="none";});
+  }
+  var s=curSec();if(s)loadSec(s);
 }
 function mostrarSecao(){
   var sec=curSec();

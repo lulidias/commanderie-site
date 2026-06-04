@@ -35,6 +35,11 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .dfilter{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:980px;margin:10px auto 0;padding:0 20px;}
 .dchip{cursor:pointer;font-size:12.5px;letter-spacing:.5px;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;transition:all .15s;}
 .dchip.on,.dchip:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.dinfo{margin-top:6px;}
+.diline{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--ink-lt);text-decoration:none;padding:4px 0;line-height:1.45;border-top:1px solid #f0e9d6;}
+.diline:first-child{border-top:none;}
+.diline:hover{color:var(--navy);}
+.dico{flex:none;width:16px;text-align:center;opacity:.85;}
 </style></head><body>
 <div class="dtop"><img src="img/brasao.png" alt="Brasão"><b data-i18n="dc_brand">Dicas de Bordeaux</b><a class="back" href="index.html" onclick="if(history.length>1){history.back();return false;}" data-i18n="dc_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
 <div id="needLogin" class="state" style="display:none;"><h2 data-i18n="dc_nl_h">Acesso restrito</h2><p data-i18n="dc_nl_p">Conteúdo exclusivo dos membros. Entre na sua conta.</p><a class="btn" href="index.html" data-i18n="dc_nl_btn">Entrar</a></div>
@@ -59,16 +64,15 @@ function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&
 function preco(pr){var n=Math.min(4,pr||0);var o="";for(var k=0;k<n;k++)o+="€";return o;}
 function card(p){
   var L=[];
-  if(p.site){var w=(""+p.site).indexOf("http")===0?p.site:("https://"+p.site);L.push('<a href="'+esc(w)+'" target="_blank" rel="noopener">site</a>');}
-  if(p.instagram){var ig=(""+p.instagram).replace(/^@/,"");L.push('<a href="https://instagram.com/'+esc(ig)+'" target="_blank" rel="noopener">@'+esc(ig)+'</a>');}
-  if(p.telefone)L.push('<a href="tel:'+esc((""+p.telefone).replace(/\s/g,""))+'">'+esc(p.telefone)+'</a>');
-  if(p.endereco)L.push('<a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.endereco)+'" target="_blank" rel="noopener">mapa</a>');
+  if(p.endereco)L.push('<a class="diline" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.endereco)+'" target="_blank" rel="noopener"><span class="dico">📍</span><span>'+esc(p.endereco)+'</span></a>');
+  if(p.telefone)L.push('<a class="diline" href="tel:'+esc((""+p.telefone).replace(/\s/g,""))+'"><span class="dico">📞</span><span>'+esc(p.telefone)+'</span></a>');
+  if(p.instagram){var ig=(""+p.instagram).replace(/^@/,"");L.push('<a class="diline" href="https://instagram.com/'+esc(ig)+'" target="_blank" rel="noopener"><span class="dico">📷</span><span>@'+esc(ig)+'</span></a>');}
+  if(p.site){var w=(""+p.site).indexOf("http")===0?p.site:("https://"+p.site);L.push('<a class="diline" href="'+esc(w)+'" target="_blank" rel="noopener"><span class="dico">🌐</span><span>'+esc(p.site)+'</span></a>');}
   var foto=p.foto_url?('<div class="dphoto"><img loading="lazy" src="'+esc(p.foto_url)+'" alt="'+esc(p.nome)+'" onerror="this.parentNode.style.display=\'none\'"></div>'):'';
   return '<article class="dcard">'+foto+'<div class="dbody">'+(p.categoria?'<div class="dcat">'+esc(p.categoria)+'</div>':'')
     +'<h3 class="dname">'+esc(p.nome)+(p.preco?' <span class="dprice">'+preco(p.preco)+'</span>':'')+'</h3>'
     +(p.descricao?'<p class="ddesc">'+esc(p.descricao)+'</p>':'')
-    +(p.endereco?'<div class="dmeta">'+esc(p.endereco)+'</div>':'')
-    +(L.length?'<div class="dlinks">'+L.join('<span class="sep">·</span>')+'</div>':'')
+    +(L.length?'<div class="dinfo">'+L.join('')+'</div>':'')
     +'</div></article>';
 }
 var FILTRO='todos',DADOS=[];

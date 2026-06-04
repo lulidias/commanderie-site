@@ -139,7 +139,7 @@ async function carregarIndicacoes(){
     return "<div class=\"card\"><div class=\"ind-top\"><b>"+esc(r.nome)+"</b><span style=\"font-size:12px;color:#8a8270;\">"+(r.created_at?new Date(r.created_at).toLocaleDateString("pt-BR"):"")+"</span></div>"
     +"<div class=\"ind-meta\">"+esc(r.email||"")+(r.nucleo?(" · Núcleo "+esc(r.nucleo)):"")+(r.indicado_por_nome?(" · indicado por "+esc(r.indicado_por_nome)):"")+(r.anuidade_por==="padrinho"?(" · <b style=\"color:#8a6a1f;\">anuidade paga pelo padrinho</b>"):"")+"</div>"
     +(r.apresentacao?("<div class=\"ind-apres\">"+esc(r.apresentacao)+"</div>"):"")+avLine(r)
-    +"<div class=\"ind-actions\"><label style=\"font-size:12px;color:#8a8270;\">Status:</label><select onchange=\"setStatus('"+r.id+"',this.value)\">"+opts+"</select></div>"
+    +"<div class=\"ind-actions\"><span style=\"font-size:12px;color:#8a8270;\">Status:</span> <span style=\"font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#1e2a56;background:#eef2f8;border:1px solid #cdd6e6;border-radius:20px;padding:3px 10px;\">"+esc(r.status||"")+"</span></div>"
     +aprovBlk+fichaRow+"<div style=\"margin-top:8px;\"><a onclick=\"excluirInd('"+r.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;\">remover indicação</a></div></div>";
   }
   var ORD=["São Paulo","Rio de Janeiro","Porto Alegre","Curitiba","Recife"];

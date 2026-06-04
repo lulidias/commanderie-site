@@ -13,14 +13,17 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
 .dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:34px;margin:6px 0 2px;}
 .wrap{max-width:980px;margin:0 auto;padding:14px 20px 60px;}
-.sec-title{font-family:Georgia,serif;color:var(--navy);font-size:22px;font-weight:normal;margin:28px 0 4px;}
-.sec-rule{height:1px;background:var(--line);margin:0 0 16px;}
 .card{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;}
-.ind-meta{font-size:12.5px;color:#8a8270;margin-top:3px;}
-select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;background:#fff;}
+.inp{padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;width:100%;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;}
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
 .state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+.bsave{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:7px 16px;font-size:13px;cursor:pointer;}
+.badd{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-size:14px;cursor:pointer;}
+.fphoto{cursor:pointer;color:var(--navy);border:1.5px dashed var(--gold);border-radius:9px;padding:6px 14px;font-size:13px;}
+.rm{color:#8f1d24;cursor:pointer;font-size:12px;margin-left:auto;}
+.cnt{font-size:12.5px;color:#8a8270;margin:0 2px 12px;}
 </style></head><body>
 <div class="dtop"><img src="img/brasao.png" alt="Brasão"><b>Administrar Parceiros</b><a class="back" href="painel-conselho.html" onclick="if(history.length>1){history.back();return false;}">&#8592; Voltar</a></div>
 <div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para acessar.</p><a class="btn" href="index.html">Entrar</a></div>
@@ -29,7 +32,13 @@ select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size
 <div id="panel" style="display:none;">
   <div class="dhead"><div class="k">Conselho Diretor</div><h1>Parceiros</h1></div>
   <div class="wrap">
-    <div class="card"><b style="font-family:Georgia,serif;color:var(--navy);font-size:16px;">Adicionar parceiro</b><p style="font-size:12.5px;color:#8a8270;margin:4px 0 10px;">Restaurantes e casas parceiras. Benefício padrão: taxa de rolha livre. Se tiver mais de um endereço, crie um por endereço.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;"><input id="pcNome" placeholder="Nome" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="pcCat" placeholder="Categoria (ex.: Italiano)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="pcCidade" placeholder="Cidade" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="pcEndereco" placeholder="Bairro / endereço" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="pcBenef" value="Taxa de rolha livre" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="pcInsta" placeholder="Instagram (@perfil)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="pcSite" placeholder="Site (https://…)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><input id="pcTel" placeholder="Telefone (+55…)" style="padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"></div><textarea id="pcDesc" placeholder="Descrição" rows="2" style="width:100%;margin-top:10px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;font-family:inherit;"></textarea><button onclick="criarParceiro()" style="margin-top:10px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-size:14px;cursor:pointer;">Adicionar parceiro</button><span id="pcMsg" style="font-size:13px;margin-left:10px;"></span></div>
+    <div class="card"><b style="font-family:Georgia,serif;color:var(--navy);font-size:16px;">Adicionar parceiro</b><p style="font-size:12.5px;color:#8a8270;margin:4px 0 10px;">Restaurantes e casas parceiras. Benefício padrão: taxa de rolha livre. Se tiver mais de um endereço, crie um por endereço.</p>
+      <div class="grid"><input id="pcNome" class="inp" placeholder="Nome"><input id="pcCat" class="inp" placeholder="Categoria (ex.: Italiano)"><input id="pcCidade" class="inp" placeholder="Cidade"><input id="pcEndereco" class="inp" placeholder="Bairro / endereço"><input id="pcBenef" class="inp" value="Taxa de rolha livre"><input id="pcInsta" class="inp" placeholder="Instagram (@perfil)"><input id="pcSite" class="inp" placeholder="Site (https://…)"><input id="pcTel" class="inp" placeholder="Telefone (+55…)"></div>
+      <input id="pcMaps" class="inp" placeholder="Link do Google Maps (opcional)" style="margin-top:8px;">
+      <textarea id="pcDesc" placeholder="Descrição" rows="2" class="inp" style="margin-top:8px;font-family:inherit;"></textarea>
+      <button onclick="criarParceiro()" class="badd" style="margin-top:10px;">Adicionar parceiro</button><span id="pcMsg" style="font-size:13px;margin-left:10px;"></span>
+    </div>
+    <p class="cnt" id="parcCount"></p>
     <div id="parcList"></div>
   </div>
 </div>
@@ -40,9 +49,51 @@ function state(s){["needLogin","notAllowed","loading","panel"].forEach(function(
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function esca(s){return esc(s).replace(/"/g,"&quot;");}
 function comprimirImg(file,maxDim,q){return new Promise(function(res){var img=new Image();img.onload=function(){var w=img.naturalWidth,hh=img.naturalHeight;var sc=Math.min(1,maxDim/Math.max(w,hh));var cw=Math.round(w*sc),ch=Math.round(hh*sc);var cv=document.createElement("canvas");cv.width=cw;cv.height=ch;cv.getContext("2d").drawImage(img,0,0,cw,ch);cv.toBlob(function(b){res(b||file);},"image/jpeg",q);};img.onerror=function(){res(file);};var r=new FileReader();r.onload=function(e){img.src=e.target.result;};r.readAsDataURL(file);});}
-async function carregarParceiros(){var el=document.getElementById("parcList");if(!el)return;var q=await sb.from("parceiros").select("*").order("cidade",{ascending:true}).order("nome",{ascending:true});if(q.error){el.innerHTML="<p style=\"font-size:12.5px;color:#9a937f;\">(crie a tabela ‘parceiros’ no Supabase) "+esc(q.error.message)+"</p>";return;}var rows=q.data||[];if(!rows.length){el.innerHTML="<div class=\"card\" style=\"color:#8a8270;\">Nenhum parceiro ainda.</div>";return;}el.innerHTML=rows.map(function(p){var meta=[esc(p.categoria||""),esc(p.cidade||""),esc(p.endereco||"")].filter(Boolean).join(" · ");var foto=p.foto_url?("<img src=\""+p.foto_url+"\" style=\"width:100%;height:100%;object-fit:cover;\">"):("<span style=\"color:var(--gold);font-family:Georgia,serif;font-size:30px;\">"+esc((""+(p.nome||"?")).trim().charAt(0).toUpperCase()||"?")+"</span>");return "<div class=\"card\"><div style=\"display:flex;gap:12px;align-items:flex-start;\"><div style=\"width:84px;height:84px;border-radius:10px;border:1px solid var(--line);overflow:hidden;flex:none;background:#faf5e8;display:flex;align-items:center;justify-content:center;\">"+foto+"</div><div style=\"flex:1;\"><b style=\"font-family:Georgia,serif;color:var(--navy);font-size:16px;\">"+esc(p.nome||"")+"</b><div style=\"font-size:12px;color:#8a8270;margin-top:2px;\">"+meta+"</div></div></div><textarea id=\"pd_"+p.id+"\" rows=\"2\" placeholder=\"Descrição\" style=\"width:100%;margin-top:10px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit;\">"+esc(p.descricao||"")+"</textarea><input id=\"pb_"+p.id+"\" value=\""+esca(p.beneficio||"")+"\" placeholder=\"Benefício\" style=\"width:100%;margin-top:6px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;\"><div style=\"margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;\"><button onclick=\"salvarParceiro('"+p.id+"')\" style=\"background:transparent;color:var(--navy);border:1.5px solid var(--gold);border-radius:9px;padding:6px 14px;font-size:13px;cursor:pointer;\">Salvar</button><label style=\"cursor:pointer;color:var(--navy);border:1.5px dashed var(--gold);border-radius:9px;padding:6px 14px;font-size:13px;\">+ Foto<input type=\"file\" accept=\"image/*\" style=\"display:none\" onchange=\"uploadParcFoto('"+p.id+"',this.files)\"></label><a onclick=\"delParceiro('"+p.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;margin-left:auto;\">remover</a></div></div>";}).join("");}
-async function criarParceiro(){var msg=document.getElementById("pcMsg");var g=function(id){var e=document.getElementById(id);return e?e.value.trim():"";};var nome=g("pcNome");if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o nome.";return;}msg.style.color="#2f6b3a";msg.textContent="Salvando...";var rec={nome:nome,categoria:g("pcCat")||null,cidade:g("pcCidade")||null,endereco:g("pcEndereco")||null,descricao:g("pcDesc")||null,beneficio:g("pcBenef")||"Taxa de rolha livre",instagram:g("pcInsta")||null,site:g("pcSite")||null,telefone:g("pcTel")||null};var r=await sb.from("parceiros").insert(rec);if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}msg.textContent="Adicionado!";["pcNome","pcCat","pcCidade","pcEndereco","pcDesc","pcInsta","pcSite","pcTel"].forEach(function(id){var e=document.getElementById(id);if(e)e.value="";});carregarParceiros();}
-async function salvarParceiro(id){var d=document.getElementById("pd_"+id).value,b=document.getElementById("pb_"+id).value;var r=await sb.from("parceiros").update({descricao:d,beneficio:b}).eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}var bt=event&&event.target;if(bt){bt.textContent="Salvo!";setTimeout(function(){bt.textContent="Salvar";},1500);}}
+async function carregarParceiros(){
+  var el=document.getElementById("parcList");if(!el)return;
+  var q=await sb.from("parceiros").select("*").order("cidade",{ascending:true}).order("ordem",{ascending:true}).order("nome",{ascending:true});
+  if(q.error){el.innerHTML="<p style=\"font-size:12.5px;color:#9a937f;\">(crie a tabela ‘parceiros’ no Supabase) "+esc(q.error.message)+"</p>";return;}
+  var rows=q.data||[];
+  var cc=document.getElementById("parcCount");if(cc)cc.textContent=rows.length?(rows.length+" parceiros — edite qualquer campo e clique em Salvar."):"";
+  if(!rows.length){el.innerHTML="<div class=\"card\" style=\"color:#8a8270;\">Nenhum parceiro ainda.</div>";return;}
+  var I=function(pref,id,val,ph){return "<input id=\""+pref+"_"+id+"\" class=\"inp\" value=\""+esca(val||"")+"\" placeholder=\""+ph+"\">";};
+  el.innerHTML=rows.map(function(p){
+    var foto=p.foto_url?("<img src=\""+p.foto_url+"\" style=\"width:100%;height:100%;object-fit:cover;\">"):("<span style=\"color:var(--gold);font-family:Georgia,serif;font-size:28px;\">"+esc((""+(p.nome||"?")).trim().charAt(0).toUpperCase()||"?")+"</span>");
+    return "<div class=\"card\">"
+      +"<div style=\"display:flex;gap:12px;align-items:flex-start;\">"
+        +"<div style=\"width:72px;height:72px;border-radius:10px;border:1px solid var(--line);overflow:hidden;flex:none;background:#faf5e8;display:flex;align-items:center;justify-content:center;\">"+foto+"</div>"
+        +"<div style=\"flex:1;\" class=\"grid\">"+I("pNome",p.id,p.nome,"Nome")+I("pCat",p.id,p.categoria,"Categoria")+I("pCidade",p.id,p.cidade,"Cidade")+I("pEnd",p.id,p.endereco,"Bairro / endereço")+"</div>"
+      +"</div>"
+      +"<div class=\"grid\" style=\"margin-top:8px;\">"+I("pTel",p.id,p.telefone,"Telefone")+I("pInsta",p.id,p.instagram,"Instagram (@perfil)")+I("pSite",p.id,p.site,"Site (https://…)")+"</div>"
+      +"<input id=\"pMaps_"+p.id+"\" class=\"inp\" style=\"margin-top:8px;\" value=\""+esca(p.maps_url||"")+"\" placeholder=\"Link do Google Maps\">"
+      +"<textarea id=\"pDesc_"+p.id+"\" rows=\"2\" class=\"inp\" style=\"margin-top:8px;font-family:inherit;\" placeholder=\"Descrição\">"+esc(p.descricao||"")+"</textarea>"
+      +"<div style=\"display:grid;grid-template-columns:1fr 110px;gap:8px;margin-top:8px;\">"+I("pBen",p.id,p.beneficio,"Benefício")+"<input id=\"pOrdem_"+p.id+"\" class=\"inp\" type=\"number\" value=\""+(p.ordem!=null?p.ordem:"")+"\" placeholder=\"Ordem\"></div>"
+      +"<div style=\"margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;\">"
+        +"<button onclick=\"salvarParceiro('"+p.id+"')\" class=\"bsave\">Salvar alterações</button>"
+        +"<label class=\"fphoto\">+ Foto<input type=\"file\" accept=\"image/*\" style=\"display:none\" onchange=\"uploadParcFoto('"+p.id+"',this.files)\"></label>"
+        +"<a onclick=\"delParceiro('"+p.id+"')\" class=\"rm\">remover</a>"
+      +"</div></div>";
+  }).join("");
+}
+async function criarParceiro(){
+  var msg=document.getElementById("pcMsg");var g=function(id){var e=document.getElementById(id);return e?e.value.trim():"";};
+  var nome=g("pcNome");if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o nome.";return;}
+  msg.style.color="#2f6b3a";msg.textContent="Salvando...";
+  var rec={nome:nome,categoria:g("pcCat")||null,cidade:g("pcCidade")||null,endereco:g("pcEndereco")||null,descricao:g("pcDesc")||null,beneficio:g("pcBenef")||"Taxa de rolha livre",instagram:g("pcInsta")||null,site:g("pcSite")||null,telefone:g("pcTel")||null,maps_url:g("pcMaps")||null};
+  var r=await sb.from("parceiros").insert(rec);
+  if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}
+  msg.textContent="Adicionado!";["pcNome","pcCat","pcCidade","pcEndereco","pcDesc","pcInsta","pcSite","pcTel","pcMaps"].forEach(function(id){var e=document.getElementById(id);if(e)e.value="";});carregarParceiros();
+}
+async function salvarParceiro(id){
+  var g=function(k){var e=document.getElementById(k+"_"+id);return e?e.value.trim():"";};
+  var nome=g("pNome");if(!nome){alert("O nome não pode ficar vazio.");return;}
+  var ord=parseInt(g("pOrdem"),10);
+  var rec={nome:nome,categoria:g("pCat")||null,cidade:g("pCidade")||null,endereco:g("pEnd")||null,telefone:g("pTel")||null,instagram:g("pInsta")||null,site:g("pSite")||null,maps_url:g("pMaps")||null,beneficio:g("pBen")||null,descricao:g("pDesc")||null,ordem:isNaN(ord)?null:ord};
+  var r=await sb.from("parceiros").update(rec).eq("id",id);
+  if(r.error){alert("Erro: "+r.error.message);return;}
+  var bt=event&&event.target;if(bt){bt.textContent="Salvo!";setTimeout(function(){bt.textContent="Salvar alterações";},1500);}
+  carregarParceiros();
+}
 async function uploadParcFoto(id,files){if(!files||!files.length)return;var ff=files[0];var path=id+"/"+Date.now()+".jpg";var blob=await comprimirImg(ff,1400,0.82);var up=await sb.storage.from("parceiros").upload(path,blob,{contentType:"image/jpeg",upsert:true});if(up.error){alert("Erro ao enviar foto: "+up.error.message);return;}var url=sb.storage.from("parceiros").getPublicUrl(path).data.publicUrl;var r=await sb.from("parceiros").update({foto_url:url}).eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}carregarParceiros();}
 async function delParceiro(id){if(!confirm("Remover este parceiro?"))return;var r=await sb.from("parceiros").delete().eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}carregarParceiros();}
 async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){state("needLogin");return;}var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){state("notAllowed");return;}await carregarParceiros();state("panel");}

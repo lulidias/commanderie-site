@@ -99,14 +99,45 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
   </div>
 </div>
 <div id="okwrap" class="wrap" style="display:none;"><div class="okmsg" style="display:block;">Ficha enviada com sucesso! A Secretaria entrará em contato para a sua intronização no próximo capítulo.<br><b>Bordeaux, toujours Bordeaux.</b><div style="margin-top:14px;"><a class="btn" href="index.html">← Voltar ao Painel</a></div></div></div>
+<div id="pagamento" class="wrap" style="display:none;">
+  <div class="dhead"><div class="k">Passo 2 de 2</div><h1>Anuidade</h1></div>
+  <div class="card">
+    <p style="font-size:14.5px;color:#5b5446;line-height:1.6;">Sua ficha foi recebida! ✦ Para concluir a sua intronização, acerte a <b>anuidade de <span id="pgValor">R$ 1.200,00</span></b> por PIX.</p>
+    <div style="background:#faf6ea;border:1px solid #e6d9b3;border-radius:12px;padding:16px 18px;margin:14px 0;line-height:1.7;">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8a8270;">Chave PIX (CPF)</div>
+      <b style="font-size:20px;color:var(--navy);font-family:Georgia,serif;">010.091.449-79</b>
+      <div style="margin-top:8px;font-size:13px;color:#5b5446;">Manuel Roberto Brandão · Bradesco · Ag. 3220 · C/C 100483-2</div>
+    </div>
+    <p style="font-size:13.5px;color:#5b5446;line-height:1.65;"><b>Importante:</b> após fazer o PIX, envie o <b>comprovante</b> para <a href="mailto:sac@commanderiedebordeaux.com.br" style="color:var(--navy);font-weight:bold;">sac@commanderiedebordeaux.com.br</a>. Assim que confirmarmos o pagamento, você recebe um e-mail com o <b>acesso ao site</b>.</p>
+    <div style="text-align:center;margin-top:16px;"><button class="btn-go" onclick="avisarPagamento()" id="btnPag">Já fiz o PIX e enviei o comprovante</button><div id="pagMsg" style="margin-top:10px;font-size:13.5px;"></div></div>
+  </div>
+</div>
+<div id="aguardando" class="state" style="display:none;"><h2>Tudo recebido! ✦</h2><p style="max-width:520px;margin:0 auto;line-height:1.6;">Recebemos a sua <b>ficha de intronização</b> e o seu <b>aviso de pagamento</b>. Assim que confirmarmos o PIX, você receberá um e-mail com o <b>acesso ao site</b> para concluir o seu cadastro.<br><br><b>Bordeaux, toujours Bordeaux.</b></p></div>
+<div id="jaTem" class="state" style="display:none;"><h2>Você já tem acesso</h2><p>A sua conta já está ativa. Faça login para entrar no site.</p><a class="btn" href="index.html">Entrar</a></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
-function st(id){["needLogin","naoEleito","jaEnviada","loading","content"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
+function st(id){["needLogin","naoEleito","jaEnviada","loading","content","pagamento","aguardando","jaTem","okwrap"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
 function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
 function chk(id){var e=document.getElementById(id);return e?e.checked:false;}
 function setv(id,v){var e=document.getElementById(id);if(e&&v!=null)e.value=v;}
+function qp(k){return new URLSearchParams(location.search).get(k);}
+var TOK=null,DADOS=null;
+function prefillFicha(d){var p=(""+(d.nome||"")).trim().split(/\s+/);setv("f_nome",p[0]||"");setv("f_sobrenome",p.slice(1).join(" "));setv("f_email",d.email);if(d.nucleo)setv("f_nucleo",d.nucleo);}
+function preencherPagamento(d){var v=(d&&d.anuidade)?d.anuidade:1200;var el=document.getElementById("pgValor");if(el)el.textContent="R$ "+(""+v).replace(/\B(?=(\d{3})+(?!\d))/g,".")+",00";}
 async function carregar(){
+  var ac=qp("ac"),at=qp("at");
+  if(ac&&at){
+    TOK={ac:ac,at:at};
+    var r=await sb.rpc("intro_dados",{p_codigo:ac,p_token:at});
+    if(r.error||!r.data||r.data.erro){st("jaTem");var jt=document.querySelector("#jaTem h2");if(jt)jt.textContent="Link inválido";var jp=document.querySelector("#jaTem p");if(jp)jp.textContent="Este link de intronização não é válido ou expirou.";return;}
+    DADOS=r.data;
+    if(DADOS.ativado){st("jaTem");return;}
+    if(DADOS.ficha_enviada&&(DADOS.pagamento_avisado||DADOS.pago)){st("aguardando");return;}
+    if(DADOS.ficha_enviada){preencherPagamento(DADOS);st("pagamento");return;}
+    prefillFicha(DADOS);st("content");
+    return;
+  }
   var u=(await sb.auth.getUser()).data.user;
   if(!u){st("needLogin");return;}
   var q=await sb.from("membros").select("nome,email,nucleo,eleito,ficha").eq("user_id",u.id).maybeSingle();
@@ -114,10 +145,7 @@ async function carregar(){
   var m=q.data;
   if(!m.eleito){st("naoEleito");return;}
   if(m.ficha){st("jaEnviada");return;}
-  // pre-preenche
-  var p=(""+(m.nome||"")).trim().split(/\s+/);
-  setv("f_nome",p[0]||"");setv("f_sobrenome",p.slice(1).join(" "));
-  setv("f_email",m.email);if(m.nucleo)setv("f_nucleo",m.nucleo);
+  prefillFicha(m);
   st("content");
 }
 async function enviarFicha(ev){
@@ -125,11 +153,18 @@ async function enviarFicha(ev){
   var b=document.getElementById("btnEnviar"),msg=document.getElementById("fmsg");
   b.disabled=true;msg.style.color="#5b5446";msg.textContent="Enviando...";
   var ficha={nome:val("f_nome"),sobrenome:val("f_sobrenome"),nascimento:val("f_nasc"),tratamento:val("f_trat"),endereco:val("f_end"),cidade:val("f_cidade"),cep:val("f_cep"),nacionalidade:val("f_nac"),nucleo:val("f_nucleo"),profissao:val("f_prof"),telefone:val("f_tel"),email:val("f_email"),restricoes:val("f_rest"),padrinho1:val("f_pad1"),padrinho2:val("f_pad2"),atividades:val("f_ativ"),biografia:val("f_bio"),honrarias:val("f_hon"),ligacao_bordeaux:val("f_lig"),primeiro_bordeaux:val("f_prim"),bordeaux_preferido:val("f_pref"),experiencia:val("f_exp"),outras_historias:val("f_outras"),autoriza_contato:chk("f_c1"),autoriza_fotos:chk("f_c2"),compromisso_anuidade:chk("f_c3"),aceite_estatuto:chk("f_c4"),local_data:val("f_ld"),enviada_em:new Date().toISOString()};
-  var r=await sb.rpc("salvar_ficha",{p_ficha:ficha});
+  var r=TOK?(await sb.rpc("intro_salvar_ficha",{p_codigo:TOK.ac,p_token:TOK.at,p_ficha:ficha})):(await sb.rpc("salvar_ficha",{p_ficha:ficha}));
   if(r.error){b.disabled=false;msg.style.color="#8f1d24";msg.textContent="Erro ao enviar: "+r.error.message;return;}
-  document.getElementById("content").style.display="none";
-  document.getElementById("okwrap").style.display="block";
-  window.scrollTo(0,0);
+  b.disabled=false;
+  if(TOK){preencherPagamento(DADOS);st("pagamento");window.scrollTo(0,0);return;}
+  st("okwrap");window.scrollTo(0,0);
+}
+async function avisarPagamento(){
+  var b=document.getElementById("btnPag"),msg=document.getElementById("pagMsg");
+  if(b)b.disabled=true;if(msg){msg.style.color="#5b5446";msg.textContent="Registrando...";}
+  var r=await sb.rpc("intro_marcar_pagamento",{p_codigo:TOK.ac,p_token:TOK.at});
+  if(r.error){if(b)b.disabled=false;if(msg){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;}return;}
+  st("aguardando");window.scrollTo(0,0);
 }
 document.addEventListener("DOMContentLoaded",carregar);
 </script><script>

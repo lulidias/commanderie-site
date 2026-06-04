@@ -64,7 +64,7 @@ function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&
 function preco(pr){var n=Math.min(4,pr||0);var o="";for(var k=0;k<n;k++)o+="€";return o;}
 function card(p){
   var L=[];
-  if(p.endereco)L.push('<a class="diline" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.endereco)+'" target="_blank" rel="noopener"><span class="dico">📍</span><span>'+esc(p.endereco)+'</span></a>');
+  if(p.endereco)L.push('<a class="diline" href="mapa-dicas.html?focus='+encodeURIComponent(p.nome)+'" title="Ver no mapa"><span class="dico">📍</span><span>'+esc(p.endereco)+'</span></a>');
   if(p.telefone)L.push('<a class="diline" href="tel:'+esc((""+p.telefone).replace(/\s/g,""))+'"><span class="dico">📞</span><span>'+esc(p.telefone)+'</span></a>');
   if(p.instagram){var ig=(""+p.instagram).replace(/^@/,"");L.push('<a class="diline" href="https://instagram.com/'+esc(ig)+'" target="_blank" rel="noopener"><span class="dico">📷</span><span>@'+esc(ig)+'</span></a>');}
   if(p.site){var w=(""+p.site).indexOf("http")===0?p.site:("https://"+p.site);L.push('<a class="diline" href="'+esc(w)+'" target="_blank" rel="noopener"><span class="dico">🌐</span><span>'+esc(p.site)+'</span></a>');}

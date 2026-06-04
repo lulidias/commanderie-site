@@ -86,6 +86,7 @@ function card(m){
   var tel=(m.telefone_ddi?m.telefone_ddi+" ":"")+(m.telefone||"");
   var contato=[m.email,tel].filter(Boolean).join(" · ");
   var meta=[m.grau,m.codigo].filter(Boolean).join(" · ");
+  if(m.eleito&&m.data_intronizacao)meta+=" · Intronização "+fdata(m.data_intronizacao);
   var head="<div class=\"mhead\" onclick=\"toggle(this)\"><div class=\"mav\">"+foto+"</div><div style=\"flex:1;min-width:0;\"><div class=\"mname\">"+esc(m.nome)+"</div><div class=\"mmeta\">"+esc(meta)+(contato?(" · "+esc(contato)):"")+"</div></div>"+anuidadePill(m)+"</div>";
   var cad="<div class=\"grp\">Cadastro</div><div class=\"kv\">"+row("E-mail",m.email)+row("Telefone",tel)+row("Nascimento",fdata(m.nascimento))+row("Documento",m.documento)+row("Endereço",m.endereco)+row("Bairro",m.bairro)+row("Cidade",m.cidade)+row("CEP",m.cep)+row("País",m.pais)+row("Núcleo",m.nucleo)+row("Capítulo",m.capitulo)+row("Intronização",fdata(m.data_intronizacao))+"</div>";
   var texto=m.ficha?("<div class=\"grp\" style=\"margin-top:14px;\">Texto de Intronização <a onclick=\"copiarIntro('"+m.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:10px;font-weight:normal;text-transform:none;letter-spacing:0;margin-left:8px;\">copiar</a></div><div id=\"intro_"+m.id+"\" style=\"font-size:14px;color:#2a2620;line-height:1.75;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:13px 15px;font-family:Georgia,serif;\">"+textoIntro(m)+"</div>"):"";
@@ -101,11 +102,18 @@ function render(){
     return nrm(m.nome+" "+(m.email||"")+" "+(m.codigo||"")+" "+(m.grau||"")).indexOf(q)>=0;
   });
   document.getElementById("resumo").textContent=list.length+" de "+MEMBROS.length+" membros";
+  var topo=list.filter(aguardandoIntro).sort(function(a,b){return (""+(a.data_intronizacao||"")).localeCompare(""+(b.data_intronizacao||""));});
+  var resto=list.filter(function(m){return !aguardandoIntro(m);});
+  var html="";
+  if(topo.length){html+="<div class=\"nuctitle\" style=\"color:var(--red);border-color:#e6cccc;\">Aguardando intronização <span style=\"font-size:12px;color:#8a8270;\">("+topo.length+")</span></div>"+topo.map(card).join("");}
   var ORD=["São Paulo","Rio de Janeiro","Porto Alegre","Curitiba","Recife"];
-  var grupos={};list.forEach(function(m){var k=m.nucleo||"Sem núcleo";(grupos[k]=grupos[k]||[]).push(m);});
+  var grupos={};resto.forEach(function(m){var k=m.nucleo||"Sem núcleo";(grupos[k]=grupos[k]||[]).push(m);});
   var chaves=Object.keys(grupos).sort(function(a,b){function rk(n){if(n==="Sem núcleo")return 100;var i=ORD.indexOf(n);return i<0?50:i;}var ra=rk(a),rb=rk(b);if(ra!==rb)return ra-rb;return a.localeCompare(b,"pt");});
-  document.getElementById("lista").innerHTML=chaves.length?chaves.map(function(k){return "<div class=\"nuctitle\">"+esc(k)+" <span style=\"font-size:12px;color:#8a8270;\">("+grupos[k].length+")</span></div>"+grupos[k].map(card).join("");}).join(""):"<p style=\"color:#8a8270;font-size:13px;\">Nenhum membro encontrado.</p>";
+  html+=chaves.map(function(k){return "<div class=\"nuctitle\">"+esc(k)+" <span style=\"font-size:12px;color:#8a8270;\">("+grupos[k].length+")</span></div>"+grupos[k].map(card).join("");}).join("");
+  document.getElementById("lista").innerHTML=html||"<p style=\"color:#8a8270;font-size:13px;\">Nenhum membro encontrado.</p>";
 }
+function hojeISO(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function aguardandoIntro(m){if(m.eleito!==true)return false;var di=(""+(m.data_intronizacao||"")).split("T")[0];if(!di)return true;return di>=hojeISO();}
 async function init(){
   var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}
   var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){st("notAllowed");return;}

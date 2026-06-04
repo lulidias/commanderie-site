@@ -190,9 +190,10 @@ async function init(){
     CONSELHO_FULL=!!(me&&me.data&&me.data.pode_honra);
     if(CONSELHO_FULL){
       var li=await sb.from("importadoras").select("*").order("nome",{ascending:true});
-      var selImp=document.getElementById("impAs");
-      if(!li.error&&selImp){(li.data||[]).forEach(function(im){IMPS_BY_ID[im.id]=im;selImp.innerHTML+="<option value=\""+im.id+"\">"+esc(im.nome)+"</option>";});}
+      var selImp=document.getElementById("impAs");var minhaImp=null;
+      if(!li.error&&selImp){(li.data||[]).forEach(function(im){IMPS_BY_ID[im.id]=im;if(im.owner_user_id===u.id)minhaImp=im;selImp.innerHTML+="<option value=\""+im.id+"\">"+esc(im.nome)+(im.owner_user_id===u.id?" (a minha)":"")+"</option>";});}
       var w=document.getElementById("impAsWrap");if(w)w.style.display="block";
+      if(minhaImp&&selImp){selImp.value=minhaImp.id;trocarImp();}
     }
   } else {
     var own=await sb.from("importadoras").select("*").eq("owner_user_id",u.id).maybeSingle();

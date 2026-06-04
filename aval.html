@@ -52,7 +52,7 @@ function render(ico,cls,titulo,texto,lema){
   }
   var titulo=ehMestre?"Aprovação registrada":"Aval registrado";
   var texto;
-  if(res==="Avalizada"){texto="A sua resposta foi <b>SIM</b>. Com isso a indicação está <b>totalmente avalizada</b> e segue para o Conselho marcar a intronização.";}
+  if(res==="Avalizada"){texto="A sua resposta foi <b>SIM</b>. Com isso a indicação está <b>totalmente avalizada</b> e segue para o Conselho marcar a entronização.";}
   else{texto="A sua resposta foi <b>SIM</b> e ficou registrada."+(ehMestre?"":" Falta agora a aprovação do Mestre.");}
   render("✓","ok",titulo,texto,true);
 })();

@@ -51,7 +51,7 @@ function fmtData(d){if(!d)return "";var p=(""+d).split("-");return p.length===3?
 function card(m){
   var nuc=m.nucleo?('<div class="nuc">'+m.nucleo+'</div>'):"";
   var extra;
-  if(m.eleito){extra='<div class="meta" style="color:var(--gold);font-weight:bold;letter-spacing:.3px;">✦ Eleito'+(m.data_intronizacao?(" · intronização em "+fmtData(m.data_intronizacao)):"")+'</div>';}
+  if(m.eleito){extra='<div class="meta" style="color:var(--gold);font-weight:bold;letter-spacing:.3px;">✦ Eleito'+(m.data_intronizacao?(" · entronização em "+fmtData(m.data_intronizacao)):"")+'</div>';}
   else{var d=DESDE[m.capitulo];var meta=(m.codigo||"")+(d?(" · Desde "+d):"");extra=meta?('<div class="meta">'+meta+'</div>'):"";}
   return '<div class="card">'+avatar(m)+'<div class="info"><b>'+m.nome+'</b>'+nuc+extra+'</div></div>';
 }

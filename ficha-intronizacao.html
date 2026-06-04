@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ficha de Intronização — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
+<title>Ficha de Entronização — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
 <style>
 :root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
 *{box-sizing:border-box;}
@@ -33,15 +33,15 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .okmsg{display:none;max-width:680px;margin:0 auto;text-align:center;background:#eef6ee;border:1px solid #cfe6cf;color:#2f6b3a;border-radius:14px;padding:24px;font-family:Arial,sans-serif;line-height:1.6;}
 @media(max-width:560px){.two{grid-template-columns:1fr;}}
 </style></head><body>
-<div class="dtop"><a href="index.html" style="display:inline-flex;align-items:center;" title="Painel do Comendador"><img src="img/brasao.png" alt="Brasão"></a><b data-i18n="fi_brand">Ficha de Intronização</b><a class="back" href="index.html" data-i18n="fi_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">FR</a></span></div>
+<div class="dtop"><a href="index.html" style="display:inline-flex;align-items:center;" title="Painel do Comendador"><img src="img/brasao.png" alt="Brasão"></a><b data-i18n="fi_brand">Ficha de Entronização</b><a class="back" href="index.html" data-i18n="fi_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;color:#9a8f72;">FR</a></span></div>
 <div id="needLogin" class="state" style="display:none;"><h2 data-i18n="fi_nl_h">Acesso restrito</h2><p data-i18n="fi_nl_p">Entre na sua conta para preencher a ficha.</p><a class="btn" href="index.html" data-i18n="fi_nl_btn">Entrar</a></div>
-<div id="naoEleito" class="state" style="display:none;"><h2 data-i18n="fi_ne_h">Ficha de Intronização</h2><p data-i18n="fi_ne_p">Esta ficha é destinada aos <b>Comendadores eleitos</b> antes da intronização.</p><a class="btn" href="index.html" data-i18n="fi_ne_btn">← Voltar ao Painel</a></div>
-<div id="jaEnviada" class="state" style="display:none;"><h2 data-i18n="fi_je_h">Ficha já enviada ✦</h2><p data-i18n="fi_je_p">Recebemos a sua ficha de intronização. A Secretaria entrará em contato.<br><b>Bordeaux, toujours Bordeaux.</b></p><a class="btn" href="index.html" data-i18n="fi_je_btn">← Voltar ao Painel</a></div>
+<div id="naoEleito" class="state" style="display:none;"><h2 data-i18n="fi_ne_h">Ficha de Entronização</h2><p data-i18n="fi_ne_p">Esta ficha é destinada aos <b>Comendadores eleitos</b> antes da entronização.</p><a class="btn" href="index.html" data-i18n="fi_ne_btn">← Voltar ao Painel</a></div>
+<div id="jaEnviada" class="state" style="display:none;"><h2 data-i18n="fi_je_h">Ficha já enviada ✦</h2><p data-i18n="fi_je_p">Recebemos a sua ficha de entronização. A Secretaria entrará em contato.<br><b>Bordeaux, toujours Bordeaux.</b></p><a class="btn" href="index.html" data-i18n="fi_je_btn">← Voltar ao Painel</a></div>
 <div id="loading" class="state" data-i18n="fi_loading">Carregando…</div>
 <div id="content" style="display:none;">
-  <div class="dhead"><div class="k" data-i18n="fi_k">Comendador eleito</div><h1 data-i18n="fi_h1">Ficha de Intronização</h1></div>
+  <div class="dhead"><div class="k" data-i18n="fi_k">Comendador eleito</div><h1 data-i18n="fi_h1">Ficha de Entronização</h1></div>
   <div class="wrap">
-    <div class="note" data-i18n="fi_note">Você já faz parte da Commanderie como <b>Comendador eleito</b>. Complete sua ficha — ela compõe o dossiê apresentado no seu capítulo de intronização.</div>
+    <div class="note" data-i18n="fi_note">Você já faz parte da Commanderie como <b>Comendador eleito</b>. Complete sua ficha — ela compõe o dossiê apresentado no seu capítulo de entronização.</div>
     <form class="card" id="ficha" onsubmit="enviarFicha(event)">
       <div class="seclbl" data-i18n="fi_sec1">I · Informações pessoais</div>
       <div class="two">
@@ -101,11 +101,11 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     </form>
   </div>
 </div>
-<div id="okwrap" class="wrap" style="display:none;"><div class="okmsg" style="display:block;">Ficha enviada com sucesso! A Secretaria entrará em contato para a sua intronização no próximo capítulo.<br><b>Bordeaux, toujours Bordeaux.</b><div style="margin-top:14px;"><a class="btn" href="index.html">← Voltar ao Painel</a></div></div></div>
+<div id="okwrap" class="wrap" style="display:none;"><div class="okmsg" style="display:block;">Ficha enviada com sucesso! A Secretaria entrará em contato para a sua entronização no próximo capítulo.<br><b>Bordeaux, toujours Bordeaux.</b><div style="margin-top:14px;"><a class="btn" href="index.html">← Voltar ao Painel</a></div></div></div>
 <div id="pagamento" class="wrap" style="display:none;">
   <div class="dhead"><div class="k">Passo 2 de 2</div><h1>Anuidade</h1></div>
   <div class="card">
-    <p style="font-size:14.5px;color:#5b5446;line-height:1.6;">Sua ficha foi recebida! ✦ Para concluir a sua intronização, acerte a <b>anuidade de <span id="pgValor">R$ 1.200,00</span></b> por PIX.</p>
+    <p style="font-size:14.5px;color:#5b5446;line-height:1.6;">Sua ficha foi recebida! ✦ Para concluir a sua entronização, acerte a <b>anuidade de <span id="pgValor">R$ 1.200,00</span></b> por PIX.</p>
     <div style="background:#faf6ea;border:1px solid #e6d9b3;border-radius:12px;padding:16px 18px;margin:14px 0;line-height:1.7;">
       <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8a8270;">Chave PIX (CPF)</div>
       <b style="font-size:20px;color:var(--navy);font-family:Georgia,serif;">010.091.449-79</b>
@@ -115,7 +115,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <div style="text-align:center;margin-top:16px;"><button class="btn-go" onclick="avisarPagamento()" id="btnPag">Já fiz o PIX e enviei o comprovante</button><div id="pagMsg" style="margin-top:10px;font-size:13.5px;"></div></div>
   </div>
 </div>
-<div id="aguardando" class="state" style="display:none;"><h2>Tudo recebido! ✦</h2><p style="max-width:520px;margin:0 auto;line-height:1.6;">Recebemos a sua <b>ficha de intronização</b> e o seu <b>aviso de pagamento</b>. Assim que confirmarmos o PIX, você receberá um e-mail com o <b>acesso ao site</b> para concluir o seu cadastro.<br><br><b>Bordeaux, toujours Bordeaux.</b></p></div>
+<div id="aguardando" class="state" style="display:none;"><h2>Tudo recebido! ✦</h2><p style="max-width:520px;margin:0 auto;line-height:1.6;">Recebemos a sua <b>ficha de entronização</b> e o seu <b>aviso de pagamento</b>. Assim que confirmarmos o PIX, você receberá um e-mail com o <b>acesso ao site</b> para concluir o seu cadastro.<br><br><b>Bordeaux, toujours Bordeaux.</b></p></div>
 <div id="jaTem" class="state" style="display:none;"><h2>Você já tem acesso</h2><p>A sua conta já está ativa. Faça login para entrar no site.</p><a class="btn" href="index.html">Entrar</a></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -134,7 +134,7 @@ async function carregar(){
   if(ac&&at){
     TOK={ac:ac,at:at};
     var r=await sb.rpc("intro_dados",{p_codigo:ac,p_token:at});
-    if(r.error||!r.data||r.data.erro){st("jaTem");var jt=document.querySelector("#jaTem h2");if(jt)jt.textContent="Link inválido";var jp=document.querySelector("#jaTem p");if(jp)jp.textContent="Este link de intronização não é válido ou expirou.";return;}
+    if(r.error||!r.data||r.data.erro){st("jaTem");var jt=document.querySelector("#jaTem h2");if(jt)jt.textContent="Link inválido";var jp=document.querySelector("#jaTem p");if(jp)jp.textContent="Este link de entronização não é válido ou expirou.";return;}
     DADOS=r.data;
     if(DADOS.ativado){st("jaTem");return;}
     if(DADOS.ficha_enviada&&(DADOS.pagamento_avisado||DADOS.pago)){st("aguardando");return;}

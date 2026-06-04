@@ -51,7 +51,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       </div>
       <p style="font-size:12px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:14px;" data-i18n="pg_note1">Após o pagamento, envie o comprovante à Secretaria. O Conselho confirma e a sua anuidade/participação fica registrada como <b>paga</b>.</p>
     </div>
-    <p style="font-size:11.5px;color:#9a937f;margin-top:14px;" data-i18n="pg_note2">A anuidade vence no 1º dia útil de novembro. No ano da intronização, ela já está incluída nos eventos de intronização — a cobrança anual começa no ano seguinte. O pagamento por cartão e a cobrança recorrente entrarão quando a conta da associação (CNPJ) estiver ativa.</p>
+    <p style="font-size:11.5px;color:#9a937f;margin-top:14px;" data-i18n="pg_note2">A anuidade vence no 1º dia útil de novembro. No ano da entronização, ela já está incluída nos eventos de entronização — a cobrança anual começa no ano seguinte. O pagamento por cartão e a cobrança recorrente entrarão quando a conta da associação (CNPJ) estiver ativa.</p>
   </div>
   <div class="card" style="margin-top:14px;text-align:center;border:1px dashed var(--gold-l);">
     <div style="font-family:Georgia,serif;color:var(--navy);font-size:21px;margin-bottom:4px;" data-i18n="pg_doa_h">Doação</div>
@@ -97,11 +97,11 @@ async function carregar(){
   if(!paga){ // deve a anuidade do ciclo 2026 -> vence 02/11/2026
     pill("Anuidade a vencer","#b08a3a","#f6efdc");
     html='<div class="row"><span class="t">Anuidade 2026<br><small>'+brl(val)+' · Vence em 02/11/2026</small></span><span style="display:flex;align-items:center;"><span class="badge b-venc">A vencer</span><a href="#" onclick="pagar();return false;" class="pay">Pagar</a></span></div>';
-  }else if(cap>=3){ // intronizado em 2026, já pago na intronização -> próxima anuidade 2027
+  }else if(cap>=3){ // entronizado em 2026, já pago na entronização -> próxima anuidade 2027
     pill("Anuidade em dia","#3a9a4e","#eef6ef");
-    html='<div class="row"><span class="t">Anuidade 2026<br><small>Incluída na sua intronização (2026)</small></span><span class="badge b-pago">Em dia</span></div>'
+    html='<div class="row"><span class="t">Anuidade 2026<br><small>Incluída na sua entronização (2026)</small></span><span class="badge b-pago">Em dia</span></div>'
         +'<div class="row"><span class="t">Próxima anuidade<br><small>'+brl(val)+' · Vence em 01/11/2027</small></span><span class="badge b-venc">A partir de 2027</span></div>';
-  }else{ // intronizado em 2025 e já quitou o ciclo 2026
+  }else{ // entronizado em 2025 e já quitou o ciclo 2026
     pill("Anuidade em dia","#3a9a4e","#eef6ef");
     html='<div class="row"><span class="t">Anuidade 2026<br><small>'+brl(val)+' · Quitada</small></span><span class="badge b-pago">Pago</span></div>';
   }

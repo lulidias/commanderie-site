@@ -209,7 +209,7 @@ async function carregarComendadores(){
   cotaUI(MEUS_MEM.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_membros||2,"cotaMem","btnMem","Indicar membro");
   if(q.error){document.getElementById("tabComend").innerHTML="<p style=\"color:#9a937f;font-size:13px;\">"+esc(q.error.message)+"</p>";return;}
   if(!rows.length){document.getElementById("tabComend").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhum comendador indicado ainda.</p>";return;}
-  var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Indicado</th><th>Tipo</th><th>Núcleo</th><th>Intronização</th><th>Status</th><th></th></tr></thead><tbody>";
+  var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Indicado</th><th>Tipo</th><th>Núcleo</th><th>Entronização</th><th>Status</th><th></th></tr></thead><tbody>";
   rows.forEach(function(x){var meu=(x.importadora_id===IMP.id);tb+="<tr class=\""+(meu?"mine":"")+"\"><td><b>"+esc((x.importadoras&&x.importadoras.nome)||"—")+"</b></td><td>"+esc(x.nome)+extraTag(x.extra)+"</td><td>"+esc(x.tipo)+"</td><td>"+esc(x.nucleo||"")+"</td><td>"+fdata(x.data_intronizacao)+"</td><td><span class=\"pill\">"+esc(x.status)+"</span></td><td>"+rmLink("importadora_membros",x)+"</td></tr>";});
   document.getElementById("tabComend").innerHTML=tb+"</tbody></table>";
 }

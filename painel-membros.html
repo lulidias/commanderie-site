@@ -56,9 +56,9 @@ function ini(n){var p=(""+(n||"")).trim().split(/\s+/);return (((p[0]||"")[0]||"
 function nrm(s){return (""+(s||"")).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
 function anuidadePill(m){var g=(""+(m.grau||"")).toLowerCase();if(g.indexOf("honra")>=0||g.indexOf("mestre")>=0)return "<span class=\"pill p-isento\">Isento</span>";if(m.anuidade_paga)return "<span class=\"pill p-pago\">Anuidade em dia</span>";return "<span class=\"pill p-aberto\">"+esc(m.anuidade_status||"Em aberto")+"</span>";}
 function row(k,v){if(v==null||v==="")return "";return "<div><div class=\"k\">"+esc(k)+"</div><div class=\"v\">"+esc(v)+"</div></div>";}
-function fichaHtml(f){if(!f)return "<div style=\"font-size:12.5px;color:#9a937f;\">Ficha de intronização ainda não preenchida.</div>";
+function fichaHtml(f){if(!f)return "<div style=\"font-size:12.5px;color:#9a937f;\">Ficha de entronização ainda não preenchida.</div>";
   var L=[["Tratamento",f.tratamento],["Nascimento",fdata(f.nascimento)],["Nacionalidade",f.nacionalidade],["Profissão",f.profissao],["Restrições alimentares",f.restricoes],["1º Padrinho",f.padrinho1],["2º Padrinho",f.padrinho2],["Mestre que aprovou",f.mestre],["Atividades e interesses",f.atividades],["Biografia",f.biografia],["Honrarias e confrarias",f.honrarias],["Ligação com Bordeaux",f.ligacao_bordeaux],["Primeiro Bordeaux",f.primeiro_bordeaux],["Bordeaux preferido",f.bordeaux_preferido],["Experiência memorável",f.experiencia],["Outras histórias",f.outras_historias],["Local e data",f.local_data]];
-  return "<div class=\"grp\">Ficha de Intronização</div><div class=\"kv\">"+L.map(function(x){return row(x[0],x[1]);}).join("")+"</div>";}
+  return "<div class=\"grp\">Ficha de Entronização</div><div class=\"kv\">"+L.map(function(x){return row(x[0],x[1]);}).join("")+"</div>";}
 function ucfirst(s){s=(""+(s||"")).trim();return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
 function lcfirst(s){s=(""+(s||"")).trim();return s?s.charAt(0).toLowerCase()+s.slice(1):s;}
 function pnome(n){return (""+(n||"")).trim().split(/\s+/)[0]||n;}
@@ -86,10 +86,10 @@ function card(m){
   var tel=(m.telefone_ddi?m.telefone_ddi+" ":"")+(m.telefone||"");
   var contato=[m.email,tel].filter(Boolean).join(" · ");
   var meta=[m.grau,m.codigo].filter(Boolean).join(" · ");
-  if(m.eleito&&m.data_intronizacao)meta+=" · Intronização "+fdata(m.data_intronizacao);
+  if(m.eleito&&m.data_intronizacao)meta+=" · Entronização "+fdata(m.data_intronizacao);
   var head="<div class=\"mhead\" onclick=\"toggle(this)\"><div class=\"mav\">"+foto+"</div><div style=\"flex:1;min-width:0;\"><div class=\"mname\">"+esc(m.nome)+"</div><div class=\"mmeta\">"+esc(meta)+(contato?(" · "+esc(contato)):"")+"</div></div>"+anuidadePill(m)+"</div>";
-  var cad="<div class=\"grp\">Cadastro</div><div class=\"kv\">"+row("E-mail",m.email)+row("Telefone",tel)+row("Nascimento",fdata(m.nascimento))+row("Documento",m.documento)+row("Endereço",m.endereco)+row("Bairro",m.bairro)+row("Cidade",m.cidade)+row("CEP",m.cep)+row("País",m.pais)+row("Núcleo",m.nucleo)+row("Capítulo",m.capitulo)+row("Intronização",fdata(m.data_intronizacao))+"</div>";
-  var texto=m.ficha?("<div class=\"grp\" style=\"margin-top:14px;\">Texto de Intronização <a onclick=\"copiarIntro('"+m.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:10px;font-weight:normal;text-transform:none;letter-spacing:0;margin-left:8px;\">copiar</a></div><div id=\"intro_"+m.id+"\" style=\"font-size:14px;color:#2a2620;line-height:1.75;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:13px 15px;font-family:Georgia,serif;\">"+textoIntro(m)+"</div>"):"";
+  var cad="<div class=\"grp\">Cadastro</div><div class=\"kv\">"+row("E-mail",m.email)+row("Telefone",tel)+row("Nascimento",fdata(m.nascimento))+row("Documento",m.documento)+row("Endereço",m.endereco)+row("Bairro",m.bairro)+row("Cidade",m.cidade)+row("CEP",m.cep)+row("País",m.pais)+row("Núcleo",m.nucleo)+row("Capítulo",m.capitulo)+row("Entronização",fdata(m.data_intronizacao))+"</div>";
+  var texto=m.ficha?("<div class=\"grp\" style=\"margin-top:14px;\">Texto de Entronização <a onclick=\"copiarIntro('"+m.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:10px;font-weight:normal;text-transform:none;letter-spacing:0;margin-left:8px;\">copiar</a></div><div id=\"intro_"+m.id+"\" style=\"font-size:14px;color:#2a2620;line-height:1.75;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:13px 15px;font-family:Georgia,serif;\">"+textoIntro(m)+"</div>"):"";
   var comp=m.comprovante_url?("<div style=\"margin-top:10px;\"><a href=\""+esc(m.comprovante_url)+"\" target=\"_blank\" style=\"color:var(--navy);font-size:13px;font-weight:bold;text-decoration:none;\">&#128206; Ver comprovante de pagamento</a></div>"):"";
   var body="<div class=\"mbody\">"+cad+comp+"<div class=\"fichabox\">"+fichaHtml(m.ficha)+"</div>"+texto+"</div>";
   return "<div class=\"mcard\">"+head+body+"</div>";
@@ -106,7 +106,7 @@ function render(){
   var topo=list.filter(aguardandoIntro).sort(function(a,b){return (""+(a.data_intronizacao||"")).localeCompare(""+(b.data_intronizacao||""));});
   var resto=list.filter(function(m){return !aguardandoIntro(m);});
   var html="";
-  if(topo.length){html+="<div class=\"nuctitle\" style=\"color:var(--red);border-color:#e6cccc;\">Aguardando intronização <span style=\"font-size:12px;color:#8a8270;\">("+topo.length+")</span></div>"+topo.map(card).join("");}
+  if(topo.length){html+="<div class=\"nuctitle\" style=\"color:var(--red);border-color:#e6cccc;\">Aguardando entronização <span style=\"font-size:12px;color:#8a8270;\">("+topo.length+")</span></div>"+topo.map(card).join("");}
   var ORD=["São Paulo","Rio de Janeiro","Porto Alegre","Curitiba","Recife"];
   var grupos={};resto.forEach(function(m){var k=m.nucleo||"Sem núcleo";(grupos[k]=grupos[k]||[]).push(m);});
   var chaves=Object.keys(grupos).sort(function(a,b){function rk(n){if(n==="Sem núcleo")return 100;var i=ORD.indexOf(n);return i<0?50:i;}var ra=rk(a),rb=rk(b);if(ra!==rb)return ra-rb;return a.localeCompare(b,"pt");});

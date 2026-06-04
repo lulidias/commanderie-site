@@ -45,6 +45,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
   <p data-i18n="p_intro">Restaurantes e casas parceiras que oferecem condições especiais aos comendadores. Apresente sua carteira de membro para usufruir.</p>
   <div class="note" data-i18n="p_note">Benefício atual: taxa de rolha livre. Novos benefícios em negociação pelo Conselho.</div>
 </div>
+<div id="dchips" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:1100px;margin:0 auto 6px;padding:0 20px;"></div>
 <div class="wrap" id="dwrap"></div>
 <div id="estado" class="state" style="display:none;"></div>
 <div class="pfoot"><div class="m">“Bordeaux, toujours Bordeaux”</div><div style="margin:16px 0 0;"><a href="https://www.instagram.com/commanderiedebordeauxbr/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;color:#e7d8a8;text-decoration:none;font-size:13px;letter-spacing:.3px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" style="flex:none;"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52.01-4.77.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7-.06 1.25-.07 1.62-.07 4.77s.01 3.52.07 4.77c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.25.06 1.62.07 4.77.07s3.52-.01 4.77-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.25.07-1.62.07-4.77s-.01-3.52-.07-4.77c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 0 0-.68-1.06 2.85 2.85 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.52 4.01 15.15 4 12 4zm0 3.07A4.93 4.93 0 1 1 7.07 12 4.93 4.93 0 0 1 12 7.07zm0 1.8A3.13 3.13 0 1 0 15.13 12 3.13 3.13 0 0 0 12 8.87zm5.13-.99a1.15 1.15 0 1 1-1.15 1.15 1.15 1.15 0 0 1 1.15-1.15z"/></svg>@commanderiedebordeauxbr</a></div></div>
@@ -71,6 +72,17 @@ function card(p){
     +(L.length?('<div class="dlinks">'+L.join('<span class="sep">·</span>')+'</div>'):'')
     +'</div></article>';
 }
+var PROWS=[],PFILT="",PCIDADES=[];
+function chipCss(on){return "font-size:13px;border:1px solid "+(on?"var(--navy)":"var(--line)")+";background:"+(on?"var(--navy)":"#fffdf7")+";color:"+(on?"#fff":"#5b5446")+";border-radius:20px;padding:6px 14px;cursor:pointer;";}
+function renderChips(){
+  var cs={};PROWS.forEach(function(p){var c=p.cidade||"Outras";cs[c]=(cs[c]||0)+1;});
+  PCIDADES=Object.keys(cs).sort(function(a,b){var ia=ORDEM_CIDADE.indexOf(a),ib=ORDEM_CIDADE.indexOf(b);if(ia<0)ia=99;if(ib<0)ib=99;return ia-ib||a.localeCompare(b);});
+  var el=document.getElementById("dchips");if(!el)return;
+  var html="<span onclick=\"filtrar(-1)\" style=\""+chipCss(PFILT==="")+"\">Todas ("+PROWS.length+")</span>";
+  html+=PCIDADES.map(function(c,i){return "<span onclick=\"filtrar("+i+")\" style=\""+chipCss(PFILT===c)+"\">"+esc(c)+" ("+cs[c]+")</span>";}).join("");
+  el.innerHTML=html;
+}
+function filtrar(i){PFILT=(i<0?"":(PCIDADES[i]||""));renderChips();render(PFILT?PROWS.filter(function(p){return (p.cidade||"Outras")===PFILT;}):PROWS);}
 function render(rows){
   var grupos={};rows.forEach(function(p){var c=p.cidade||"Outras";(grupos[c]=grupos[c]||[]).push(p);});
   var cidades=Object.keys(grupos).sort(function(a,b){var ia=ORDEM_CIDADE.indexOf(a),ib=ORDEM_CIDADE.indexOf(b);if(ia<0)ia=99;if(ib<0)ib=99;return ia-ib||a.localeCompare(b);});
@@ -85,7 +97,7 @@ async function carregar(){
   if(q.error){est.style.display="block";est.textContent="Não foi possível carregar os parceiros.";return;}
   var rows=q.data||[];
   if(!rows.length){est.style.display="block";est.textContent="Em breve — parceiros sendo cadastrados pelo Conselho.";return;}
-  render(rows);
+  PROWS=rows;PFILT="";renderChips();render(rows);
 }
 var I18N={pt:{p_brand:"Parceiros · Commanderie de Bordeaux",p_back:"← Painel do Comendador",p_k:"Benefícios aos membros",p_h1:"Parceiros da Commanderie",p_intro:"Restaurantes e casas parceiras que oferecem condições especiais aos comendadores. Apresente sua carteira de membro para usufruir.",p_note:"Benefício atual: taxa de rolha livre. Novos benefícios em negociação pelo Conselho."},en:{p_brand:"Partners · Commanderie de Bordeaux",p_back:"← Commander's Panel",p_k:"Member benefits",p_h1:"Commanderie Partners",p_intro:"Partner restaurants and venues offering special conditions to commanders. Show your membership card to enjoy them.",p_note:"Current benefit: free corkage. New benefits being negotiated by the Council."},fr:{p_brand:"Partenaires · Commanderie de Bordeaux",p_back:"← Espace du Commandeur",p_k:"Avantages aux membres",p_h1:"Partenaires de la Commanderie",p_intro:"Restaurants et maisons partenaires offrant des conditions spéciales aux commandeurs. Présentez votre carte de membre pour en profiter.",p_note:"Avantage actuel : droit de bouchon offert. De nouveaux avantages sont en négociation par le Conseil."}};
 function setLang(l){if(!I18N[l])l="pt";try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(d[k]!=null)els[i].innerHTML=d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){as[j].className=(as[j].getAttribute("data-lang")===l)?"on":"";}}}

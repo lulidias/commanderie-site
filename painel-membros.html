@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Membros — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
+<title>Membros — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
 <style>
 :root{--parch:#f3ecd9;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
 *{box-sizing:border-box;}
@@ -114,7 +114,7 @@ function render(){
   document.getElementById("lista").innerHTML=html||"<p style=\"color:#8a8270;font-size:13px;\">Nenhum membro encontrado.</p>";
 }
 function hojeISO(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
-function aguardandoIntro(m){if(m.eleito!==true)return false;var di=(""+(m.data_intronizacao||"")).split("T")[0];if(!di)return true;return di>=hojeISO();}
+function aguardandoIntro(m){var di=(""+(m.data_intronizacao||"")).split("T")[0];if(!di)return false;return di>=hojeISO();}
 async function init(){
   var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}
   var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){st("notAllowed");return;}

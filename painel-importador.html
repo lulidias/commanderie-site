@@ -58,8 +58,8 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
   <div class="wrap">
 
     <div id="menu"><div class="cmenu">
-      <a class="ccard" href="?sec=comendadores"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.2 2.7-4.8 6-4.8s6 1.6 6 4.8"/><path d="M16 5.2A3 3 0 0 1 16 11"/></svg></div><b>Indicados</b><span>Indicar e ver todos os indicados</span></a>
-      <a class="ccard" href="?sec=embaixadas"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V5l7-2v18M12 8l7 2v11M3 21h18"/></svg></div><b>Embaixadas</b><span>Placas Ouro/Prata/Bronze</span></a>
+      <a class="ccard" href="?sec=comendadores"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.2 2.7-4.8 6-4.8s6 1.6 6 4.8"/><path d="M16 5.2A3 3 0 0 1 16 11"/></svg></div><b>Indicar Comendadores</b><span>Indicar e ver todos os indicados</span></a>
+      <a class="ccard" href="?sec=embaixadas"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V5l7-2v18M12 8l7 2v11M3 21h18"/></svg></div><b>Indicar Embaixadas</b><span>Placas Ouro/Prata/Bronze</span></a>
       <a class="ccard" href="?sec=parceiros"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12V7a2 2 0 0 1 2-2h3M19 12v5a2 2 0 0 1-2 2h-3M8 9l4-4 4 4M12 5v9"/></svg></div><b>Restaurantes parceiros</b><span>Rolha grátis aos Comendadores</span></a>
       <a class="ccard" href="?sec=beneficios"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 7v14"/></svg></div><b>Benefícios</b><span>Ofertas aos Comendadores</span></a>
       <a class="ccard" href="?sec=importadoras"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-4h6v4"/></svg></div><b>Relação das importadoras</b><span>Membros do programa</span></a>
@@ -92,9 +92,11 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;"><span style="font-size:13px;color:#5b5446;">Restaurantes com carta de Bordeaux (Placa de Embaixada).</span><span class="cota" id="cotaEmb">—</span></div>
         <div class="grid">
           <input class="inp" id="eNome" placeholder="Nome do restaurante">
-          <input class="inp" id="eCidade" placeholder="Cidade">
-          <input class="inp" id="eContato" placeholder="Contato (telefone/e-mail)">
           <select class="inp" id="eCat"><option value="Ouro">Ouro — 30+ rótulos de Bordeaux</option><option value="Prata">Prata — 20+ rótulos</option><option value="Bronze">Bronze — 10+ rótulos</option></select>
+          <input class="inp" id="eEndereco" placeholder="Endereço do restaurante">
+          <input class="inp" id="eCidade" placeholder="Cidade">
+          <input class="inp" id="eResp" placeholder="Responsável">
+          <input class="inp" id="eTel" placeholder="Telefone do responsável">
         </div>
         <div class="hint"><b>Ouro</b> (30+ rótulos) · <b>Prata</b> (20+) · <b>Bronze</b> (10+). 2/ano incluídas; extras a <b>R$ 1.000</b> cada.</div>
         <div style="margin-top:12px;"><button class="btn-n" id="btnEmb" onclick="addEmb()">Indicar embaixada</button><span class="msg" id="eMsg"></span></div>
@@ -223,8 +225,8 @@ async function carregarEmbaixadas(){
   cotaUI(MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_restaurantes||2,"cotaEmb","btnEmb","Indicar embaixada");
   if(q.error){document.getElementById("tabEmb").innerHTML="<p style=\"color:#9a937f;font-size:13px;\">"+esc(q.error.message)+"</p>";return;}
   if(!rows.length){document.getElementById("tabEmb").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma embaixada indicada ainda.</p>";return;}
-  var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Restaurante</th><th>Cidade</th><th>Categoria</th><th>Ano</th><th>Status</th><th></th></tr></thead><tbody>";
-  rows.forEach(function(x){var meu=(x.importadora_id===IMP.id);tb+="<tr class=\""+(meu?"mine":"")+"\"><td><b>"+esc((x.importadoras&&x.importadoras.nome)||"—")+"</b></td><td>"+esc(x.nome)+extraTag(x.extra)+"</td><td>"+esc(x.cidade||"")+"</td><td>"+placaTag(x.placa)+"</td><td>"+esc(x.ano||"")+"</td><td><span class=\"pill\">"+esc(x.status)+"</span></td><td>"+rmLink("importadora_restaurantes",x)+"</td></tr>";});
+  var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Restaurante</th><th>Endereço</th><th>Cidade</th><th>Responsável</th><th>Telefone</th><th>Categoria</th><th>Status</th><th></th></tr></thead><tbody>";
+  rows.forEach(function(x){var meu=(x.importadora_id===IMP.id);tb+="<tr class=\""+(meu?"mine":"")+"\"><td><b>"+esc((x.importadoras&&x.importadoras.nome)||"—")+"</b></td><td>"+esc(x.nome)+extraTag(x.extra)+"</td><td>"+esc(x.endereco||"")+"</td><td>"+esc(x.cidade||"")+"</td><td>"+esc(x.responsavel||"")+"</td><td>"+esc(x.telefone||"")+"</td><td>"+placaTag(x.placa)+"</td><td><span class=\"pill\">"+esc(x.status)+"</span></td><td>"+rmLink("importadora_restaurantes",x)+"</td></tr>";});
   document.getElementById("tabEmb").innerHTML=tb+"</tbody></table>";
 }
 async function carregarParceiros(){
@@ -270,9 +272,9 @@ async function addEmb(){
   var doAno=MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length;var extra=doAno>=(IMP.cota_restaurantes||2);
   if(extra&&!confirm("Esta embaixada é EXTRA (além das 2 incluídas no ano). Custo: R$ 1.000. Confirmar?"))return;
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
-  var r=await sb.from("importadora_restaurantes").insert({importadora_id:IMP.id,ano:ANO,nome:nome,cidade:val("eCidade")||null,contato:val("eContato")||null,placa:val("eCat"),extra:extra});
+  var r=await sb.from("importadora_restaurantes").insert({importadora_id:IMP.id,ano:ANO,nome:nome,endereco:val("eEndereco")||null,cidade:val("eCidade")||null,responsavel:val("eResp")||null,telefone:val("eTel")||null,placa:val("eCat"),extra:extra});
   if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}
-  msg.textContent=extra?"Indicada (extra)!":"Indicada!";["eNome","eCidade","eContato"].forEach(function(id){document.getElementById(id).value="";});carregarEmbaixadas();
+  msg.textContent=extra?"Indicada (extra)!":"Indicada!";["eNome","eEndereco","eCidade","eResp","eTel"].forEach(function(id){document.getElementById(id).value="";});carregarEmbaixadas();
 }
 async function addParc(){
   var msg=document.getElementById("pMsg");var nome=val("pNome");

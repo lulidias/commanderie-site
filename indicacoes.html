@@ -43,6 +43,15 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       <a href="#" onclick="sugerir();return false;" style="display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border-radius:11px;padding:11px 18px;font-size:15px;" data-i18n="in_enviar">Enviar sugestão</a>
       <div id="sgOk" style="margin-top:10px;font-size:13.5px;"></div>
     </div>
+    <div id="honraCard" class="card" style="display:none;border-left:3px solid var(--red);">
+      <div class="ct">Indicar Convidado de Honra</div>
+      <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:14px;">Modalidade exclusiva da Mesa (Mestres e Grão-Mestre). O Convidado de Honra é admitido <b>sem aprovação</b> e <b>sem anuidade</b>. Você gera o acesso aqui e envia o convite.</p>
+      <input id="hnNome" placeholder="Nome do Convidado de Honra" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:10px;font-size:14px;">
+      <input id="hnEmail" type="email" placeholder="E-mail" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:10px;font-size:14px;">
+      <select id="hnNucleo" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:12px;font-size:14px;background:#fff;"><option value="">Núcleo (opcional)</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select>
+      <a href="#" onclick="addConvidadoHonra();return false;" style="display:inline-block;text-decoration:none;background:var(--red);color:#fff;border-radius:11px;padding:11px 18px;font-size:15px;">Cadastrar e gerar acesso</a>
+      <div id="hnOut" style="margin-top:12px;font-size:13.5px;line-height:1.6;"></div>
+    </div>
     <div id="avaisCard" class="card" style="display:none;">
       <div class="ct" data-i18n="in_avp_h">Avais pendentes</div>
       <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin-bottom:10px;" data-i18n="in_avp_p">Indicações em que você foi escolhido como 2º padrinho ou Mestre avalista. Avalize ou recuse.</p>
@@ -70,7 +79,24 @@ async function reprovarCard(id){if(!confirm("Reprovar esta indicação?"))return
 async function avalizarInd(id,dec){var r=await sb.rpc("avalizar",{p_id:id,p_decisao:dec});if(r.error){alert("Erro: "+r.error.message);return;}if(r.data==="aguardando_padrinho2"){alert("O 2º padrinho ainda não avalizou. O aval do Mestre só pode ser dado depois.");return;}carregarAvais();carregarMinhasInd();}
 async function excluirMinha(id){if(!confirm("Excluir esta indicação?"))return;var r=await sb.from("indicacoes").delete().eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}carregarMinhasInd();}
 async function carregarMinhasInd(){var el=document.getElementById("minhasInd");if(!el)return;var u=(await sb.auth.getUser()).data.user;if(!u)return;var q=await sb.from("indicacoes").select("id,nome,status,created_at,padrinho2_nome,padrinho2_ok,mestre_nome,mestre_ok").eq("indicado_por",u.id).order("created_at",{ascending:false});if(q.error){el.innerHTML="<p style=\"font-size:12.5px;color:#9a937f;\">Não foi possível carregar.</p>";return;}var rows=q.data||[];var souM=(""+((membroAtual&&membroAtual.grau)||"")).toLowerCase().indexOf("mestre")>=0;var pend=!souM&&rows.filter(function(r){return ["Membro","Recusado"].indexOf(r.status)<0;}).length>0;var sc=document.getElementById("sugCard"),sb_=document.getElementById("sugBloqueio");if(sc)sc.style.display=pend?"none":"block";if(sb_)sb_.style.display=pend?"block":"none";if(!rows.length){el.innerHTML="<p style=\"font-size:12.5px;color:#9a937f;\">Você ainda não indicou ninguém.</p>";return;}function av(nm,ok){var c=ok==="Avalizado"?"#2f6b3a":(ok==="Recusado"?"#8f1d24":"#9a937f");var t=ok==="Avalizado"?"✓":(ok==="Recusado"?"✗":"…");return "<span style=\"color:"+c+";\">"+t+" "+(nm||"—")+"</span>";}el.innerHTML=rows.map(function(r,i){var bb=i<rows.length-1?"border-bottom:1px solid #ece0c2;":"";var _parts=[];if(r.padrinho2_nome)_parts.push(av(r.padrinho2_nome,r.padrinho2_ok));if(r.mestre_nome)_parts.push(av(r.mestre_nome,r.mestre_ok));var prog=_parts.length?("<div style=\"font-size:11.5px;color:#9a937f;margin-top:3px;\">Avais: "+_parts.join(" · ")+"</div>"):"";var podeExcluir=["Aguardando avais","Avalizada","Aguardando aprovação","Recusado"].indexOf(r.status)>=0;var exc=podeExcluir?("<div style=\"margin-top:4px;\"><a onclick=\"excluirMinha('"+r.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:11.5px;\">excluir</a></div>"):"";return "<div style=\"padding:11px 0;"+bb+"\"><div style=\"display:flex;justify-content:space-between;align-items:center;gap:10px;\"><span style=\"color:#2a2620;font-size:14px;\">"+r.nome+"</span>"+indBadge(r.status)+"</div>"+prog+exc+"</div>";}).join("");}
-async function carregar(){var u=(await sb.auth.getUser()).data.user;document.getElementById("loading").style.display="none";if(!u){document.getElementById("needLogin").style.display="block";return;}var q=await sb.from("membros").select("*").eq("user_id",u.id).maybeSingle();if(q.error||!q.data){document.getElementById("needLogin").style.display="block";return;}membroAtual=q.data;document.getElementById("content").style.display="block";carregarListaMembros();carregarAvais();carregarMinhasInd();}
+async function carregar(){var u=(await sb.auth.getUser()).data.user;document.getElementById("loading").style.display="none";if(!u){document.getElementById("needLogin").style.display="block";return;}var q=await sb.from("membros").select("*").eq("user_id",u.id).maybeSingle();if(q.error||!q.data){document.getElementById("needLogin").style.display="block";return;}membroAtual=q.data;document.getElementById("content").style.display="block";if(ehMesa()){var hc=document.getElementById("honraCard");if(hc)hc.style.display="block";}carregarListaMembros();carregarAvais();carregarMinhasInd();}
+function ehMesa(){return (""+((membroAtual&&membroAtual.grau)||"")).toLowerCase().indexOf("mestre")>=0;}
+async function addConvidadoHonra(){
+  var o=document.getElementById("hnOut");
+  var n=document.getElementById("hnNome").value.trim(),e=document.getElementById("hnEmail").value.trim(),nu=document.getElementById("hnNucleo").value;
+  if(!n||!e){o.style.color="#8f1d24";o.textContent="Informe nome e e-mail.";return;}
+  o.style.color="#5b5446";o.textContent="Cadastrando...";
+  var r=await sb.rpc("criar_membro",{p_nome:n,p_email:e,p_grau:"Membro de Honra",p_nucleo:nu||null,p_anuidade_valor:0});
+  if(r.error){o.style.color="#8f1d24";o.textContent="Erro: "+r.error.message;return;}
+  var d=r.data||{};var link="https://commanderiedebordeaux.com.br/?ac="+d.codigo+"&at="+d.token;
+  o.style.color="#2f6b3a";o.innerHTML="<b>Convidado de Honra criado! ✦</b><br>Código: <b>"+d.codigo+"</b> · Senha de ativação: <b>"+d.token+"</b><br>Link de 1º acesso: <a href=\""+link+"\" target=\"_blank\" style=\"color:var(--navy);word-break:break-all;\">"+link+"</a><br><a onclick=\"copiarConvite('"+d.codigo+"','"+d.token+"','"+(""+n).replace(/['\\]/g,"")+"')\" style=\"color:var(--navy);cursor:pointer;font-weight:bold;\">📋 Copiar mensagem de convite</a>";
+  document.getElementById("hnNome").value="";document.getElementById("hnEmail").value="";document.getElementById("hnNucleo").value="";
+}
+function copiarConvite(cod,tok,nome){
+  var link="https://commanderiedebordeaux.com.br/?ac="+cod+"&at="+tok;
+  var msg="Caro(a) "+nome+",\n\nÉ com grande honra que o(a) convidamos como Convidado de Honra da Commanderie de Bordeaux do Brasil.\n\nPara acessar o site da confraria, clique no link abaixo:\n"+link+"\n\nSeus dados de acesso:\n• Código de membro: "+cod+"\n• Senha de ativação: "+tok+"\n\nNo primeiro acesso, basta informar o seu e-mail e criar uma senha.\n\nBordeaux, toujours Bordeaux.\nCommanderie de Bordeaux do Brasil";
+  if(navigator.clipboard){navigator.clipboard.writeText(msg);var o=document.getElementById("hnOut");if(o)o.insertAdjacentHTML("beforeend","<br><span style=\"color:#2f6b3a;\">Mensagem copiada!</span>");}
+}
 document.addEventListener("DOMContentLoaded",carregar);
 </script><script>
 var I18N={

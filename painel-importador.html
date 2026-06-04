@@ -59,8 +59,8 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 
     <div id="impAsWrap" style="display:none;background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 16px;text-align:center;">
       <label style="font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:var(--gold);font-weight:bold;display:block;margin-bottom:6px;">Presidente / Vice — atuar como importadora</label>
-      <select class="inp" id="impAs" onchange="trocarImp()" style="max-width:360px;display:inline-block;"><option value="">— Visão geral (somente leitura)</option></select>
-      <div style="font-size:11.5px;color:#8a8270;margin-top:6px;">Escolha uma importadora para liberar os formulários de indicação e indicar em nome dela.</div>
+      <select class="inp" id="impAs" onchange="trocarImp()" style="max-width:360px;display:inline-block;"><option value="">— Visão geral (somente leitura)</option><option value="__conselho__">Conselho / Grão-Mestre — Embaixadas (ilimitado)</option></select>
+      <div style="font-size:11.5px;color:#8a8270;margin-top:6px;">Escolha uma importadora para indicar em nome dela; ou o Conselho/Grão-Mestre para indicar embaixadas sem limite.</div>
     </div>
 
     <div id="menu"><div class="cmenu">
@@ -207,7 +207,13 @@ async function init(){
 }
 function trocarImp(){
   var sel=document.getElementById("impAs");var id=sel?sel.value:"";
-  if(id&&IMPS_BY_ID[id]){
+  if(id==="__conselho__"){
+    IMP={id:null,nome:"Conselho",__ilimitado:true};
+    document.getElementById("impNome").textContent="Conselho / Grão-Mestre";
+    document.getElementById("impSub").textContent="Indicação de embaixadas sem limite";
+    document.querySelectorAll(".imp-form").forEach(function(e){e.style.display="none";});
+    var embForm=document.querySelector("#secEmb .imp-form");if(embForm)embForm.style.display="block";
+  } else if(id&&IMPS_BY_ID[id]){
     IMP=IMPS_BY_ID[id];
     document.getElementById("impNome").textContent=IMP.nome;
     document.getElementById("impSub").textContent="Atuando como "+IMP.nome+" — Presidente/Vice";
@@ -252,11 +258,12 @@ async function carregarEmbaixadas(){
   var q=await sb.from("importadora_restaurantes").select("*,importadoras(nome)").order("created_at",{ascending:false});
   var rows=q.error?[]:(q.data||[]);
   MINHAS_EMB=rows.filter(function(x){return x.importadora_id===IMP.id;});
-  cotaUI(MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_restaurantes||2,"cotaEmb","btnEmb","Indicar embaixada");
+  if(IMP&&IMP.__ilimitado){var elc=document.getElementById("cotaEmb");if(elc){elc.textContent="Ilimitado · Conselho/Grão-Mestre";elc.className="cota";}var bbtn=document.getElementById("btnEmb");if(bbtn)bbtn.textContent="Indicar embaixada";}
+  else cotaUI(MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_restaurantes||2,"cotaEmb","btnEmb","Indicar embaixada");
   if(q.error){document.getElementById("tabEmb").innerHTML="<p style=\"color:#9a937f;font-size:13px;\">"+esc(q.error.message)+"</p>";return;}
   if(!rows.length){document.getElementById("tabEmb").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma embaixada indicada ainda.</p>";return;}
   var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Restaurante</th><th>Endereço</th><th>Cidade</th><th>Responsável</th><th>Telefone</th><th>Categoria</th><th>Status</th><th></th></tr></thead><tbody>";
-  rows.forEach(function(x){var meu=(x.importadora_id===IMP.id);tb+="<tr class=\""+(meu?"mine":"")+"\"><td><b>"+esc((x.importadoras&&x.importadoras.nome)||"—")+"</b></td><td>"+esc(x.nome)+extraTag(x.extra)+"</td><td>"+esc(x.endereco||"")+"</td><td>"+esc(x.cidade||"")+"</td><td>"+esc(x.responsavel||"")+"</td><td>"+esc(x.telefone||"")+"</td><td>"+placaTag(x.placa)+"</td><td><span class=\"pill\">"+esc(x.status)+"</span></td><td>"+rmLink("importadora_restaurantes",x)+"</td></tr>";});
+  rows.forEach(function(x){var meu=(x.importadora_id===IMP.id);tb+="<tr class=\""+(meu?"mine":"")+"\"><td><b>"+esc((x.importadoras&&x.importadoras.nome)||(x.importadora_id?"—":"Conselho"))+"</b></td><td>"+esc(x.nome)+extraTag(x.extra)+"</td><td>"+esc(x.endereco||"")+"</td><td>"+esc(x.cidade||"")+"</td><td>"+esc(x.responsavel||"")+"</td><td>"+esc(x.telefone||"")+"</td><td>"+placaTag(x.placa)+"</td><td><span class=\"pill\">"+esc(x.status)+"</span></td><td>"+rmLink("importadora_restaurantes",x)+"</td></tr>";});
   document.getElementById("tabEmb").innerHTML=tb+"</tbody></table>";
 }
 async function carregarParceiros(){
@@ -299,12 +306,13 @@ async function addMembro(){
 async function addEmb(){
   var msg=document.getElementById("eMsg");var nome=val("eNome");
   if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o restaurante.";return;}
-  var doAno=MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length;var extra=doAno>=(IMP.cota_restaurantes||2);
-  if(extra&&!confirm("Esta embaixada é EXTRA (além das 2 incluídas no ano). Custo: R$ 1.000. Confirmar?"))return;
+  var ilim=!!(IMP&&IMP.__ilimitado);var extra=false;
+  if(!ilim){var doAno=MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length;extra=doAno>=(IMP.cota_restaurantes||2);
+    if(extra&&!confirm("Esta embaixada é EXTRA (além das 2 incluídas no ano). Custo: R$ 1.000. Confirmar?"))return;}
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
   var r=await sb.from("importadora_restaurantes").insert({importadora_id:IMP.id,ano:ANO,nome:nome,endereco:val("eEndereco")||null,cidade:val("eCidade")||null,responsavel:val("eResp")||null,telefone:val("eTel")||null,placa:val("eCat"),extra:extra});
   if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}
-  msg.textContent=extra?"Indicada (extra)!":"Indicada!";["eNome","eEndereco","eCidade","eResp","eTel"].forEach(function(id){document.getElementById(id).value="";});carregarEmbaixadas();
+  msg.textContent=ilim?"Embaixada indicada!":(extra?"Indicada (extra)!":"Indicada!");["eNome","eEndereco","eCidade","eResp","eTel"].forEach(function(id){document.getElementById(id).value="";});carregarEmbaixadas();
 }
 async function addParc(){
   var msg=document.getElementById("pMsg");var nome=val("pNome");

@@ -193,7 +193,9 @@ async function init(){
       var selImp=document.getElementById("impAs");var minhaImp=null;
       if(!li.error&&selImp){(li.data||[]).forEach(function(im){IMPS_BY_ID[im.id]=im;if(im.owner_user_id===u.id)minhaImp=im;selImp.innerHTML+="<option value=\""+im.id+"\">"+esc(im.nome)+(im.owner_user_id===u.id?" (a minha)":"")+"</option>";});}
       var w=document.getElementById("impAsWrap");if(w)w.style.display="block";
-      if(minhaImp&&selImp){selImp.value=minhaImp.id;trocarImp();}
+      if(selImp){var saved=null;try{saved=localStorage.getItem("imp_as");}catch(e){}
+        var initVal=(saved==="__conselho__"||saved===""||(saved&&IMPS_BY_ID[saved]))?saved:(minhaImp?minhaImp.id:"");
+        selImp.value=initVal;trocarImp();}
     }
   } else {
     var own=await sb.from("importadoras").select("*").eq("owner_user_id",u.id).maybeSingle();
@@ -207,6 +209,7 @@ async function init(){
 }
 function trocarImp(){
   var sel=document.getElementById("impAs");var id=sel?sel.value:"";
+  try{localStorage.setItem("imp_as",id);}catch(e){}
   if(id==="__conselho__"){
     IMP={id:null,nome:"Conselho",__ilimitado:true};
     document.getElementById("impNome").textContent="Conselho / Grão-Mestre";

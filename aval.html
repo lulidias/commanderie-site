@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Resposta de aval — Commanderie de Bordeaux</title>
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
+<style>
+:root{--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.card{background:#fffdf7;border:1px solid var(--line);border-radius:18px;max-width:460px;width:100%;padding:34px 30px;text-align:center;box-shadow:0 16px 40px rgba(40,30,10,.12);}
+.card img{width:74px;margin-bottom:14px;}
+.k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:24px;margin:8px 0 10px;}
+p{font-size:14.5px;color:#5b5446;line-height:1.6;margin:0 0 8px;}
+.ico{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:34px;}
+.ok{background:#eef6ef;color:#2f6b3a;border:1px solid #cfe6d3;}
+.no{background:#fbeaea;color:#8f1d24;border:1px solid #e6cccc;}
+.wait{background:#f6efdc;color:#8a6a1f;border:1px solid var(--line);}
+.btn{display:inline-block;margin-top:16px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:14.5px;}
+.lema{margin-top:18px;font-family:Georgia,serif;font-style:italic;color:#8a6a1f;font-size:13px;}
+</style></head><body>
+<div class="card" id="card">
+  <img src="img/brasao.png" alt="Brasão">
+  <div class="k">Commanderie de Bordeaux</div>
+  <div id="body"><p style="margin-top:14px;">Registrando a sua resposta…</p></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+function qp(k){return new URLSearchParams(location.search).get(k);}
+function render(ico,cls,titulo,texto,lema){
+  document.getElementById("body").innerHTML=
+    "<div class=\"ico "+cls+"\">"+ico+"</div><h1>"+titulo+"</h1><p>"+texto+"</p>"
+    +"<a class=\"btn\" href=\"index.html\">Ir ao Painel do Comendador</a>"
+    +(lema?"<div class=\"lema\">Bordeaux, toujours Bordeaux</div>":"");
+}
+(async function(){
+  var id=qp("id"),p=qp("p"),d=qp("d"),t=qp("t");
+  var ehMestre=(p==="mestre");
+  var sim=(""+d).toLowerCase()==="sim";
+  if(!id||!p||!d||!t){render("!","no","Link inválido","Este link de resposta está incompleto. Acesse o Painel do Comendador para responder.");return;}
+  var r=await sb.rpc("aval_por_link",{p_id:id,p_papel:p,p_dec:d,p_token:t});
+  if(r.error){render("!","no","Não foi possível registrar","Tente novamente pelo Painel do Comendador. ("+r.error.message+")");return;}
+  var res=r.data;
+  if(res==="token_invalido"||res==="inexistente"){render("!","no","Link inválido ou expirado","Não encontramos esta indicação. Responda pelo Painel do Comendador.");return;}
+  if(res==="papel_invalido"||res==="decisao_invalida"){render("!","no","Link inválido","Acesse o Painel do Comendador para responder.");return;}
+  if(res==="ja_respondido"){render("✓","wait","Você já havia respondido","A sua resposta para esta indicação já estava registrada. Obrigado!",true);return;}
+  if(res==="aguardando_padrinho2"){render("⏳","wait","Aguardando o 2º padrinho","O aval do 2º padrinho ainda não foi dado. A sua aprovação como Mestre poderá ser feita logo depois.");return;}
+  // resultado efetivo
+  if(!sim){
+    render("✕","no",ehMestre?"Indicação reprovada":"Indicação recusada","A sua resposta foi <b>NÃO</b> e ficou registrada. O indicador será informado. Obrigado pela avaliação.",true);
+    return;
+  }
+  var titulo=ehMestre?"Aprovação registrada":"Aval registrado";
+  var texto;
+  if(res==="Avalizada"){texto="A sua resposta foi <b>SIM</b>. Com isso a indicação está <b>totalmente avalizada</b> e segue para o Conselho marcar a intronização.";}
+  else{texto="A sua resposta foi <b>SIM</b> e ficou registrada."+(ehMestre?"":" Falta agora a aprovação do Mestre.");}
+  render("✓","ok",titulo,texto,true);
+})();
+</script>
+</body></html>

@@ -142,7 +142,7 @@ function cnt(id){var a=ESTIVE_NAMES[id];return a?a.length:0;}
 function fui(id){return !!ESTIVE_ME[id];}
 function pills(p){
   var a=ESTIVE_NAMES[p.id]||[];if(!a.length)return '';
-  var s=a.slice(0,3).map(function(n){return '<span class="dpill">&#9733; '+esc(n)+'</span>';}).join('');
+  var s=a.slice(0,3).map(function(n){return '<span class="dpill">'+esc(n)+'</span>';}).join('');
   if(a.length>3)s+='<span class="dpill more">+'+(a.length-3)+'</span>';
   return '<div class="dpills" title="Comendadores que já estiveram">'+s+'</div>';
 }

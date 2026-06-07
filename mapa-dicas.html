@@ -18,6 +18,10 @@
 .pop b{font-family:Georgia,serif;color:var(--navy);font-size:14px;}
 .pop .pc{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin:2px 0 4px;}
 .pop a{color:var(--navy);}
+.leaflet-tooltip.pin-lbl{background:#fffdf7;border:1px solid var(--gold);color:var(--navy);font-family:Georgia,serif;font-size:11px;font-weight:bold;padding:2px 7px;border-radius:10px;box-shadow:0 2px 7px rgba(40,30,10,.2);white-space:nowrap;pointer-events:none;}
+.leaflet-tooltip.pin-lbl.foc{border-color:var(--red);color:var(--red);}
+.leaflet-tooltip.pin-lbl.leaflet-tooltip-top:before{border-top-color:#fffdf7;}
+#map.lbls-off .leaflet-tooltip.pin-lbl:not(.foc){display:none;}
 </style></head><body>
 <div id="wrap">
   <div class="dtop"><a href="index.html" style="display:inline-flex;align-items:center;" title="Painel do Comendador"><img src="img/brasao.png" alt="Brasão"></a><b>Mapa das Dicas</b>
@@ -41,16 +45,24 @@ function popHtml(d){
   if(d.site){var w=(""+d.site).indexOf("http")===0?d.site:("https://"+d.site);L.push('<a href="'+esc(w)+'" target="_blank" rel="noopener">site</a>');}
   return '<div class="pop"><b>'+esc(d.nome)+'</b>'+(d.cat?'<div class="pc">'+esc(d.cat)+'</div>':'')+(d.end?'<div style="font-size:12px;color:#5b5446;margin-bottom:4px;">'+esc(d.end)+'</div>':'')+(L.length?'<div class="lk">'+L.join(' · ')+'</div>':'')+'</div>';
 }
-var bounds=[],focMarker=null,focData=null;
+var bounds=[],focMarker=null,focData=null,seen={};
 DATA.forEach(function(d){
   var isF=FOCUS&&d.nome===FOCUS;
-  var m=L.circleMarker([d.lat,d.lng],{radius:isF?11:7,color:isF?'#8f1d24':'#1e2a56',weight:2,fillColor:isF?'#8f1d24':'#b08a3a',fillOpacity:isF?.95:.85}).addTo(map);
+  var key=d.lat.toFixed(5)+","+d.lng.toFixed(5);
+  var k=(seen[key]=(seen[key]||0)+1);
+  var lat=d.lat,lng=d.lng;
+  if(k>1){var a=(k-1)*2.3999632,r=0.00022*Math.ceil((k-1)/6);lat+=r*Math.cos(a);lng+=r*Math.sin(a);}
+  var m=L.circleMarker([lat,lng],{radius:isF?11:7,color:isF?'#8f1d24':'#1e2a56',weight:2,fillColor:isF?'#8f1d24':'#b08a3a',fillOpacity:isF?.95:.85}).addTo(map);
   m.bindPopup(popHtml(d));
-  bounds.push([d.lat,d.lng]);
+  m.bindTooltip(d.nome,{permanent:true,direction:'top',className:'pin-lbl'+(isF?' foc':''),offset:[0,-5],opacity:1});
+  bounds.push([lat,lng]);
   if(isF){focMarker=m;focData=d;}
 });
+function setLabels(){var c=document.getElementById('map');if(c)c.classList.toggle('lbls-off',map.getZoom()<12);}
+map.on('zoomend',setLabels);
 if(focMarker){map.setView(focMarker.getLatLng(),14);focMarker.openPopup();focMarker.bringToFront();}
 else if(bounds.length){map.fitBounds(bounds,{padding:[40,40]});}
+setLabels();
 var meMarker=null;
 function dist(a,b){var R=6371,dLat=(b[0]-a[0])*Math.PI/180,dLon=(b[1]-a[1])*Math.PI/180,x=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
 function localizar(centra){

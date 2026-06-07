@@ -95,7 +95,7 @@ async function carregar(){
   var est=document.getElementById("estado");
   var q=await sb.from("parceiros").select("*").order("cidade",{ascending:true}).order("ordem",{ascending:true}).order("nome",{ascending:true});
   if(q.error){est.style.display="block";est.textContent="Não foi possível carregar os parceiros.";return;}
-  var rows=q.data||[];
+  var rows=(q.data||[]).filter(function(r){return r.visivel!==false;});
   if(!rows.length){est.style.display="block";est.textContent="Em breve — parceiros sendo cadastrados pelo Conselho.";return;}
   PROWS=rows;PFILT="";renderChips();render(rows);
 }

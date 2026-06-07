@@ -40,6 +40,21 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .diline:first-child{border-top:none;}
 .diline:hover{color:var(--navy);}
 .dico{flex:none;width:16px;text-align:center;opacity:.85;}
+.dpills{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 9px;}
+.dpill{font-size:11px;background:#f3ecd9;border:1px solid var(--line);color:#6a5a2a;border-radius:20px;padding:2px 9px;white-space:nowrap;}
+.dpill.more{color:#9a8f72;}
+.dacts{display:flex;gap:8px;margin-top:2px;}
+.actbtn{flex:1;cursor:pointer;font-size:12.5px;background:#fffdf7;border:1px solid var(--line);color:var(--navy);border-radius:9px;padding:7px 8px;transition:all .14s;font-family:inherit;}
+.actbtn:hover{border-color:var(--gold);}
+.actbtn.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+.actbtn.star.on{background:#8a6a1f;border-color:#8a6a1f;color:#fff;}
+.sugcard{max-width:700px;margin:16px auto 0;padding:0 20px;}
+.sugbox{background:#fffdf7;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(40,30,10,.05);}
+.sugtog{cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;color:var(--navy);font-size:14px;font-weight:bold;}
+.sugbody{display:none;padding:4px 16px 16px;border-top:1px solid var(--line);}
+.sugbody input,.sugbody select,.sugbody textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font-size:13.5px;background:#fbf7ec;font-family:inherit;margin-top:8px;color:var(--ink);}
+.suggrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.sugbtn{margin-top:10px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;}
 </style></head><body>
 <div class="dtop"><a href="index.html" style="display:inline-flex;align-items:center;" title="Painel do Comendador"><img src="img/brasao.png" alt="Brasão"></a><b data-i18n="dc_brand">Dicas de Bordeaux</b><a class="back" href="index.html" data-i18n="dc_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
 <div id="needLogin" class="state" style="display:none;"><h2 data-i18n="dc_nl_h">Acesso restrito</h2><p data-i18n="dc_nl_p">Conteúdo exclusivo dos membros. Entre na sua conta.</p><a class="btn" href="index.html" data-i18n="dc_nl_btn">Entrar</a></div>
@@ -53,8 +68,36 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <a class="dchip" data-f="mercado" onclick="filtrar('mercado')" data-i18n="dc_f_merc">Mercado</a>
     <a class="dchip" data-f="museu" onclick="filtrar('museu')" data-i18n="dc_f_mus">Museu</a>
   </div>
+  <div class="dfilter" id="dviews" style="margin-top:6px;">
+    <a class="dchip on" data-v="todos" onclick="verView('todos')">Todas</a>
+    <a class="dchip" data-v="populares" onclick="verView('populares')">&#128293; Mais visitadas</a>
+    <a class="dchip" data-v="quero" onclick="verView('quero')">&#11088; Quero ir</a>
+    <a class="dchip" data-v="fui" onclick="verView('fui')">&#10003; J&aacute; fui</a>
+  </div>
   <div style="text-align:center;margin:14px auto 2px;">
     <a href="mapa-dicas.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;text-decoration:none;border-radius:22px;padding:9px 20px;font-size:13.5px;">&#128506; <span data-i18n="dc_map">Ver no mapa</span></a>
+  </div>
+  <div class="sugcard">
+    <div class="sugbox">
+      <div class="sugtog" onclick="sugToggle()">&#10133; <span>Indicar uma dica minha</span></div>
+      <div class="sugbody" id="sugbody">
+        <p style="font-size:12.5px;color:#8a8270;margin:2px 0 0;">Conhece um lugar imperd&iacute;vel em Bordeaux ou na Gironde? Indique aqui &mdash; ap&oacute;s a aprova&ccedil;&atilde;o do Conselho, ele entra na curadoria com o seu nome.</p>
+        <div class="suggrid">
+          <input id="sgNome" placeholder="Nome do lugar *">
+          <input id="sgCidade" placeholder="Cidade *">
+          <input id="sgCat" placeholder="Categoria (ex.: Francesa)">
+          <select id="sgTipo"><option value="restaurante">Restaurante</option><option value="hotel">Hotel</option><option value="mercado">Mercado</option><option value="museu">Museu</option></select>
+          <input id="sgEnd" placeholder="Endere&ccedil;o">
+          <select id="sgPreco"><option value="">Pre&ccedil;o (&euro;)</option><option value="1">&euro;</option><option value="2">&euro;&euro;</option><option value="3">&euro;&euro;&euro;</option><option value="4">&euro;&euro;&euro;&euro;</option></select>
+          <input id="sgTel" placeholder="Telefone (+33&hellip;)">
+          <input id="sgSite" placeholder="Site">
+          <input id="sgIg" placeholder="Instagram (@perfil)">
+        </div>
+        <textarea id="sgDesc" rows="2" placeholder="Por que voc&ecirc; recomenda?"></textarea>
+        <button class="sugbtn" onclick="enviarSugestao()">Enviar dica</button>
+        <span id="sugMsg" style="font-size:13px;margin-left:10px;"></span>
+      </div>
+    </div>
   </div>
   <div class="wrap" id="dwrap"></div>
   <div class="dfoot" data-i18n="dc_foot">Curadoria “Na Mesa com Luli Dias”. Informações sujeitas a alteração — confirme horários e reservas.</div>
@@ -74,30 +117,95 @@ function card(p){
   var foto=p.foto_url?('<div class="dphoto"><img loading="lazy" src="'+esc(p.foto_url)+'" alt="'+esc(p.nome)+'" onerror="this.parentNode.style.display=\'none\'"></div>'):'';
   return '<article class="dcard">'+foto+'<div class="dbody">'+(p.categoria?'<div class="dcat">'+esc(p.categoria)+'</div>':'')
     +'<h3 class="dname">'+esc(p.nome)+(p.preco?' <span class="dprice">'+preco(p.preco)+'</span>':'')+'</h3>'
+    +pills(p)
     +(p.descricao?'<p class="ddesc">'+esc(p.descricao)+'</p>':'')
     +(L.length?'<div class="dinfo">'+L.join('')+'</div>':'')
+    +acts(p)
     +'</div></article>';
 }
-var FILTRO='todos',DADOS=[];
+function cnt(id){var a=ESTIVE_NAMES[id];return a?a.length:0;}
+function fui(id){return !!ESTIVE_ME[id];}
+function pills(p){
+  var a=ESTIVE_NAMES[p.id]||[];if(!a.length)return '';
+  var s=a.slice(0,3).map(function(n){return '<span class="dpill">&#9733; '+esc(n)+'</span>';}).join('');
+  if(a.length>3)s+='<span class="dpill more">+'+(a.length-3)+'</span>';
+  return '<div class="dpills" title="Comendadores que já estiveram">'+s+'</div>';
+}
+function acts(p){
+  if(!p.id)return '';
+  var f=fui(p.id),q=!!QUERO[p.id];
+  return '<div class="dacts">'
+    +'<button class="actbtn'+(f?' on':'')+'" onclick="toggEstive(\''+p.id+'\')">'+(f?'&#10003; Já estive':'Já estive')+'</button>'
+    +'<button class="actbtn star'+(q?' on':'')+'" onclick="toggQuero(\''+p.id+'\')">'+(q?'&#9733; Quero ir':'&#9734; Quero ir')+'</button>'
+    +'</div>';
+}
+var FILTRO='todos',VIEW='todos',DADOS=[],ME=null,MEU_NOME=null;
+var ESTIVE_NAMES={},ESTIVE_ME={},QUERO={};
 function tipoDe(p){var c=(""+(p.categoria||"")).toLowerCase();if(/hotel|relais|hospedagem|vinícola|vinicola/.test(c))return 'hotel';if(/mercado|halles|march/.test(c))return 'mercado';if(/museu|musée|musee|cité du vin|cite du vin/.test(c))return 'museu';return 'restaurante';}
-function filtrar(t){FILTRO=t;var ch=document.querySelectorAll(".dchip");for(var i=0;i<ch.length;i++)ch[i].className="dchip"+(ch[i].getAttribute("data-f")===t?" on":"");render(DADOS);}
+function filtrar(t){FILTRO=t;var ch=document.querySelectorAll("#dfilter .dchip");for(var i=0;i<ch.length;i++)ch[i].className="dchip"+(ch[i].getAttribute("data-f")===t?" on":"");render(DADOS);}
+function verView(v){VIEW=v;var ch=document.querySelectorAll("#dviews .dchip");for(var i=0;i<ch.length;i++)ch[i].className="dchip"+(ch[i].getAttribute("data-v")===v?" on":"");render(DADOS);}
+function vazio(){
+  if(VIEW==="quero")return '<div class="state"><h2>Sua lista de desejos está vazia</h2><p>Toque em &#9734; Quero ir nas dicas que você ainda quer visitar.</p></div>';
+  if(VIEW==="fui")return '<div class="state"><h2>Você ainda não marcou nenhuma</h2><p>Toque em “Já estive” nas dicas que você já conhece.</p></div>';
+  return '<p style="text-align:center;color:#9a8f72;padding:40px;">—</p>';
+}
 function render(rows){
-  var f=(FILTRO&&FILTRO!=="todos")?rows.filter(function(p){return tipoDe(p)===FILTRO;}):rows;
+  var f=rows;
+  if(FILTRO&&FILTRO!=="todos")f=f.filter(function(p){return tipoDe(p)===FILTRO;});
+  if(VIEW==="quero")f=f.filter(function(p){return QUERO[p.id];});
+  else if(VIEW==="fui")f=f.filter(function(p){return fui(p.id);});
+  var w=document.getElementById("dwrap");
+  if(VIEW==="populares"){
+    var s=f.slice().sort(function(a,b){return (cnt(b.id)-cnt(a.id))||((a.ordem||0)-(b.ordem||0));});
+    w.innerHTML=s.length?'<div class="dcity"><h2>Mais visitadas pelos Comendadores</h2><span>&#128293; ranking</span></div><div class="dgrid">'+s.map(card).join('')+'</div>':vazio();
+    return;
+  }
+  if(!f.length){w.innerHTML=vazio();return;}
   var grupos=[],idx={};
   f.forEach(function(p){var c=p.cidade||"Outras";if(idx[c]==null){idx[c]=grupos.length;grupos.push({city:c,region:p.region||"",entries:[]});}grupos[idx[c]].entries.push(p);});
-  var w=document.getElementById("dwrap");
-  w.innerHTML=grupos.length?grupos.map(function(g){
+  w.innerHTML=grupos.map(function(g){
     return '<div class="dcity"><h2>'+esc(g.city)+'</h2><span>'+esc(g.region)+'</span></div><div class="dgrid">'+g.entries.map(card).join('')+'</div>';
-  }).join(''):'<p style="text-align:center;color:#9a8f72;padding:40px;">—</p>';
+  }).join('');
+}
+async function toggEstive(id){
+  var r=await sb.rpc("dica_toggle_estive",{p_dica:id});
+  if(r.error){alert("Não foi possível registrar agora. "+r.error.message);return;}
+  var a=ESTIVE_NAMES[id]||(ESTIVE_NAMES[id]=[]);
+  if(r.data){ESTIVE_ME[id]=true;if(MEU_NOME&&a.indexOf(MEU_NOME)<0)a.unshift(MEU_NOME);}
+  else{ESTIVE_ME[id]=false;var i=a.indexOf(MEU_NOME);if(i>=0)a.splice(i,1);}
+  render(DADOS);
+}
+async function toggQuero(id){
+  var r=await sb.rpc("dica_toggle_quero",{p_dica:id});
+  if(r.error){alert("Não foi possível salvar agora. "+r.error.message);return;}
+  QUERO[id]=!!r.data;render(DADOS);
+}
+function sugToggle(){var b=document.getElementById("sugbody");b.style.display=b.style.display==="block"?"none":"block";}
+async function enviarSugestao(){
+  var g=function(id){var e=document.getElementById(id);return e?e.value.trim():"";};
+  var msg=document.getElementById("sugMsg");
+  if(!g("sgNome")||!g("sgCidade")){msg.style.color="#8f1d24";msg.textContent="Informe ao menos o nome do lugar e a cidade.";return;}
+  msg.style.color="#2f6b3a";msg.textContent="Enviando…";
+  var p={nome:g("sgNome"),cidade:g("sgCidade"),categoria:g("sgCat"),tipo:g("sgTipo"),preco:g("sgPreco"),endereco:g("sgEnd"),telefone:g("sgTel"),site:g("sgSite"),instagram:g("sgIg"),descricao:g("sgDesc")};
+  var r=await sb.rpc("sugerir_dica",{p:p});
+  if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}
+  if(r.data==="faltam_dados"){msg.style.color="#8f1d24";msg.textContent="Informe ao menos o nome do lugar e a cidade.";return;}
+  msg.style.color="#2f6b3a";msg.textContent="✔ Obrigado! Sua dica foi enviada e aparecerá após a aprovação do Conselho.";
+  ["sgNome","sgCidade","sgCat","sgEnd","sgTel","sgSite","sgIg","sgDesc"].forEach(function(id){var e=document.getElementById(id);if(e)e.value="";});
 }
 async function carregar(){
   var u=(await sb.auth.getUser()).data.user;
   document.getElementById("loading").style.display="none";
   if(!u){document.getElementById("needLogin").style.display="block";return;}
+  ME=u.id;
   var rows=null;
-  try{var q=await sb.from("dicas").select("*").order("ordem",{ascending:true});if(!q.error&&q.data&&q.data.length)rows=q.data;}catch(e){}
+  try{var q=await sb.from("dicas").select("*").eq("status","publicada").order("ordem",{ascending:true});if(q.error){q=await sb.from("dicas").select("*").order("ordem",{ascending:true});}if(!q.error&&q.data&&q.data.length)rows=q.data;}catch(e){}
   if(!rows||!rows.length)rows=FALLBACK;
-  DADOS=rows;render(DADOS);
+  DADOS=rows;
+  try{var mm=await sb.from("membros").select("nome").eq("user_id",u.id).maybeSingle();if(mm.data&&mm.data.nome)MEU_NOME=mm.data.nome;}catch(e){}
+  try{var es=await sb.from("dica_estive").select("dica_id,user_id,nome");if(es.data)es.data.forEach(function(r){(ESTIVE_NAMES[r.dica_id]||(ESTIVE_NAMES[r.dica_id]=[])).push(r.nome||"Comendador");if(r.user_id===ME)ESTIVE_ME[r.dica_id]=true;});}catch(e){}
+  try{var qq=await sb.from("dica_quero").select("dica_id");if(qq.data)qq.data.forEach(function(r){QUERO[r.dica_id]=true;});}catch(e){}
+  render(DADOS);
   document.getElementById("content").style.display="block";
 }
 document.addEventListener("DOMContentLoaded",carregar);

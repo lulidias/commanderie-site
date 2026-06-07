@@ -63,6 +63,7 @@ function row(e){
     var fotos=(e.evento_fotos||[]).slice().sort(function(a,b){return (a.ordem||0)-(b.ordem||0);});
     if(fotos.length){GAL[e.id]=fotos.map(function(f){return f.url;});extra+='<a class="evfotos" onclick="lbOpen(\''+e.id+'\',0)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg> Confira as fotos ('+fotos.length+')</a>';}
   }
+  if(e.documento_url){extra+='<a class="evfotos" href="'+esc(e.documento_url)+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg> Ver o convite completo</a>';}
   return '<div class="evrow" style="align-items:flex-start;"><div class="evdate"><b>'+dia+'</b><span>'+mes+'</span><small>'+ano+'</small></div>'
     +'<div class="evinfo"><div class="evtitle">'+(e.numero?(esc(e.numero)+" · "):"")+esc(e.titulo||"")+'</div>'
     +(loc?('<div class="evmeta">'+loc+'</div>'):'')+extra+'</div>'+badge+'</div>';

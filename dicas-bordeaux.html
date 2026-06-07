@@ -68,11 +68,17 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <a class="dchip" data-f="mercado" onclick="filtrar('mercado')" data-i18n="dc_f_merc">Mercado</a>
     <a class="dchip" data-f="museu" onclick="filtrar('museu')" data-i18n="dc_f_mus">Museu</a>
   </div>
-  <div class="dfilter" id="dviews" style="margin-top:6px;">
+  <div class="dfilter" id="dviews" style="margin-top:6px;align-items:center;">
     <a class="dchip on" data-v="todos" onclick="verView('todos')">Todas</a>
-    <a class="dchip" data-v="populares" onclick="verView('populares')">&#128293; Mais visitadas</a>
     <a class="dchip" data-v="quero" onclick="verView('quero')">&#11088; Quero ir</a>
     <a class="dchip" data-v="fui" onclick="verView('fui')">&#10003; J&aacute; fui</a>
+    <select id="dordem" onchange="setOrdem(this.value)" style="font-size:12.5px;border:1px solid var(--gold);border-radius:20px;padding:7px 12px;background:#fffdf7;color:var(--navy);cursor:pointer;font-family:inherit;">
+      <option value="cidade">Ordenar: por cidade</option>
+      <option value="populares">Ordenar: mais visitadas &#128293;</option>
+      <option value="az">Ordenar: A &#8211; Z</option>
+      <option value="recentes">Ordenar: recentes</option>
+      <option value="preco">Ordenar: pre&ccedil;o &#8593;</option>
+    </select>
   </div>
   <div style="text-align:center;margin:14px auto 2px;">
     <a href="mapa-dicas.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;text-decoration:none;border-radius:22px;padding:9px 20px;font-size:13.5px;">&#128506; <span data-i18n="dc_map">Ver no mapa</span></a>
@@ -81,10 +87,14 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <div class="sugbox">
       <div class="sugtog" onclick="sugToggle()">&#10133; <span>Indicar uma dica minha</span></div>
       <div class="sugbody" id="sugbody">
-        <p style="font-size:12.5px;color:#8a8270;margin:2px 0 0;">Conhece um lugar imperd&iacute;vel em Bordeaux ou na Gironde? Indique aqui &mdash; ap&oacute;s a aprova&ccedil;&atilde;o do Conselho, ele entra na curadoria com o seu nome.</p>
+        <p style="font-size:12.5px;color:#8a8270;margin:2px 0 6px;">Conhece um lugar imperd&iacute;vel em Bordeaux ou na Gironde? Digite o <b>nome</b> e a <b>cidade</b> e toque em <b>Buscar dados</b> &mdash; eu preencho o resto para voc&ecirc; revisar. Ap&oacute;s a aprova&ccedil;&atilde;o do Conselho, entra na curadoria com o seu nome.</p>
         <div class="suggrid">
           <input id="sgNome" placeholder="Nome do lugar *">
           <input id="sgCidade" placeholder="Cidade *">
+        </div>
+        <button class="sugbtn" style="background:#8a6a1f;" id="sgBuscarBtn" onclick="buscarDados()">&#10024; Buscar dados</button>
+        <span id="sgBuscarMsg" style="font-size:12.5px;margin-left:10px;color:#8a8270;"></span>
+        <div class="suggrid" style="margin-top:4px;">
           <input id="sgCat" placeholder="Categoria (ex.: Francesa)">
           <select id="sgTipo"><option value="restaurante">Restaurante</option><option value="hotel">Hotel</option><option value="mercado">Mercado</option><option value="museu">Museu</option></select>
           <input id="sgEnd" placeholder="Endere&ccedil;o">
@@ -93,7 +103,12 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
           <input id="sgSite" placeholder="Site">
           <input id="sgIg" placeholder="Instagram (@perfil)">
         </div>
-        <textarea id="sgDesc" rows="2" placeholder="Por que voc&ecirc; recomenda?"></textarea>
+        <textarea id="sgDesc" rows="3" placeholder="Descri&ccedil;&atilde;o / por que voc&ecirc; recomenda"></textarea>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;">
+          <label style="cursor:pointer;color:var(--navy);border:1.5px dashed var(--gold);border-radius:9px;padding:8px 14px;font-size:13px;">&#128247; Adicionar foto<input type="file" accept="image/*" style="display:none" onchange="uploadFotoSugestao(this.files)"></label>
+          <img id="sgFotoPrev" alt="" style="display:none;width:54px;height:54px;border-radius:8px;object-fit:cover;border:1px solid var(--line);">
+          <span id="sgFotoMsg" style="font-size:12px;color:#8a8270;"></span>
+        </div>
         <button class="sugbtn" onclick="enviarSugestao()">Enviar dica</button>
         <span id="sugMsg" style="font-size:13px;margin-left:10px;"></span>
       </div>
@@ -139,11 +154,27 @@ function acts(p){
     +'<button class="actbtn star'+(q?' on':'')+'" onclick="toggQuero(\''+p.id+'\')">'+(q?'&#9733; Quero ir':'&#9734; Quero ir')+'</button>'
     +'</div>';
 }
-var FILTRO='todos',VIEW='todos',DADOS=[],ME=null,MEU_NOME=null;
+var FILTRO='todos',VIEW='todos',ORDEM='cidade',DADOS=[],ME=null,MEU_NOME=null,SG_FOTO=null;
 var ESTIVE_NAMES={},ESTIVE_ME={},QUERO={};
 function tipoDe(p){var c=(""+(p.categoria||"")).toLowerCase();if(/hotel|relais|hospedagem|vinícola|vinicola/.test(c))return 'hotel';if(/mercado|halles|march/.test(c))return 'mercado';if(/museu|musée|musee|cité du vin|cite du vin/.test(c))return 'museu';return 'restaurante';}
 function filtrar(t){FILTRO=t;var ch=document.querySelectorAll("#dfilter .dchip");for(var i=0;i<ch.length;i++)ch[i].className="dchip"+(ch[i].getAttribute("data-f")===t?" on":"");render(DADOS);}
 function verView(v){VIEW=v;var ch=document.querySelectorAll("#dviews .dchip");for(var i=0;i<ch.length;i++)ch[i].className="dchip"+(ch[i].getAttribute("data-v")===v?" on":"");render(DADOS);}
+function setOrdem(v){ORDEM=v;render(DADOS);}
+function ordenar(arr){
+  var a=arr.slice();
+  if(ORDEM==="populares")a.sort(function(x,y){return (cnt(y.id)-cnt(x.id))||((x.ordem||0)-(y.ordem||0));});
+  else if(ORDEM==="az")a.sort(function(x,y){return (""+(x.nome||"")).localeCompare(""+(y.nome||""),"pt");});
+  else if(ORDEM==="recentes")a.sort(function(x,y){var dx=x.criado_em||"",dy=y.criado_em||"";if(dx!==dy)return dx<dy?1:-1;return (y.ordem||0)-(x.ordem||0);});
+  else if(ORDEM==="preco")a.sort(function(x,y){return ((x.preco||99)-(y.preco||99))||(""+(x.nome||"")).localeCompare(""+(y.nome||""),"pt");});
+  return a;
+}
+function rotuloOrdem(){
+  if(ORDEM==="populares")return ['Mais visitadas pelos Comendadores','&#128293; ranking'];
+  if(ORDEM==="az")return ['Por ordem alfabética','A &#8211; Z'];
+  if(ORDEM==="recentes")return ['Adicionadas recentemente','novidades'];
+  if(ORDEM==="preco")return ['Por faixa de preço','&euro; &#8594; &euro;&euro;&euro;&euro;'];
+  return ['',''];
+}
 function vazio(){
   if(VIEW==="quero")return '<div class="state"><h2>Sua lista de desejos está vazia</h2><p>Toque em &#9734; Quero ir nas dicas que você ainda quer visitar.</p></div>';
   if(VIEW==="fui")return '<div class="state"><h2>Você ainda não marcou nenhuma</h2><p>Toque em “Já estive” nas dicas que você já conhece.</p></div>';
@@ -155,12 +186,12 @@ function render(rows){
   if(VIEW==="quero")f=f.filter(function(p){return QUERO[p.id];});
   else if(VIEW==="fui")f=f.filter(function(p){return fui(p.id);});
   var w=document.getElementById("dwrap");
-  if(VIEW==="populares"){
-    var s=f.slice().sort(function(a,b){return (cnt(b.id)-cnt(a.id))||((a.ordem||0)-(b.ordem||0));});
-    w.innerHTML=s.length?'<div class="dcity"><h2>Mais visitadas pelos Comendadores</h2><span>&#128293; ranking</span></div><div class="dgrid">'+s.map(card).join('')+'</div>':vazio();
+  if(!f.length){w.innerHTML=vazio();return;}
+  if(ORDEM!=="cidade"){
+    var s=ordenar(f),rt=rotuloOrdem();
+    w.innerHTML='<div class="dcity"><h2>'+rt[0]+'</h2><span>'+rt[1]+'</span></div><div class="dgrid">'+s.map(card).join('')+'</div>';
     return;
   }
-  if(!f.length){w.innerHTML=vazio();return;}
   var grupos=[],idx={};
   f.forEach(function(p){var c=p.cidade||"Outras";if(idx[c]==null){idx[c]=grupos.length;grupos.push({city:c,region:p.region||"",entries:[]});}grupos[idx[c]].entries.push(p);});
   w.innerHTML=grupos.map(function(g){
@@ -181,17 +212,52 @@ async function toggQuero(id){
   QUERO[id]=!!r.data;render(DADOS);
 }
 function sugToggle(){var b=document.getElementById("sugbody");b.style.display=b.style.display==="block"?"none":"block";}
+function setVal(id,v){var e=document.getElementById(id);if(e&&v!=null&&v!=="")e.value=v;}
+async function buscarDados(){
+  var g=function(id){var e=document.getElementById(id);return e?e.value.trim():"";};
+  var m=document.getElementById("sgBuscarMsg"),b=document.getElementById("sgBuscarBtn");
+  if(!g("sgNome")||!g("sgCidade")){m.style.color="#8f1d24";m.textContent="Preencha o nome e a cidade primeiro.";return;}
+  b.disabled=true;m.style.color="#8a8270";m.textContent="Buscando dados… (alguns segundos)";
+  try{
+    var r=await sb.functions.invoke("enrich-dica",{body:{nome:g("sgNome"),cidade:g("sgCidade")}});
+    b.disabled=false;
+    if(r.error||!r.data||r.data.error){m.style.color="#8f1d24";m.textContent="Não consegui buscar agora — preencha manualmente. (a busca automática pode não estar ativa ainda)";return;}
+    var d=r.data;
+    setVal("sgCat",d.categoria);setVal("sgEnd",d.endereco);setVal("sgTel",d.telefone);setVal("sgSite",d.site);setVal("sgIg",d.instagram);setVal("sgDesc",d.descricao);
+    if(d.preco){var ps=document.getElementById("sgPreco");if(ps)ps.value=""+d.preco;}
+    if(d.tipo){var ts=document.getElementById("sgTipo");if(ts)ts.value=d.tipo;}
+    m.style.color="#2f6b3a";m.textContent="✔ Preenchido! Revise e ajuste o que quiser antes de enviar.";
+  }catch(e){b.disabled=false;m.style.color="#8f1d24";m.textContent="Não consegui buscar agora — preencha manualmente.";}
+}
+function comprimirImg(file,maxDim,q){return new Promise(function(res){var img=new Image();img.onload=function(){var w=img.naturalWidth,hh=img.naturalHeight;var sc=Math.min(1,maxDim/Math.max(w,hh));var cw=Math.round(w*sc),ch=Math.round(hh*sc);var cv=document.createElement("canvas");cv.width=cw;cv.height=ch;cv.getContext("2d").drawImage(img,0,0,cw,ch);cv.toBlob(function(bb){res(bb||file);},"image/jpeg",q);};img.onerror=function(){res(file);};var rd=new FileReader();rd.onload=function(e){img.src=e.target.result;};rd.readAsDataURL(file);});}
+async function uploadFotoSugestao(files){
+  if(!files||!files.length)return;
+  var m=document.getElementById("sgFotoMsg"),pv=document.getElementById("sgFotoPrev");
+  if(!ME){m.style.color="#8f1d24";m.textContent="Entre na sua conta para enviar foto.";return;}
+  m.style.color="#8a8270";m.textContent="Otimizando e enviando…";
+  try{
+    var blob=await comprimirImg(files[0],1400,0.82);
+    var path="sugestoes/"+ME+"/"+(new Date().getTime())+".jpg";
+    var up=await sb.storage.from("dicas").upload(path,blob,{contentType:"image/jpeg",upsert:true});
+    if(up.error){m.style.color="#8f1d24";m.textContent="Erro ao enviar: "+up.error.message;return;}
+    SG_FOTO=sb.storage.from("dicas").getPublicUrl(path).data.publicUrl;
+    pv.src=SG_FOTO;pv.style.display="inline-block";
+    m.style.color="#2f6b3a";m.textContent="✔ Foto anexada.";
+  }catch(e){m.style.color="#8f1d24";m.textContent="Erro ao processar a foto.";}
+}
 async function enviarSugestao(){
   var g=function(id){var e=document.getElementById(id);return e?e.value.trim():"";};
   var msg=document.getElementById("sugMsg");
   if(!g("sgNome")||!g("sgCidade")){msg.style.color="#8f1d24";msg.textContent="Informe ao menos o nome do lugar e a cidade.";return;}
   msg.style.color="#2f6b3a";msg.textContent="Enviando…";
-  var p={nome:g("sgNome"),cidade:g("sgCidade"),categoria:g("sgCat"),tipo:g("sgTipo"),preco:g("sgPreco"),endereco:g("sgEnd"),telefone:g("sgTel"),site:g("sgSite"),instagram:g("sgIg"),descricao:g("sgDesc")};
+  var p={nome:g("sgNome"),cidade:g("sgCidade"),categoria:g("sgCat"),tipo:g("sgTipo"),preco:g("sgPreco"),endereco:g("sgEnd"),telefone:g("sgTel"),site:g("sgSite"),instagram:g("sgIg"),descricao:g("sgDesc"),foto_url:SG_FOTO||""};
   var r=await sb.rpc("sugerir_dica",{p:p});
   if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}
   if(r.data==="faltam_dados"){msg.style.color="#8f1d24";msg.textContent="Informe ao menos o nome do lugar e a cidade.";return;}
   msg.style.color="#2f6b3a";msg.textContent="✔ Obrigado! Sua dica foi enviada e aparecerá após a aprovação do Conselho.";
   ["sgNome","sgCidade","sgCat","sgEnd","sgTel","sgSite","sgIg","sgDesc"].forEach(function(id){var e=document.getElementById(id);if(e)e.value="";});
+  SG_FOTO=null;var pv=document.getElementById("sgFotoPrev");if(pv)pv.style.display="none";
+  var fm=document.getElementById("sgFotoMsg");if(fm)fm.textContent="";
 }
 async function carregar(){
   var u=(await sb.auth.getUser()).data.user;

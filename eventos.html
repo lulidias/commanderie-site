@@ -66,7 +66,7 @@ function row(e){
   if(e.documento_url){extra+='<a class="evfotos" href="'+esc(e.documento_url)+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg> Ver o convite completo</a>';}
   return '<div class="evrow" style="align-items:flex-start;"><div class="evdate"><b>'+dia+'</b><span>'+mes+'</span><small>'+ano+'</small></div>'
     +'<div class="evinfo"><div class="evtitle">'+(e.numero?(esc(e.numero)+" · "):"")+esc(e.titulo||"")+'</div>'
-    +(loc?('<div class="evmeta">'+loc+'</div>'):'')+extra+'</div>'+badge+'</div>';
+    +'<div class="evmeta">'+esc(e.tipo||"Evento")+(loc?(" · "+loc):"")+'</div>'+extra+'</div>'+badge+'</div>';
 }
 async function carregar(){
   var u=(await sb.auth.getUser()).data.user;
@@ -75,11 +75,13 @@ async function carregar(){
   var q=await sb.from("eventos").select("*, evento_fotos(id,url,ordem)").order("data",{ascending:true});
   if(q.error){document.getElementById("needLogin").style.display="block";document.getElementById("needLogin").querySelector("p").textContent="Não foi possível carregar ("+q.error.message+").";return;}
   var rows=q.data||[];
-  var grupos={};rows.forEach(function(e){var t=e.tipo||"Outro";if(ORDEM.indexOf(t)<0)t="Outro";(grupos[t]=grupos[t]||[]).push(e);});
-  var html=ORDEM.filter(function(t){return grupos[t]&&grupos[t].length;}).map(function(t){
-    return '<div class="sec-title">'+esc(PLURAL[t]||t)+'</div><div class="sec-rule"></div>'+grupos[t].map(row).join("");
-  }).join("");
-  document.getElementById("evWrap").innerHTML=html||'<p class="state">Nenhum evento cadastrado ainda.</p>';
+  var hoje=new Date();hoje=new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
+  function fut(e){if(e.realizado)return false;if(!e.data)return true;return new Date(e.data+"T12:00:00")>=hoje;}
+  var prox=rows.filter(fut).sort(function(a,b){return (""+(a.data||"")).localeCompare(""+(b.data||""));});
+  var ant=rows.filter(function(e){return !fut(e);}).sort(function(a,b){return (""+(b.data||"")).localeCompare(""+(a.data||""));});
+  var html='<div class="sec-title">Próximos eventos</div><div class="sec-rule"></div>'+(prox.length?prox.map(row).join(""):'<p class="state" style="margin:2px 0 10px;">Nenhum evento agendado no momento.</p>');
+  if(ant.length){html+='<div class="sec-title" style="margin-top:26px;">Eventos anteriores</div><div class="sec-rule"></div>'+ant.map(row).join("");}
+  document.getElementById("evWrap").innerHTML=html;
   document.getElementById("content").style.display="block";
 }
 document.addEventListener("DOMContentLoaded",carregar);

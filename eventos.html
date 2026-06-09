@@ -32,6 +32,20 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
 .state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+.evacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px;}
+.evbtn{cursor:pointer;font-size:12px;letter-spacing:.5px;border-radius:20px;padding:7px 15px;border:1px solid var(--navy);background:var(--navy);color:#fff;transition:all .15s;}
+.evbtn:hover{opacity:.9;}
+.evbtn.ghost{background:#fffdf7;color:var(--navy);border-color:var(--gold);}
+.evbtn.ghost:hover{background:var(--navy);color:#fff;border-color:var(--navy);opacity:1;}
+.evstat{font-size:12px;border-radius:20px;padding:5px 12px;display:inline-block;margin-top:9px;}
+.evstat.pre{color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);}
+.evstat.ok{color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;}
+.popov{display:none;position:fixed;inset:0;background:rgba(10,8,5,.5);z-index:70;align-items:center;justify-content:center;padding:20px;}
+.popcard{background:#fffdf7;border:1px solid var(--line);border-radius:16px;max-width:430px;padding:26px;text-align:center;box-shadow:0 16px 50px rgba(40,30,10,.3);}
+.popcard .pk{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.popcard h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:23px;margin:6px 0 10px;}
+.popcard p{color:#5b5446;line-height:1.65;font-size:14.5px;margin:0 0 18px;}
+.popcard .pb{background:var(--navy);color:#fff;border:none;border-radius:11px;padding:11px 28px;font-size:15px;cursor:pointer;}
 </style></head><body>
 <div class="dtop"><a href="index.html" style="display:inline-flex;align-items:center;" title="Painel do Comendador"><img src="img/brasao.png" alt="Brasão"></a><b data-i18n="ev_brand">Eventos</b><a class="back" href="index.html" data-i18n="ev_back">&#8592; Voltar</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
 <div id="needLogin" class="state" style="display:none;"><h2 data-i18n="ev_nl_h">Acesso restrito</h2><p data-i18n="ev_nl_p">Entre na sua conta para ver os eventos.</p><a class="btn" href="index.html" data-i18n="ev_nl_btn">Entrar</a></div>
@@ -43,7 +57,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
-var GAL={};var LB=[];var LBi=0;
+var GAL={};var LB=[];var LBi=0;var MYRSVP={};
 function lbOpen(id,i){LB=GAL[id]||[];LBi=i||0;if(!LB.length)return;document.getElementById("lightbox").style.display="flex";lbShow();}
 function lbShow(){var img=document.getElementById("lightboxImg");if(img)img.src=LB[LBi];var c=document.getElementById("lbCount");if(c)c.textContent=(LBi+1)+" / "+LB.length;}
 function lbNav(d,ev){if(ev)ev.stopPropagation();if(!LB.length)return;LBi=(LBi+d+LB.length)%LB.length;lbShow();}
@@ -64,14 +78,24 @@ function row(e){
     if(fotos.length){GAL[e.id]=fotos.map(function(f){return f.url;});extra+='<a class="evfotos" onclick="lbOpen(\''+e.id+'\',0)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg> Confira as fotos ('+fotos.length+')</a>';}
   }
   if(e.documento_url){extra+='<a class="evfotos" href="'+esc(e.documento_url)+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg> Ver o convite completo</a>';}
+  var act="";
+  if(!e.realizado){
+    var st=MYRSVP[e.id];
+    var pago=(e.valor&&e.valor>0);
+    if(st==="Confirmado"){act='<div class="evstat ok">&#10003; Presen&ccedil;a confirmada</div><div class="evacts"><span class="evbtn ghost" onclick="rsvp(\''+e.id+'\',\'cancelar\')">Cancelar</span></div>';}
+    else if(st==="Aguardando pagamento"){act='<div class="evstat pre">&#9203; Pr&eacute;-reserva ativa &middot; v&aacute;lida 48h &middot; aguardando pagamento</div><div class="evacts"><span class="evbtn ghost" onclick="rsvp(\''+e.id+'\',\'cancelar\')">Cancelar pr&eacute;-reserva</span></div>';}
+    else if(e.adesao===false){act='<div class="evstat pre">Ades&atilde;o encerrada</div>';}
+    else{act='<div class="evacts"><span class="evbtn" onclick="rsvp(\''+e.id+'\',\'pre\')">'+(pago?'Pr&eacute;-reservar':'Confirmar presen&ccedil;a')+'</span></div>';}
+  }
   return '<div class="evrow" style="align-items:flex-start;"><div class="evdate"><b>'+dia+'</b><span>'+mes+'</span><small>'+ano+'</small></div>'
     +'<div class="evinfo"><div class="evtitle">'+(e.numero?(esc(e.numero)+" · "):"")+esc(e.titulo||"")+'</div>'
-    +'<div class="evmeta">'+esc(e.tipo||"Evento")+(loc?(" · "+loc):"")+'</div>'+extra+'</div>'+badge+'</div>';
+    +'<div class="evmeta">'+esc(e.tipo||"Evento")+(loc?(" · "+loc):"")+'</div>'+extra+act+'</div>'+badge+'</div>';
 }
 async function carregar(){
   var u=(await sb.auth.getUser()).data.user;
   document.getElementById("loading").style.display="none";
   if(!u){document.getElementById("needLogin").style.display="block";return;}
+  MYRSVP={};try{var rr=await sb.from("evento_rsvp").select("evento_id,status").eq("user_id",u.id);if(rr.data)rr.data.forEach(function(x){MYRSVP[x.evento_id]=x.status;});}catch(e){}
   var q=await sb.from("eventos").select("*, evento_fotos(id,url,ordem)").order("data",{ascending:true});
   if(q.error){document.getElementById("needLogin").style.display="block";document.getElementById("needLogin").querySelector("p").textContent="Não foi possível carregar ("+q.error.message+").";return;}
   var rows=q.data||[];
@@ -84,9 +108,27 @@ async function carregar(){
   document.getElementById("evWrap").innerHTML=html;
   document.getElementById("content").style.display="block";
 }
+async function rsvp(id,acao){
+  var u=(await sb.auth.getUser()).data.user;if(!u)return;
+  if(acao==="cancelar"){
+    if(!confirm("Deseja cancelar a sua reserva neste evento?"))return;
+    var rr=await sb.rpc("rsvp_recusar",{p_evento_id:id});
+    if(rr.error){alert("Erro: "+rr.error.message);return;}
+    carregar();return;
+  }
+  var r=await sb.rpc("rsvp_confirmar",{p_evento_id:id});
+  if(r.error){alert("Erro: "+r.error.message);return;}
+  if(r.data==="lotado"){alert("Este evento já está lotado.");carregar();return;}
+  if(r.data==="fechado"){alert("A adesão para este evento está encerrada.");return;}
+  if(r.data==="Aguardando pagamento")popPre();
+  carregar();
+}
+function popPre(){var e=document.getElementById("popov");if(e)e.style.display="flex";}
+function popClose(){var e=document.getElementById("popov");if(e)e.style.display="none";}
 document.addEventListener("DOMContentLoaded",carregar);
 </script>
 <div id="lightbox" onclick="if(event.target===this)lbClose()" style="display:none;position:fixed;inset:0;background:rgba(10,8,5,.93);z-index:60;align-items:center;justify-content:center;"><span onclick="lbClose()" style="position:absolute;top:12px;right:20px;color:#fff;font-size:32px;cursor:pointer;line-height:1;">&times;</span><span onclick="lbNav(-1,event)" style="position:absolute;left:6px;top:50%;transform:translateY(-50%);color:#fff;font-size:44px;cursor:pointer;padding:10px 16px;user-select:none;">&#8249;</span><img id="lightboxImg" alt="" style="max-width:90%;max-height:90vh;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.6);"><span onclick="lbNav(1,event)" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);color:#fff;font-size:44px;cursor:pointer;padding:10px 16px;user-select:none;">&#8250;</span><div id="lbCount" style="position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#e7d8a8;font-size:13px;letter-spacing:1px;"></div></div>
+<div id="popov" class="popov" onclick="if(event.target===this)popClose()"><div class="popcard"><div class="pk">Commanderie de Bordeaux</div><h3>Pr&eacute;-reserva registrada &#10022;</h3><p>A sua pr&eacute;-reserva &eacute; <b>v&aacute;lida por 48 horas</b> e s&oacute; ser&aacute; <b>confirmada ap&oacute;s o pagamento</b>. Voc&ecirc; recebeu por e-mail as instru&ccedil;&otilde;es. Passado esse prazo sem pagamento, a pr&eacute;-reserva &eacute; liberada automaticamente.</p><button class="pb" onclick="popClose()">Entendi</button></div></div>
 <script>0;
 </script><script>
 var I18N={en:{ev_brand:"Events",ev_back:"&#8592; Back",ev_nl_h:"Restricted access",ev_nl_p:"Sign in to view events.",ev_nl_btn:"Sign in",ev_loading:"Loading…",ev_k:"Brotherhood",ev_h1:"Events",ev_intro:"Chapters, trips, dinners and lunches of the Commanderie — past and upcoming."},fr:{ev_brand:"Événements",ev_back:"&#8592; Retour",ev_nl_h:"Accès restreint",ev_nl_p:"Connectez-vous pour voir les événements.",ev_nl_btn:"Se connecter",ev_loading:"Chargement…",ev_k:"Confrérie",ev_h1:"Événements",ev_intro:"Chapitres, voyages, dîners et déjeuners de la Commanderie — passés et à venir."}};

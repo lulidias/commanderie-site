@@ -387,13 +387,16 @@ async function carregarAnuidade(){
     }
   }
   var admin="";
-  if(IS_CONSELHO){admin="<div style=\"margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;\">"+(paga?("<span style=\"font-size:12.5px;color:#2f6b3a;\">Paga em "+fdata(pr.anuidade_pago_em)+".</span> <button class=\"btn-n\" style=\"background:#8a8270;margin-left:8px;\" onclick=\"marcarAnuidProd(false)\">Reabrir</button>"):("<button class=\"btn-n\" onclick=\"marcarAnuidProd(true)\">Marcar anuidade como paga</button>"))+" <span class=\"msg\" id=\"anuidMsg\"></span></div>";}
+  if(IS_CONSELHO){admin="<div style=\"margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;\">"+(paga?("<span style=\"font-size:12.5px;color:#2f6b3a;\">Paga em "+fdata(pr.anuidade_pago_em)+(pr.anuidade_recebido_brl?(" · R$ "+Number(pr.anuidade_recebido_brl).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})):"")+".</span> <button class=\"btn-n\" style=\"background:#8a8270;margin-left:8px;\" onclick=\"marcarAnuidProd(false)\">Reabrir</button>"):("<input id=\"anuidRecBrl\" type=\"number\" step=\"0.01\" min=\"0\" placeholder=\"R$ recebido na conta\" style=\"padding:7px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;width:170px;margin-right:8px;\"><button class=\"btn-n\" onclick=\"marcarAnuidProd(true)\">Marcar anuidade como paga</button>"))+" <span class=\"msg\" id=\"anuidMsg\"></span></div>";}
   box.innerHTML="<div style=\"display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;\"><div style=\"font-family:Georgia,serif;color:var(--navy);font-size:18px;\">"+esc(pr.nome)+"</div>"+pill+"</div><div style=\"font-size:14px;color:#2a2620;\">"+linhas+"</div>"+transf+admin;
 }
 async function marcarAnuidProd(paga){
   var pid=prodId("anuidProd");if(!pid)return;
-  var msg=document.getElementById("anuidMsg");if(msg){msg.style.color="#2f6b3a";msg.textContent="Salvando...";}
-  var r=await sb.rpc("marcar_anuidade_programa",{p_tipo:"produtor",p_id:pid,p_paga:paga,p_ano:ANO});
+  var msg=document.getElementById("anuidMsg");
+  var rec=null;
+  if(paga){var e=document.getElementById("anuidRecBrl");rec=e?parseFloat(e.value):NaN;if(!rec||rec<=0){if(msg){msg.style.color="#8f1d24";msg.textContent="Informe o valor recebido em R$ (o que caiu na conta).";}return;}}
+  if(msg){msg.style.color="#2f6b3a";msg.textContent="Salvando...";}
+  var r=await sb.rpc("marcar_anuidade_produtor",{p_id:pid,p_pago:paga,p_recebido_brl:rec,p_ano:ANO});
   if(r.error){if(msg){msg.style.color="#8f1d24";msg.textContent=r.error.message;}return;}
   carregarAnuidade();
 }

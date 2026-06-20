@@ -1,0 +1,161 @@
+/* ===================================================================
+   COMMANDERIE DE BORDEAUX — DNA DE APRESENTAÇÕES
+   Padrão visual reutilizável para todas as apresentações da confraria.
+   Diagramação EDITORIAL clara (espelhada no layout original VSX),
+   re-skinada para a identidade Commanderie: fonte Georgia + paleta
+   navy / dourado / marfim / bordô.  Slides 16:9 (1280×720).
+   Render para PDF: Chrome headless --print-to-pdf  (ver README.md)
+   =================================================================== */
+
+:root{
+  --cream:#f8f3e6;     /* marfim / pergaminho        */
+  --cream2:#efe7d4;    /* marfim mais quente         */
+  --paper:#faf7ef;     /* fundo claro das páginas    */
+  --navy:#1e2a56;      /* azul-marinho institucional */
+  --navy-deep:#0c1020; /* fundo escuro de capa       */
+  --gold:#b08a3a;      /* dourado                    */
+  --gold-lt:#c9a85c;   /* dourado claro (sobre escuro) */
+  --red:#8f1d24;       /* bordô                      */
+  --ink:#2a2620;       /* texto sobre claro          */
+  --ink2:#5b5446;      /* texto secundário           */
+  --line:#ddd0ad;      /* linha / borda discreta     */
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+@page{ size:13.333in 7.5in; margin:0; }   /* 1280×720 16:9 exato */
+
+html,body{ background:#3a3a3a; }
+body{ font-family:Arial,Helvetica,sans-serif; }
+
+/* ---------- BASE DO SLIDE ---------- */
+.page{
+  width:1280px; height:720px; position:relative; overflow:hidden;
+  background:var(--paper); color:var(--ink);
+  page-break-after:always; break-after:page;
+}
+.page:last-child{ page-break-after:auto; }
+
+.bg{ position:absolute; inset:0; background-size:cover; background-position:center; }
+.veil{ position:absolute; inset:0; }
+.veil.dark{ background:linear-gradient(180deg,rgba(10,13,28,.62),rgba(10,13,28,.46) 42%,rgba(10,13,28,.86)); }
+
+/* ---------- TIPOGRAFIA ---------- */
+.kicker{ font-size:12px; letter-spacing:5px; text-transform:uppercase; color:var(--red); font-weight:bold; }
+h1,h2{ font-family:Georgia,serif; font-weight:normal; color:var(--navy); }
+.serif-it{ font-family:Georgia,serif; font-style:italic; }
+
+/* ---------- CABEÇALHO EDITORIAL (páginas internas) ---------- */
+.ihead{ position:absolute; top:54px; left:70px; right:70px; }
+.ihead .kicker{ display:block; }
+.ihead h2{ font-size:42px; line-height:1.04; margin-top:10px; }
+.ihead h2.sm{ font-size:34px; }
+.ihead .pag{ position:absolute; top:2px; right:0; font-family:Georgia,serif; color:var(--gold); font-size:15px; letter-spacing:1px; }
+
+/* área de conteúdo padrão */
+.content{ position:absolute; top:168px; left:70px; right:70px; bottom:64px; }
+
+/* texto corrido */
+.lead{ font-size:15.5px; line-height:1.72; color:var(--ink2); }
+.lead + .lead{ margin-top:13px; }
+.lead.big{ font-size:17px; }
+
+/* ---------- RODAPÉ CLARO (institucional) ---------- */
+.lfoot{ position:absolute; left:70px; right:70px; bottom:26px; display:flex; align-items:center;
+  justify-content:space-between; border-top:1px solid var(--line); padding-top:11px; }
+.lfoot .meta{ font-size:9.5px; letter-spacing:2.5px; text-transform:uppercase; color:#9a917c; }
+.lfoot .marks{ display:flex; align-items:center; gap:12px; }
+.lfoot .marks img.vsx{ height:20px; opacity:.92; }     /* logo VSX navy — assinatura discreta */
+.lfoot .marks img.bras{ height:32px; }                 /* brasão */
+
+/* ---------- PAINEL DE FOTO (lado direito, full-height) ---------- */
+.split2{ position:absolute; inset:0; display:flex; }
+.split2 .left{ flex:1; position:relative; }
+.split2 .right{ flex:0 0 42%; position:relative; background-size:cover; background-position:center; }
+.split2 .right .cap{ position:absolute; left:0; right:0; bottom:0; padding:26px 24px 18px;
+  background:linear-gradient(180deg,rgba(10,13,28,0),rgba(10,13,28,.82));
+  color:#fff; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; }
+.split2 .right .cap b{ color:var(--gold-lt); }
+/* conteúdo dentro do lado esquerdo usa .pad */
+.pad{ position:absolute; top:54px; left:70px; right:46px; bottom:64px; }
+
+/* ---------- ROTEIRO (lista numerada) ---------- */
+.timeline{ margin-top:22px; }
+.ti{ display:flex; align-items:flex-start; gap:16px; margin-bottom:20px; }
+.ti .num{ flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--red); color:#fff;
+  font-family:Georgia,serif; font-size:15px; display:flex; align-items:center; justify-content:center; margin-top:1px; }
+.ti .tx{ flex:1; }
+.ti .tt{ font-family:Georgia,serif; color:var(--navy); font-size:18px; }
+.ti .dd{ font-size:13px; color:var(--ink2); line-height:1.5; margin-top:2px; }
+.ti .pill{ flex:0 0 auto; align-self:flex-start; margin-top:3px; background:var(--cream2); border:1px solid var(--line);
+  color:var(--red); font-size:9.5px; letter-spacing:1.5px; text-transform:uppercase; font-weight:bold;
+  padding:5px 11px; border-radius:20px; white-space:nowrap; }
+.warn{ color:var(--gold); font-weight:bold; }   /* marcador "(confirmar)" */
+
+/* barra PERNOITE / nota inferior */
+.stay{ position:absolute; left:70px; bottom:74px; right:46px; background:#f2ecdc; border-left:4px solid var(--red);
+  border-radius:8px; padding:12px 18px; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--navy); }
+.stay b{ color:var(--red); }
+
+/* ---------- CARTÕES (lugares, números, investimento) ---------- */
+.card{ background:#fffdf7; border:1px solid var(--line); border-radius:14px; padding:22px 24px; }
+.gcard{ background:#f3efe3; border-radius:14px; padding:22px; }   /* cartão cinza-marfim (estilo original) */
+.place h3{ font-family:Georgia,serif; color:var(--navy); font-weight:normal; font-size:22px; margin:4px 0 7px; }
+.tag-min{ font-size:10.5px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); font-weight:bold; }
+
+.inc{ list-style:none; }
+.inc li{ position:relative; padding:7px 0 7px 26px; font-size:14px; color:var(--ink2); border-bottom:1px solid #efe7cf; }
+.inc li:last-child{ border-bottom:none; }
+.inc li::before{ content:'✓'; position:absolute; left:0; top:7px; color:var(--gold); font-weight:bold; }
+
+.bignum{ font-family:Georgia,serif; color:var(--red); line-height:1; }
+.price{ font-family:Georgia,serif; color:var(--navy); font-size:54px; }
+.price small{ font-size:18px; color:var(--gold); }
+
+/* faixa de chamada escura (estilo original p/ números e condições) */
+.ctaband{ background:var(--navy); border-radius:12px; padding:16px 24px; color:#fff; }
+.ctaband .k{ color:var(--gold-lt); font-size:10.5px; letter-spacing:3px; text-transform:uppercase; }
+
+/* ---------- GRADE DE LUGARES (cartões com foto: châteaux/restaurantes) ---------- */
+.placegrid{ display:flex; gap:18px; margin-top:6px; }
+.placecard{ flex:1; background:#fffdf7; border:1px solid var(--line); border-radius:12px; overflow:hidden; display:flex; flex-direction:column; }
+.placecard .ph{ height:150px; background-size:cover; background-position:center; }
+.placecard .bd{ padding:13px 15px 15px; flex:1; }
+.placecard .tg{ font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); font-weight:bold; }
+.placecard h3{ font-family:Georgia,serif; color:var(--navy); font-weight:normal; font-size:17px; margin:3px 0 6px; line-height:1.1; }
+.placecard p{ font-size:11.5px; color:var(--ink2); line-height:1.5; }
+
+/* ---------- LINHA DE LUGAR (foto grande + texto rico) ---------- */
+.prow{ display:flex; gap:30px; align-items:center; }
+.prow + .prow{ margin-top:26px; }
+.prow.rev{ flex-direction:row-reverse; }
+.prow .pic{ flex:0 0 46%; height:208px; border-radius:12px; background-size:cover; background-position:center; border:1px solid rgba(40,30,10,.10); }
+.prow .tx h3{ font-family:Georgia,serif; color:var(--navy); font-weight:normal; font-size:25px; margin:4px 0 9px; }
+.prow .tx p{ font-size:13.5px; color:var(--ink2); line-height:1.65; }
+.prow.compact .pic{ height:146px; }
+.prow.compact + .prow.compact{ margin-top:16px; }
+.prow.compact .tx h3{ font-size:21px; margin:2px 0 6px; }
+.prow.compact .tx p{ font-size:12.5px; line-height:1.55; }
+
+/* ---------- DISTÂNCIAS / ACESSOS ---------- */
+.distrow{ display:flex; gap:12px; margin-top:6px; }
+.distrow .d{ flex:1; background:#f3efe3; border-radius:9px; padding:9px 11px; }
+.distrow .dl{ font-size:9.5px; letter-spacing:1px; text-transform:uppercase; color:var(--ink2); }
+.distrow .dv{ font-family:Georgia,serif; color:var(--navy); font-size:16px; margin-top:1px; }
+.distrow .dv small{ font-size:10.5px; color:var(--gold); letter-spacing:0; }
+
+/* ---------- CAPA (mantida — Commanderie em destaque, VSX discreto) ---------- */
+.cover{ background:var(--navy-deep); }
+.cover .inner{ position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center; color:#fff; padding:0 60px; }
+.cover .brasao{ width:138px; filter:drop-shadow(0 6px 22px rgba(0,0,0,.6)); margin-bottom:16px; }
+.cover .conf{ font-size:15px; letter-spacing:7px; text-transform:uppercase; color:var(--gold-lt); margin-bottom:4px; }
+.cover h1{ color:#fff; font-size:96px; letter-spacing:5px; line-height:1; text-shadow:0 1px 3px rgba(0,0,0,.55); }
+.cover .rule{ width:70px; height:2px; background:var(--gold); margin:18px 0 14px; }
+.cover .sub{ font-size:19px; color:var(--cream2); font-style:italic; font-family:Georgia,serif; max-width:680px; }
+.cover .datas{ position:absolute; left:0; right:0; bottom:74px; text-align:center; color:#e7d8a8;
+  font-size:12.5px; letter-spacing:3px; text-transform:uppercase; }
+.cover .datas b{ color:#fff; }
+.cover .assina{ position:absolute; left:0; right:0; bottom:30px; text-align:center;
+  display:flex; align-items:center; justify-content:center; gap:12px; color:#9aa3c0;
+  font-size:10px; letter-spacing:3px; text-transform:uppercase; }
+.cover .assina img{ height:26px; opacity:.95; }

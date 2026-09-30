@@ -32,7 +32,7 @@ insert into public.email_modelos (chave,nome,assunto,titulo,corpo,cta_label,orde
  '<p style="background:#faf6ea;border:1px solid #e6d9b3;border-radius:10px;padding:12px 14px;line-height:1.8;"><b>{evento}</b><br><b>Data e hora:</b> {quando}<br><b>Local:</b> {onde}</p>'
  '<p><b>Passo a passo para concluir a sua introniza&ccedil;&atilde;o:</b></p>'
  '<ol style="line-height:1.7;">'
- '<li>Fa&ccedil;a o <b>PIX da anuidade ({valor})</b> para a chave <b>010.091.449-79</b> (Manuel Roberto Brand&atilde;o &middot; Bradesco). Guarde o <b>comprovante</b>.</li>'
+ '<li>Fa&ccedil;a o <b>PIX da anuidade ({valor})</b> para a chave <b>69.296.264/0001-30</b> (Commanderie de Bordeaux do Brasil). Guarde o <b>comprovante</b>.</li>'
  '<li>Crie o seu acesso ao site com o c&oacute;digo: <b>{codigo}</b>.</li>'
  '<li>Preencha a <b>Ficha de Introniza&ccedil;&atilde;o</b> e, ao final, <b>anexe o comprovante</b> do PIX (obrigat&oacute;rio para enviar).</li>'
  '<li>Envie. Assim que confirmarmos o pagamento, voc&ecirc; ter&aacute; <b>acesso completo ao site</b>.</li>'

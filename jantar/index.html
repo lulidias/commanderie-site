@@ -81,8 +81,6 @@
   <div class="sep"></div>
   <div class="lbl">Data</div>
   <div class="band" style="margin-top:6px;">Quinta-feira, 22 de outubro de 2026 · 20h00</div>
-  <div class="lbl" style="margin-top:22px;">Local</div>
-  <p class="local"><b>Restaurante Piselli Boa Vista</b><br>Associação Comercial de São Paulo<br>R. Boa Vista, 51 – 12º andar – Centro Histórico<br>São Paulo – SP · Tel.: (11) 3180-3760</p>
 
   <div class="sep"></div>
   <h2 class="sec">Participação &amp; Pagamento</h2>
@@ -96,6 +94,10 @@
       <div style="margin-top:10px;"><button class="btn gold" type="button" onclick="copiarPix()">Copiar código PIX</button><span id="pixMsg" class="copied"></span></div>
     </div>
   </div>
+
+  <div class="sep"></div>
+  <div class="lbl">Local</div>
+  <p class="local"><b>Restaurante Piselli Boa Vista</b><br>Associação Comercial de São Paulo<br>R. Boa Vista, 51 – 12º andar – Centro Histórico<br>São Paulo – SP · Tel.: (11) 3180-3760</p>
 
   <div class="sep"></div>
   <h2 class="sec">Confirmar presença</h2>
@@ -145,7 +147,7 @@ async function confirmar(e){
   var reg={ja_pagou:pago};
   document.getElementById("frm").style.display="none";
   msg.style.color="#2f6b3a";
-  msg.innerHTML="<b>Presença confirmada!</b> Obrigado, "+nome.split(" ")[0]+". "+(reg.ja_pagou?"Recebemos que o PIX já foi efetuado — enviaremos a confirmação.":"Para garantir o lugar, efetue o <b>PIX de R$ 950,00</b> na chave <b>69.296.264/0001-30</b>.")+" <br><br>Bordeaux, toujours Bordeaux. 🍷";
+  msg.innerHTML="<b>Presença confirmada!</b> Obrigado, "+nome.split(" ")[0]+". "+(reg.ja_pagou?"Recebemos que o PIX já foi efetuado — enviaremos a confirmação.":"Para garantir o lugar, efetue o <b>PIX de R$ 950,00</b> na chave <b>69.296.264/0001-30</b>.")+" <br><br>Bordeaux, toujours Bordeaux.";
   return false;
 }
 </script>

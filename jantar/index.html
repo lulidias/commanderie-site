@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jantar de Aniversário da Commanderie · 22 de outubro</title>
+<meta name="description" content="A Commanderie de Bordeaux do Brasil convida os seus Comendadores para o Jantar de Aniversário — 24 Grands Crus Classés de Saint-Émilion em magnum, na presença de 15 produtores.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jantar de Aniversário da Commanderie">
+<meta property="og:description" content="24 Grands Crus Classés de Saint-Émilion em magnum · 15 produtores · 22 de outubro de 2026, São Paulo. Confirme a sua presença.">
+<meta property="og:image" content="https://commanderiedebordeaux.com.br/img/og-jantar.png">
+<meta property="og:url" content="https://commanderiedebordeaux.com.br/jantar/">
+<link rel="icon" href="/img/favicon-64.png">
+<style>
+  :root{--navy:#1e2a56;--gold:#b08a3a;--gold-lt:#c9a85c;--red:#8f1d24;--cream:#f8f3e6;--paper:#faf7ef;--ink:#2a2620;--ink2:#5b5446;--line:#ddd0ad;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#eee7d5;font-family:Georgia,'Times New Roman',serif;color:var(--ink);line-height:1.5;padding:22px 12px;}
+  .card{max-width:660px;margin:0 auto;background:var(--paper);border:1px solid var(--gold);
+    box-shadow:0 10px 40px rgba(30,26,20,.12);border-radius:6px;overflow:hidden;}
+  .inner{border:1px solid var(--line);margin:10px;border-radius:4px;padding:36px 34px 30px;}
+  .brasao{display:block;width:90px;margin:2px auto 16px;}
+  .kick{text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:14px;letter-spacing:7px;text-transform:uppercase;color:var(--red);font-weight:bold;}
+  .intro{text-align:center;font-size:18px;color:var(--ink2);margin:18px auto 6px;max-width:480px;line-height:1.55;}
+  h1{text-align:center;font-weight:normal;color:var(--navy);font-size:44px;line-height:1.08;margin-top:10px;}
+  h1 small{display:block;font-size:26px;margin-top:3px;}
+  .dot{width:7px;height:7px;background:var(--gold);border-radius:50%;margin:16px auto;}
+  .desc{text-align:center;font-size:18px;color:var(--ink2);max-width:500px;margin:0 auto;line-height:1.55;}
+  .band{background:var(--navy);color:#fff;text-align:center;border-radius:8px;margin:24px 0;
+    padding:15px;font-family:Arial,sans-serif;font-size:17px;letter-spacing:2px;text-transform:uppercase;font-weight:bold;}
+  .lbl{text-align:center;font-family:Arial,sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:bold;margin-bottom:4px;}
+  .local{text-align:center;font-size:17px;color:var(--ink2);line-height:1.55;}
+  .local b{color:var(--navy);font-size:21px;}
+  .sep{height:1px;background:var(--line);margin:26px 0;}
+  .pixbox{background:#faf6ea;border:1px solid #e6d9b3;border-radius:12px;padding:18px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;}
+  .pixbox img{width:150px;height:150px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:6px;}
+  .pixinfo{flex:1;min-width:230px;font-size:16px;color:var(--ink2);line-height:1.55;}
+  .valor{font-family:Georgia,serif;color:var(--navy);font-size:38px;}
+  .valor small{font-size:18px;color:var(--gold);}
+  .btn{display:inline-block;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:14px 26px;font-size:17px;font-family:Arial,sans-serif;cursor:pointer;text-decoration:none;}
+  .btn.gold{background:var(--gold);}
+  .btn:disabled{opacity:.6;cursor:default;}
+  .copied{font-size:14px;color:#2f6b3a;margin-left:8px;}
+  form{margin-top:6px;}
+  .row{display:flex;gap:12px;flex-wrap:wrap;}
+  .fld{flex:1;min-width:160px;margin-top:12px;}
+  .fld label{display:block;font-family:Arial,sans-serif;font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:var(--ink2);margin-bottom:4px;}
+  .fld input,.fld select,.fld textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:9px;font-size:17px;font-family:Arial,sans-serif;background:#fff;}
+  .chk{margin-top:14px;font-family:Arial,sans-serif;font-size:16px;color:var(--ink2);display:flex;gap:9px;align-items:center;}
+  .msg{margin-top:14px;font-family:Arial,sans-serif;font-size:16px;line-height:1.5;}
+  .assina{text-align:center;margin-top:30px;}
+  .assina-rule{width:72px;height:2px;background:var(--gold);margin:0 auto 14px;}
+  .assina-conv{font-style:italic;color:var(--ink2);font-size:16px;margin-bottom:8px;}
+  .assina-nome{font-family:Georgia,serif;color:var(--navy);font-size:34px;line-height:1.08;}
+  .assina-cargo{font-size:15px;color:var(--ink2);font-style:italic;margin-top:5px;letter-spacing:.3px;}
+  .foot{display:flex;gap:26px;align-items:center;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+  .foot img{height:44px;opacity:.92;}
+  .foot .gc{height:62px;}
+  .lema{text-align:center;font-style:italic;color:var(--gold);font-size:19px;margin-top:20px;}
+  .rsvp{text-align:center;font-family:Arial,sans-serif;font-size:12px;letter-spacing:4px;color:var(--ink2);margin-top:8px;}
+  h2.sec{text-align:center;color:var(--navy);font-weight:normal;font-size:28px;margin-bottom:2px;}
+  .sub{text-align:center;font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;margin-bottom:6px;line-height:1.5;}
+  @media(max-width:480px){h1{font-size:34px;}h1 small{font-size:22px;}.inner{padding:26px 18px;}.intro,.desc{font-size:16.5px;}}
+</style>
+</head>
+<body>
+<div class="card"><div class="inner">
+  <img class="brasao" src="/img/brasao-alta.png" alt="Commanderie de Bordeaux">
+  <div class="kick">Convite</div>
+  <p class="intro">A <b>Commanderie de Bordeaux do Brasil</b>, com a <b>Association des Grands Crus Classés de Saint-Émilion</b>, tem a honra de convidar os seus Comendadores para o</p>
+  <h1>Jantar de Aniversário<small>da Commanderie</small></h1>
+  <div class="dot"></div>
+  <p class="desc">Um jantar excepcional com <b>24 Grands Crus Classés de Saint-Émilion em magnum</b>, na presença de <b>15 produtores</b>.</p>
+
+  <div class="assina">
+    <div class="assina-rule"></div>
+    <div class="assina-conv">Com a honra de recebê-los,</div>
+    <div class="assina-nome">Manu Brandão</div>
+    <div class="assina-cargo">Grão-Mestre · Commanderie de Bordeaux do Brasil</div>
+  </div>
+
+  <div class="sep"></div>
+  <div class="lbl">Data</div>
+  <div class="band" style="margin-top:6px;">Quinta-feira, 22 de outubro de 2026 · 20h00</div>
+  <div class="lbl" style="margin-top:22px;">Local</div>
+  <p class="local"><b>Restaurante Piselli Boa Vista</b><br>Associação Comercial de São Paulo<br>R. Boa Vista, 51 – 12º andar – Centro Histórico<br>São Paulo – SP · Tel.: (11) 3180-3760</p>
+
+  <div class="sep"></div>
+  <h2 class="sec">Participação &amp; Pagamento</h2>
+  <p style="text-align:center;" class="valor"><small>R$</small> 950,00 <span style="font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;">· por membro</span></p>
+  <div class="pixbox" style="margin-top:14px;">
+    <img src="/img/pix-commanderie.png" alt="QR Code PIX — Commanderie de Bordeaux do Brasil">
+    <div class="pixinfo">
+      <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;">Pague por PIX</div>
+      Favorecido: <b>Commanderie de Bordeaux do Brasil</b><br>
+      Chave (CNPJ): <b>69.296.264/0001-30</b>
+      <div style="margin-top:10px;"><button class="btn gold" type="button" onclick="copiarPix()">Copiar código PIX</button><span id="pixMsg" class="copied"></span></div>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+  <h2 class="sec">Confirmar presença</h2>
+  <p class="sub">Preencha para reservarmos o seu lugar. Depois, é só efetuar o PIX acima.</p>
+  <form id="frm" onsubmit="return confirmar(event)">
+    <div class="row">
+      <div class="fld"><label>Nome completo *</label><input id="f_nome" required></div>
+      <div class="fld"><label>E-mail</label><input id="f_email" type="email"></div>
+    </div>
+    <div class="row">
+      <div class="fld"><label>Telefone / WhatsApp</label><input id="f_tel"></div>
+      <div class="fld"><label>Núcleo</label>
+        <select id="f_nucleo"><option value="">—</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option><option>Convidado</option></select>
+      </div>
+      <div class="fld" style="max-width:120px;"><label>Nº de lugares</label><input id="f_conv" type="number" min="1" value="1"></div>
+    </div>
+    <label class="chk"><input id="f_pago" type="checkbox"> Já efetuei o PIX</label>
+    <div style="text-align:center;margin-top:16px;">
+      <button class="btn" id="btnEnviar" type="submit">Confirmar presença</button>
+      <div id="frmMsg" class="msg"></div>
+    </div>
+  </form>
+
+  <div class="foot">
+    <div style="text-align:center;line-height:1.15;"><div style="font-family:Georgia,serif;color:var(--navy);font-size:22px;letter-spacing:4px;">PISELLI</div><div style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:5px;color:var(--ink2);">BOA VISTA</div></div>
+    <img class="gc" src="/img/logo-grands-crus.png" alt="Grands Crus Classés de Saint-Émilion">
+  </div>
+  <div class="lema">Bordeaux, toujours Bordeaux.</div>
+  <div class="rsvp">R.S.V.P.</div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var PIX="00020126360014BR.GOV.BCB.PIX0114692962640001305204000053039865802BR5925ASSOCIACAO COMMANDERIE DE6008CURITIBA622605224JEzl0eT1M6tFHm5Isrpua6304E2FA";
+function copiarPix(){var m=document.getElementById("pixMsg");try{navigator.clipboard.writeText(PIX);m.textContent="Código copiado!";}catch(e){m.textContent="Copie a chave: 69.296.264/0001-30";}setTimeout(function(){m.textContent="";},3000);}
+var EVID="3e48a2aa-e616-49e8-bea8-42b26dc376d5";
+var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+async function confirmar(e){
+  e.preventDefault();
+  var g=function(id){var el=document.getElementById(id);return el?el.value.trim():"";};
+  var nome=g("f_nome"); if(!nome){return false;}
+  var msg=document.getElementById("frmMsg"); var btn=document.getElementById("btnEnviar");
+  var pago=document.getElementById("f_pago").checked;
+  btn.disabled=true; msg.style.color="#5b5446"; msg.textContent="Enviando…";
+  var r=await sb.rpc("rsvp_publico",{p_evento:EVID, p_nome:nome, p_email:g("f_email")||null, p_telefone:g("f_tel")||null, p_convidados:parseInt(g("f_conv"),10)||1});
+  if(r.error){btn.disabled=false;msg.style.color="#8f1d24";msg.textContent="Não foi possível enviar. Tente de novo ou fale com a Secretaria. ("+r.error.message+")";return false;}
+  var reg={ja_pagou:pago};
+  document.getElementById("frm").style.display="none";
+  msg.style.color="#2f6b3a";
+  msg.innerHTML="<b>Presença confirmada!</b> Obrigado, "+nome.split(" ")[0]+". "+(reg.ja_pagou?"Recebemos que o PIX já foi efetuado — enviaremos a confirmação.":"Para garantir o lugar, efetue o <b>PIX de R$ 950,00</b> na chave <b>69.296.264/0001-30</b>.")+" <br><br>Bordeaux, toujours Bordeaux. 🍷";
+  return false;
+}
+</script>
+</body>
+</html>

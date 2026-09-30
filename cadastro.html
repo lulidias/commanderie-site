@@ -45,7 +45,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-var sb=window.supabase.createClient("https://saotncritqxuchsvvnzi.supabase.co","sb_publishable_EwpsjtLlSrPhSJfrJG6Qvw_qUtE0aL5");
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
 var membroAtual=null;
 var fotoV=170,fNW=0,fNH=0,fBase=1,fZoom=1,fOX=0,fOY=0,fImg=null,fStage=null,fotoNova=false;
 async function uploadFotoSeNova(){if(!fotoNova||!fImg||fImg.style.display==="none")return null;var scale=fBase*fZoom,OUT=320;var cv=document.createElement("canvas");cv.width=OUT;cv.height=OUT;var cx=cv.getContext("2d");cx.drawImage(fImg,(0-fOX)/scale,(0-fOY)/scale,fotoV/scale,fotoV/scale,0,0,OUT,OUT);var blob=await new Promise(function(res){cv.toBlob(res,"image/jpeg",0.9);});var u=(await sb.auth.getUser()).data.user;if(!u)return null;var path=u.id+".jpg";var up=await sb.storage.from("fotos").upload(path,blob,{upsert:true,contentType:"image/jpeg"});if(up.error)throw up.error;return sb.storage.from("fotos").getPublicUrl(path).data.publicUrl;}

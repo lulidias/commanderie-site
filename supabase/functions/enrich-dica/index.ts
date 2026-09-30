@@ -3,8 +3,8 @@
 // Segurança: só um comendador LOGADO pode chamar (validamos o usuário pelo token).
 //
 // Deploy:
-//   supabase functions deploy enrich-dica --project-ref saotncritqxuchsvvnzi
-//   supabase secrets set ANTHROPIC_API_KEY=sk-ant-... --project-ref saotncritqxuchsvvnzi
+//   supabase functions deploy enrich-dica --project-ref yvdkaycwtulqjnvlpgvy
+//   supabase secrets set ANTHROPIC_API_KEY=sk-ant-... --project-ref yvdkaycwtulqjnvlpgvy
 //
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 

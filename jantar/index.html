@@ -95,6 +95,17 @@
   .leglbl{font-size:12.5px;color:var(--ink2);margin-top:12px;font-family:Arial,sans-serif;}
   .leglbl .star{color:var(--gold);}
   @media(max-width:480px){.prodgrid{grid-template-columns:1fr;}.winegrid{grid-template-columns:1fr;gap:0;}}
+  .plogo{display:inline-flex;align-items:center;gap:12px;margin:4px 0 2px;}
+  .plogo .pea{width:17px;height:17px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#b3c76f,#6f8a3f);box-shadow:0 1px 3px rgba(0,0,0,.18);flex:none;}
+  .plogo .pcol{display:inline-flex;flex-direction:column;align-items:flex-start;}
+  .plogo .pt{font-family:Arial,Helvetica,sans-serif;font-weight:300;font-size:32px;letter-spacing:10px;color:var(--navy);line-height:1;}
+  .plogo .pbv{font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:5px;color:var(--ink2);margin-top:5px;}
+  .phist{font-size:14.5px;color:var(--ink2);line-height:1.6;max-width:540px;margin:14px auto 0;text-align:center;}
+  .phist b{color:var(--navy);}
+  .gcc-intro{text-align:center;margin:16px auto 2px;max-width:560px;}
+  .gcc-intro img{height:88px;opacity:.9;margin-bottom:10px;}
+  .gcc-intro p{font-size:14px;color:var(--ink2);line-height:1.6;}
+  .gcc-intro b{color:var(--navy);}
 </style>
 </head>
 <body>
@@ -108,7 +119,8 @@
 
   <div class="sep"></div>
   <h2 class="sec">Participação &amp; Pagamento</h2>
-  <p style="text-align:center;" class="valor"><small>R$</small> 950,00 <span style="font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;">· por membro</span></p>
+  <p style="text-align:center;" class="valor"><small>R$</small> 950,00 <span style="font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;">· por Comendador</span></p>
+  <p style="text-align:center;font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;margin-top:2px;">Convidado: <b style="color:var(--navy);">R$ 1.250,00</b> &middot; cada Comendador tem direito a <b>um convidado</b></p>
   <div class="pixbox" style="margin-top:14px;">
     <img src="/img/pix-commanderie.png" alt="QR Code PIX — Commanderie de Bordeaux do Brasil">
     <div class="pixinfo">
@@ -120,8 +132,16 @@
   </div>
 
   <div class="sep"></div>
-  <div class="lbl">Local</div>
-  <p class="local"><b>Restaurante Piselli Boa Vista</b><br>Associação Comercial de São Paulo<br>R. Boa Vista, 51 – 12º andar – Centro Histórico<br>São Paulo – SP · Tel.: (11) 3180-3760</p>
+  <h2 class="sec">À Mesa · Os Produtores</h2>
+  <p class="sub">13 produtores &middot; 16 châteaux de Saint-Émilion, presentes na ocasião</p>
+  <div class="gcc-intro"><img src="/img/logo-grands-crus-preto.png" alt="Grands Crus Classés de Saint-Émilion — L'Association"><p>A <b>Association des Grands Crus Classés de Saint-Émilion</b> reúne os châteaux classificados da apelação — a única classificação de Bordeaux revista periodicamente. Todos os produtores presentes fazem parte dela.</p></div>
+  <div class="prodgrid"><div class="pcard pres"><div class="pn">Sylvie Cazes</div><div class="pc">Presidente da Association · Château Chauvin</div></div><div class="pcard"><div class="pn">Cédric Pla</div><div class="pc">Château Montlabert</div></div><div class="pcard"><div class="pn">Christian Dauriac</div><div class="pc">Château Destieux · Château Montlisse</div></div><div class="pcard"><div class="pn">Gonzague de Lambert</div><div class="pc">Château de Ferrand</div></div><div class="pcard"><div class="pn">Jean-Christophe Meyrou</div><div class="pc">Château Bellefont-Belcier · Tour Saint-Christophe · La Couspaude</div></div><div class="pcard"><div class="pn">Jean-François Quenin</div><div class="pc">Château de Pressac</div></div><div class="pcard"><div class="pn">Jean-Michel Garçion</div><div class="pc">Château La Croizille · Château Tour Baladoz</div></div><div class="pcard"><div class="pn">Magali Malet Serres</div><div class="pc">Château Clos de l’Oratoire</div></div><div class="pcard"><div class="pn">Pierre Courdurié</div><div class="pc">Château Croix de Labrie</div></div><div class="pcard"><div class="pn">Pierre-Alexandre Gazaille</div><div class="pc">Château Grand Corbin</div></div><div class="pcard"><div class="pn">Poeiti Perrot</div><div class="pc">Château Franc Mayne</div></div><div class="pcard"><div class="pn">Thibaut Decoster</div><div class="pc">Château Clos des Jacobins</div></div><div class="pcard"><div class="pn">Valérie Befeve</div><div class="pc">Château Dassault</div></div><div class="pcard"><div class="pn">Virginie Larramona</div><div class="pc">Association des Grands Crus Classés de Saint-Émilion</div></div></div>
+
+  <div class="sep"></div>
+  <h2 class="sec">Os 24 Grands Crus</h2>
+  <p class="sub">Grands Crus Classés de Saint-Émilion &middot; todos em <b>magnum (1500 ml)</b></p>
+  <div class="winegrid"><div class="wine"><div class="wn">Château Badette</div><div class="wy">2023</div></div><div class="wine"><div class="wn">Château Bellefont-Belcier <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Chauvin <span class="star">✦</span></div><div class="wy">2015</div></div><div class="wine"><div class="wn">Clos de l’Oratoire <span class="star">✦</span></div><div class="wy">2016</div></div><div class="wine"><div class="wn">Château Clos de Sarpe</div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Clos des Jacobins <span class="star">✦</span></div><div class="wy">2016</div></div><div class="wine"><div class="wn">Château Croix de Labrie <span class="star">✦</span></div><div class="wy">2023</div></div><div class="wine"><div class="wn">Château Dassault <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Destieux <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château de Ferrand <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Fonroque</div><div class="wy">2020</div></div><div class="wine"><div class="wn">Château Franc Mayne <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Grand Corbin <span class="star">✦</span></div><div class="wy">2018</div></div><div class="wine"><div class="wn">Château Grand Corbin-Despagne</div><div class="wy">2020</div></div><div class="wine"><div class="wn">Château La Couspaude <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château La Croizille <span class="star">✦</span></div><div class="wy">2016</div></div><div class="wine"><div class="wn">Château La Tour Figeac</div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Laroque</div><div class="wy">2018</div></div><div class="wine"><div class="wn">Château Montlabert <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Montlisse <span class="star">✦</span></div><div class="wy">2020</div></div><div class="wine"><div class="wn">Château Petit Faurie de Soutard</div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château de Pressac <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Tour Baladoz <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Tour Saint-Christophe <span class="star">✦</span></div><div class="wy">2022</div></div></div>
+  <div class="leglbl"><span class="star">✦</span> produtor presente no jantar</div>
 
   <div class="sep"></div>
   <h2 class="sec">O Menu</h2>
@@ -132,18 +152,10 @@
   <div class="mcourse"><div class="ct">Plat Principal</div><div class="cn">Cuisse de Canard Confite</div><div class="cd">Coxa de pato confitada, servida com o próprio molho do assado e nhoque na manteiga e sálvia.</div></div>
   <div class="mcourse"><div class="ct">Dessert</div><div class="cn">Mousse au Chocolat</div><div class="cd">Musse envolta em crosta de chocolate Callebaut, harmonizada com laranja-bahia confitada e calda com toque de açafrão.</div></div>
 <div class="sep"></div>
-  <h2 class="sec">À Mesa · Os Produtores</h2>
-  <p class="sub">13 produtores &middot; 16 châteaux de Saint-Émilion, presentes na ocasião</p>
-  <div class="prodgrid"><div class="pcard pres"><div class="pn">Sylvie Cazes</div><div class="pc">Presidente da Association · Château Chauvin</div></div><div class="pcard"><div class="pn">Cédric Pla</div><div class="pc">Château Montlabert</div></div><div class="pcard"><div class="pn">Christian Dauriac</div><div class="pc">Château Destieux · Château Montlisse</div></div><div class="pcard"><div class="pn">Gonzague de Lambert</div><div class="pc">Château de Ferrand</div></div><div class="pcard"><div class="pn">Jean-Christophe Meyrou</div><div class="pc">Château Bellefont-Belcier · Tour Saint-Christophe · La Couspaude</div></div><div class="pcard"><div class="pn">Jean-François Quenin</div><div class="pc">Château de Pressac</div></div><div class="pcard"><div class="pn">Jean-Michel Garçion</div><div class="pc">Château La Croizille · Château Tour Baladoz</div></div><div class="pcard"><div class="pn">Magali Malet Serres</div><div class="pc">Château Clos de l’Oratoire</div></div><div class="pcard"><div class="pn">Pierre Courdurié</div><div class="pc">Château Croix de Labrie</div></div><div class="pcard"><div class="pn">Pierre-Alexandre Gazaille</div><div class="pc">Château Grand Corbin</div></div><div class="pcard"><div class="pn">Poeiti Perrot</div><div class="pc">Château Franc Mayne</div></div><div class="pcard"><div class="pn">Thibaut Decoster</div><div class="pc">Château Clos des Jacobins</div></div><div class="pcard"><div class="pn">Valérie Befeve</div><div class="pc">Château Dassault</div></div><div class="pcard"><div class="pn">Virginie Larramona</div><div class="pc">Association des Grands Crus Classés de Saint-Émilion</div></div></div>
-
-  <div class="sep"></div>
-  <h2 class="sec">Os 24 Grands Crus</h2>
-  <p class="sub">Grands Crus Classés de Saint-Émilion &middot; todos em <b>magnum (1500 ml)</b></p>
-  <div class="winegrid"><div class="wine"><div class="wn">Château Badette</div><div class="wy">2023</div></div><div class="wine"><div class="wn">Château Bellefont-Belcier <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Chauvin <span class="star">✦</span></div><div class="wy">2015</div></div><div class="wine"><div class="wn">Clos de l’Oratoire <span class="star">✦</span></div><div class="wy">2016</div></div><div class="wine"><div class="wn">Château Clos de Sarpe</div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Clos des Jacobins <span class="star">✦</span></div><div class="wy">2016</div></div><div class="wine"><div class="wn">Château Croix de Labrie <span class="star">✦</span></div><div class="wy">2023</div></div><div class="wine"><div class="wn">Château Dassault <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Destieux <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château de Ferrand <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Fonroque</div><div class="wy">2020</div></div><div class="wine"><div class="wn">Château Franc Mayne <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Grand Corbin <span class="star">✦</span></div><div class="wy">2018</div></div><div class="wine"><div class="wn">Château Grand Corbin-Despagne</div><div class="wy">2020</div></div><div class="wine"><div class="wn">Château La Couspaude <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château La Croizille <span class="star">✦</span></div><div class="wy">2016</div></div><div class="wine"><div class="wn">Château La Tour Figeac</div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Laroque</div><div class="wy">2018</div></div><div class="wine"><div class="wn">Château Montlabert <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Montlisse <span class="star">✦</span></div><div class="wy">2020</div></div><div class="wine"><div class="wn">Château Petit Faurie de Soutard</div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château de Pressac <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Tour Baladoz <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Tour Saint-Christophe <span class="star">✦</span></div><div class="wy">2022</div></div></div>
-  <div class="leglbl"><span class="star">✦</span> produtor presente no jantar</div>
-
-  <div class="sep"></div>
-  <div class="lbl">O Piselli Boa Vista</div>
+  <div class="lbl">A Casa</div>
+  <div style="text-align:center;"><span class="plogo"><span class="pea"></span><span class="pcol"><span class="pt">PISELLI</span><span class="pbv">BOA VISTA</span></span></span></div>
+  <p class="phist">Fundado por <b>Juscelino Pereira</b> em 2004, o Piselli — <i>“ervilhas”</i>, em italiano — nasceu de uma história de origem: ainda jovem, em Joanópolis, na Serra da Mantiqueira, ele plantou ervilhas antes de seguir carreira em casas como o Jockey Club e o Fasano. Inspirado na cozinha do Piemonte e na tradição italiana, tornou-se uma referência da gastronomia paulistana — e mantém até hoje o costume de finalizar cada prato com três ervilhas. <b>Juscelino Pereira é Comendador da Commanderie de Bordeaux do Brasil.</b></p>
+  <p class="local" style="margin-top:16px;"><b>Piselli Boa Vista</b><br>Associação Comercial de São Paulo · R. Boa Vista, 51 — 12º andar · Centro Histórico<br>São Paulo — SP · Tel.: (11) 3180-3760</p>
   <div class="pgal">
     <img class="wide" src="/img/jantar/piselli-janelas.jpg" alt="Salão do Piselli Boa Vista com vista" onclick="abrirFoto(this.src)">
     <img src="/img/jantar/piselli-entrada.jpg" alt="Entrada do Piselli" onclick="abrirFoto(this.src)">
@@ -154,31 +166,14 @@
 
   <div class="sep"></div>
   <h2 class="sec">Confirmar presença</h2>
-  <p class="sub">Preencha para reservarmos o seu lugar. Depois, é só efetuar o PIX acima.</p>
-  <form id="frm" onsubmit="return confirmar(event)">
-    <div class="row">
-      <div class="fld"><label>Nome completo *</label><input id="f_nome" required></div>
-      <div class="fld"><label>E-mail</label><input id="f_email" type="email"></div>
-    </div>
-    <div class="row">
-      <div class="fld"><label>Telefone / WhatsApp</label><input id="f_tel"></div>
-      <div class="fld"><label>Núcleo</label>
-        <select id="f_nucleo"><option value="">—</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option><option>Convidado</option></select>
-      </div>
-      <div class="fld" style="max-width:120px;"><label>Nº de lugares</label><input id="f_conv" type="number" min="1" value="1"></div>
-    </div>
-    <label class="chk"><input id="f_pago" type="checkbox"> Já efetuei o PIX</label>
-    <div style="text-align:center;margin-top:16px;">
-      <button class="btn" id="btnEnviar" type="submit">Confirmar presença</button>
-      <div id="frmMsg" class="msg"></div>
-    </div>
-  </form>
-  <div id="passe" style="display:none;"></div>
-  <div id="paLink" style="text-align:center;margin-top:14px;font-size:13.5px;color:var(--ink2);line-height:1.5;">Comendador, ainda não acessa a plataforma da Commanderie?<br><a href="/?primeiro=1" style="color:var(--navy);border-bottom:1px solid #b08a3a;text-decoration:none;font-weight:bold;">Faça aqui o seu primeiro acesso</a></div>
+  <p class="sub">A confirmação é feita no <b>Painel do Comendador</b> — já com os seus dados. Lá você também informa o nome do seu <b>convidado</b> e envia o comprovante do PIX.</p>
+  <div style="text-align:center;margin-top:18px;">
+    <a class="btn" href="/?login=1">Entrar no painel e confirmar</a>
+    <div style="font-size:13.5px;color:var(--ink2);margin-top:14px;font-family:Arial,sans-serif;line-height:1.55;">Primeiro acesso? <a href="/?primeiro=1" style="color:var(--navy);border-bottom:1px solid #b08a3a;text-decoration:none;font-weight:bold;">Informe o seu e-mail</a> e você recebe um link de acesso — sem senha.</div>
+  </div>
 
   <div class="foot">
-    <div style="text-align:center;line-height:1.15;"><div style="font-family:Georgia,serif;color:var(--navy);font-size:22px;letter-spacing:4px;">PISELLI</div><div style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:5px;color:var(--ink2);">BOA VISTA</div></div>
-    <img class="gc" src="/img/logo-grands-crus.png" alt="Grands Crus Classés de Saint-Émilion">
+    <img src="/img/brasao-alta.png" alt="Commanderie de Bordeaux do Brasil" style="height:72px;opacity:.95;">
   </div>
   <div class="lema">Bordeaux, toujours Bordeaux.</div>
   <div class="rsvp">R.S.V.P.</div>

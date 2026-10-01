@@ -74,6 +74,14 @@
   .artlb{display:none;position:fixed;inset:0;background:rgba(10,8,5,.92);z-index:200;align-items:center;justify-content:center;padding:20px;}
   .artlb img{max-width:94%;max-height:92vh;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.6);}
   .artlb .x{position:absolute;top:14px;right:24px;color:#fff;font-size:40px;cursor:pointer;line-height:1;}
+  .mcourse{margin:16px 0;}
+  .mcourse .ct{font-family:Arial,sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:bold;}
+  .mcourse .cn{font-family:Georgia,serif;color:var(--navy);font-size:20px;margin:3px 0 4px;}
+  .mcourse .cd{font-size:14px;color:var(--ink2);line-height:1.5;max-width:520px;margin:0 auto;}
+  .pgal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+  .pgal img{width:100%;height:122px;object-fit:cover;border-radius:8px;border:1px solid var(--line);cursor:zoom-in;display:block;}
+  .pgal .wide{grid-column:span 3;height:210px;}
+  @media(max-width:480px){.pgal img{height:92px;}.pgal .wide{height:150px;}}
 </style>
 </head>
 <body>
@@ -101,6 +109,25 @@
   <div class="sep"></div>
   <div class="lbl">Local</div>
   <p class="local"><b>Restaurante Piselli Boa Vista</b><br>Associação Comercial de São Paulo<br>R. Boa Vista, 51 – 12º andar – Centro Histórico<br>São Paulo – SP · Tel.: (11) 3180-3760</p>
+
+  <div class="sep"></div>
+  <h2 class="sec">O Menu</h2>
+  <p class="sub">Menu avec accords mets et vins</p>
+  <div class="mcourse"><div class="ct">Cocktail</div><div class="cd">Canapés de carpaccio de peixe · Canapés de Boursin e figos frescos</div></div>
+  <div class="mcourse"><div class="ct">Entrée</div><div class="cn">Tartare de Bœuf</div><div class="cd">Filé mignon cru, finamente picado na ponta da faca, com mostarda de Dijon, alcaparras, cebola roxa, picles e ervas frescas.</div></div>
+  <div class="mcourse"><div class="ct">Premier Plat</div><div class="cn">Risotto au Foie Gras</div><div class="cd">Risoto de beterraba com foie gras e folhas de sálvia crocante.</div></div>
+  <div class="mcourse"><div class="ct">Plat Principal</div><div class="cn">Cuisse de Canard Confite</div><div class="cd">Coxa de pato confitada, servida com o próprio molho do assado e nhoque na manteiga e sálvia.</div></div>
+  <div class="mcourse"><div class="ct">Dessert</div><div class="cn">Mousse au Chocolat</div><div class="cd">Musse envolta em crosta de chocolate Callebaut, harmonizada com laranja-bahia confitada e calda com toque de açafrão.</div></div>
+  <p class="sub" style="margin-top:4px;font-style:italic;">Os vinhos e produtores presentes serão anunciados em breve.</p>
+
+  <div class="sep"></div>
+  <div class="lbl">O Piselli Boa Vista</div>
+  <div class="pgal">
+    <img class="wide" src="/img/jantar/piselli-salao.jpg" alt="Salão do Piselli Boa Vista" onclick="abrirFoto(this.src)">
+    <img src="/img/jantar/piselli-mesa.jpg" alt="Mesa posta no Piselli" onclick="abrirFoto(this.src)">
+    <img src="/img/jantar/piselli-prato.jpg" alt="Prato do Piselli" onclick="abrirFoto(this.src)">
+    <img src="/img/jantar/piselli-sobremesa.jpg" alt="Sobremesa do Piselli" onclick="abrirFoto(this.src)">
+  </div>
 
   <div class="sep"></div>
   <h2 class="sec">Confirmar presença</h2>
@@ -134,14 +161,15 @@
   <div class="rsvp">R.S.V.P.</div>
 </div></div>
 
-<div class="artlb" id="artLB" onclick="if(event.target===this)fecharArte()"><span class="x" onclick="fecharArte()">&times;</span><img src="/img/convites/jantar-1-ano.jpg" alt="Convite ampliado — Jantar de 1 Ano"></div>
+<div class="artlb" id="artLB" onclick="if(event.target===this)fecharArte()"><span class="x" onclick="fecharArte()">&times;</span><img id="artLBimg" src="/img/convites/jantar-1-ano.jpg" alt="Jantar de 1 Ano"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var PIX="00020126360014BR.GOV.BCB.PIX0114692962640001305204000053039865802BR5925ASSOCIACAO COMMANDERIE DE6008CURITIBA622605224JEzl0eT1M6tFHm5Isrpua6304E2FA";
 function copiarPix(){var m=document.getElementById("pixMsg");try{navigator.clipboard.writeText(PIX);m.textContent="Código copiado!";}catch(e){m.textContent="Copie a chave: 69.296.264/0001-30";}setTimeout(function(){m.textContent="";},3000);}
 var EVID="c5adcdf2-07a7-4aa3-ad73-a7b6f88efb2c";
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
-function abrirArte(){document.getElementById("artLB").style.display="flex";}
+function abrirArte(){document.getElementById("artLBimg").src="/img/convites/jantar-1-ano.jpg";document.getElementById("artLB").style.display="flex";}
+function abrirFoto(src){document.getElementById("artLBimg").src=src;document.getElementById("artLB").style.display="flex";}
 function fecharArte(){document.getElementById("artLB").style.display="none";}
 function baixarICS(){
   var dt="20261022T230000Z",end="20261023T020000Z";

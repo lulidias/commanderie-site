@@ -82,6 +82,19 @@
   .pgal img{width:100%;height:122px;object-fit:cover;border-radius:8px;border:1px solid var(--line);cursor:zoom-in;display:block;}
   .pgal .wide{grid-column:span 3;height:210px;}
   @media(max-width:480px){.pgal img{height:92px;}.pgal .wide{height:150px;}}
+  .prodgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px;text-align:left;}
+  .pcard{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+  .pcard.pres{border-color:var(--gold);box-shadow:0 3px 10px rgba(176,138,58,.12);}
+  .pcard .pn{font-family:Georgia,serif;color:var(--navy);font-size:16px;line-height:1.2;}
+  .pcard .pc{font-size:12.5px;color:var(--ink2);margin-top:4px;line-height:1.45;}
+  .winegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:0 22px;margin-top:14px;text-align:left;}
+  .wine{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:1px solid var(--line);padding:9px 2px;}
+  .wine .wn{font-family:Georgia,serif;color:var(--navy);font-size:14.5px;line-height:1.3;}
+  .wine .wn .star{color:var(--gold);font-size:12px;}
+  .wine .wy{font-size:13px;color:var(--ink2);font-family:Arial,sans-serif;white-space:nowrap;}
+  .leglbl{font-size:12.5px;color:var(--ink2);margin-top:12px;font-family:Arial,sans-serif;}
+  .leglbl .star{color:var(--gold);}
+  @media(max-width:480px){.prodgrid{grid-template-columns:1fr;}.winegrid{grid-template-columns:1fr;gap:0;}}
 </style>
 </head>
 <body>
@@ -118,7 +131,16 @@
   <div class="mcourse"><div class="ct">Premier Plat</div><div class="cn">Risotto au Foie Gras</div><div class="cd">Risoto de beterraba com foie gras e folhas de sálvia crocante.</div></div>
   <div class="mcourse"><div class="ct">Plat Principal</div><div class="cn">Cuisse de Canard Confite</div><div class="cd">Coxa de pato confitada, servida com o próprio molho do assado e nhoque na manteiga e sálvia.</div></div>
   <div class="mcourse"><div class="ct">Dessert</div><div class="cn">Mousse au Chocolat</div><div class="cd">Musse envolta em crosta de chocolate Callebaut, harmonizada com laranja-bahia confitada e calda com toque de açafrão.</div></div>
-  <p class="sub" style="margin-top:4px;font-style:italic;">Os vinhos e produtores presentes serão anunciados em breve.</p>
+<div class="sep"></div>
+  <h2 class="sec">À Mesa · Os Produtores</h2>
+  <p class="sub">13 produtores &middot; 16 châteaux de Saint-Émilion, presentes na ocasião</p>
+  <div class="prodgrid"><div class="pcard pres"><div class="pn">Sylvie Cazes</div><div class="pc">Presidente da Association · Château Chauvin</div></div><div class="pcard"><div class="pn">Cédric Pla</div><div class="pc">Château Montlabert</div></div><div class="pcard"><div class="pn">Christian Dauriac</div><div class="pc">Château Destieux · Château Montlisse</div></div><div class="pcard"><div class="pn">Gonzague de Lambert</div><div class="pc">Château de Ferrand</div></div><div class="pcard"><div class="pn">Jean-Christophe Meyrou</div><div class="pc">Château Bellefont-Belcier · Tour Saint-Christophe · La Couspaude</div></div><div class="pcard"><div class="pn">Jean-François Quenin</div><div class="pc">Château de Pressac</div></div><div class="pcard"><div class="pn">Jean-Michel Garçion</div><div class="pc">Château La Croizille · Château Tour Baladoz</div></div><div class="pcard"><div class="pn">Magali Malet Serres</div><div class="pc">Château Clos de l’Oratoire</div></div><div class="pcard"><div class="pn">Pierre Courdurié</div><div class="pc">Château Croix de Labrie</div></div><div class="pcard"><div class="pn">Pierre-Alexandre Gazaille</div><div class="pc">Château Grand Corbin</div></div><div class="pcard"><div class="pn">Poeiti Perrot</div><div class="pc">Château Franc Mayne</div></div><div class="pcard"><div class="pn">Thibaut Decoster</div><div class="pc">Château Clos des Jacobins</div></div><div class="pcard"><div class="pn">Valérie Befeve</div><div class="pc">Château Dassault</div></div><div class="pcard"><div class="pn">Virginie Larramona</div><div class="pc">Association des Grands Crus Classés de Saint-Émilion</div></div></div>
+
+  <div class="sep"></div>
+  <h2 class="sec">Os 24 Grands Crus</h2>
+  <p class="sub">Grands Crus Classés de Saint-Émilion &middot; todos em <b>magnum (1500 ml)</b></p>
+  <div class="winegrid"><div class="wine"><div class="wn">Château Badette</div><div class="wy">2023</div></div><div class="wine"><div class="wn">Château Bellefont-Belcier <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Chauvin <span class="star">✦</span></div><div class="wy">2015</div></div><div class="wine"><div class="wn">Clos de l’Oratoire <span class="star">✦</span></div><div class="wy">2016</div></div><div class="wine"><div class="wn">Château Clos de Sarpe</div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Clos des Jacobins <span class="star">✦</span></div><div class="wy">2016</div></div><div class="wine"><div class="wn">Château Croix de Labrie <span class="star">✦</span></div><div class="wy">2023</div></div><div class="wine"><div class="wn">Château Dassault <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Destieux <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château de Ferrand <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Fonroque</div><div class="wy">2020</div></div><div class="wine"><div class="wn">Château Franc Mayne <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Grand Corbin <span class="star">✦</span></div><div class="wy">2018</div></div><div class="wine"><div class="wn">Château Grand Corbin-Despagne</div><div class="wy">2020</div></div><div class="wine"><div class="wn">Château La Couspaude <span class="star">✦</span></div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château La Croizille <span class="star">✦</span></div><div class="wy">2016</div></div><div class="wine"><div class="wn">Château La Tour Figeac</div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château Laroque</div><div class="wy">2018</div></div><div class="wine"><div class="wn">Château Montlabert <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Montlisse <span class="star">✦</span></div><div class="wy">2020</div></div><div class="wine"><div class="wn">Château Petit Faurie de Soutard</div><div class="wy">2019</div></div><div class="wine"><div class="wn">Château de Pressac <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Tour Baladoz <span class="star">✦</span></div><div class="wy">2022</div></div><div class="wine"><div class="wn">Château Tour Saint-Christophe <span class="star">✦</span></div><div class="wy">2022</div></div></div>
+  <div class="leglbl"><span class="star">✦</span> produtor presente no jantar</div>
 
   <div class="sep"></div>
   <div class="lbl">O Piselli Boa Vista</div>

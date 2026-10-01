@@ -1,15 +1,12 @@
-// Robô que lê o comprovante do PIX e, se bater valor + CNPJ, marca o RSVP como pago.
-// À prova de erros: só confirma automaticamente com alta confiança; na dúvida, deixa para o Conselho.
+// Robô: lê o comprovante do PIX e confirma pagamento se bater VALOR + CNPJ.
+// Valor esperado: R$ 950 (Comendador) ou R$ 2.200 (Comendador + 1 convidado).
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
-const VALOR_MIN = 950;
-const CNPJ = "69296264000130";
-
+const VAL_COMENDADOR = 950, VAL_CONVIDADO = 1250, CNPJ = "69296264000130";
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   const json = (o: unknown) => new Response(JSON.stringify(o), { headers: { ...CORS, "Content-Type": "application/json" } });
@@ -17,7 +14,15 @@ Deno.serve(async (req) => {
     const { rsvp_id, url } = await req.json();
     if (!url) return json({ pago: false, motivo: "sem_url" });
     const KEY = Deno.env.get("ANTHROPIC_API_KEY");
-    if (!KEY) return json({ pago: false, motivo: "robo_inativo" });
+    const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+
+    // valor esperado conforme tiver convidado
+    let esperado = VAL_COMENDADOR, temConvidado = false;
+    if (rsvp_id) {
+      const { data: rr } = await sb.from("evento_rsvp").select("convidado_nome").eq("id", rsvp_id).maybeSingle();
+      if (rr && rr.convidado_nome && String(rr.convidado_nome).trim()) { temConvidado = true; esperado = VAL_COMENDADOR + VAL_CONVIDADO; }
+    }
+    if (!KEY) return json({ pago: false, motivo: "robo_inativo", esperado });
 
     const img = await fetch(url);
     const buf = new Uint8Array(await img.arrayBuffer());
@@ -25,12 +30,10 @@ Deno.serve(async (req) => {
     const b64 = btoa(bin);
     const media = (img.headers.get("content-type") || "image/jpeg").split(";")[0];
     const isPdf = media.includes("pdf");
-
-    const prompt = "Você recebe um comprovante de pagamento PIX brasileiro. Extraia e responda APENAS com JSON válido, sem texto extra, no formato {\"valor\": number, \"favorecido\": string, \"cnpj\": string, \"data\": string, \"confianca\": number}. valor em reais (número). cnpj só dígitos. confianca de 0 a 1 (quão certo você está de que é um comprovante PIX legítimo e legível).";
+    const prompt = "Comprovante de pagamento PIX brasileiro. Responda APENAS JSON válido: {\"valor\": number, \"favorecido\": string, \"cnpj\": string, \"data\": string, \"confianca\": number}. valor em reais; cnpj só dígitos; confianca 0..1.";
     const content: unknown[] = [
-      isPdf
-        ? { type: "document", source: { type: "base64", media_type: "application/pdf", data: b64 } }
-        : { type: "image", source: { type: "base64", media_type: media, data: b64 } },
+      isPdf ? { type: "document", source: { type: "base64", media_type: "application/pdf", data: b64 } }
+            : { type: "image", source: { type: "base64", media_type: media, data: b64 } },
       { type: "text", text: prompt },
     ];
     const resp = await fetch("https://api.anthropic.com/v1/messages", {
@@ -47,9 +50,11 @@ Deno.serve(async (req) => {
     const cnpjLido = String(dados.cnpj || "").replace(/\D/g, "");
     const fav = String(dados.favorecido || "").toUpperCase();
     const conf = Number(dados.confianca) || 0;
-    const bate = valor >= VALOR_MIN && conf >= 0.7 && (cnpjLido === CNPJ || fav.includes("COMMANDERIE"));
+    const destinoOk = (cnpjLido === CNPJ || fav.includes("COMMANDERIE"));
+    const valorOk = valor >= esperado - 1;               // 950 ou 2200
+    const bate = valorOk && conf >= 0.7 && destinoOk;
+    (dados as any).esperado = esperado; (dados as any).tem_convidado = temConvidado;
 
-    const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     if (rsvp_id) {
       await sb.from("evento_rsvp").update({
         comprovante_dados: dados,
@@ -57,7 +62,7 @@ Deno.serve(async (req) => {
         ...(bate ? { status: "Confirmado" } : {}),
       }).eq("id", rsvp_id);
     }
-    return json({ pago: bate, dados });
+    return json({ pago: bate, esperado, valor, dados });
   } catch (e) {
     return json({ pago: false, motivo: "erro", erro: String(e) });
   }

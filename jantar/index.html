@@ -60,23 +60,26 @@
   h2.sec{text-align:center;color:var(--navy);font-weight:normal;font-size:28px;margin-bottom:2px;}
   .sub{text-align:center;font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;margin-bottom:6px;line-height:1.5;}
   @media(max-width:480px){h1{font-size:34px;}h1 small{font-size:22px;}.inner{padding:26px 18px;}.intro,.desc{font-size:16.5px;}}
+  .passe{text-align:center;}
+  .passe .ok{display:inline-flex;align-items:center;gap:8px;background:#eef6ef;border:1px solid #cfe6d3;color:#2f6b3a;border-radius:30px;padding:9px 20px;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;}
+  .passe h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:24px;margin:16px 0 2px;}
+  .passe .pdet{font-size:14px;color:var(--ink2);line-height:1.65;}
+  .pbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
+  .pbtn{display:inline-flex;align-items:center;gap:7px;text-decoration:none;border-radius:10px;padding:11px 18px;font-family:Arial,sans-serif;font-size:14px;cursor:pointer;border:1px solid var(--navy);color:var(--navy);background:#fff;}
+  .pbtn.solid{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .cmp{margin-top:22px;border-top:1px solid var(--line);padding-top:18px;text-align:center;}
+  .cmp .lbl2{font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;margin-bottom:8px;}
+  .cmp p{font-size:13.5px;color:var(--ink2);line-height:1.5;margin-bottom:12px;}
+  .cmpfile{display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:var(--navy);border:1.5px dashed var(--gold);border-radius:10px;padding:12px 20px;font-family:Arial,sans-serif;font-size:14px;}
+  .artlb{display:none;position:fixed;inset:0;background:rgba(10,8,5,.92);z-index:200;align-items:center;justify-content:center;padding:20px;}
+  .artlb img{max-width:94%;max-height:92vh;border-radius:8px;box-shadow:0 12px 44px rgba(0,0,0,.6);}
+  .artlb .x{position:absolute;top:14px;right:24px;color:#fff;font-size:40px;cursor:pointer;line-height:1;}
 </style>
 </head>
 <body>
 <div class="card"><div class="inner">
-  <img class="brasao" src="/img/brasao-alta.png" alt="Commanderie de Bordeaux">
-  <div class="kick">Convite</div>
-  <p class="intro">A <b>Commanderie de Bordeaux do Brasil</b>, com a <b>Association des Grands Crus Classés de Saint-Émilion</b>, tem a honra de convidar os seus Comendadores para o</p>
-  <h1>Jantar de 1 Ano<small>da Commanderie</small></h1>
-  <div class="dot"></div>
-  <p class="desc">Um jantar excepcional com <b>24 Grands Crus Classés de Saint-Émilion em magnum</b>, na presença de <b>15 produtores</b>.</p>
-
-  <div class="assina">
-    <div class="assina-rule"></div>
-    <div class="assina-conv">Com a honra de recebê-los,</div>
-    <div class="assina-nome">Manu Brandão</div>
-    <div class="assina-cargo">Grão-Mestre · Commanderie de Bordeaux do Brasil</div>
-  </div>
+  <img class="convite-art" src="/img/convites/jantar-1-ano.jpg" alt="Convite — Jantar de 1 Ano da Commanderie de Bordeaux" onclick="abrirArte()" style="width:100%;max-width:540px;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--gold);box-shadow:0 12px 34px rgba(30,26,20,.22);cursor:zoom-in;">
+  <p class="sub" style="margin-top:10px;">Toque na arte para ampliar</p>
 
   <div class="sep"></div>
   <div class="lbl">Data</div>
@@ -120,7 +123,8 @@
       <div id="frmMsg" class="msg"></div>
     </div>
   </form>
-  <div style="text-align:center;margin-top:14px;font-size:13.5px;color:var(--ink2);line-height:1.5;">Comendador, ainda não acessa a plataforma da Commanderie?<br><a href="/?primeiro=1" style="color:var(--navy);border-bottom:1px solid #b08a3a;text-decoration:none;font-weight:bold;">Faça aqui o seu primeiro acesso</a></div>
+  <div id="passe" style="display:none;"></div>
+  <div id="paLink" style="text-align:center;margin-top:14px;font-size:13.5px;color:var(--ink2);line-height:1.5;">Comendador, ainda não acessa a plataforma da Commanderie?<br><a href="/?primeiro=1" style="color:var(--navy);border-bottom:1px solid #b08a3a;text-decoration:none;font-weight:bold;">Faça aqui o seu primeiro acesso</a></div>
 
   <div class="foot">
     <div style="text-align:center;line-height:1.15;"><div style="font-family:Georgia,serif;color:var(--navy);font-size:22px;letter-spacing:4px;">PISELLI</div><div style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:5px;color:var(--ink2);">BOA VISTA</div></div>
@@ -130,12 +134,36 @@
   <div class="rsvp">R.S.V.P.</div>
 </div></div>
 
+<div class="artlb" id="artLB" onclick="if(event.target===this)fecharArte()"><span class="x" onclick="fecharArte()">&times;</span><img src="/img/convites/jantar-1-ano.jpg" alt="Convite ampliado — Jantar de 1 Ano"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var PIX="00020126360014BR.GOV.BCB.PIX0114692962640001305204000053039865802BR5925ASSOCIACAO COMMANDERIE DE6008CURITIBA622605224JEzl0eT1M6tFHm5Isrpua6304E2FA";
 function copiarPix(){var m=document.getElementById("pixMsg");try{navigator.clipboard.writeText(PIX);m.textContent="Código copiado!";}catch(e){m.textContent="Copie a chave: 69.296.264/0001-30";}setTimeout(function(){m.textContent="";},3000);}
 var EVID="c5adcdf2-07a7-4aa3-ad73-a7b6f88efb2c";
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+function abrirArte(){document.getElementById("artLB").style.display="flex";}
+function fecharArte(){document.getElementById("artLB").style.display="none";}
+function baixarICS(){
+  var dt="20261022T230000Z",end="20261023T020000Z";
+  var ics="BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Commanderie de Bordeaux//Jantar//PT\nBEGIN:VEVENT\nUID:jantar1ano-cdb@commanderiedebordeaux.com.br\nDTSTAMP:"+dt+"\nDTSTART:"+dt+"\nDTEND:"+end+"\nSUMMARY:Jantar de 1 Ano da Commanderie de Bordeaux\nLOCATION:Restaurante Piselli Boa Vista - R. Boa Vista 51, 12o andar, Sao Paulo\nDESCRIPTION:24 Grands Crus Classes de Saint-Emilion em magnum. Bordeaux, toujours Bordeaux.\nEND:VEVENT\nEND:VCALENDAR";
+  var a=document.createElement("a");a.href="data:text/calendar;charset=utf-8,"+encodeURIComponent(ics);a.download="Jantar-1-Ano-Commanderie.ics";document.body.appendChild(a);a.click();a.remove();
+}
+async function enviarComprovante(inp){
+  var f=inp.files&&inp.files[0]; if(!f)return;
+  var st=document.getElementById("cmpMsg"); st.style.color="#5b5446"; st.textContent="Enviando o comprovante…";
+  try{
+    var ext=((f.name||"img").split(".").pop()||"jpg").toLowerCase();
+    var path=EVID+"/"+(window.RSVP_ID||("anon"+Date.now()))+"_"+Date.now()+"."+ext;
+    var up=await sb.storage.from("comprovantes").upload(path,f,{upsert:true,contentType:f.type||"image/jpeg"});
+    if(up.error){st.style.color="#8f1d24";st.textContent="Não foi possível enviar. Tente outra foto. ("+up.error.message+")";return;}
+    var url=sb.storage.from("comprovantes").getPublicUrl(path).data.publicUrl;
+    if(window.RSVP_ID){try{await sb.rpc("anexar_comprovante",{p_rsvp:window.RSVP_ID,p_url:url});}catch(e){}}
+    st.textContent="";
+    var fin=function(okpago){document.getElementById("cmpBox").innerHTML='<div class="ok">✓ '+(okpago?"Pagamento confirmado! Nos vemos no jantar.":"Comprovante recebido! Vamos confirmar e você recebe um aviso.")+'</div>';};
+    try{var rob=await sb.functions.invoke("ler-comprovante",{body:{rsvp_id:window.RSVP_ID,url:url}});if(rob&&rob.data&&rob.data.pago){fin(true);return;}}catch(e){}
+    fin(false);
+  }catch(e){st.style.color="#8f1d24";st.textContent="Erro ao enviar. Tente de novo.";}
+}
 async function confirmar(e){
   e.preventDefault();
   var g=function(id){var el=document.getElementById(id);return el?el.value.trim():"";};
@@ -145,10 +173,19 @@ async function confirmar(e){
   btn.disabled=true; msg.style.color="#5b5446"; msg.textContent="Enviando…";
   var r=await sb.rpc("rsvp_publico",{p_evento:EVID, p_nome:nome, p_email:g("f_email")||null, p_telefone:g("f_tel")||null, p_convidados:parseInt(g("f_conv"),10)||1});
   if(r.error){btn.disabled=false;msg.style.color="#8f1d24";msg.textContent="Não foi possível enviar. Tente de novo ou fale com a Secretaria. ("+r.error.message+")";return false;}
-  var reg={ja_pagou:pago};
+  window.RSVP_ID=r.data||null;
   document.getElementById("frm").style.display="none";
-  msg.style.color="#2f6b3a";
-  msg.innerHTML="<b>Presença confirmada!</b> Obrigado, "+nome.split(" ")[0]+". "+(reg.ja_pagou?"Recebemos que o PIX já foi efetuado — enviaremos a confirmação.":"Para garantir o lugar, efetue o <b>PIX de R$ 950,00</b> na chave <b>69.296.264/0001-30</b>.")+" <br><br>Bordeaux, toujours Bordeaux.";
+  var pl=document.getElementById("paLink"); if(pl)pl.style.display="none";
+  var primeiro=nome.split(" ")[0];
+  var p=document.getElementById("passe"); p.className="passe"; p.style.display="block";
+  p.innerHTML='<div class="ok">✓ Presença confirmada</div>'
+    +'<h3>Até lá, '+primeiro+'!</h3>'
+    +'<div class="pdet">Jantar de 1 Ano da Commanderie<br>Quinta, 22 de outubro de 2026 · 20h00<br>Restaurante Piselli — Boa Vista, São Paulo</div>'
+    +'<div class="pbtns"><a class="pbtn solid" onclick="baixarICS()">+ Adicionar ao calendário</a><a class="pbtn" onclick="abrirArte()">Ver o convite</a></div>'
+    +'<div class="cmp" id="cmpBox"><div class="lbl2">Comprovante do PIX</div>'
+    +(pago?'<p>Você marcou que já pagou. Envie o comprovante que confirmamos na hora.</p>':'<p>Já fez o PIX de <b>R$ 950,00</b> (chave <b>69.296.264/0001-30</b>)? Envie o comprovante e confirmamos o seu pagamento.</p>')
+    +'<label class="cmpfile">📎 Enviar comprovante<input type="file" accept="image/*,application/pdf" style="display:none" onchange="enviarComprovante(this)"></label>'
+    +'<div id="cmpMsg" class="msg" style="margin-top:10px;"></div></div>';
   return false;
 }
 </script>

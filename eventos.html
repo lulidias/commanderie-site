@@ -63,6 +63,7 @@ function lbOpen(id,i){LB=GAL[id]||[];LBi=i||0;if(!LB.length)return;document.getE
 function lbShow(){var img=document.getElementById("lightboxImg");if(img)img.src=LB[LBi];var c=document.getElementById("lbCount");if(c)c.textContent=(LBi+1)+" / "+LB.length;}
 function lbNav(d,ev){if(ev)ev.stopPropagation();if(!LB.length)return;LBi=(LBi+d+LB.length)%LB.length;lbShow();}
 function lbClose(){document.getElementById("lightbox").style.display="none";}
+function lbArte(u){GAL["_a"]=[u];lbOpen("_a",0);}
 var ORDEM=["Capítulo","Viagem","Jantar","Almoço","Outro"];
 var PLURAL={"Capítulo":"Capítulos","Viagem":"Viagens","Jantar":"Jantares","Almoço":"Almoços","Outro":"Outros"};
 var MES=["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
@@ -74,6 +75,7 @@ function row(e){
   var _h=new Date();_h=new Date(_h.getFullYear(),_h.getMonth(),_h.getDate());var past=!!e.realizado||(d&&d<_h);
   var badge;if(past){badge='<span class="evbadge real">Realizado</span>';}else{var txt="Em breve";if(d){var d0=new Date(d.getFullYear(),d.getMonth(),d.getDate()),n=new Date(),n0=new Date(n.getFullYear(),n.getMonth(),n.getDate()),dias=Math.round((d0-n0)/86400000);if(dias===0)txt="hoje";else if(dias===1)txt="amanhã";else if(dias>1)txt="em "+dias+" dias";}badge='<span class="evbadge prox">'+txt+'</span>';}
   var extra="";
+  if(e.arte_url){extra+='<div style="margin-top:9px;display:flex;align-items:center;gap:10px;"><img src="'+esc(e.arte_url)+'" onclick="lbArte(\''+e.arte_url+'\')" style="width:72px;height:96px;object-fit:cover;border-radius:7px;border:1px solid var(--gold);cursor:pointer;box-shadow:0 3px 10px rgba(40,30,10,.18);"><a class="evfotos" onclick="lbArte(\''+e.arte_url+'\')" style="margin-top:0;">Ver convite</a></div>';}
   if(past){
     if(e.relato)extra+='<div class="evrelato">'+esc(e.relato)+'</div>';
     var fotos=(e.evento_fotos||[]).slice().sort(function(a,b){return (a.ordem||0)-(b.ordem||0);});

@@ -121,7 +121,7 @@
 <div class="card"><div class="inner">
   <a onclick="if(document.referrer&&document.referrer.indexOf(location.host)>=0){history.back()}else{location.href='/'}" style="display:inline-flex;align-items:center;gap:6px;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;" data-i18n="backbtn">← Voltar</a>
   <div class="langsel" id="langsel"><a data-l="pt" onclick="setLang('pt')">PT</a><a data-l="en" onclick="setLang('en')">EN</a><a data-l="fr" onclick="setLang('fr')">FR</a></div>
-  <img class="convite-art" src="/img/convites/jantar-1-ano.jpg" alt="Convite — Jantar de 1 Ano da Commanderie de Bordeaux" onclick="abrirArte()" style="width:100%;max-width:540px;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--gold);box-shadow:0 12px 34px rgba(30,26,20,.22);cursor:zoom-in;">
+  <img class="convite-art" src="/img/convites/jantar-1-ano.jpg?v=2" alt="Convite — Jantar de 1 Ano da Commanderie de Bordeaux" onclick="abrirArte()" style="width:100%;max-width:540px;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--gold);box-shadow:0 12px 34px rgba(30,26,20,.22);cursor:zoom-in;">
   <p class="sub" style="margin-top:10px;" data-i18n="amp">Toque na arte para ampliar</p>
 
   <div class="sep"></div>
@@ -191,14 +191,14 @@
   <div class="rsvp">R.S.V.P.</div>
 </div></div>
 
-<div class="artlb" id="artLB" onclick="if(event.target===this)fecharArte()"><span class="x" onclick="fecharArte()">&times;</span><img id="artLBimg" src="/img/convites/jantar-1-ano.jpg" alt="Jantar de 1 Ano"></div>
+<div class="artlb" id="artLB" onclick="if(event.target===this)fecharArte()"><span class="x" onclick="fecharArte()">&times;</span><img id="artLBimg" src="/img/convites/jantar-1-ano.jpg?v=2" alt="Jantar de 1 Ano"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var PIX="00020126360014BR.GOV.BCB.PIX0114692962640001305204000053039865802BR5925ASSOCIACAO COMMANDERIE DE6008CURITIBA622605224JEzl0eT1M6tFHm5Isrpua6304E2FA";
 function copiarPix(){var m=document.getElementById("pixMsg");try{navigator.clipboard.writeText(PIX);m.textContent="Código copiado!";}catch(e){m.textContent="Copie a chave: 69.296.264/0001-30";}setTimeout(function(){m.textContent="";},3000);}
 var EVID="c5adcdf2-07a7-4aa3-ad73-a7b6f88efb2c";
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
-function abrirArte(){document.getElementById("artLBimg").src="/img/convites/jantar-1-ano.jpg";document.getElementById("artLB").style.display="flex";}
+function abrirArte(){document.getElementById("artLBimg").src="/img/convites/jantar-1-ano.jpg?v=2";document.getElementById("artLB").style.display="flex";}
 function abrirFoto(src){document.getElementById("artLBimg").src=src;document.getElementById("artLB").style.display="flex";}
 function fecharArte(){document.getElementById("artLB").style.display="none";}
 function baixarICS(){

@@ -64,12 +64,12 @@ function desenha(){
   x.fillStyle='#c5a35a';x.font='600 24px Montserrat';try{x.letterSpacing='5px';}catch(e){}
   x.fillText('COMENDADOR',CX,968);
   try{x.letterSpacing='0px';}catch(e){}
-  x.strokeStyle='rgba(197,163,90,.35)';x.lineWidth=1;x.beginPath();x.moveTo(CX-180,1064);x.lineTo(CX+180,1064);x.stroke();
+  x.strokeStyle='rgba(197,163,90,.35)';x.lineWidth=1;x.beginPath();x.moveTo(CX-180,1096);x.lineTo(CX+180,1096);x.stroke();
   x.fillStyle='#f3ecd9';x.font='500 27px Montserrat';try{x.letterSpacing='1px';}catch(e){}
-  x.fillText('22 de outubro de 2026 · 20h · Piselli Boa Vista',CX,1122);
+  x.fillText('22 de outubro de 2026 · 20h · Piselli Boa Vista',CX,1154);
   try{x.letterSpacing='0px';}catch(e){}
   x.fillStyle='rgba(243,236,217,.85)';x.font='italic 400 36px "Cormorant Garamond", Georgia, serif';
-  x.fillText('24 Grands Crus Classés de Saint-Émilion, em magnum.',CX,1186);
+  x.fillText('24 Grands Crus Classés de Saint-Émilion, em magnum.',CX,1218);
   }
 function avisa(m){var t=document.getElementById('toast');t.textContent=m;t.style.opacity='1';clearTimeout(t._h);t._h=setTimeout(function(){t.style.opacity='0';},3500);}
 function copiar(){document.getElementById('c').toBlob(function(b){if(navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({'image/png':b})]).then(function(){avisa('✓ Imagem copiada! Cole (Cmd+V) na conversa do WhatsApp.');}).catch(function(){baixar();});}else{baixar();}});}

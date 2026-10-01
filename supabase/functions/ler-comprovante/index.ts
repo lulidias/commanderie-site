@@ -1,27 +1,28 @@
-// Robô: lê o comprovante do PIX e confirma pagamento se bater VALOR + CNPJ.
-// Valor esperado: R$ 950 (Comendador) ou R$ 2.200 (Comendador + 1 convidado).
+// Robô: lê comprovante PIX e acumula pagamentos até fechar o valor devido.
+// Valores válidos: R$ 950 (Comendador), R$ 1.250 (convidado à parte), R$ 2.200 (os dois juntos).
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
-const VAL_COMENDADOR = 950, VAL_CONVIDADO = 1250, CNPJ = "69296264000130";
+const V_COMENDADOR = 950, V_CONVIDADO = 1250, V_TOTAL = 2200, CNPJ = "69296264000130";
+const VALIDOS = [V_COMENDADOR, V_CONVIDADO, V_TOTAL];
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   const json = (o: unknown) => new Response(JSON.stringify(o), { headers: { ...CORS, "Content-Type": "application/json" } });
   try {
     const { rsvp_id, url } = await req.json();
     if (!url) return json({ pago: false, motivo: "sem_url" });
-    const KEY = Deno.env.get("ANTHROPIC_API_KEY");
     const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
-    // valor esperado conforme tiver convidado
-    let esperado = VAL_COMENDADOR, temConvidado = false;
+    let esperado = V_COMENDADOR, temConvidado = false, jaPago = 0;
     if (rsvp_id) {
-      const { data: rr } = await sb.from("evento_rsvp").select("convidado_nome").eq("id", rsvp_id).maybeSingle();
-      if (rr && rr.convidado_nome && String(rr.convidado_nome).trim()) { temConvidado = true; esperado = VAL_COMENDADOR + VAL_CONVIDADO; }
+      const { data: rr } = await sb.from("evento_rsvp").select("convidado_nome,pago_valor").eq("id", rsvp_id).maybeSingle();
+      if (rr && rr.convidado_nome && String(rr.convidado_nome).trim()) { temConvidado = true; esperado = V_TOTAL; }
+      jaPago = Number(rr?.pago_valor) || 0;
     }
+    const KEY = Deno.env.get("ANTHROPIC_API_KEY");
     if (!KEY) return json({ pago: false, motivo: "robo_inativo", esperado });
 
     const img = await fetch(url);
@@ -51,18 +52,22 @@ Deno.serve(async (req) => {
     const fav = String(dados.favorecido || "").toUpperCase();
     const conf = Number(dados.confianca) || 0;
     const destinoOk = (cnpjLido === CNPJ || fav.includes("COMMANDERIE"));
-    const valorOk = valor >= esperado - 1;               // 950 ou 2200
-    const bate = valorOk && conf >= 0.7 && destinoOk;
-    (dados as any).esperado = esperado; (dados as any).tem_convidado = temConvidado;
+    const valorPlausivel = VALIDOS.some((v) => Math.abs(valor - v) <= 1);
+    const valido = conf >= 0.7 && destinoOk && valorPlausivel;
+    const novoPago = jaPago + (valido ? valor : 0);
+    const full = novoPago >= esperado - 1;
+    (dados as any).esperado = esperado; (dados as any).pago_valor = novoPago; (dados as any).valido = valido;
 
     if (rsvp_id) {
-      await sb.from("evento_rsvp").update({
+      const upd: Record<string, unknown> = {
         comprovante_dados: dados,
-        comprovante_status: bate ? "aprovado" : "revisar",
-        ...(bate ? { status: "Confirmado" } : {}),
-      }).eq("id", rsvp_id);
+        pago_valor: novoPago,
+        comprovante_status: valido ? (full ? "aprovado" : "parcial") : "revisar",
+      };
+      if (full) upd.status = "Confirmado";
+      await sb.from("evento_rsvp").update(upd).eq("id", rsvp_id);
     }
-    return json({ pago: bate, esperado, valor, dados });
+    return json({ pago: full, parcial: valido && !full, valor, esperado, pago_valor: novoPago, dados });
   } catch (e) {
     return json({ pago: false, motivo: "erro", erro: String(e) });
   }

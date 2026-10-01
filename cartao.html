@@ -15,6 +15,7 @@ canvas{max-width:min(92vw,460px);height:auto;border-radius:6px;box-shadow:0 20px
 .btn{padding:14px 30px;background:#b08a3a;color:#fff;border:none;font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:6px}
 .btn.ghost{background:none;border:1px solid rgba(197,163,90,.6);color:#c5a35a}
 .aviso{color:rgba(243,236,217,.6);font-size:11px;text-align:center;max-width:430px;line-height:1.6}
+body.foto{padding:0;gap:0}body.foto .acoes,body.foto .aviso{display:none}body.foto canvas{max-width:none;width:1080px;border-radius:0;box-shadow:none}
 #toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:#2E7D4F;color:#fff;padding:13px 26px;font-size:12px;letter-spacing:1px;opacity:0;transition:opacity .3s;pointer-events:none;border-radius:6px}
 </style>
 </head>
@@ -78,6 +79,7 @@ function copiar(){document.getElementById('c').toBlob(function(b){if(navigator.c
 function baixar(){var a=document.createElement('a');a.download='commanderie-jantar-eu-vou.png';a.href=document.getElementById('c').toDataURL('image/png');a.click();}
 function compartilhar(){document.getElementById('c').toBlob(function(b){var f=new File([b],'commanderie-jantar-eu-vou.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:'Eu vou ao Jantar de 1 Ano da Commanderie'});}else{baixar();}});}
 window.addEventListener('DOMContentLoaded',function(){
+  if(params.get('foto'))document.body.classList.add('foto');
   var mobile=/iPhone|iPad|Android/i.test(navigator.userAgent);
   if(!mobile){document.getElementById('b-share').style.display='none';document.getElementById('aviso').textContent='Clique em Copiar imagem e cole (Cmd+V) na conversa do WhatsApp. 🍷';}
   BRAS.onload=desenha;BRAS.onerror=desenha;BRAS.src='/img/brasao-alta.png';

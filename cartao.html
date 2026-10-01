@@ -41,40 +41,36 @@ function desenha(){
   x.strokeStyle='#c5a35a';x.lineWidth=4;x.strokeRect(36,36,W-72,H-72);
   x.strokeStyle='rgba(197,163,90,.5)';x.lineWidth=1.5;x.strokeRect(58,58,W-116,H-116);
   x.textAlign='center';
-  // kicker
-  x.fillStyle='#c5a35a';x.font='600 25px Montserrat';try{x.letterSpacing='9px';}catch(e){}
-  x.fillText('SÃO PAULO · 22 DE OUTUBRO',CX,138);
+  x.fillStyle='#c5a35a';x.font='600 24px Montserrat';try{x.letterSpacing='9px';}catch(e){}
+  x.fillText('COMMANDERIE DE BORDEAUX · BRASIL',CX,140);
   try{x.letterSpacing='0px';}catch(e){}
-  // brasão em medalhão creme
-  var EC=312,RR=96;
+  var EC=320,RR=94;
   x.beginPath();x.arc(CX,EC,RR,0,7);x.fillStyle='#f3ecd9';x.fill();
-  if(BRAS.complete&&BRAS.naturalWidth){var iw=150,ih=iw*BRAS.naturalHeight/BRAS.naturalWidth;x.drawImage(BRAS,CX-iw/2,EC-ih/2,iw,ih);}
-  // marca
+  if(BRAS.complete&&BRAS.naturalWidth){var iw=148,ih=iw*BRAS.naturalHeight/BRAS.naturalWidth;x.drawImage(BRAS,CX-iw/2,EC-ih/2,iw,ih);}
   x.fillStyle='#ffffff';try{x.letterSpacing='10px';}catch(e){}
-  x.font='400 70px "Playfair Display", Georgia, serif';
-  x.fillText('JANTAR DE 1 ANO',CX+5,512);
-  try{x.letterSpacing='3px';}catch(e){}
-  x.fillStyle='#e5d7b4';x.font='italic 400 34px "Playfair Display", Georgia, serif';
-  x.fillText('da Commanderie de Bordeaux',CX,566);
+  x.font='400 66px "Playfair Display", Georgia, serif';
+  x.fillText('JANTAR DE 1 ANO',CX+5,532);
+  try{x.letterSpacing='2px';}catch(e){}
+  x.fillStyle='#e5d7b4';x.font='italic 400 33px "Playfair Display", Georgia, serif';
+  x.fillText('da Commanderie de Bordeaux',CX,586);
   try{x.letterSpacing='0px';}catch(e){}
-  // linha
-  x.strokeStyle='rgba(197,163,90,.8)';x.lineWidth=2;x.beginPath();x.moveTo(CX-120,628);x.lineTo(CX+120,628);x.stroke();
-  // eu vou
-  x.fillStyle='#c5a35a';x.font='italic 400 58px "Playfair Display", Georgia, serif';
-  x.fillText('Eu vou!',CX,716);
-  // nome (a estrela)
-  x.fillStyle='#ffffff';var tam=100;x.font='italic 600 '+tam+'px "Playfair Display", Georgia, serif';
+  x.strokeStyle='rgba(197,163,90,.8)';x.lineWidth=2;x.beginPath();x.moveTo(CX-130,648);x.lineTo(CX+130,648);x.stroke();
+  x.fillStyle='#c5a35a';x.font='italic 400 78px "Playfair Display", Georgia, serif';
+  x.fillText('Eu vou!',CX,756);
+  x.fillStyle='#ffffff';var tam=104;x.font='italic 600 '+tam+'px "Playfair Display", Georgia, serif';
   while(x.measureText(NOME).width>880&&tam>50){tam-=6;x.font='italic 600 '+tam+'px "Playfair Display", Georgia, serif';}
-  x.fillText(NOME,CX,848);
-  // selo
-  x.fillStyle='#c5a35a';x.font='600 23px Montserrat';try{x.letterSpacing='4px';}catch(e){}
-  x.fillText('COMENDADOR',CX,916);
+  x.fillText(NOME,CX,902);
+  x.fillStyle='#c5a35a';x.font='600 24px Montserrat';try{x.letterSpacing='5px';}catch(e){}
+  x.fillText('COMENDADOR',CX,968);
   try{x.letterSpacing='0px';}catch(e){}
-  // rodapé
-  x.fillStyle='rgba(243,236,217,.9)';x.font='italic 400 40px "Cormorant Garamond", Georgia, serif';
-  x.fillText('24 Grands Crus Classés de Saint-Émilion, em magnum.',CX,1176);
-  x.fillStyle='#c5a35a';x.font='600 27px Montserrat';try{x.letterSpacing='4px';}catch(e){}
-  x.fillText('COMMANDERIEDEBORDEAUX.COM.BR/JANTAR',CX,1240);
+  x.strokeStyle='rgba(197,163,90,.35)';x.lineWidth=1;x.beginPath();x.moveTo(CX-180,1040);x.lineTo(CX+180,1040);x.stroke();
+  x.fillStyle='#f3ecd9';x.font='500 27px Montserrat';try{x.letterSpacing='1px';}catch(e){}
+  x.fillText('22 de outubro de 2026 · 20h · Piselli Boa Vista',CX,1096);
+  try{x.letterSpacing='0px';}catch(e){}
+  x.fillStyle='rgba(243,236,217,.85)';x.font='italic 400 36px "Cormorant Garamond", Georgia, serif';
+  x.fillText('24 Grands Crus Classés de Saint-Émilion, em magnum.',CX,1156);
+  x.fillStyle='#c5a35a';x.font='600 26px Montserrat';try{x.letterSpacing='4px';}catch(e){}
+  x.fillText('COMMANDERIEDEBORDEAUX.COM.BR/JANTAR',CX,1222);
   try{x.letterSpacing='0px';}catch(e){}
 }
 function avisa(m){var t=document.getElementById('toast');t.textContent=m;t.style.opacity='1';clearTimeout(t._h);t._h=setTimeout(function(){t.style.opacity='0';},3500);}

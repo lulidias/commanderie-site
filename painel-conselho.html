@@ -363,14 +363,27 @@ function renderCaixa(){
     +"</div></div>"
     +"<p style=\"font-size:11.5px;color:#9a937f;margin:6px 2px 0;\">Caixa = anuidades de membros e importadoras + receitas já recebidas &minus; despesas já pagas (acumulado).</p>";
 }
+function filtrarDesp(g){window.DESP_FILTRO=g;renderDespTabela(window.DESP_ANO);}
 function renderDespTabela(ano){
+  window.DESP_ANO=ano;var OUT="Outros / categorias antigas";
   var doAno=despesas.filter(function(x){return Number(x.ano)===ano;});
   if(!doAno.length){document.getElementById("despTabela").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma despesa neste ano.</p>";return;}
-  var ORDG=DESP_GRUPOS.map(function(g){return g.g;});doAno=doAno.slice().sort(function(a,b){function rk(x){var g=despGrupo(x.categoria);var i=ORDG.indexOf(g);return i<0?9:i;}return rk(a)-rk(b);});
-  var sub={};doAno.forEach(function(x){var g=despGrupo(x.categoria)||"Outros / categorias antigas";sub[g]=(sub[g]||0)+(Number(x.valor)||0);});
-  var resumo="<div style=\"display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px;\">"+Object.keys(sub).map(function(g){return "<div style=\"background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:12px;color:#5b5446;\">"+esc(g)+": <b style=\"color:#8f1d24;\">"+brl(sub[g])+"</b></div>";}).join("")+"</div>";
+  var ORDG=DESP_GRUPOS.map(function(g){return g.g;});
+  function gr(x){return despGrupo(x.categoria)||OUT;}
+  function rkG(g){var i=ORDG.indexOf(g);return i<0?9:i;}
+  function rkS(x){var g=DESP_GRUPOS[ORDG.indexOf(gr(x))];var i=g?g.s.indexOf(x.categoria):-1;return i<0?99:i;}
+  doAno=doAno.slice().sort(function(a,b){return (rkG(gr(a))-rkG(gr(b)))||(rkS(a)-rkS(b))||(""+(a.categoria||"")).localeCompare(""+(b.categoria||""));});
+  var sub={},cnt={},tot=0;doAno.forEach(function(x){var g=gr(x),v=Number(x.valor)||0;sub[g]=(sub[g]||0)+v;cnt[g]=(cnt[g]||0)+1;tot+=v;});
+  var F=window.DESP_FILTRO||"";if(F&&!sub[F])F=window.DESP_FILTRO="";
+  function chip(key,label,val,n){var on=(F===key);return "<a onclick=\"filtrarDesp('"+key.replace(/'/g,"\\'")+"')\" style=\"cursor:pointer;text-decoration:none;background:"+(on?"var(--navy)":"#fffdf7")+";color:"+(on?"#fff":"#5b5446")+";border:1px solid "+(on?"var(--navy)":"var(--line)")+";border-radius:10px;padding:7px 11px;font-size:12px;\">"+esc(label)+" <span style=\"opacity:.7;\">("+n+")</span>: <b style=\"color:"+(on?"#fff":"#8f1d24")+";\">"+brl(val)+"</b></a>";}
+  var keys=Object.keys(sub).sort(function(a,b){return rkG(a)-rkG(b);});
+  var resumo="<div style=\"display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px;\">"+chip("","Todas",tot,doAno.length)+keys.map(function(g){return chip(g,g,sub[g],cnt[g]);}).join("")+"</div><div style=\"font-size:11px;color:#9a937f;margin:0 0 10px;\">Clique num grupo para ver só as despesas dele, separadas por categoria.</div>";
+  var lista=F?doAno.filter(function(x){return gr(x)===F;}):doAno;
+  var hdKey=F?function(x){return x.categoria||"Outro";}:gr;
+  var hdTot={};lista.forEach(function(x){var k=hdKey(x);hdTot[k]=(hdTot[k]||0)+(Number(x.valor)||0);});
+  function row(x,tb){var pago=!!x.pago;var pill=pago?"<span class=\"pill\" style=\"color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;\">Pago</span>":"<span class=\"pill\" style=\"color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);\">A pagar</span>";var _g=despGrupo(x.categoria);tb+="<tr><td>"+esc(x.categoria)+(_g?("<div style=\"font-size:10.5px;color:#9a937f;\">"+esc(_g)+"</div>"):"")+"</td><td>"+esc(x.descricao||"")+"</td><td>"+esc(x.nucleo||"")+"</td><td>"+brl(x.valor)+"</td><td>"+pill+"</td><td><a onclick=\"editarDespesa('"+x.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:12px;margin-right:10px;\">editar</a><a onclick=\"delDespesa('"+x.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;\">remover</a></td></tr>";return tb;}
   var tb=resumo+"<table class=\"tbl\"><thead><tr><th>Categoria</th><th>Descrição</th><th>Núcleo</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody>";
-  doAno.forEach(function(x){var pago=!!x.pago;var pill=pago?"<span class=\"pill\" style=\"color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;\">Pago</span>":"<span class=\"pill\" style=\"color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);\">A pagar</span>";var _g=despGrupo(x.categoria);tb+="<tr><td>"+esc(x.categoria)+(_g?("<div style=\"font-size:10.5px;color:#9a937f;\">"+esc(_g)+"</div>"):"")+"</td><td>"+esc(x.descricao||"")+"</td><td>"+esc(x.nucleo||"")+"</td><td>"+brl(x.valor)+"</td><td>"+pill+"</td><td><a onclick=\"editarDespesa('"+x.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:12px;margin-right:10px;\">editar</a><a onclick=\"delDespesa('"+x.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;\">remover</a></td></tr>";});
+  var ult=null;lista.forEach(function(x){var k=hdKey(x);if(k!==ult){ult=k;tb+="<tr><td colspan=\"6\" style=\"background:#f6efdc;color:var(--navy);font-family:Georgia,serif;font-size:13.5px;padding:7px 8px;\">"+esc(k)+" <span style=\"float:right;color:#8f1d24;font-family:Arial,sans-serif;font-size:12.5px;font-weight:bold;\">"+brl(hdTot[k])+"</span></td></tr>";}tb=row(x,tb);});
   tb+="</tbody></table>";document.getElementById("despTabela").innerHTML=tb;
 }
 async function addDespesa(){

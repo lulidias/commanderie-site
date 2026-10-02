@@ -42,7 +42,12 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <div id="panel" style="display:none;">
   <div class="dhead"><div class="k">Conselho</div><h1>Importadoras Membros</h1><div class="sub" style="font-size:13px;color:#8a8270;" id="resumo"></div></div>
   <div class="wrap">
-    <div class="tools"><input class="inp" id="busca" placeholder="Buscar por importadora, responsável, cidade, e-mail…" oninput="render()" style="flex:1;min-width:200px;"></div>
+    <div class="tools"><input class="inp" id="busca" placeholder="Buscar por importadora, responsável, cidade, e-mail…" oninput="render()" style="flex:1;min-width:200px;"><button onclick="novaToggle()" style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-size:14px;cursor:pointer;">+ Nova importadora</button></div>
+    <div id="novaBox" style="display:none;background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px;">
+      <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:8px;">Nova importadora membro</div>
+      <div id="novaCampos" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;"></div>
+      <div style="margin-top:10px;"><button onclick="criarImp()" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;">Adicionar</button> <a onclick="novaToggle()" style="color:#8a8270;cursor:pointer;font-size:13px;margin-left:8px;">cancelar</a> <span id="novaMsg" style="font-size:12.5px;margin-left:8px;"></span></div>
+    </div>
     <div id="lista"></div>
   </div>
 </div>
@@ -59,25 +64,41 @@ function brl(v){return "R$ "+(Math.round(Number(v)||0)).toLocaleString("pt-BR");
 function row(k,v){if(v==null||v==="")return "";return "<div><div class=\"k\">"+esc(k)+"</div><div class=\"v\">"+esc(v)+"</div></div>";}
 function pill(x){if(x.anuidade_paga)return "<span class=\"pill p-pago\">Anuidade em dia</span>";if(new Date()>new Date("2026-11-02T12:00:00"))return "<span class=\"pill\" style=\"color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;\">Em atraso</span>";return "<span class=\"pill p-aberto\">A vencer 02/11</span>";}
 function resp(x){return RESP[x.owner_user_id]||{};}
-var CAMPOS=[["nome","Importadora"],["responsavel_nome","Responsável"],["cidade","Cidade"],["email","E-mail"],["telefone","Telefone"],["instagram","Instagram"],["membro_desde","Membro desde"],["anuidade_valor","Anuidade (R$)","number"],["cota_membros","Cota de indicações de membros","number"],["cota_restaurantes","Cota de restaurantes","number"]];
+var CAMPOS=[["nome","Importadora"],["responsavel_nome","Responsável"],["cidade","Cidade"],["email","E-mail"],["telefone","Telefone"],["instagram","Instagram"],["membro_desde","Membro desde","date"],["anuidade_valor","Anuidade (R$)","number"],["cota_membros","Cota de indicações de membros","number"],["cota_restaurantes","Cota de restaurantes","number"]];
 function edForm(x){var ii="width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#fbf7ec;font-family:inherit;";
   return "<div id=\"ed_"+x.id+"\" style=\"display:none;margin-top:10px;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:12px;\"><div style=\"font-size:11px;color:#8a8270;font-weight:bold;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;\">Editar cadastro</div><div style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;\">"
-  +CAMPOS.filter(function(c){return c[0] in x;}).map(function(c){return "<label style=\"display:block;\"><span style=\"display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;\">"+c[1]+"</span><input id=\"ei_"+c[0]+"_"+x.id+"\" "+(c[2]==="number"?"type=\"number\" step=\"0.01\" ":"")+"value=\""+esc(x[c[0]]==null?"":x[c[0]])+"\" style=\""+ii+"\"></label>";}).join("")
-  +"</div><div style=\"margin-top:10px;\"><button onclick=\"salvarImp('"+x.id+"')\" style=\"background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;\">Salvar</button> <span id=\"ei_msg_"+x.id+"\" style=\"font-size:12.5px;margin-left:8px;\"></span></div></div>";}
+  +CAMPOS.filter(function(c){return c[0] in x;}).map(function(c){return "<label style=\"display:block;\"><span style=\"display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;\">"+c[1]+"</span><input id=\"ei_"+c[0]+"_"+x.id+"\" "+(c[2]==="number"?"type=\"number\" step=\"0.01\" ":(c[2]==="date"?"type=\"date\" ":""))+"value=\""+esc(x[c[0]]==null?"":(c[2]==="date"?(""+x[c[0]]).slice(0,10):x[c[0]]))+"\" style=\""+ii+"\"></label>";}).join("")
+  +lbl("Login do responsável (membro)","<select id=\"ei_owner_user_id_"+x.id+"\" style=\""+ii+"\">"+ownerOpts(x.owner_user_id||"")+"</select>")+"</div><div style=\"margin-top:10px;\"><button onclick=\"salvarImp('"+x.id+"')\" style=\"background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;\">Salvar</button> <span id=\"ei_msg_"+x.id+"\" style=\"font-size:12.5px;margin-left:8px;\"></span></div></div>";}
 function card(x){var r=resp(x);var foto=r.foto_url?("<img src=\""+esc(r.foto_url)+"\" alt=\"\">"):esc(ini(x.nome));
   var email=x.email||r.email||"";var tel=x.telefone||((r.telefone_ddi?r.telefone_ddi+" ":"")+(r.telefone||""));
   var meta=[x.responsavel_nome||r.nome,x.cidade].filter(Boolean).join(" · ");
   var head="<div class=\"mhead\" onclick=\"toggle(this)\"><div class=\"mav\">"+foto+"</div><div style=\"flex:1;min-width:0;\"><div class=\"mname\">"+esc(x.nome)+"</div><div class=\"mmeta\">"+esc(meta)+(email?(" · "+esc(email)):"")+"</div></div>"+pill(x)+"</div>";
   var ind=INDS[x.id]||[];
   var cad="<div class=\"grp\">Cadastro <a onclick=\"editarImp('"+x.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:10px;font-weight:normal;text-transform:none;letter-spacing:0;margin-left:8px;\">editar</a></div><div class=\"kv\">"
-   +row("Responsável",x.responsavel_nome||r.nome)+row("E-mail",email)+row("Telefone",tel)+row("Instagram",x.instagram)+row("Cidade",x.cidade)+row("Membro desde",x.membro_desde)
+   +row("Responsável",x.responsavel_nome||r.nome)+row("E-mail",email)+row("Telefone",tel)+row("Instagram",x.instagram)+row("Cidade",x.cidade)+row("Membro desde",fdata(x.membro_desde))
    +row("Anuidade",x.anuidade_valor!=null?brl(x.anuidade_valor):"")+row("Situação",x.anuidade_paga?("Paga"+(x.anuidade_pago_em?(" em "+fdata(x.anuidade_pago_em)):"")):"Em aberto")
    +row("Cota de membros",x.cota_membros)+row("Cota de restaurantes",x.cota_restaurantes)+"</div>"+edForm(x);
   var lst=ind.length?("<div class=\"grp\" style=\"margin-top:14px;\">Indicações de membros ("+ind.length+")</div><div style=\"font-size:13px;line-height:1.7;\">"+ind.map(function(m){return esc(m.nome)+" <span style=\"color:#8a8270;font-size:11.5px;\">"+esc([m.ano,m.nucleo,m.tipo].filter(Boolean).join(" · "))+"</span>";}).join("<br>")+"</div>"):"";
   return "<div class=\"mcard\">"+head+"<div class=\"mbody\">"+cad+lst+"</div></div>";}
+var MEMBROS_LOGIN=[];
+function ownerOpts(sel){return "<option value=\"\">— sem login vinculado —</option>"+MEMBROS_LOGIN.map(function(m){return "<option value=\""+m.user_id+"\""+(m.user_id===sel?" selected":"")+">"+esc(m.nome)+(m.email?(" · "+esc(m.email)):"")+"</option>";}).join("");}
+function lbl(t,h){return "<label style=\"display:block;\"><span style=\"display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;\">"+t+"</span>"+h+"</label>";}
+var II="width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#fbf7ec;font-family:inherit;";
+function novaToggle(){var b=document.getElementById("novaBox");var abrir=b.style.display==="none";b.style.display=abrir?"block":"none";if(abrir){
+  var c=[["nome","Importadora *"],["responsavel_nome","Responsável"],["cidade","Cidade"],["email","E-mail"],["telefone","Telefone"],["instagram","Instagram"],["membro_desde","Membro desde","date",(function(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");})()],["anuidade_valor","Anuidade (R$)","number",10000]];
+  document.getElementById("novaCampos").innerHTML=c.map(function(f){return lbl(f[1],"<input id=\"nv_"+f[0]+"\" "+(f[2]?"type=\""+f[2]+"\" ":"")+"value=\""+(f[3]!=null?f[3]:"")+"\" style=\""+II+"\">");}).join("")+lbl("Login do responsável (membro)","<select id=\"nv_owner_user_id\" style=\""+II+"\">"+ownerOpts("")+"</select>");
+  document.getElementById("novaMsg").textContent="";}}
+async function criarImp(){var msg=document.getElementById("novaMsg");var g=function(k){var e=document.getElementById("nv_"+k);return e?(""+e.value).trim():"";};
+  var nome=g("nome");if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o nome da importadora.";return;}
+  if(IMPS.some(function(x){return nrm(x.nome)===nrm(nome);})){msg.style.color="#8f1d24";msg.textContent="Já existe uma importadora com esse nome.";return;}
+  var d={nome:nome};["responsavel_nome","cidade","email","telefone","instagram","owner_user_id"].forEach(function(k){if(g(k))d[k]=g(k);});if(g("membro_desde"))d.membro_desde=g("membro_desde");if(g("anuidade_valor"))d.anuidade_valor=Number(g("anuidade_valor"));
+  msg.style.color="#5b5446";msg.textContent="Salvando…";var r=await sb.rpc("conselho_criar_importadora",{p_dados:d});
+  if(r.error){msg.style.color="#8f1d24";msg.textContent=/conselho_criar_importadora/.test(r.error.message)?"Falta rodar o SQL sql/importadoras_editar.sql (nova versão) no Supabase.":r.error.message;return;}
+  msg.style.color="#2f6b3a";msg.textContent="Importadora adicionada!";document.getElementById("busca").value="";await carregar();setTimeout(function(){document.getElementById("novaBox").style.display="none";},900);}
 function toggle(el){var b=el.nextElementSibling;if(b)b.style.display=(b.style.display==="block")?"none":"block";}
 function editarImp(id){var e=document.getElementById("ed_"+id);if(e)e.style.display=(e.style.display==="none")?"block":"none";}
-async function salvarImp(id){var x=IMPS.filter(function(i){return i.id===id;})[0]||{};var patch={};CAMPOS.forEach(function(c){var e=document.getElementById("ei_"+c[0]+"_"+id);if(!e)return;var v=(""+e.value).trim();var old=(x[c[0]]==null?"":""+x[c[0]]);if(v!==old)patch[c[0]]=(v===""?null:(c[2]==="number"?Number(v):v));});
+async function salvarImp(id){var x=IMPS.filter(function(i){return i.id===id;})[0]||{};var patch={};CAMPOS.forEach(function(c){var e=document.getElementById("ei_"+c[0]+"_"+id);if(!e)return;var v=(""+e.value).trim();var old=(x[c[0]]==null?"":(c[2]==="date"?(""+x[c[0]]).slice(0,10):""+x[c[0]]));if(v!==old)patch[c[0]]=(v===""?null:(c[2]==="number"?Number(v):v));});
+  var eo=document.getElementById("ei_owner_user_id_"+id);if(eo&&eo.value!==(x.owner_user_id||""))patch.owner_user_id=eo.value||null;
   var msg=document.getElementById("ei_msg_"+id);if(!Object.keys(patch).length){msg.style.color="#8a8270";msg.textContent="Nada para alterar.";return;}
   if(patch.nome===null){msg.style.color="#8f1d24";msg.textContent="Informe o nome.";return;}
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";var r=await sb.rpc("conselho_editar_importadora",{p_id:id,p_patch:patch});
@@ -92,6 +113,7 @@ async function carregar(){var q=await sb.from("importadoras").select("*").order(
   if(q.error){document.getElementById("lista").innerHTML="<p style=\"color:#9a937f;\">"+esc(q.error.message)+"</p>";return;}
   IMPS=q.data||[];var ids=IMPS.map(function(x){return x.owner_user_id;}).filter(Boolean);RESP={};
   if(ids.length){var m=await sb.from("membros").select("user_id,nome,email,telefone,telefone_ddi,foto_url").in("user_id",ids);(m.data||[]).forEach(function(r){RESP[r.user_id]=r;});}
+  try{var ml=await sb.from("membros").select("user_id,nome,email").not("user_id","is",null).order("nome",{ascending:true});MEMBROS_LOGIN=ml.data||[];}catch(e){}
   INDS={};try{var im=await sb.from("importadora_membros").select("importadora_id,nome,ano,nucleo,tipo").order("ano",{ascending:false});(im.data||[]).forEach(function(r){(INDS[r.importadora_id]=INDS[r.importadora_id]||[]).push(r);});}catch(e){}
   render();}
 async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}

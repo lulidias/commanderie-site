@@ -23,6 +23,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .badge{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:3px 10px;white-space:nowrap;}
 .b-venc{color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);}
 .b-pago{color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;}
+.b-atraso{color:#fff;background:#8f1d24;border:1px solid #8f1d24;}
 .b-isento{color:#5b5446;background:#efe9da;border:1px solid var(--line);}
 .pay{ text-decoration:none;font-size:12px;background:var(--navy);color:#fff;border-radius:9px;padding:6px 12px;margin-left:10px;}
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
@@ -38,6 +39,13 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <p style="font-size:13.5px;color:#5b5446;line-height:1.55;margin:0 0 12px;" data-i18n="pg_intro">Anuidade, jantares e viagens — acompanhe o que está em dia e o que está por vencer.</p>
     <div style="text-align:left;margin-bottom:6px;"><span class="m-status" id="mStatusPill"><span class="m-dot" id="mDot"></span> <span id="mStatusTxt">—</span></span></div>
     <div id="anuidadeBox"></div>
+    <div id="compBox" style="display:none;margin-top:14px;background:#fbf7ec;border:1px solid var(--line);border-radius:12px;padding:14px 16px;">
+      <div style="font-family:Georgia,serif;color:var(--navy);font-size:16px;">Já pagou? Envie o comprovante</div>
+      <p style="font-size:12.5px;color:#5b5446;line-height:1.5;margin:4px 0 10px;">Anexe a foto ou o PDF do comprovante PIX. Ele é conferido na hora e, se estiver tudo certo, a sua anuidade fica <b>paga automaticamente</b>.</p>
+      <label style="display:inline-block;cursor:pointer;background:var(--navy);color:#fff;border-radius:9px;padding:9px 18px;font-size:13px;">&#128206; Enviar comprovante<input id="compFile" type="file" accept="image/*,application/pdf" style="display:none" onchange="enviarComprovante(this)"></label>
+      <div id="compMsg" style="font-size:13px;margin-top:10px;line-height:1.5;"></div>
+      <div id="compHist" style="margin-top:8px;"></div>
+    </div>
     <div style="margin-top:18px;border-top:1px solid #ece0c2;padding-top:16px;">
       <div style="font-family:Georgia,serif;color:var(--navy);font-size:17px;margin-bottom:10px;" data-i18n="pg_pix_h">Pagar por PIX</div>
       <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
@@ -50,7 +58,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
           <div style="margin-top:12px;"><button onclick="copiarPix()" style="background:var(--navy);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;cursor:pointer;" data-i18n="pg_copiar">Copiar código PIX</button><span id="pixMsg" style="font-size:12px;margin-left:8px;color:#2f6b3a;"></span></div>
         </div>
       </div>
-      <p style="font-size:12px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:14px;" data-i18n="pg_note1">Após o pagamento, envie o comprovante à Secretaria. O Conselho confirma e a sua anuidade/participação fica registrada como <b>paga</b>.</p>
+      <p style="font-size:12px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:14px;" data-i18n="pg_note1">Após o pagamento, envie o comprovante aqui nesta página (botão <b>Enviar comprovante</b>). Ele é conferido automaticamente e a sua anuidade fica registrada como <b>paga</b>.</p>
     </div>
     <p style="font-size:11.5px;color:#9a937f;margin-top:14px;" data-i18n="pg_note2">A anuidade vence no 1º dia útil de novembro. No ano da entronização, ela já está incluída nos eventos de entronização — a cobrança anual começa no ano seguinte. O pagamento por cartão e a cobrança recorrente entrarão quando a conta da associação (CNPJ) estiver ativa.</p>
   </div>
@@ -79,7 +87,8 @@ async function carregar(){
   var u=(await sb.auth.getUser()).data.user;
   document.getElementById("loading").style.display="none";
   if(!u){document.getElementById("needLogin").style.display="block";return;}
-  var q=await sb.from("membros").select("grau,capitulo,anuidade_valor,anuidade_paga").eq("user_id",u.id).maybeSingle();
+  var q=await sb.from("membros").select("id,grau,capitulo,anuidade_valor,anuidade_paga,anuidade_atrasos").eq("user_id",u.id).maybeSingle();
+  if(q.error&&/anuidade_atrasos/.test(q.error.message||""))q=await sb.from("membros").select("id,grau,capitulo,anuidade_valor,anuidade_paga").eq("user_id",u.id).maybeSingle();
   if(q.error||!q.data){document.getElementById("needLogin").style.display="block";return;}
   var m=q.data;
   var g=(""+(m.grau||"")).toLowerCase();
@@ -106,14 +115,42 @@ async function carregar(){
     pill("Anuidade em dia","#3a9a4e","#eef6ef");
     html='<div class="row"><span class="t">Anuidade 2026<br><small>'+brl(val)+' · Quitada</small></span><span class="badge b-pago">Pago</span></div>';
   }
+  var atr=(m.anuidade_atrasos||[]).slice().sort();
+  if(atr.length){
+    var ah=atr.map(function(a){return '<div class="row"><span class="t">Anuidade '+a+'<br><small>'+brl(val)+' · Em atraso</small></span><span class="badge b-atraso">Em atraso</span></div>';}).join("");
+    html=ah+html;
+    var devidos=atr.length+(paga?0:1);
+    pill("Anuidade em atraso","#8f1d24","#fbeaea");
+    html+='<div class="row" style="border-bottom:none;"><span class="t"><b>Total em aberto</b><br><small>'+devidos+' anuidade(s)</small></span><b style="color:#8f1d24;">'+brl(val*devidos)+'</b></div>';
+  }
   box.innerHTML=html;
+  window.MEU_MEMBRO=m.id;
+  if(atr.length||!paga){document.getElementById("compBox").style.display="block";}
+  carregarComprovantes();
   document.getElementById("content").style.display="block";
 }
+async function carregarComprovantes(){var el=document.getElementById("compHist");if(!el||!window.MEU_MEMBRO)return;var r=await sb.from("anuidade_comprovantes").select("status,valor,anos_quitados,created_at,url").eq("membro_id",window.MEU_MEMBRO).order("created_at",{ascending:false}).limit(5);if(r.error||!r.data||!r.data.length){el.innerHTML="";return;}document.getElementById("compBox").style.display="block";
+  el.innerHTML='<div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8a8270;margin:6px 0 4px;">Comprovantes enviados</div>'+r.data.map(function(c){var d=new Date(c.created_at).toLocaleDateString("pt-BR");var st=c.status==="aprovado"?'<span class="badge b-pago">Aprovado'+((c.anos_quitados||[]).length?(" · "+c.anos_quitados.join(", ")):"")+'</span>':(c.status==="conferido"?'<span class="badge b-pago">Conferido</span>':'<span class="badge b-venc">Em análise</span>');return '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;font-size:12.5px;border-top:1px solid #ece0c2;"><a href="'+c.url+'" target="_blank" rel="noopener" style="color:var(--navy);">'+d+(c.valor?(" · "+brl(c.valor)):"")+'</a>'+st+'</div>';}).join("");}
+async function enviarComprovante(inp){var f=inp.files&&inp.files[0];if(!f)return;var msg=document.getElementById("compMsg");function say(t,c){msg.style.color=c||"#5b5446";msg.innerHTML=t;}
+  if(f.size>10*1024*1024){say("Arquivo muito grande (máx. 10 MB).","#8f1d24");inp.value="";return;}
+  say("Enviando…");
+  try{var u=(await sb.auth.getUser()).data.user;var ext=((f.name||"img").split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";var path="anuidade/"+u.id+"_"+Date.now()+"."+ext;
+    var up=await sb.storage.from("comprovantes").upload(path,f,{upsert:false,contentType:f.type||"image/jpeg"});
+    if(up.error){say("Não foi possível enviar o arquivo. Tente outra foto ou PDF.","#8f1d24");inp.value="";return;}
+    var url=sb.storage.from("comprovantes").getPublicUrl(path).data.publicUrl;
+    say("Recebido! Conferindo o comprovante…");
+    var rob=await sb.functions.invoke("ler-comprovante-anuidade",{body:{url:url}});var d=(rob&&rob.data)||{};
+    if(d.pago){say("&#10004; Pagamento confirmado"+((d.quitados||[]).length?(" — anuidade "+d.quitados.join(", ")):"")+". Muito obrigado!","#2f6b3a");inp.value="";await carregar();return;}
+    if(d.motivo==="duplicado"){say("Este comprovante já foi usado antes. O Conselho vai conferir.","#8a6a1f");}
+    else if(rob&&rob.error){say("Comprovante recebido! O Conselho vai conferir e confirmar em breve.","#8a6a1f");}
+    else{say("Comprovante recebido! Não conseguimos confirmar automaticamente"+(d.valor?(" (valor lido: "+brl(d.valor)+")"):"")+" — o Conselho vai conferir e confirmar em breve.","#8a6a1f");}
+    inp.value="";carregarComprovantes();
+  }catch(e){say("Erro ao enviar. Tente novamente.","#8f1d24");inp.value="";}}
 document.addEventListener("DOMContentLoaded",function(){carregar();pixInit();});
 </script><script>
 var I18N={
- en:{pg_brand:"Payments",pg_back:"&#8592; Back",pg_nl_h:"Restricted access",pg_nl_p:"Sign in to access your payments.",pg_nl_btn:"Sign in",pg_loading:"Loading…",pg_k:"Commander",pg_h1:"Payments",pg_intro:"Annual fee, dinners and trips — keep track of what is paid and what is due.",pg_pix_h:"Pay by PIX",pg_scan:"Scan in your banking app",pg_fav:"PAYEE",pg_chave:"PIX KEY (CNPJ)",pg_banco:"BANK",pg_copiar:"Copy PIX code",pg_note1:"After payment, send the receipt to the Secretariat. The Council confirms and your annual fee/participation is recorded as <b>paid</b>.",pg_note2:"The annual fee is due on the first business day of November. In the induction year, it is already included in the induction events — annual billing begins the following year. Card payment and recurring billing will start once the association’s account (CNPJ) is active.",pg_doa_h:"Donation",pg_doa_p:"Contribute freely to strengthen the Commanderie — events, trips and the promotion of Bordeaux wines in Brazil. Every donation is welcome.",pg_doa_btn:"Donate via PIX",pg_doa_note:"Uses the same PIX above (Commanderie de Bordeaux do Brasil). After donating, send the receipt to the Secretariat."},
- fr:{pg_brand:"Paiements",pg_back:"&#8592; Retour",pg_nl_h:"Accès restreint",pg_nl_p:"Connectez-vous pour accéder à vos paiements.",pg_nl_btn:"Se connecter",pg_loading:"Chargement…",pg_k:"Commandeur",pg_h1:"Paiements",pg_intro:"Cotisation, dîners et voyages — suivez ce qui est réglé et ce qui est à échéance.",pg_pix_h:"Payer par PIX",pg_scan:"Scannez dans votre application bancaire",pg_fav:"BÉNÉFICIAIRE",pg_chave:"CLÉ PIX (CNPJ)",pg_banco:"BANQUE",pg_copiar:"Copier le code PIX",pg_note1:"Après le paiement, envoyez le justificatif au Secrétariat. Le Conseil confirme et votre cotisation/participation est enregistrée comme <b>payée</b>.",pg_note2:"La cotisation est due le premier jour ouvré de novembre. L’année de l’intronisation, elle est déjà incluse dans les événements d’intronisation — la facturation annuelle commence l’année suivante. Le paiement par carte et le prélèvement récurrent débuteront dès que le compte de l’association (CNPJ) sera actif.",pg_doa_h:"Don",pg_doa_p:"Contribuez librement au rayonnement de la Commanderie — événements, voyages et diffusion des vins de Bordeaux au Brésil. Chaque don est bienvenu.",pg_doa_btn:"Faire un don par PIX",pg_doa_note:"Utilise le même PIX ci-dessus (Commanderie de Bordeaux do Brasil). Après le don, envoyez le justificatif au Secrétariat."}
+ en:{pg_brand:"Payments",pg_back:"&#8592; Back",pg_nl_h:"Restricted access",pg_nl_p:"Sign in to access your payments.",pg_nl_btn:"Sign in",pg_loading:"Loading…",pg_k:"Commander",pg_h1:"Payments",pg_intro:"Annual fee, dinners and trips — keep track of what is paid and what is due.",pg_pix_h:"Pay by PIX",pg_scan:"Scan in your banking app",pg_fav:"PAYEE",pg_chave:"PIX KEY (CNPJ)",pg_banco:"BANK",pg_copiar:"Copy PIX code",pg_note1:"After payment, upload the receipt on this page (<b>Send receipt</b> button). It is checked automatically and your annual fee is recorded as <b>paid</b>.",pg_note2:"The annual fee is due on the first business day of November. In the induction year, it is already included in the induction events — annual billing begins the following year. Card payment and recurring billing will start once the association’s account (CNPJ) is active.",pg_doa_h:"Donation",pg_doa_p:"Contribute freely to strengthen the Commanderie — events, trips and the promotion of Bordeaux wines in Brazil. Every donation is welcome.",pg_doa_btn:"Donate via PIX",pg_doa_note:"Uses the same PIX above (Commanderie de Bordeaux do Brasil). After donating, send the receipt to the Secretariat."},
+ fr:{pg_brand:"Paiements",pg_back:"&#8592; Retour",pg_nl_h:"Accès restreint",pg_nl_p:"Connectez-vous pour accéder à vos paiements.",pg_nl_btn:"Se connecter",pg_loading:"Chargement…",pg_k:"Commandeur",pg_h1:"Paiements",pg_intro:"Cotisation, dîners et voyages — suivez ce qui est réglé et ce qui est à échéance.",pg_pix_h:"Payer par PIX",pg_scan:"Scannez dans votre application bancaire",pg_fav:"BÉNÉFICIAIRE",pg_chave:"CLÉ PIX (CNPJ)",pg_banco:"BANQUE",pg_copiar:"Copier le code PIX",pg_note1:"Après le paiement, envoyez le justificatif sur cette page (bouton <b>Envoyer le justificatif</b>). Il est vérifié automatiquement et votre cotisation est enregistrée comme <b>payée</b>.",pg_note2:"La cotisation est due le premier jour ouvré de novembre. L’année de l’intronisation, elle est déjà incluse dans les événements d’intronisation — la facturation annuelle commence l’année suivante. Le paiement par carte et le prélèvement récurrent débuteront dès que le compte de l’association (CNPJ) sera actif.",pg_doa_h:"Don",pg_doa_p:"Contribuez librement au rayonnement de la Commanderie — événements, voyages et diffusion des vins de Bordeaux au Brésil. Chaque don est bienvenu.",pg_doa_btn:"Faire un don par PIX",pg_doa_note:"Utilise le même PIX ci-dessus (Commanderie de Bordeaux do Brasil). Après le don, envoyez le justificatif au Secrétariat."}
 };
 var _orig={};
 function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}

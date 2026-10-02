@@ -41,7 +41,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <div id="panel" style="display:none;">
   <div class="dhead"><div class="k">Conselho</div><h1>Membros</h1><div class="sub" style="font-size:13px;color:#8a8270;" id="resumo"></div></div>
   <div class="wrap">
-    <div class="tools"><input class="inp" id="busca" placeholder="Buscar por nome, e-mail, código…" oninput="render()" style="flex:1;min-width:200px;"><select class="inp" id="fNucleo" onchange="render()"><option value="">Todos os núcleos</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select></div>
+    <div class="tools"><input class="inp" id="busca" placeholder="Buscar por nome, e-mail, código…" oninput="render()" style="flex:1;min-width:200px;"><select class="inp" id="fNucleo" onchange="render()"><option value="">Todos os núcleos</option><option>Brasil</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select></div>
     <div id="lista"></div>
   </div>
 </div>
@@ -95,7 +95,7 @@ function card(m){
   return "<div class=\"mcard\">"+head+body+"</div>";
 }
 function toggle(el){var b=el.nextElementSibling;if(b)b.style.display=(b.style.display==="block")?"none":"block";}
-function nucOpts(sel){var o=["São Paulo","Rio de Janeiro","Porto Alegre","Curitiba","Recife"];return "<option value=\"\">Núcleo…</option>"+o.map(function(n){return "<option value=\""+n+"\""+(((sel||"")===n)?" selected":"")+">"+n+"</option>";}).join("");}
+function nucOpts(sel){var o=["Brasil","São Paulo","Rio de Janeiro","Porto Alegre","Curitiba","Recife"];return "<option value=\"\">Núcleo…</option>"+o.map(function(n){return "<option value=\""+n+"\""+(((sel||"")===n)?" selected":"")+">"+n+"</option>";}).join("");}
 var GRAUS=["Commandeur","Membro de Honra","Mestre","Grão-Mestre"];
 function grauOpts(sel){sel=(""+(sel||"")).trim();var o=GRAUS.slice();if(sel&&o.indexOf(sel)<0)o.unshift(sel);return o.map(function(g){return "<option value=\""+esc(g)+"\""+(g===sel?" selected":"")+">"+esc(g)+"</option>";}).join("");}
 function fld(lbl,html){return "<label style=\"display:block;\"><span style=\"display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;\">"+lbl+"</span>"+html+"</label>";}
@@ -130,7 +130,7 @@ function render(){
   var resto=list.filter(function(m){return !aguardandoIntro(m);});
   var html="";
   if(topo.length){html+="<div class=\"nuctitle\" style=\"color:var(--red);border-color:#e6cccc;\">Aguardando entronização <span style=\"font-size:12px;color:#8a8270;\">("+topo.length+")</span></div>"+topo.map(card).join("");}
-  var ORD=["São Paulo","Rio de Janeiro","Porto Alegre","Curitiba","Recife"];
+  var ORD=["Brasil","São Paulo","Rio de Janeiro","Porto Alegre","Curitiba","Recife"];
   var grupos={};resto.forEach(function(m){var k=m.nucleo||"Sem núcleo";(grupos[k]=grupos[k]||[]).push(m);});
   var chaves=Object.keys(grupos).sort(function(a,b){function rk(n){if(n==="Sem núcleo")return 100;var i=ORD.indexOf(n);return i<0?50:i;}var ra=rk(a),rb=rk(b);if(ra!==rb)return ra-rb;return a.localeCompare(b,"pt");});
   html+=chaves.map(function(k){return "<div class=\"nuctitle\">"+esc(k)+" <span style=\"font-size:12px;color:#8a8270;\">("+grupos[k].length+")</span></div>"+grupos[k].map(card).join("");}).join("");

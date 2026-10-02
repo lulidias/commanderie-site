@@ -33,6 +33,8 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
 .state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
 .btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+.mav.logo{background:#fff;border-radius:10px;width:54px;height:54px;padding:4px;}
+.mav.logo img{object-fit:contain;}
 </style></head>
 <body>
 <div class="dtop"><a href="painel-conselho.html" style="display:inline-flex;align-items:center;" title="Painel do Conselho"><img src="img/brasao.png" alt="Brasão"></a><b>Importadoras Membros</b><a class="back" href="painel-conselho.html">&#8592; Voltar</a></div>
@@ -64,22 +66,35 @@ function brl(v){return "R$ "+(Math.round(Number(v)||0)).toLocaleString("pt-BR");
 function row(k,v){if(v==null||v==="")return "";return "<div><div class=\"k\">"+esc(k)+"</div><div class=\"v\">"+esc(v)+"</div></div>";}
 function pill(x){if(x.anuidade_paga)return "<span class=\"pill p-pago\">Anuidade em dia</span>";if(new Date()>new Date("2026-11-02T12:00:00"))return "<span class=\"pill\" style=\"color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;\">Em atraso</span>";return "<span class=\"pill p-aberto\">A vencer 02/11</span>";}
 function resp(x){return RESP[x.owner_user_id]||{};}
+var LOGOS_FIXOS={"chez france":"img/logo-chezfrance.png","enclos":"img/logo-enclos.png","epice":"img/logo-epice.png","interfood":"img/logo-interfood.png","mistral":"img/logo-mistral.png","world wine":"img/logo-worldwine.png"};
+function logoDe(x){if(x.logo_url)return x.logo_url;var n=nrm(x.nome).replace(/[^a-z ]/g,"").trim();for(var k in LOGOS_FIXOS){if(n===k||n.indexOf(k)===0)return LOGOS_FIXOS[k];}return "";}
+async function enviarLogo(id,inp){var f=inp.files&&inp.files[0];if(!f)return;var msg=document.getElementById("lg_msg_"+id);function say(t,c){if(msg){msg.style.color=c||"#5b5446";msg.textContent=t;}}
+  if(!/^image\//.test(f.type||"")){say("Envie uma imagem (PNG, JPG ou SVG).","#8f1d24");inp.value="";return;}
+  if(f.size>5*1024*1024){say("Imagem muito grande (máx. 5 MB).","#8f1d24");inp.value="";return;}
+  say("Enviando…");var ext=((f.name||"logo.png").split(".").pop()||"png").toLowerCase().replace(/[^a-z0-9]/g,"")||"png";var path="importadoras/"+id+"_"+Date.now()+"."+ext;
+  var up=await sb.storage.from("parceiros").upload(path,f,{upsert:false,contentType:f.type});if(up.error){say("Não foi possível enviar: "+up.error.message,"#8f1d24");inp.value="";return;}
+  var url=sb.storage.from("parceiros").getPublicUrl(path).data.publicUrl;
+  var r=await sb.rpc("conselho_editar_importadora",{p_id:id,p_patch:{logo_url:url}});if(r.error){say(r.error.message,"#8f1d24");inp.value="";return;}
+  say("Logo atualizada!","#2f6b3a");ABERTO=id;await carregar();}
+async function removerLogo(id){if(!confirm("Remover a logo desta importadora?"))return;var r=await sb.rpc("conselho_editar_importadora",{p_id:id,p_patch:{logo_url:null}});if(r.error){alert(r.error.message);return;}ABERTO=id;await carregar();}
+var ABERTO=null;
 var CAMPOS=[["nome","Importadora"],["responsavel_nome","Responsável"],["cidade","Cidade"],["email","E-mail"],["telefone","Telefone"],["instagram","Instagram"],["membro_desde","Membro desde","date"],["anuidade_valor","Anuidade (R$)","number"],["cota_membros","Cota de indicações de membros","number"],["cota_restaurantes","Cota de restaurantes","number"]];
 function edForm(x){var ii="width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#fbf7ec;font-family:inherit;";
   return "<div id=\"ed_"+x.id+"\" style=\"display:none;margin-top:10px;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:12px;\"><div style=\"font-size:11px;color:#8a8270;font-weight:bold;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;\">Editar cadastro</div><div style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;\">"
   +CAMPOS.filter(function(c){return c[0] in x;}).map(function(c){return "<label style=\"display:block;\"><span style=\"display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;\">"+c[1]+"</span><input id=\"ei_"+c[0]+"_"+x.id+"\" "+(c[2]==="number"?"type=\"number\" step=\"0.01\" ":(c[2]==="date"?"type=\"date\" ":""))+"value=\""+esc(x[c[0]]==null?"":(c[2]==="date"?(""+x[c[0]]).slice(0,10):x[c[0]]))+"\" style=\""+ii+"\"></label>";}).join("")
   +lbl("Login do responsável (membro)","<select id=\"ei_owner_user_id_"+x.id+"\" style=\""+ii+"\">"+ownerOpts(x.owner_user_id||"")+"</select>")+"</div><div style=\"margin-top:10px;\"><button onclick=\"salvarImp('"+x.id+"')\" style=\"background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;\">Salvar</button> <span id=\"ei_msg_"+x.id+"\" style=\"font-size:12.5px;margin-left:8px;\"></span></div></div>";}
-function card(x){var r=resp(x);var foto=r.foto_url?("<img src=\""+esc(r.foto_url)+"\" alt=\"\">"):esc(ini(x.nome));
+function card(x){var r=resp(x);var lg=logoDe(x);var foto=lg?("<img src=\""+esc(lg)+"\" alt=\""+esc(x.nome)+"\">"):esc(ini(x.nome));
   var email=x.email||r.email||"";var tel=x.telefone||((r.telefone_ddi?r.telefone_ddi+" ":"")+(r.telefone||""));
   var meta=[x.responsavel_nome||r.nome,x.cidade].filter(Boolean).join(" · ");
-  var head="<div class=\"mhead\" onclick=\"toggle(this)\"><div class=\"mav\">"+foto+"</div><div style=\"flex:1;min-width:0;\"><div class=\"mname\">"+esc(x.nome)+"</div><div class=\"mmeta\">"+esc(meta)+(email?(" · "+esc(email)):"")+"</div></div>"+pill(x)+"</div>";
+  var head="<div class=\"mhead\" onclick=\"toggle(this)\"><div class=\"mav"+(lg?" logo":"")+"\">"+foto+"</div><div style=\"flex:1;min-width:0;\"><div class=\"mname\">"+esc(x.nome)+"</div><div class=\"mmeta\">"+esc(meta)+(email?(" · "+esc(email)):"")+"</div></div>"+pill(x)+"</div>";
   var ind=INDS[x.id]||[];
-  var cad="<div class=\"grp\">Cadastro <a onclick=\"editarImp('"+x.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:10px;font-weight:normal;text-transform:none;letter-spacing:0;margin-left:8px;\">editar</a></div><div class=\"kv\">"
+  var logoBox="<div class=\"grp\">Logo</div><div style=\"display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;\"><div style=\"width:110px;height:64px;background:#fff;border:1px solid var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;padding:6px;\">"+(lg?("<img src=\""+esc(lg)+"\" alt=\"\" style=\"max-width:100%;max-height:100%;object-fit:contain;\">"):"<span style=\"color:#9a937f;font-size:11px;\">sem logo</span>")+"</div><label style=\"cursor:pointer;color:var(--navy);border:1.5px dashed var(--gold);border-radius:9px;padding:7px 13px;font-size:12.5px;\">"+(x.logo_url?"Trocar logo":"Enviar logo")+"<input type=\"file\" accept=\"image/*\" style=\"display:none\" onchange=\"enviarLogo('"+x.id+"',this)\"></label>"+(x.logo_url?("<a onclick=\"removerLogo('"+x.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;\">remover</a>"):"")+"<span id=\"lg_msg_"+x.id+"\" style=\"font-size:12px;\"></span></div>";
+  var cad=logoBox+"<div class=\"grp\">Cadastro <a onclick=\"editarImp('"+x.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:10px;font-weight:normal;text-transform:none;letter-spacing:0;margin-left:8px;\">editar</a></div><div class=\"kv\">"
    +row("Responsável",x.responsavel_nome||r.nome)+row("E-mail",email)+row("Telefone",tel)+row("Instagram",x.instagram)+row("Cidade",x.cidade)+row("Membro desde",fdata(x.membro_desde))
    +row("Anuidade",x.anuidade_valor!=null?brl(x.anuidade_valor):"")+row("Situação",x.anuidade_paga?("Paga"+(x.anuidade_pago_em?(" em "+fdata(x.anuidade_pago_em)):"")):"Em aberto")
    +row("Cota de membros",x.cota_membros)+row("Cota de restaurantes",x.cota_restaurantes)+"</div>"+edForm(x);
   var lst=ind.length?("<div class=\"grp\" style=\"margin-top:14px;\">Indicações de membros ("+ind.length+")</div><div style=\"font-size:13px;line-height:1.7;\">"+ind.map(function(m){return esc(m.nome)+" <span style=\"color:#8a8270;font-size:11.5px;\">"+esc([m.ano,m.nucleo,m.tipo].filter(Boolean).join(" · "))+"</span>";}).join("<br>")+"</div>"):"";
-  return "<div class=\"mcard\">"+head+"<div class=\"mbody\">"+cad+lst+"</div></div>";}
+  return "<div class=\"mcard\">"+head+"<div class=\"mbody\""+(ABERTO===x.id?" style=\"display:block\"":"")+">"+cad+lst+"</div></div>";}
 var MEMBROS_LOGIN=[];
 function ownerOpts(sel){return "<option value=\"\">— sem login vinculado —</option>"+MEMBROS_LOGIN.map(function(m){return "<option value=\""+m.user_id+"\""+(m.user_id===sel?" selected":"")+">"+esc(m.nome)+(m.email?(" · "+esc(m.email)):"")+"</option>";}).join("");}
 function lbl(t,h){return "<label style=\"display:block;\"><span style=\"display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;\">"+t+"</span>"+h+"</label>";}

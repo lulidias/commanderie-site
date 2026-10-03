@@ -212,8 +212,10 @@ async function enviarComprovante(inp){
   try{
     var ext=((f.name||"img").split(".").pop()||"jpg").toLowerCase();
     var path=EVID+"/"+(window.RSVP_ID||("anon"+Date.now()))+"_"+Date.now()+"."+ext;
-    var up=await sb.storage.from("comprovantes").upload(path,f,{upsert:true,contentType:f.type||"image/jpeg"});
-    if(up.error){st.style.color="#8f1d24";st.textContent="Não foi possível enviar. Tente outra foto. ("+up.error.message+")";return;}
+    // Sem upsert: o bucket não dá SELECT a quem envia, e o upsert consulta se o
+    // objeto existe — 403 de RLS em todo upload. O nome já leva a hora. (03/10/2026)
+    var up=await sb.storage.from("comprovantes").upload(path,f,{contentType:f.type||"image/jpeg"});
+    if(up.error){st.style.color="#8f1d24";st.textContent="Não conseguimos guardar o arquivo. Tente de novo; se repetir, fale com a Secretaria. ("+up.error.message+")";return;}
     var url=sb.storage.from("comprovantes").getPublicUrl(path).data.publicUrl;
     if(window.RSVP_ID){try{await sb.rpc("anexar_comprovante",{p_rsvp:window.RSVP_ID,p_url:url});}catch(e){}}
     st.textContent="";

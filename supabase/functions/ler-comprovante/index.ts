@@ -16,11 +16,18 @@ Deno.serve(async (req) => {
     if (!url) return json({ pago: false, motivo: "sem_url" });
     const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
-    let esperado = V_COMENDADOR, temConvidado = false, jaPago = 0;
+    let esperado = V_COMENDADOR, temConvidado = false, jaPago = 0, externo = false, quem = "";
     if (rsvp_id) {
-      const { data: rr } = await sb.from("evento_rsvp").select("convidado_nome,pago_valor").eq("id", rsvp_id).maybeSingle();
-      if (rr && rr.convidado_nome && String(rr.convidado_nome).trim()) { temConvidado = true; esperado = V_TOTAL; }
+      const { data: rr } = await sb.from("evento_rsvp")
+        .select("convidado_nome,pago_valor,categoria,evento_id,user_id").eq("id", rsvp_id).maybeSingle();
+      // O convidado externo (importador que ainda não é Comendador) paga o
+      // preço de convidado e vem SOZINHO — o nome dele está em convidado_nome,
+      // que no caso do Comendador significa outra coisa: o acompanhante.
+      // Sem esta distinção o robô esperaria R$ 2.200 dele e nunca aprovaria.
+      if (rr && rr.categoria === "convidado-externo") { externo = true; esperado = V_CONVIDADO; }
+      else if (rr && rr.convidado_nome && String(rr.convidado_nome).trim()) { temConvidado = true; esperado = V_TOTAL; }
       jaPago = Number(rr?.pago_valor) || 0;
+      quem = String(rr?.convidado_nome || "").trim();
     }
     const KEY = Deno.env.get("ANTHROPIC_API_KEY");
     if (!KEY) return json({ pago: false, motivo: "robo_inativo", esperado });
@@ -66,6 +73,19 @@ Deno.serve(async (req) => {
       };
       if (full) upd.status = "Confirmado";
       await sb.from("evento_rsvp").update(upd).eq("id", rsvp_id);
+
+      // A contabilidade entra sozinha quando o pagamento fecha. Antes isto era
+      // lançado à mão depois, pelo Conselho — e o que se lança à mão depois
+      // é o que fica para trás. O índice único por `fonte` garante que rodar
+      // o robô de novo não duplica a receita. (03/10/2026)
+      if (full) {
+        const rotulo = externo
+          ? `Jantar de 1 Ano — convidado ${quem || "externo"}`
+          : `Jantar de 1 Ano — ${quem ? "Comendador + convidado" : "Comendador"}`;
+        await sb.rpc("lancar_receita_rsvp", {
+          p_rsvp: rsvp_id, p_valor: novoPago, p_descricao: rotulo,
+        });
+      }
     }
     return json({ pago: full, parcial: valido && !full, valor, esperado, pago_valor: novoPago, dados });
   } catch (e) {

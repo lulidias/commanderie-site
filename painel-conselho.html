@@ -278,6 +278,7 @@ async function carregarFinanceiro(){
   }
   await carregarImportadoras();
   await carregarDespesas();
+  await carregarCompRec();
   await carregarReceitas();
 }
 function editarFin(id){var r=(window.FIN_ROWS||{})[id];if(!r)return;var nucs=["Brasil","São Paulo","Rio de Janeiro","Porto Alegre","Curitiba","Recife","Internacional"];var extra=(r.nucleo&&nucs.indexOf(r.nucleo)<0)?("<option selected>"+esc(r.nucleo)+"</option>"):"";var opts=nucs.map(function(n){return "<option"+(n===r.nucleo?" selected":"")+">"+n+"</option>";}).join("");var h="<div style=\"position:fixed;inset:0;background:rgba(10,8,5,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;\" onclick=\"if(event.target===this)fecharFinEd()\"><div style=\"background:#fffdf7;border:1px solid var(--line);border-radius:14px;max-width:360px;width:100%;padding:20px 22px;\"><div style=\"font-family:Georgia,serif;color:var(--navy);font-size:18px;\">Editar &middot; "+esc(r.nome)+"</div><label style=\"font-size:12px;color:#8a8270;display:block;margin:12px 0 4px;\">Valor da anuidade (R$)</label><input id=\"finEdVal\" type=\"number\" step=\"0.01\" value=\""+(r.valor||0)+"\" style=\"width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:14px;\"><label style=\"font-size:12px;color:#8a8270;display:block;margin:12px 0 4px;\">Núcleo</label><select id=\"finEdNuc\" style=\"width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:14px;background:#fff;\">"+extra+opts+"</select><label style=\"font-size:12px;color:#8a8270;display:block;margin:12px 0 4px;\">Anos anteriores em atraso</label><input id=\"finEdAtr\" value=\""+esc((r.atrasos||[]).join(", "))+"\" placeholder=\"ex.: 2025 (vazio = nada em atraso)\" style=\"width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:14px;\"><div style=\"font-size:11px;color:#9a937f;margin-top:3px;\">Separe por vírgula. Quando ele quitar, apague o ano.</div><div id=\"finEdMsg\" style=\"font-size:12.5px;min-height:16px;margin-top:8px;\"></div><div style=\"display:flex;gap:10px;justify-content:flex-end;margin-top:12px;\"><a onclick=\"fecharFinEd()\" style=\"color:#8a8270;cursor:pointer;font-size:13px;padding:8px 12px;\">Cancelar</a><button onclick=\"salvarFinEd('"+id+"')\" style=\"background:var(--navy);color:#fff;border:none;border-radius:9px;padding:8px 18px;font-size:13px;cursor:pointer;\">Salvar</button></div></div></div>";var w=document.createElement("div");w.id="finEdWrap";w.innerHTML=h;document.body.appendChild(w);}
@@ -342,9 +343,27 @@ function renderAno(){
   document.getElementById("despGeral").innerHTML=despBox("Despesas "+ano,Dc,Dp)+resultBox(ano,Tp,Dp);
   renderDespTabela(ano);renderCaixa();
   if(!doAno.length){document.getElementById("anoTabela").innerHTML="";return;}
-  var tb="<table class=\"tbl\"><thead><tr><th>Categoria</th><th>Descrição</th><th>Núcleo</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody>";
-  doAno.forEach(function(x){var pago=!!x.pago;var pill=pago?"<span class=\"pill\" style=\"color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;\">Recebido</span>":"<span class=\"pill\" style=\"color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);\">A receber</span>";tb+="<tr><td>"+esc(x.categoria)+"</td><td>"+esc(x.descricao||"")+"</td><td>"+esc(x.nucleo||"")+"</td><td>"+brl(x.valor)+"</td><td>"+pill+"</td><td><a onclick=\"editarReceita('"+x.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:12px;margin-right:10px;\">editar</a><a onclick=\"delReceita('"+x.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;\">remover</a></td></tr>";});
+  var tb="<table class=\"tbl\"><thead><tr><th>Categoria</th><th>Descrição</th><th>Núcleo</th><th>Valor</th><th>Status</th><th>Comprovante</th><th></th></tr></thead><tbody>";
+  doAno.forEach(function(x){var pago=!!x.pago;var pill=pago?"<span class=\"pill\" style=\"color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;\">Recebido</span>":"<span class=\"pill\" style=\"color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);\">A receber</span>";tb+="<tr><td>"+esc(x.categoria)+"</td><td>"+esc(x.descricao||"")+"</td><td>"+esc(x.nucleo||"")+"</td><td>"+brl(x.valor)+"</td><td>"+pill+"</td><td>"+comprovanteDe(x)+"</td><td><a onclick=\"editarReceita('"+x.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:12px;margin-right:10px;\">editar</a><a onclick=\"delReceita('"+x.id+"')\" style=\"color:#8f1d24;cursor:pointer;font-size:12px;\">remover</a></td></tr>";});
   tb+="</tbody></table>";document.getElementById("anoTabela").innerHTML=tb;
+}
+// O comprovante de uma receita não mora na própria linha: ele está em
+// evento_rsvp (inscrições de evento) ou em anuidade_comprovantes (anuidades).
+// `fonte` é a ponte — "rsvp:<id>" nas inscrições. Antes disto o Conselho via
+// "Recebido" e tinha de acreditar. (03/10/2026)
+window.COMPROV={};
+async function carregarCompRec(){
+  var m={};
+  var a=await sb.from("evento_rsvp").select("id,comprovante_url").not("comprovante_url","is",null);
+  if(!a.error)(a.data||[]).forEach(function(r){m["rsvp:"+r.id]=r.comprovante_url;});
+  var b=await sb.from("anuidade_comprovantes").select("id,url").not("url","is",null);
+  if(!b.error)(b.data||[]).forEach(function(r){m["anuidade:"+r.id]=r.url;});
+  window.COMPROV=m;
+}
+function comprovanteDe(x){
+  var u=(window.COMPROV||{})[x.fonte||""];
+  if(!u)return '<span style="color:#b9b2a0;font-size:12px;">\u2014</span>';
+  return '<a href="'+u+'" target="_blank" rel="noopener" title="Abrir o comprovante" style="display:inline-flex;align-items:center;gap:5px;color:var(--navy);font-size:12px;border:1px solid var(--line);border-radius:7px;padding:4px 9px;text-decoration:none;white-space:nowrap;">\uD83D\uDCCE ver</a>';
 }
 async function addReceita(){
   var msg=document.getElementById("rcMsg");

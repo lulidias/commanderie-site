@@ -118,7 +118,17 @@
 </style>
 </head>
 <body>
-<div class="card"><div class="inner">
+<div id="portao" style="display:none;max-width:420px;margin:0 auto;padding:56px 24px;text-align:center;">
+  <img src="/img/brasao-alta.png" alt="Commanderie de Bordeaux do Brasil" style="height:96px;opacity:.95;">
+  <h1 style="font-family:Georgia,serif;color:#1e2a56;font-size:26px;font-weight:normal;margin:20px 0 10px;">Jantar de 1 Ano</h1>
+  <p style="font-family:Arial,sans-serif;font-size:14.5px;color:#5b5446;line-height:1.65;">Evento fechado, exclusivo para os Comendadores da Commanderie de Bordeaux do Brasil. Entre para ver o convite, o menu, os vinhos e confirmar a sua presença.</p>
+  <div style="margin-top:22px;">
+    <a href="/?login=1" style="display:inline-block;background:#b08a3a;color:#fff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;border-radius:9px;padding:12px 22px;">Entrar</a>
+  </div>
+  <p style="font-family:Arial,sans-serif;font-size:13px;color:#8a8270;line-height:1.55;margin-top:16px;">Primeiro acesso? <a href="/?primeiro=1" style="color:#1e2a56;border-bottom:1px solid #b08a3a;text-decoration:none;">Informe o seu e-mail</a> e você recebe um link — sem senha.</p>
+  <div style="font-family:Georgia,serif;color:#b08a3a;font-size:13px;letter-spacing:2px;margin-top:34px;">Bordeaux, toujours Bordeaux.</div>
+</div>
+<div class="card" id="conteudo" style="display:none;"><div class="inner">
   <a onclick="if(document.referrer&&document.referrer.indexOf(location.host)>=0){history.back()}else{location.href='/'}" style="display:inline-flex;align-items:center;gap:6px;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;" data-i18n="backbtn">← Voltar</a>
   <div class="langsel" id="langsel"><a data-l="pt" onclick="setLang('pt')">PT</a><a data-l="en" onclick="setLang('en')">EN</a><a data-l="fr" onclick="setLang('fr')">FR</a></div>
   <img class="convite-art" src="/img/convites/jantar-1-ano.jpg?v=3" alt="Convite — Jantar de 1 Ano da Commanderie de Bordeaux" onclick="abrirArte()" style="width:100%;max-width:540px;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--gold);box-shadow:0 12px 34px rgba(30,26,20,.22);cursor:zoom-in;">
@@ -130,19 +140,6 @@
   <p class="sub" style="margin-top:9px;color:var(--navy);font-weight:bold;" data-i18n="excl">Evento fechado e exclusivo para os membros da Commanderie de Bordeaux.</p>
 
   <div class="sep"></div>
-  <h2 class="sec" data-i18n="part">Participação &amp; Pagamento</h2>
-  <p style="text-align:center;" class="valor"><small>R$</small> 950,00 <span style="font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;" data-i18n="valsub">· por Comendador</span></p>
-  <p style="text-align:center;font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;margin-top:2px;" data-i18n="convl">Convidado: <b style="color:var(--navy);">R$ 1.250,00</b> &middot; cada Comendador tem direito a <b>um convidado</b></p>
-  <div class="pixbox" style="margin-top:14px;">
-    <img src="/img/pix-commanderie.png" alt="QR Code PIX — Commanderie de Bordeaux do Brasil">
-    <div class="pixinfo">
-      <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;" data-i18n="pixlbl">Pague por PIX</div>
-      <span data-i18n="fav">Favorecido:</span> <b>Commanderie de Bordeaux do Brasil</b><br>
-      <span data-i18n="chave">Chave (CNPJ):</span> <b>69.296.264/0001-30</b>
-      <div style="margin-top:10px;"><button class="btn gold" type="button" onclick="copiarPix()" data-i18n="pixbtn">Copiar código PIX</button><span id="pixMsg" class="copied"></span></div>
-    </div>
-  </div>
-
   <div class="sep"></div>
   <h2 class="sec" data-i18n="prodh">À Mesa · Os Produtores</h2>
   <p class="sub" data-i18n="prodsub">15 produtores &middot; 16 châteaux de Saint-Émilion, presentes na ocasião</p>
@@ -198,6 +195,15 @@ var PIX="00020126360014BR.GOV.BCB.PIX0114692962640001305204000053039865802BR5925
 function copiarPix(){var m=document.getElementById("pixMsg");try{navigator.clipboard.writeText(PIX);m.textContent="Código copiado!";}catch(e){m.textContent="Copie a chave: 69.296.264/0001-30";}setTimeout(function(){m.textContent="";},3000);}
 var EVID="c5adcdf2-07a7-4aa3-ad73-a7b6f88efb2c";
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+// Portão: sem sessão, a página não mostra nada do evento. Não é só estética —
+// o preço deixou de existir no HTML e a tabela `eventos` recusa leitura
+// anônima, então quem não entrou não tem de onde tirar o valor.
+(async function(){
+  var dentro=false;
+  try{ dentro=!!(await sb.auth.getUser()).data.user; }catch(e){ dentro=false; }
+  document.getElementById(dentro?"conteudo":"portao").style.display="";
+  document.documentElement.setAttribute("data-dentro",dentro?"1":"0");
+})();
 function abrirArte(){document.getElementById("artLBimg").src="/img/convites/jantar-1-ano.jpg?v=3";document.getElementById("artLB").style.display="flex";}
 function abrirFoto(src){document.getElementById("artLBimg").src=src;document.getElementById("artLB").style.display="flex";}
 function fecharArte(){document.getElementById("artLB").style.display="none";}
@@ -206,52 +212,10 @@ function baixarICS(){
   var ics="BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Commanderie de Bordeaux//Jantar//PT\nBEGIN:VEVENT\nUID:jantar1ano-cdb@commanderiedebordeaux.com.br\nDTSTAMP:"+dt+"\nDTSTART:"+dt+"\nDTEND:"+end+"\nSUMMARY:Jantar de 1 Ano da Commanderie de Bordeaux\nLOCATION:Restaurante Piselli Boa Vista - R. Boa Vista 51, 12o andar, Sao Paulo\nDESCRIPTION:24 Grands Crus Classes de Saint-Emilion em magnum. Bordeaux, toujours Bordeaux.\nEND:VEVENT\nEND:VCALENDAR";
   var a=document.createElement("a");a.href="data:text/calendar;charset=utf-8,"+encodeURIComponent(ics);a.download="Jantar-1-Ano-Commanderie.ics";document.body.appendChild(a);a.click();a.remove();
 }
-async function enviarComprovante(inp){
-  var f=inp.files&&inp.files[0]; if(!f)return;
-  var st=document.getElementById("cmpMsg"); st.style.color="#5b5446"; st.textContent="Enviando o comprovante…";
-  try{
-    var ext=((f.name||"img").split(".").pop()||"jpg").toLowerCase();
-    var path=EVID+"/"+(window.RSVP_ID||("anon"+Date.now()))+"_"+Date.now()+"."+ext;
-    // Sem upsert: o bucket não dá SELECT a quem envia, e o upsert consulta se o
-    // objeto existe — 403 de RLS em todo upload. O nome já leva a hora. (03/10/2026)
-    var up=await sb.storage.from("comprovantes").upload(path,f,{contentType:f.type||"image/jpeg"});
-    if(up.error){st.style.color="#8f1d24";st.textContent="Não conseguimos guardar o arquivo. Tente de novo; se repetir, fale com a Secretaria. ("+up.error.message+")";return;}
-    var url=sb.storage.from("comprovantes").getPublicUrl(path).data.publicUrl;
-    if(window.RSVP_ID){try{await sb.rpc("anexar_comprovante",{p_rsvp:window.RSVP_ID,p_url:url});}catch(e){}}
-    st.textContent="";
-    var fin=function(okpago){document.getElementById("cmpBox").innerHTML='<div class="ok">✓ '+(okpago?"Pagamento confirmado! Nos vemos no jantar.":"Comprovante recebido! Vamos confirmar e você recebe um aviso.")+'</div>';};
-    try{var rob=await sb.functions.invoke("ler-comprovante",{body:{rsvp_id:window.RSVP_ID,url:url}});if(rob&&rob.data&&rob.data.pago){fin(true);return;}}catch(e){}
-    fin(false);
-  }catch(e){st.style.color="#8f1d24";st.textContent="Erro ao enviar. Tente de novo.";}
-}
-async function confirmar(e){
-  e.preventDefault();
-  var g=function(id){var el=document.getElementById(id);return el?el.value.trim():"";};
-  var nome=g("f_nome"); if(!nome){return false;}
-  var msg=document.getElementById("frmMsg"); var btn=document.getElementById("btnEnviar");
-  var pago=document.getElementById("f_pago").checked;
-  btn.disabled=true; msg.style.color="#5b5446"; msg.textContent="Enviando…";
-  var r=await sb.rpc("rsvp_publico",{p_evento:EVID, p_nome:nome, p_email:g("f_email")||null, p_telefone:g("f_tel")||null, p_convidados:parseInt(g("f_conv"),10)||1});
-  if(r.error){btn.disabled=false;msg.style.color="#8f1d24";msg.textContent="Não foi possível enviar. Tente de novo ou fale com a Secretaria. ("+r.error.message+")";return false;}
-  window.RSVP_ID=r.data||null;
-  document.getElementById("frm").style.display="none";
-  var pl=document.getElementById("paLink"); if(pl)pl.style.display="none";
-  var primeiro=nome.split(" ")[0];
-  var p=document.getElementById("passe"); p.className="passe"; p.style.display="block";
-  p.innerHTML='<div class="ok">✓ Presença confirmada</div>'
-    +'<h3>Até lá, '+primeiro+'!</h3>'
-    +'<div class="pdet">Jantar de 1 Ano da Commanderie<br>Quinta, 22 de outubro de 2026 · 20h30<br>Restaurante Piselli — Boa Vista, São Paulo</div>'
-    +'<div class="pbtns"><a class="pbtn solid" onclick="baixarICS()">+ Adicionar ao calendário</a><a class="pbtn" onclick="abrirArte()">Ver o convite</a></div>'
-    +'<div class="cmp" id="cmpBox"><div class="lbl2">Comprovante do PIX</div>'
-    +(pago?'<p>Você marcou que já pagou. Envie o comprovante que confirmamos na hora.</p>':'<p>Já fez o PIX de <b>R$ 950,00</b> (chave <b>69.296.264/0001-30</b>)? Envie o comprovante e confirmamos o seu pagamento.</p>')
-    +'<label class="cmpfile">📎 Enviar comprovante<input type="file" accept="image/*,application/pdf" style="display:none" onchange="enviarComprovante(this)"></label>'
-    +'<div id="cmpMsg" class="msg" style="margin-top:10px;"></div></div>';
-  return false;
-}
 </script>
 
 <script>
-var I18N={"en": {"backbtn": "← Back", "excl": "A private event, exclusive to members of the Commanderie de Bordeaux.", "amp": "Tap the artwork to enlarge", "t_data": "Date", "band": "Thursday, 22 October 2026 · 8:30 pm", "part": "Participation &amp; Payment", "valsub": "· per Commander", "convl": "Guest: <b style=\"color:var(--navy);\">R$ 1,250.00</b> &middot; each Commander may bring <b>one guest</b>", "pixlbl": "Pay by PIX", "fav": "Beneficiary:", "chave": "Key (CNPJ):", "pixbtn": "Copy PIX code", "prodh": "At the Table · The Producers", "prodsub": "15 producers &middot; 16 Saint-Émilion châteaux, present at the dinner", "gcc": "The <b>Association des Grands Crus Classés de Saint-Émilion</b> brings together the classified châteaux of the appellation — the only Bordeaux classification revised periodically. Every producer present belongs to it — and the Association itself will be represented at the dinner by <b>Sylvie Cazes</b> (President) and <b>Virginie Larramona</b>.", "rcazes": "President of the Association · Château Chauvin", "rvirg": "Representative of the Association des Grands Crus Classés de Saint-Émilion", "winesh": "The 24 Grands Crus", "winessub": "Grands Crus Classés de Saint-Émilion &middot; all in <b>magnum (1500 ml)</b>", "leg": "<span class=\"star\">✦</span> producer present at the dinner", "menuh": "The Menu", "cd1": "Fish carpaccio canapés · Boursin and fresh fig canapés", "cd2": "Raw filet mignon, finely hand-chopped, with Dijon mustard, capers, red onion, pickles and fresh herbs.", "cd3": "Beetroot risotto with foie gras and crispy sage leaves.", "cd4": "Confit duck leg, served with its own roasting jus and gnocchi in sage butter.", "cd5": "Mousse wrapped in a Callebaut chocolate shell, paired with candied Bahia orange and a saffron-touched coulis.", "casa": "The House", "phist": "Founded by <b>Juscelino Pereira</b> in 2004, Piselli — <i>“peas”</i> in Italian — was born of an origin story: as a young man in Joanópolis, in the Serra da Mantiqueira, he grew peas before building a career at houses such as the Jockey Club and Fasano. Inspired by Piedmontese cuisine and Italian tradition, it became a landmark of São Paulo gastronomy — and to this day finishes every dish with three peas. <b>Juscelino Pereira is a Commander of the Commanderie de Bordeaux of Brazil.</b>", "confh": "Confirm attendance", "confsub": "Attendance is confirmed in the <b>Commander’s Panel</b> — already with your details. There you also enter your <b>guest’s</b> name and upload the PIX receipt.", "confbtn": "Enter the panel and confirm", "conffirst": "First time? <a href=\"/?primeiro=1\" style=\"color:var(--navy);border-bottom:1px solid #b08a3a;text-decoration:none;font-weight:bold;\">Enter your email</a> and you’ll receive an access link — no password."}, "fr": {"backbtn": "← Retour", "excl": "Événement privé, réservé aux membres de la Commanderie de Bordeaux.", "amp": "Touchez le visuel pour l’agrandir", "t_data": "Date", "band": "Jeudi 22 octobre 2026 · 20h30", "part": "Participation &amp; Paiement", "valsub": "· par Commandeur", "convl": "Invité : <b style=\"color:var(--navy);\">R$ 1.250,00</b> &middot; chaque Commandeur a droit à <b>un invité</b>", "pixlbl": "Paiement par PIX", "fav": "Bénéficiaire :", "chave": "Clé (CNPJ) :", "pixbtn": "Copier le code PIX", "prodh": "À la Table · Les Producteurs", "prodsub": "15 producteurs &middot; 16 châteaux de Saint-Émilion, présents à l’occasion", "gcc": "L’<b>Association des Grands Crus Classés de Saint-Émilion</b> réunit les châteaux classés de l’appellation — le seul classement de Bordeaux révisé périodiquement. Tous les producteurs présents en font partie — et l’Association elle-même sera représentée au dîner par <b>Sylvie Cazes</b> (Présidente) et <b>Virginie Larramona</b>.", "rcazes": "Présidente de l’Association · Château Chauvin", "rvirg": "Représentante de l’Association des Grands Crus Classés de Saint-Émilion", "winesh": "Les 24 Grands Crus", "winessub": "Grands Crus Classés de Saint-Émilion &middot; tous en <b>magnum (1500 ml)</b>", "leg": "<span class=\"star\">✦</span> producteur présent au dîner", "menuh": "Le Menu", "cd1": "Canapés de carpaccio de poisson · Canapés de Boursin et figues fraîches", "cd2": "Filet mignon cru, finement coupé au couteau, à la moutarde de Dijon, câpres, oignon rouge, pickles et herbes fraîches.", "cd3": "Risotto de betterave au foie gras et feuilles de sauge croustillantes.", "cd4": "Cuisse de canard confite, servie avec son jus de rôti et gnocchis au beurre de sauge.", "cd5": "Mousse enrobée d’une coque de chocolat Callebaut, accompagnée d’orange de Bahia confite et d’un coulis safrané.", "casa": "La Maison", "phist": "Fondé par <b>Juscelino Pereira</b> en 2004, le Piselli — <i>« petits pois »</i> en italien — est né d’une histoire d’origine : jeune encore, à Joanópolis, dans la Serra da Mantiqueira, il cultivait des petits pois avant de faire carrière dans des maisons comme le Jockey Club et le Fasano. Inspiré de la cuisine du Piémont et de la tradition italienne, il est devenu une référence de la gastronomie pauliste — et conserve jusqu’à aujourd’hui l’habitude de terminer chaque plat par trois petits pois. <b>Juscelino Pereira est Commandeur de la Commanderie de Bordeaux du Brésil.</b>", "confh": "Confirmer sa présence", "confsub": "La confirmation se fait dans l’<b>Espace du Commandeur</b> — déjà avec vos données. Vous y indiquez aussi le nom de votre <b>invité</b> et envoyez le justificatif du PIX.", "confbtn": "Accéder à l’espace et confirmer", "conffirst": "Première fois ? <a href=\"/?primeiro=1\" style=\"color:var(--navy);border-bottom:1px solid #b08a3a;text-decoration:none;font-weight:bold;\">Indiquez votre e-mail</a> et vous recevrez un lien d’accès — sans mot de passe."}};var _O={};
+var I18N={"en": {"backbtn": "← Back", "excl": "A private event, exclusive to members of the Commanderie de Bordeaux.", "amp": "Tap the artwork to enlarge", "t_data": "Date", "band": "Thursday, 22 October 2026 · 8:30 pm", "prodh": "At the Table · The Producers", "prodsub": "15 producers &middot; 16 Saint-Émilion châteaux, present at the dinner", "gcc": "The <b>Association des Grands Crus Classés de Saint-Émilion</b> brings together the classified châteaux of the appellation — the only Bordeaux classification revised periodically. Every producer present belongs to it — and the Association itself will be represented at the dinner by <b>Sylvie Cazes</b> (President) and <b>Virginie Larramona</b>.", "rcazes": "President of the Association · Château Chauvin", "rvirg": "Representative of the Association des Grands Crus Classés de Saint-Émilion", "winesh": "The 24 Grands Crus", "winessub": "Grands Crus Classés de Saint-Émilion &middot; all in <b>magnum (1500 ml)</b>", "leg": "<span class=\"star\">✦</span> producer present at the dinner", "menuh": "The Menu", "cd1": "Fish carpaccio canapés · Boursin and fresh fig canapés", "cd2": "Raw filet mignon, finely hand-chopped, with Dijon mustard, capers, red onion, pickles and fresh herbs.", "cd3": "Beetroot risotto with foie gras and crispy sage leaves.", "cd4": "Confit duck leg, served with its own roasting jus and gnocchi in sage butter.", "cd5": "Mousse wrapped in a Callebaut chocolate shell, paired with candied Bahia orange and a saffron-touched coulis.", "casa": "The House", "phist": "Founded by <b>Juscelino Pereira</b> in 2004, Piselli — <i>“peas”</i> in Italian — was born of an origin story: as a young man in Joanópolis, in the Serra da Mantiqueira, he grew peas before building a career at houses such as the Jockey Club and Fasano. Inspired by Piedmontese cuisine and Italian tradition, it became a landmark of São Paulo gastronomy — and to this day finishes every dish with three peas. <b>Juscelino Pereira is a Commander of the Commanderie de Bordeaux of Brazil.</b>", "confh": "Confirm attendance", "confsub": "Attendance is confirmed in the <b>Commander’s Panel</b> — already with your details. There you also enter your <b>guest’s</b> name and upload the PIX receipt.", "confbtn": "Enter the panel and confirm", "conffirst": "First time? <a href=\"/?primeiro=1\" style=\"color:var(--navy);border-bottom:1px solid #b08a3a;text-decoration:none;font-weight:bold;\">Enter your email</a> and you’ll receive an access link — no password."}, "fr": {"backbtn": "← Retour", "excl": "Événement privé, réservé aux membres de la Commanderie de Bordeaux.", "amp": "Touchez le visuel pour l’agrandir", "t_data": "Date", "band": "Jeudi 22 octobre 2026 · 20h30", "prodh": "À la Table · Les Producteurs", "prodsub": "15 producteurs &middot; 16 châteaux de Saint-Émilion, présents à l’occasion", "gcc": "L’<b>Association des Grands Crus Classés de Saint-Émilion</b> réunit les châteaux classés de l’appellation — le seul classement de Bordeaux révisé périodiquement. Tous les producteurs présents en font partie — et l’Association elle-même sera représentée au dîner par <b>Sylvie Cazes</b> (Présidente) et <b>Virginie Larramona</b>.", "rcazes": "Présidente de l’Association · Château Chauvin", "rvirg": "Représentante de l’Association des Grands Crus Classés de Saint-Émilion", "winesh": "Les 24 Grands Crus", "winessub": "Grands Crus Classés de Saint-Émilion &middot; tous en <b>magnum (1500 ml)</b>", "leg": "<span class=\"star\">✦</span> producteur présent au dîner", "menuh": "Le Menu", "cd1": "Canapés de carpaccio de poisson · Canapés de Boursin et figues fraîches", "cd2": "Filet mignon cru, finement coupé au couteau, à la moutarde de Dijon, câpres, oignon rouge, pickles et herbes fraîches.", "cd3": "Risotto de betterave au foie gras et feuilles de sauge croustillantes.", "cd4": "Cuisse de canard confite, servie avec son jus de rôti et gnocchis au beurre de sauge.", "cd5": "Mousse enrobée d’une coque de chocolat Callebaut, accompagnée d’orange de Bahia confite et d’un coulis safrané.", "casa": "La Maison", "phist": "Fondé par <b>Juscelino Pereira</b> en 2004, le Piselli — <i>« petits pois »</i> en italien — est né d’une histoire d’origine : jeune encore, à Joanópolis, dans la Serra da Mantiqueira, il cultivait des petits pois avant de faire carrière dans des maisons comme le Jockey Club et le Fasano. Inspiré de la cuisine du Piémont et de la tradition italienne, il est devenu une référence de la gastronomie pauliste — et conserve jusqu’à aujourd’hui l’habitude de terminer chaque plat par trois petits pois. <b>Juscelino Pereira est Commandeur de la Commanderie de Bordeaux du Brésil.</b>", "confh": "Confirmer sa présence", "confsub": "La confirmation se fait dans l’<b>Espace du Commandeur</b> — déjà avec vos données. Vous y indiquez aussi le nom de votre <b>invité</b> et envoyez le justificatif du PIX.", "confbtn": "Accéder à l’espace et confirmer", "conffirst": "Première fois ? <a href=\"/?primeiro=1\" style=\"color:var(--navy);border-bottom:1px solid #b08a3a;text-decoration:none;font-weight:bold;\">Indiquez votre e-mail</a> et vous recevrez un lien d’accès — sans mot de passe."}};var _O={};
 function setLang(l){var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(_O[k]==null)_O[k]=els[i].innerHTML;}for(var j=0;j<els.length;j++){var k2=els[j].getAttribute("data-i18n");var v=(l==="pt")?_O[k2]:((I18N[l]&&I18N[l][k2]!=null)?I18N[l][k2]:_O[k2]);els[j].innerHTML=v;}document.documentElement.lang=(l==="pt"?"pt-BR":l);try{localStorage.setItem("lang",l);}catch(e){}var as=document.querySelectorAll("#langsel a");for(var a=0;a<as.length;a++){as[a].className=(as[a].getAttribute("data-l")===l)?"on":"";}}
 document.addEventListener("DOMContentLoaded",function(){var l="pt";try{l=localStorage.getItem("lang")||"pt";}catch(e){}setLang(l);});
 </script>

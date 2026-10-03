@@ -332,24 +332,27 @@ function montarAnoSelector(){
   var anos={};anos[ANO_ANUIDADE]=1;receitas.forEach(function(x){anos[x.ano]=1;});despesas.forEach(function(x){anos[x.ano]=1;});
   var lista=Object.keys(anos).map(Number).sort(function(a,b){return b-a;});
   var sel=document.getElementById("anoSel");var atual=sel.value;
-  sel.innerHTML=lista.map(function(a){return "<option>"+a+"</option>";}).join("");
-  if(atual&&lista.indexOf(Number(atual))>=0)sel.value=atual;else sel.value=lista[0];
+  window.ANOS_LABEL=lista.slice().sort(function(a,b){return a-b;}).join(" + ");
+  sel.innerHTML=lista.map(function(a){return "<option>"+a+"</option>";}).join("")+(lista.length>1?"<option value=\"todos\">"+window.ANOS_LABEL+" (total)</option>":"");
+  if(atual==="todos"&&lista.length>1)sel.value="todos";else if(atual&&lista.indexOf(Number(atual))>=0)sel.value=atual;else sel.value=lista[0];
   renderAno();
 }
 function renderAno(){
-  var ano=Number(document.getElementById("anoSel").value);var cats={};
+  var _sv=document.getElementById("anoSel").value;var TODOS=(_sv==="todos");var ano=TODOS?"todos":Number(_sv);var LBL=TODOS?(window.ANOS_LABEL||"Todos"):ano;var cats={};
+  function noAno(x){return TODOS||Number(x.ano)===ano;}
   function acc(cat,c,p){var g=cats[cat]=cats[cat]||{c:0,p:0};g.c+=c;g.p+=p;}
-  if(ano===ANO_ANUIDADE&&anuTc>0)acc("Anuidade",anuTc,anuTp);if(ano!==ANO_ANUIDADE&&(window.ATR_ANO||{})[ano])acc("Anuidade",window.ATR_ANO[ano],0);
-  var doAno=receitas.filter(function(x){return Number(x.ano)===ano;});
+  if(TODOS){if(anuTc>0)acc("Anuidade",anuTc,anuTp);Object.keys(window.ATR_ANO||{}).forEach(function(y){if(Number(y)!==ANO_ANUIDADE)acc("Anuidade",window.ATR_ANO[y],0);});}
+  else{if(ano===ANO_ANUIDADE&&anuTc>0)acc("Anuidade",anuTc,anuTp);if(ano!==ANO_ANUIDADE&&(window.ATR_ANO||{})[ano])acc("Anuidade",window.ATR_ANO[ano],0);}
+  var doAno=receitas.filter(noAno);
   doAno.forEach(function(x){var v=Number(x.valor)||0;acc(x.categoria||"Outro",v,x.pago?v:0);});
   var Tc=0,Tp=0;Object.keys(cats).forEach(function(k){Tc+=cats[k].c;Tp+=cats[k].p;});
-  document.getElementById("anoGeral").innerHTML=finBox("Total "+ano,Tc,Tp,"");
+  document.getElementById("anoGeral").innerHTML=finBox("Total "+LBL,Tc,Tp,"");
   var ordem=["Anuidade","Venda de vinho","Contribuições","Evento","Viagem","Doação","Outro"];
   var keys=Object.keys(cats).sort(function(a,b){var ia=ordem.indexOf(a),ib=ordem.indexOf(b);return (ia<0?9:ia)-(ib<0?9:ib);});
   document.getElementById("anoCats").innerHTML=keys.length?keys.map(function(k){return finBox(k,cats[k].c,cats[k].p,"");}).join(""):"<p style=\"color:#8a8270;font-size:13px;\">Nenhuma receita neste ano.</p>";
-  var despA=despesas.filter(function(x){return Number(x.ano)===ano;});
+  var despA=despesas.filter(noAno);
   var Dc=0,Dp=0;despA.forEach(function(x){var v=Number(x.valor)||0;Dc+=v;if(x.pago)Dp+=v;});
-  document.getElementById("despGeral").innerHTML=despBox("Despesas "+ano,Dc,Dp)+resultBox(ano,Tp,Dp);
+  document.getElementById("despGeral").innerHTML=despBox("Despesas "+LBL,Dc,Dp)+resultBox(LBL,Tp,Dp);
   renderDespTabela(ano);renderCaixa();
   if(!doAno.length){document.getElementById("anoTabela").innerHTML="";return;}
   var tb="<table class=\"tbl\"><thead><tr><th>Categoria</th><th>Descrição</th><th>Núcleo</th><th>Valor</th><th>Status</th><th>Comprovante</th><th></th></tr></thead><tbody>";
@@ -399,7 +402,7 @@ function despBox(titulo,c,p){return "<div class=\"fin\"><h3>"+esc(titulo)+"</h3>
 function resultBox(ano,Rp,Dp){var saldo=Rp-Dp;var cor=saldo>=0?"#2f6b3a":"#8f1d24";return "<div class=\"fin\"><h3>Resultado "+ano+"</h3>"
   +"<div class=\"n\">Recebido: <b>"+brl(Rp)+"</b></div>"
   +"<div class=\"n\">Pago: <b>"+brl(Dp)+"</b></div>"
-  +"<div class=\"n\" style=\"margin-top:4px;\">Saldo do ano: <b style=\"color:"+cor+";\">"+brl(saldo)+"</b></div></div>";}
+  +"<div class=\"n\" style=\"margin-top:4px;\">"+((""+ano).indexOf("+")>=0?"Saldo do período":"Saldo do ano")+": <b style=\"color:"+cor+";\">"+brl(saldo)+"</b></div></div>";}
 function renderCaixa(){
   var entr=anuTp+impTp;receitas.forEach(function(x){if(x.pago)entr+=Number(x.valor)||0;});
   var said=0;despesas.forEach(function(x){if(x.pago)said+=Number(x.valor)||0;});
@@ -415,7 +418,7 @@ function renderCaixa(){
 function filtrarDesp(g){window.DESP_FILTRO=g;renderDespTabela(window.DESP_ANO);}
 function renderDespTabela(ano){
   window.DESP_ANO=ano;var OUT="Outros / categorias antigas";
-  var doAno=despesas.filter(function(x){return Number(x.ano)===ano;});
+  var doAno=despesas.filter(function(x){return ano==="todos"||Number(x.ano)===ano;});
   if(!doAno.length){document.getElementById("despTabela").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma despesa neste ano.</p>";return;}
   var ORDG=DESP_GRUPOS.map(function(g){return g.g;});
   function gr(x){return despGrupo(x.categoria)||OUT;}

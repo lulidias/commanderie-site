@@ -90,7 +90,7 @@ select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size
     <div class="sec-title">Financeiro — resumo por ano</div><div class="sec-rule"></div>
     <div id="caixaBox" style="margin-bottom:18px;"></div>
     <div class="card" style="margin-bottom:18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;"><div><b style="font-family:Georgia,serif;color:var(--navy);font-size:16px;">Vigência da carteira</b><div style="font-size:12.5px;color:#8a8270;margin-top:2px;">Ciclo atual das carteiras: <b id="cicloAtual">—</b>. Em novembro, depois de registrar os pagamentos, vire para o próximo ano para lançar as carteiras novas.</div></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><input id="cicloAno" type="number" placeholder="Ano" style="width:92px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;"><button onclick="virarCiclo()" style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-size:13px;cursor:pointer;">Virar ciclo</button><span id="cicloMsg" style="font-size:12.5px;"></span></div></div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;"><label style="font-size:13px;color:#8a8270;">Ano:</label><select id="anoSel" onchange="renderAno()"></select><span id="anoMsg" style="font-size:12px;color:#9a937f;"></span></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;"><label style="font-size:13px;color:#8a8270;">Ano:</label><select id="anoSel" onchange="renderAno()"></select><button onclick="imprimirRelatorio()" style="background:var(--navy);color:#fff;border:none;border-radius:9px;padding:7px 14px;font-size:13px;cursor:pointer;">&#128424; Imprimir / PDF</button><span id="anoMsg" style="font-size:12px;color:#9a937f;"></span></div>
     <div id="anoGeral" class="fin-grid" style="margin-bottom:14px;"></div>
     <div id="anoCats" class="fin-grid"></div>
     <div id="anoTabela"></div>
@@ -327,6 +327,36 @@ async function carregarReceitas(){
   else{receitas=r.data||[];document.getElementById("anoMsg").textContent="";}
   renderAnuAnos();
   montarAnoSelector();
+}
+function imprimirRelatorio(){
+  var sv=document.getElementById("anoSel").value;var TODOS=(sv==="todos");var ano=TODOS?null:Number(sv);var LBL=TODOS?(window.ANOS_LABEL||"Todos"):String(ano);
+  function noAno(x){return TODOS||Number(x.ano)===ano;}
+  function e(t){return esc(t==null?"":t);}
+  var lin=[];var cats={};function acc(cat,c,p){var g=cats[cat]=cats[cat]||{c:0,p:0};g.c+=c;g.p+=p;}
+  var cur=(typeof CICLO!=="undefined"&&CICLO)?CICLO:ANO_ANUIDADE;
+  if((TODOS||ano===ANO_ANUIDADE)&&anuTc>0){acc("Anuidade",anuTc,anuTp);lin.push({ano:cur,cat:"Anuidade",desc:"Anuidades dos membros — ciclo "+cur+" ("+(window.ANU_N||0)+" membros)",valor:anuTc,rec:anuTp});}
+  Object.keys(window.ATR_ANO||{}).forEach(function(y){y=Number(y);if(y===ANO_ANUIDADE)return;if(TODOS||y===ano){acc("Anuidade",window.ATR_ANO[y],0);lin.push({ano:y,cat:"Anuidade",desc:"Anuidades em atraso "+y+" ("+((window.ATR_N||{})[y]||0)+" membro(s))",valor:window.ATR_ANO[y],rec:0});}});
+  receitas.filter(noAno).forEach(function(x){var v=Number(x.valor)||0;acc(x.categoria||"Outro",v,x.pago?v:0);lin.push({ano:x.ano,cat:x.categoria||"Outro",desc:x.descricao||"",valor:v,rec:x.pago?v:0});});
+  var Tc=0,Tp=0;Object.keys(cats).forEach(function(k){Tc+=cats[k].c;Tp+=cats[k].p;});
+  var desp=despesas.filter(noAno).slice().sort(function(a,b){return (""+(despGrupo(a.categoria)||"zz")).localeCompare(""+(despGrupo(b.categoria)||"zz"))||(""+(a.categoria||"")).localeCompare(""+(b.categoria||""));});
+  var dg={},Dc=0,Dp=0;desp.forEach(function(x){var v=Number(x.valor)||0;var g=despGrupo(x.categoria)||"Outros / categorias antigas";dg[g]=dg[g]||{c:0,p:0};dg[g].c+=v;Dc+=v;if(x.pago){dg[g].p+=v;Dp+=v;}});
+  function tabResumo(obj){return "<table><tr><th>Categoria</th><th class=n>Previsto</th><th class=n>Realizado</th><th class=n>Em aberto</th></tr>"+Object.keys(obj).map(function(k){return "<tr><td>"+e(k)+"</td><td class=n>"+brl(obj[k].c)+"</td><td class=n>"+brl(obj[k].p)+"</td><td class=n>"+brl(obj[k].c-obj[k].p)+"</td></tr>";}).join("")+"</table>";}
+  var h="<!doctype html><html lang=pt-BR><head><meta charset=utf-8><title>Financeiro "+e(LBL)+" — Commanderie de Bordeaux do Brasil</title><style>"
+   +"body{font-family:Arial,Helvetica,sans-serif;color:#2a2620;margin:28px;font-size:12px;}h1{font-family:Georgia,serif;color:#1e2a56;font-weight:normal;font-size:22px;margin:0;}h2{font-family:Georgia,serif;color:#1e2a56;font-weight:normal;font-size:16px;margin:22px 0 6px;border-bottom:1px solid #b08a3a;padding-bottom:3px;}"
+   +".top{display:flex;align-items:center;gap:14px;border-bottom:2px solid #1e2a56;padding-bottom:10px;margin-bottom:6px;}.top img{width:54px;}.sub{color:#8a8270;font-size:11px;}"
+   +"table{width:100%;border-collapse:collapse;margin-top:4px;}th,td{text-align:left;padding:4px 6px;border-bottom:1px solid #e3d8bb;vertical-align:top;}th{color:#8a8270;font-weight:normal;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;}.n{text-align:right;white-space:nowrap;}"
+   +".kpis{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}.k{border:1px solid #ddd0ad;border-radius:8px;padding:8px 12px;min-width:150px;}.k b{display:block;font-size:15px;color:#1e2a56;margin-top:2px;}"
+   +"tr.tot td{font-weight:bold;border-top:2px solid #1e2a56;}@media print{body{margin:12mm;}.noprint{display:none;}h2{break-after:avoid;}tr{break-inside:avoid;}}</style></head><body>"
+   +"<div class=noprint style=\"text-align:right;margin-bottom:10px;\"><button onclick=\"window.print()\" style=\"background:#1e2a56;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;\">Imprimir / Salvar em PDF</button></div>"
+   +"<div class=top><img src=\""+location.origin+location.pathname.replace(/[^\/]*$/,"")+"img/brasao.png\" alt=\"\"><div><h1>Relatório financeiro — "+e(LBL)+"</h1><div class=sub>Commanderie de Bordeaux do Brasil · gerado em "+new Date().toLocaleString("pt-BR")+"</div></div></div>"
+   +"<div class=kpis><div class=k>Receitas previstas<b>"+brl(Tc)+"</b></div><div class=k>Receitas recebidas<b>"+brl(Tp)+"</b></div><div class=k>A receber<b>"+brl(Tc-Tp)+"</b></div><div class=k>Despesas pagas<b>"+brl(Dp)+"</b></div><div class=k>A pagar<b>"+brl(Dc-Dp)+"</b></div><div class=k>Saldo (recebido − pago)<b style=\"color:"+(Tp-Dp>=0?"#2f6b3a":"#8f1d24")+"\">"+brl(Tp-Dp)+"</b></div></div>"
+   +"<h2>Receitas por categoria</h2>"+tabResumo(cats)
+   +"<h2>Receitas — lançamentos</h2><table><tr>"+(TODOS?"<th>Ano</th>":"")+"<th>Categoria</th><th>Descrição</th><th class=n>Valor</th><th class=n>Recebido</th></tr>"+lin.map(function(x){return "<tr>"+(TODOS?"<td>"+e(x.ano)+"</td>":"")+"<td>"+e(x.cat)+"</td><td>"+e(x.desc)+"</td><td class=n>"+brl(x.valor)+"</td><td class=n>"+brl(x.rec)+"</td></tr>";}).join("")+"<tr class=tot>"+(TODOS?"<td></td>":"")+"<td colspan=2>Total</td><td class=n>"+brl(Tc)+"</td><td class=n>"+brl(Tp)+"</td></tr></table>"
+   +"<h2>Despesas por grupo</h2>"+tabResumo(dg)
+   +"<h2>Despesas — lançamentos</h2><table><tr>"+(TODOS?"<th>Ano</th>":"")+"<th>Categoria</th><th>Descrição</th><th>Núcleo</th><th class=n>Valor</th><th>Status</th></tr>"+desp.map(function(x){return "<tr>"+(TODOS?"<td>"+e(x.ano)+"</td>":"")+"<td>"+e(x.categoria)+(despGrupo(x.categoria)?"<div class=sub>"+e(despGrupo(x.categoria))+"</div>":"")+"</td><td>"+e(x.descricao)+"</td><td>"+e(x.nucleo)+"</td><td class=n>"+brl(Number(x.valor)||0)+"</td><td>"+(x.pago?"Pago":"A pagar")+"</td></tr>";}).join("")+"<tr class=tot>"+(TODOS?"<td></td>":"")+"<td colspan=3>Total</td><td class=n>"+brl(Dc)+"</td><td>pago "+brl(Dp)+"</td></tr></table>"
+   +"<p class=sub style=\"margin-top:18px;\">Anuidades do ciclo atual vêm do cadastro dos membros; demais receitas e despesas, dos lançamentos do Financeiro.</p></body></html>";
+  var w=window.open("","_blank");if(!w){alert("Permita pop-ups para este site para gerar o PDF.");return;}
+  w.document.open();w.document.write(h);w.document.close();setTimeout(function(){try{w.focus();w.print();}catch(err){}},600);
 }
 function montarAnoSelector(){
   var anos={};anos[ANO_ANUIDADE]=1;receitas.forEach(function(x){anos[x.ano]=1;});despesas.forEach(function(x){anos[x.ano]=1;});

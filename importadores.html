@@ -58,6 +58,9 @@ h2{font-size:34px;color:var(--navy);font-weight:normal;text-align:center;margin:
 .bcard h3{color:var(--navy);font-weight:normal;font-size:18px;margin-bottom:5px;}
 .bcard p{font-family:Arial,sans-serif;font-size:13.5px;color:#5b5446;line-height:1.55;}
 .bcard .tag{display:inline-block;margin-top:9px;font-family:Arial,sans-serif;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:2px 9px;}
+.futuro .bcard{background:transparent;border-style:dashed;border-top:3px dashed var(--gold);}
+.futuro .bcard .ic{background:transparent;border:1px dashed var(--gold);color:var(--gold);}
+.futuro .bcard h3::after{content:"em projeto";display:inline-block;margin-left:8px;vertical-align:middle;font-family:Arial,sans-serif;font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:2px 8px;}
 @media(max-width:860px){.benefits{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:560px){.benefits{grid-template-columns:1fr;}}
 /* PLACAS */
@@ -84,6 +87,13 @@ h2{font-size:34px;color:var(--navy);font-weight:normal;text-align:center;margin:
 .costs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:22px 0 6px;text-align:left;}
 .costs div{font-family:Arial,sans-serif;font-size:13px;color:#5b5446;background:#fffdf7;border:1px solid var(--line);border-radius:10px;padding:10px 13px;}
 .costs b{color:var(--navy);}
+.invest-duo{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:760px;margin:0 auto;}
+.invest-duo .invest{max-width:none;margin:0;padding:26px 22px;}
+.invest .inc{list-style:none;margin:16px 0 0;padding:0;text-align:left;}
+.invest .inc li{font-family:Arial,sans-serif;font-size:13.5px;color:#5b5446;line-height:1.5;padding:7px 0 7px 20px;border-top:1px solid var(--line);position:relative;}
+.invest .inc li:first-child{border-top:none;}
+.invest .inc li::before{content:"\2713";position:absolute;left:0;color:var(--gold);font-size:12px;}
+@media(max-width:620px){.invest-duo{grid-template-columns:1fr;}}
 .invest .cond{font-family:Arial,sans-serif;font-size:12.5px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:18px;line-height:1.6;}
 @media(max-width:560px){.costs{grid-template-columns:1fr;}}
 /* CTA + CONTATO */
@@ -163,16 +173,25 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
   <div class="sec-k" data-i18n="i_b_k">Por que participar</div><h2 data-i18n="i_b_h">Benefícios do Importador Embaixador</h2><div class="rule"></div>
   <div class="benefits">
     <div class="bcard"><div class="ic">★</div><h3 data-i18n="i_b1h">Anuidade isenta</h3><p data-i18n="i_b1p">O responsável (pessoa física) pela importadora fica isento da anuidade de Comendador.</p></div>
-    <div class="bcard"><div class="ic">✚</div><h3 data-i18n="i_b2h">Indicar novos membros</h3><p data-i18n="i_b2p">Indique <b>2 novos membros por ano</b> — Comendadores ou Convidados de Honra — com a 1ª anuidade incluída. Indicações extras a <b>R$ 1.000</b> cada.</p><span class="tag" data-i18n="i_b2t">2 por ano + extras</span></div>
-    <div class="bcard"><div class="ic">▰</div><h3 data-i18n="i_b3h">Placa de Embaixada</h3><p data-i18n="i_b3p">Indique <b>2 restaurantes por ano</b> para a Placa de Embaixada — Ouro, Prata ou Bronze — conforme a carta de Bordeaux. Extras a <b>R$ 1.000</b> cada.</p><span class="tag" data-i18n="i_b3t">2 por ano + extras</span></div>
+    <div class="bcard"><div class="ic">✚</div><h3 data-i18n="i_b2h">Indicar novos membros</h3><p data-i18n="i_b2p">Indique novos membros — Comendadores ou Convidados de Honra — com a 1ª anuidade incluída. <b>3 por ano</b> na adesão de R$ 10.000, <b>1 por ano</b> na de R$ 5.000. Extras a <b>R$ 1.000</b> cada.</p><span class="tag" data-i18n="i_b2t">3 ou 1 por ano + extras</span></div>
+    <div class="bcard"><div class="ic">▰</div><h3 data-i18n="i_b3h">Placa de Embaixada</h3><p data-i18n="i_b3p">Indique restaurantes para a Placa de Embaixada — Ouro ou Prata — conforme a carta de Bordeaux. <b>3 por ano</b> na adesão de R$ 10.000, <b>1 por ano</b> na de R$ 5.000. Extras a <b>R$ 1.000</b> cada.</p><span class="tag" data-i18n="i_b3t">3 ou 1 por ano + extras</span></div>
     <div class="bcard"><div class="ic">❦</div><h3 data-i18n="i_b4h">Restaurantes parceiros</h3><p data-i18n="i_b4p">Indique restaurantes parceiros que oferecem <b>rolha grátis</b> aos Comendadores. Sem limite — distinto da Placa de Embaixada (toda embaixada é também parceira).</p></div>
     <div class="bcard"><div class="ic">%</div><h3 data-i18n="i_b5h">Conceder benefícios</h3><p data-i18n="i_b5p">Ofereça vinhos de Bordeaux e condições especiais aos Comendadores de todo o Brasil.</p></div>
-    <div class="bcard"><div class="ic">✦</div><h3 data-i18n="i_b6h">Curso “Disciple”</h3><p data-i18n="i_b6p">Indique de 5 a 10 clientes B2B por ano para o curso exclusivo com diploma <i>Disciple de la Commanderie de Bordeaux</i>.</p></div>
-    <div class="bcard"><div class="ic">✈</div><h3 data-i18n="i_b7h">Semaine des Primeurs</h3><p data-i18n="i_b7p">Acesso à viagem exclusiva a Bordeaux durante a <i>Semaine des Primeurs</i>.</p></div>
     <div class="bcard"><div class="ic">♨</div><h3 data-i18n="i_b8h">Wine-dinners</h3><p data-i18n="i_b8p">Organize degustações e jantares com <b>os produtores que você representa</b>, exclusivos para os Comendadores — além de acesso a todos os eventos da Commanderie.</p></div>
     <div class="bcard"><div class="ic">◈</div><h3 data-i18n="i_b9h">Marca e visibilidade</h3><p data-i18n="i_b9p">Sua logo divulgada em todas as comunicações da Commanderie — site e membros.</p></div>
-    <div class="bcard"><div class="ic">⚑</div><h3 data-i18n="i_b10h">Voz e voto</h3><p data-i18n="i_b10p">Reunião anual dos Embaixadores, Road Show dos importadores e direito a voto nas novas entronizações.</p></div>
     <div class="bcard"><div class="ic">▤</div><h3 data-i18n="i_b11h">Painel do Importador</h3><p data-i18n="i_b11p">Acesso a um painel exclusivo no site, com gestão das suas indicações e BI dos vinhos de Bordeaux no Brasil.</p></div>
+  </div>
+
+  <div class="vsx-line"><span class="sec-k" data-i18n="i_vsx">Operador exclusivo de viagens</span><img src="img/logo-vsx.png" alt="VSX Club"></div>
+</div></section>
+
+<section id="futuro"><div class="container">
+  <div class="sec-k" data-i18n="i_f_k">O que vem a seguir</div><h2 data-i18n="i_f_h">Projetos para o futuro</h2><div class="rule"></div>
+  <p class="lead-c" style="margin-bottom:26px;" data-i18n="i_f_p">Estes três estão desenhados e entram nos próximos ciclos. Ficam aqui, e não entre os benefícios acima, porque ainda não estão no ar — o Embaixador sabe desde o primeiro dia o que já existe e o que está por vir.</p>
+  <div class="benefits futuro">
+    <div class="bcard"><div class="ic">✦</div><h3 data-i18n="i_b6h">Curso “Disciple”</h3><p data-i18n="i_b6p">Indique de 5 a 10 clientes B2B por ano para o curso exclusivo com diploma <i>Disciple de la Commanderie de Bordeaux</i>.</p></div>
+    <div class="bcard"><div class="ic">✈</div><h3 data-i18n="i_b7h">Semaine des Primeurs</h3><p data-i18n="i_b7p">Acesso à viagem exclusiva a Bordeaux durante a <i>Semaine des Primeurs</i>.</p></div>
+    <div class="bcard"><div class="ic">⚑</div><h3 data-i18n="i_b10h">Voz e voto</h3><p data-i18n="i_b10p">Reunião anual dos Embaixadores, Road Show dos importadores e direito a voto nas novas entronizações.</p></div>
   </div>
 </div></section>
 
@@ -182,7 +201,6 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
   <div class="placas">
     <div class="placa"><img src="img/placa-ouro.png" alt="Placa Ouro"><h3 data-i18n="i_po_h">Placa Ouro</h3><small data-i18n="i_po_s">Pelo menos <b>30 rótulos</b> de Bordeaux na carta</small></div>
     <div class="placa"><img src="img/placa-prata.png" alt="Placa Prata"><h3 data-i18n="i_pp_h">Placa Prata</h3><small data-i18n="i_pp_s">Pelo menos <b>20 rótulos</b> de Bordeaux</small></div>
-    <div class="placa"><img src="img/placa-bronze.png" alt="Placa Bronze"><h3 data-i18n="i_pb_h">Placa Bronze</h3><small data-i18n="i_pb_s">Pelo menos <b>10 rótulos</b> de Bordeaux</small></div>
   </div>
 </div></section>
 
@@ -199,28 +217,32 @@ footer small{font-family:Arial,sans-serif;font-size:11px;color:#9a937f;}
   <p class="lead-c" style="margin-top:26px;" data-i18n="i_r_p2"><b>São Paulo · Recife · Curitiba · Porto Alegre</b> — e crescendo.</p>
 </div></section>
 
-<section id="associadas" class="alt"><div class="container">
-  <div class="sec-k" data-i18n="i_a_k">Quem já faz parte</div><h2 data-i18n="i_a_h">Importadoras associadas</h2><div class="rule"></div>
-  <p class="lead-c" style="margin-bottom:28px;" data-i18n="i_a_p">Empresas de referência no mercado de vinhos finos já integram o programa de Importadores Embaixadores.</p>
-  <div class="logos">
-    <div class="logo"><img src="img/logo-chezfrance.png" alt="Chez France"></div>
-    <div class="logo"><img src="img/logo-enclos.png" alt="Enclos"></div>
-    <div class="logo"><img src="img/logo-epice.png" alt="Épice"></div>
-    <div class="logo"><img src="img/logo-interfood.png" alt="Interfood"></div>
-    <div class="logo"><img src="img/logo-mistral.png" alt="Mistral"></div>
-    <div class="logo"><img src="img/logo-worldwine.png" alt="World Wine"></div>
-  </div>
-  <div class="vsx-line"><span class="sec-k" data-i18n="i_vsx">Operador exclusivo de viagens</span><img src="img/logo-vsx.png" alt="VSX Club"></div>
-</div></section>
+
 
 <section id="investimento"><div class="container">
   <div class="sec-k" data-i18n="i_i_k">Adesão</div><h2 data-i18n="i_i_h">Investimento</h2><div class="rule"></div>
-  <div class="invest">
-    <div class="sub" data-i18n="i_i_sub">Programa de Importador Embaixador</div>
-    <div class="big">R$ 10.000 <span style="font-size:20px;color:#8a6a1f;" data-i18n="i_i_ano">/ ano</span></div>
-    <p style="font-family:Arial,sans-serif;font-size:13.5px;color:#5b5446;" data-i18n="i_i_note">Anuidade do programa de Importador Embaixador.</p>
-    <div class="cond" data-i18n="i_i_cond">Não serão admitidos importadores sem compromisso com <b>ética, concorrência legal e transparência</b>. A admissão depende de <b>aprovação por unanimidade</b> dos importadores membros.</div>
+  <p class="lead-c" style="margin-bottom:28px;" data-i18n="i_i_lead">Dois níveis de adesão. O que muda entre eles é <b>quantas indicações</b> a importadora faz por ano — de novos membros e de Placas de Embaixada. Todo o resto do programa é igual nos dois.</p>
+  <div class="invest-duo">
+    <div class="invest">
+      <div class="sub" data-i18n="i_i_sub">Importador Embaixador</div>
+      <div class="big">R$ 10.000 <span style="font-size:20px;color:#8a6a1f;" data-i18n="i_i_ano">/ ano</span></div>
+      <ul class="inc">
+        <li data-i18n="i_i1_a"><b>3 indicações</b> de novos membros por ano</li>
+        <li data-i18n="i_i1_b"><b>3 indicações</b> de Placa de Embaixada por ano</li>
+        <li data-i18n="i_i_todos">Todos os benefícios do programa</li>
+      </ul>
+    </div>
+    <div class="invest">
+      <div class="sub" data-i18n="i_i_sub">Importador Embaixador</div>
+      <div class="big">R$ 5.000 <span style="font-size:20px;color:#8a6a1f;" data-i18n="i_i_ano">/ ano</span></div>
+      <ul class="inc">
+        <li data-i18n="i_i2_a"><b>1 indicação</b> de novo membro por ano</li>
+        <li data-i18n="i_i2_b"><b>1 indicação</b> de Placa de Embaixada por ano</li>
+        <li data-i18n="i_i_todos">Todos os benefícios do programa</li>
+      </ul>
+    </div>
   </div>
+  <div class="cond" style="max-width:720px;margin:20px auto 0;" data-i18n="i_i_cond">Não serão admitidos importadores sem compromisso com <b>ética, concorrência legal e transparência</b>. A admissão depende de <b>aprovação por unanimidade</b> dos importadores membros.</div>
 </div></section>
 
 <section id="contato" class="navy cta"><div class="container">
@@ -246,10 +268,11 @@ var I18N={
   i_kick:"Ambassador Importers Program",i_h1:"Become a Bordeaux Ambassador in Brazil",i_lead:"A prestigious association connecting importers to the world’s most traditional Bordeaux wine network — reputation, high-level relationships and business.",i_btn1:"Discover the benefits",i_btn2:"Investment",
   i_s_k:"Bordeaux in numbers",i_s_h:"A heritage of global scale",i_s1:"Founding of the Grand Conseil du Vin de Bordeaux",i_s2:"Appellations of origin (AOP)",i_s3:"Commandeurs worldwide",i_s4:"Commanderies in 31 countries",i_s_p:"Bordeaux’s strength combines terroir, tradition and global reach. In Brazil, this name gains presence when it becomes experience, ritual and curation.",
   i_o_k:"The opportunity",i_o_h:"A cultural embassy for the Brazilian market",i_o_p1:"The Commanderie de Bordeaux positions Bordeaux in the country through high-level relationships, hospitality and the transmission of culture. For the importer, it works as a <b>reputation platform</b>: a place where Bordeaux is presented with context, legitimacy and desire.",i_o_p2:"The Ambassador Importer joins the heart of this network — with a voice, visibility and direct access to Commandeurs throughout Brazil and to Bordeaux producers.",
+  i_f_k:"What comes next",i_f_h:"Projects for the future",i_f_p:"These three are designed and enter the next cycles. They sit here, and not among the benefits above, because they are not running yet — the Ambassador knows from day one what already exists and what is on the way.",
   i_b_k:"Why join",i_b_h:"Benefits of the Ambassador Importer",
   i_b1h:"Annual fee waived",i_b1p:"The individual responsible for the importer is exempt from the Commandeur annual fee.",
-  i_b2h:"Nominate new members",i_b2p:"Nominate <b>2 new members per year</b> — Commandeurs or Guests of Honour — with the first annual fee included. Extra nominations at <b>R$ 1,000</b> each.",i_b2t:"2 per year + extras",
-  i_b3h:"Embassy Plaque",i_b3p:"Nominate <b>2 restaurants per year</b> for the Embassy Plaque — Gold, Silver or Bronze — according to their Bordeaux list. Extras at <b>R$ 1,000</b> each.",i_b3t:"2 per year + extras",
+  i_b2h:"Nominate new members",i_b2p:"Nominate new members — Commandeurs or Guests of Honour — with the first annual fee included. <b>3 per year</b> on the R$ 10,000 tier, <b>1 per year</b> on the R$ 5,000 tier. Extras at <b>R$ 1,000</b> each.",i_b2t:"3 or 1 per year + extras",
+  i_b3h:"Embassy Plaque",i_b3p:"Nominate restaurants for the Embassy Plaque — Gold or Silver — according to their Bordeaux list. <b>3 per year</b> on the R$ 10,000 tier, <b>1 per year</b> on the R$ 5,000 tier. Extras at <b>R$ 1,000</b> each.",i_b3t:"3 or 1 per year + extras",
   i_b4h:"Partner restaurants",i_b4p:"Nominate partner restaurants offering <b>free corkage</b> to Commandeurs. No limit — distinct from the Embassy Plaque (every embassy is also a partner).",
   i_b5h:"Grant benefits",i_b5p:"Offer Bordeaux wines and special conditions to Commandeurs throughout Brazil.",
   i_b6h:"“Disciple” course",i_b6p:"Nominate 5 to 10 B2B clients per year for the exclusive course with the <i>Disciple de la Commanderie de Bordeaux</i> diploma.",
@@ -259,10 +282,10 @@ var I18N={
   i_b10h:"Voice and vote",i_b10p:"Annual Ambassadors’ meeting, importers’ Road Show and the right to vote on new inductions.",
   i_b11h:"Importer Panel",i_b11p:"Access to an exclusive panel on the site, managing your nominations and BI on Bordeaux wines in Brazil.",
   i_p_k:"The finest Bordeaux lists",i_p_h:"The Embassy Plaque",i_p_lead:"The annual guide recognises the restaurants and shops with the finest Bordeaux wine lists in Brazil. Awarded establishments must source their wines through importers accredited by the Commanderie.",
-  i_po_h:"Gold Plaque",i_po_s:"At least <b>30 Bordeaux labels</b> on the list",i_pp_h:"Silver Plaque",i_pp_s:"At least <b>20 Bordeaux labels</b>",i_pb_h:"Bronze Plaque",i_pb_s:"At least <b>10 Bordeaux labels</b>",
+  i_po_h:"Gold Plaque",i_po_s:"At least <b>30 Bordeaux labels</b> on the list",i_pp_h:"Silver Plaque",i_pp_s:"At least <b>20 Bordeaux labels</b>",
   i_r_k:"The Table in Brazil",i_r_h:"From 1 to 4 Commanderies in under 6 months",i_r_p1:"We began in São Paulo in November 2025. Today there are four Commanderies, each led by a Master, under the Grand Master of Brazil.",i_r_gm:"Grand Master · Brazil",i_grau:"Master",i_r_p2:"<b>São Paulo · Recife · Curitiba · Porto Alegre</b> — and growing.",
   i_a_k:"Those already on board",i_a_h:"Associated importers",i_a_p:"Leading companies in the fine wine market are already part of the Ambassador Importers program.",i_vsx:"Exclusive travel operator",
-  i_i_k:"Membership",i_i_h:"Investment",i_i_sub:"Ambassador Importer Program",i_i_ano:" / year",i_i_note:"Annual fee for the Ambassador Importer program.",i_i_cond:"Importers without a commitment to <b>ethics, fair competition and transparency</b> will not be admitted. Admission depends on <b>unanimous approval</b> by member importers.",
+  i_i_k:"Membership",i_i_h:"Investment",i_i_lead:"Two membership tiers. What changes between them is <b>how many nominations</b> the importer makes per year — of new members and of Embassy Plaques. Everything else in the programme is the same.",i_i_sub:"Ambassador Importer",i_i_ano:"/ year",i_i1_a:"<b>3 nominations</b> of new members per year",i_i1_b:"<b>3 nominations</b> for the Embassy Plaque per year",i_i2_a:"<b>1 nomination</b> of a new member per year",i_i2_b:"<b>1 nomination</b> for the Embassy Plaque per year",i_i_todos:"All the programme’s benefits",i_i_cond:"Importers without a commitment to <b>ethics, lawful competition and transparency</b> will not be admitted. Admission requires <b>unanimous approval</b> by the member importers.",
   i_c_k:"Join us",i_c_h:"Become a Bordeaux Ambassador",i_c_lead:"Bring your importer to the heart of the world’s most traditional Bordeaux wine network.",i_c_btn:"Contact the Secretariat",
   i_f_site:"Site",i_f_contato:"Contact",i_f_copy:"© 2026 Commanderie de Bordeaux — Brazil. All rights reserved."
  },
@@ -271,10 +294,11 @@ var I18N={
   i_kick:"Programme des Importateurs Ambassadeurs",i_h1:"Devenez Ambassadeur de Bordeaux au Brésil",i_lead:"Une association de prestige reliant les importateurs au réseau mondial le plus traditionnel des vins de Bordeaux — réputation, relations de haut niveau et affaires.",i_btn1:"Découvrez les avantages",i_btn2:"Investissement",
   i_s_k:"Bordeaux en chiffres",i_s_h:"Un patrimoine d’envergure mondiale",i_s1:"Fondation du Grand Conseil du Vin de Bordeaux",i_s2:"Appellations d’origine (AOP)",i_s3:"Commandeurs dans le monde",i_s4:"Commanderies dans 31 pays",i_s_p:"La force de Bordeaux conjugue terroir, tradition et rayonnement mondial. Au Brésil, ce nom prend vie lorsqu’il devient expérience, rituel et curation.",
   i_o_k:"L’opportunité",i_o_h:"Une ambassade culturelle pour le marché brésilien",i_o_p1:"La Commanderie de Bordeaux positionne Bordeaux dans le pays par des relations de haut niveau, l’hospitalité et la transmission de la culture. Pour l’importateur, elle agit comme une <b>plateforme de réputation</b> : un lieu où Bordeaux est présenté avec contexte, légitimité et désir.",i_o_p2:"L’Importateur Ambassadeur entre au cœur de ce réseau — avec une voix, une visibilité et un accès direct aux Commandeurs de tout le Brésil et aux producteurs de Bordeaux.",
+  i_f_k:"La suite",i_f_h:"Projets pour l’avenir",i_f_p:"Ces trois projets sont dessinés et entreront dans les prochains cycles. Ils figurent ici, et non parmi les avantages ci-dessus, parce qu’ils ne sont pas encore en place — l’Ambassadeur sait dès le premier jour ce qui existe déjà et ce qui arrive.",
   i_b_k:"Pourquoi participer",i_b_h:"Avantages de l’Importateur Ambassadeur",
   i_b1h:"Cotisation offerte",i_b1p:"Le responsable (personne physique) de l’importateur est exonéré de la cotisation de Commandeur.",
   i_b2h:"Parrainer de nouveaux membres",i_b2p:"Parrainez <b>2 nouveaux membres par an</b> — Commandeurs ou Invités d’Honneur — la première cotisation incluse. Parrainages supplémentaires à <b>1 000 R$</b> chacun.",i_b2t:"2 par an + suppléments",
-  i_b3h:"Plaque d’Ambassade",i_b3p:"Nommez <b>2 restaurants par an</b> pour la Plaque d’Ambassade — Or, Argent ou Bronze — selon leur carte de Bordeaux. Suppléments à <b>1 000 R$</b> chacun.",i_b3t:"2 par an + suppléments",
+  i_b3h:"Plaque d’Ambassade",i_b3p:"Nommez <b>2 restaurants par an</b> pour la Plaque d’Ambassade — Or ou Argent — selon leur carte de Bordeaux. Suppléments à <b>1 000 R$</b> chacun.",i_b3t:"2 par an + suppléments",
   i_b4h:"Restaurants partenaires",i_b4p:"Proposez des restaurants partenaires offrant le <b>droit de bouchon gratuit</b> aux Commandeurs. Sans limite — distinct de la Plaque d’Ambassade (toute ambassade est aussi partenaire).",
   i_b5h:"Offrir des avantages",i_b5p:"Offrez des vins de Bordeaux et des conditions spéciales aux Commandeurs de tout le Brésil.",
   i_b6h:"Cours « Disciple »",i_b6p:"Présentez 5 à 10 clients B2B par an au cours exclusif avec le diplôme <i>Disciple de la Commanderie de Bordeaux</i>.",
@@ -284,10 +308,10 @@ var I18N={
   i_b10h:"Voix et vote",i_b10p:"Réunion annuelle des Ambassadeurs, Road Show des importateurs et droit de vote sur les nouvelles intronisations.",
   i_b11h:"Espace Importateur",i_b11p:"Accès à un espace exclusif sur le site, avec la gestion de vos parrainages et la BI des vins de Bordeaux au Brésil.",
   i_p_k:"Les plus belles cartes de Bordeaux",i_p_h:"La Plaque d’Ambassade",i_p_lead:"Le guide annuel distingue les restaurants et boutiques aux plus belles cartes de vins de Bordeaux au Brésil. Les établissements primés doivent acheter leurs vins auprès des importateurs accrédités par la Commanderie.",
-  i_po_h:"Plaque Or",i_po_s:"Au moins <b>30 étiquettes</b> de Bordeaux sur la carte",i_pp_h:"Plaque Argent",i_pp_s:"Au moins <b>20 étiquettes</b> de Bordeaux",i_pb_h:"Plaque Bronze",i_pb_s:"Au moins <b>10 étiquettes</b> de Bordeaux",
+  i_po_h:"Plaque Or",i_po_s:"Au moins <b>30 étiquettes</b> de Bordeaux sur la carte",i_pp_h:"Plaque Argent",i_pp_s:"Au moins <b>20 étiquettes</b> de Bordeaux",
   i_r_k:"La Table au Brésil",i_r_h:"De 1 à 4 Commanderies en moins de 6 mois",i_r_p1:"Nous avons commencé à São Paulo en novembre 2025. Aujourd’hui, quatre Commanderies, chacune dirigée par un Maître, sous le Grand Maître du Brésil.",i_r_gm:"Grand Maître · Brésil",i_grau:"Maître",i_r_p2:"<b>São Paulo · Recife · Curitiba · Porto Alegre</b> — et en pleine croissance.",
   i_a_k:"Ceux qui en font déjà partie",i_a_h:"Importateurs associés",i_a_p:"Des entreprises de référence du marché des vins fins font déjà partie du programme des Importateurs Ambassadeurs.",i_vsx:"Opérateur exclusif de voyages",
-  i_i_k:"Adhésion",i_i_h:"Investissement",i_i_sub:"Programme d’Importateur Ambassadeur",i_i_ano:" / an",i_i_note:"Cotisation annuelle du programme d’Importateur Ambassadeur.",i_i_cond:"Aucun importateur ne sera admis sans engagement envers <b>l’éthique, la concurrence loyale et la transparence</b>. L’admission dépend de <b>l’approbation à l’unanimité</b> des importateurs membres.",
+  i_i_k:"Adhésion",i_i_h:"Investissement",i_i_lead:"Deux niveaux d’adhésion. Ce qui change entre eux, c’est <b>le nombre de présentations</b> que l’importateur fait par an — de nouveaux membres et de Plaques d’Ambassade. Tout le reste du programme est identique.",i_i_sub:"Importateur Ambassadeur",i_i_ano:"/ an",i_i1_a:"<b>3 présentations</b> de nouveaux membres par an",i_i1_b:"<b>3 présentations</b> pour la Plaque d’Ambassade par an",i_i2_a:"<b>1 présentation</b> d’un nouveau membre par an",i_i2_b:"<b>1 présentation</b> pour la Plaque d’Ambassade par an",i_i_todos:"Tous les avantages du programme",i_i_cond:"Les importateurs sans engagement en matière d’<b>éthique, de concurrence loyale et de transparence</b> ne seront pas admis. L’admission requiert l’<b>approbation à l’unanimité</b> des importateurs membres.",
   i_c_k:"Rejoignez-nous",i_c_h:"Devenez Ambassadeur de Bordeaux",i_c_lead:"Amenez votre importateur au cœur du réseau mondial le plus traditionnel des vins de Bordeaux.",i_c_btn:"Contacter le Secrétariat",
   i_f_site:"Site",i_f_contato:"Contact",i_f_copy:"© 2026 Commanderie de Bordeaux — Brésil. Tous droits réservés."
  }

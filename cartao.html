@@ -32,6 +32,7 @@ body.foto{padding:0;gap:0}body.foto .acoes,body.foto .aviso{display:none}body.fo
 'use strict';
 var params=new URLSearchParams(location.search);
 var NOME=(params.get('nome')||'Comendador').trim();
+var GRAU=(params.get('grau')||'Comendador').trim().toUpperCase();
 var BRAS=new Image();BRAS.crossOrigin='anonymous';
 function desenha(){
   var c=document.getElementById('c'),x=c.getContext('2d');
@@ -62,7 +63,7 @@ function desenha(){
   while(x.measureText(NOME).width>880&&tam>50){tam-=6;x.font='italic 600 '+tam+'px "Playfair Display", Georgia, serif';}
   x.fillText(NOME,CX,902);
   x.fillStyle='#c5a35a';x.font='600 24px Montserrat';try{x.letterSpacing='5px';}catch(e){}
-  x.fillText('COMENDADOR',CX,968);
+  x.fillText(GRAU,CX,968);
   try{x.letterSpacing='0px';}catch(e){}
   x.strokeStyle='rgba(197,163,90,.35)';x.lineWidth=1;x.beginPath();x.moveTo(CX-180,1096);x.lineTo(CX+180,1096);x.stroke();
   x.fillStyle='#f3ecd9';x.font='500 27px Montserrat';try{x.letterSpacing='1px';}catch(e){}

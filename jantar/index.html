@@ -212,7 +212,8 @@
   <p class="sub" data-i18n="jcfsub">Está tudo certo — o seu pagamento foi confirmado e o seu lugar está garantido. Contamos com você! &#10022;</p>
   <div style="background:var(--navy);color:#fff;border-radius:14px;padding:24px 22px;max-width:460px;margin:18px auto 0;text-align:center;box-shadow:0 10px 30px rgba(30,26,20,.18);">
     <div style="font-family:Arial,sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#cdb98a;font-weight:bold;" data-i18n="jceu">&#10022; Eu vou</div>
-    <div id="jcNome" style="font-family:Georgia,serif;font-size:30px;margin:8px 0 6px;">&mdash;</div>
+    <div id="jcNome" style="font-family:Georgia,serif;font-size:30px;margin:8px 0 2px;">&mdash;</div>
+    <div id="jcGrau" style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#cdb98a;margin-bottom:8px;"></div>
     <div style="font-size:14px;color:#cdb98a;font-family:Arial,sans-serif;" data-i18n="jcwhen">22 de outubro de 2026 &middot; 20h30 &middot; Piselli Boa Vista</div>
   </div>
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px;">
@@ -250,13 +251,15 @@ async function statusJantar(){
   function mostra(el){["jLoad","jPagar","jConfirmado"].forEach(function(id){var e=document.getElementById(id);if(e)e.style.display=(id===el)?"block":"none";});}
   try{
     var u=(await sb.auth.getUser()).data.user; if(!u){mostra("jPagar");return;}
-    var nome="";try{var mm=await sb.from("membros").select("nome").eq("user_id",u.id).maybeSingle();nome=(mm.data&&mm.data.nome)||"";}catch(e){}
+    var nome="",grau="";try{var mm=await sb.from("membros").select("nome,grau").eq("user_id",u.id).maybeSingle();nome=(mm.data&&mm.data.nome)||"";grau=(mm.data&&mm.data.grau)||"";}catch(e){}
+    var gl=(function(g){g=(""+g).toLowerCase();if(g.indexOf("grão")>=0||g.indexOf("grao")>=0)return "Grão-Mestre";if(g.indexOf("mestre")>=0)return "Mestre";return "Comendador";})(grau);
     var r=await sb.from("evento_rsvp").select("status,convidado_nome,restricao,restricao_convidado").eq("evento_id",EVID).eq("user_id",u.id).maybeSingle();
     var confirmado=(r&&r.data&&r.data.status==="Confirmado");
     if(confirmado){
       mostra("jConfirmado");
       var el=document.getElementById("jcNome");if(el)el.textContent=nome||"Comendador";
-      var sh=document.getElementById("jcShare");if(sh)sh.href="/cartao.html?nome="+encodeURIComponent(nome||"");
+      var eg=document.getElementById("jcGrau");if(eg)eg.textContent=gl;
+      var sh=document.getElementById("jcShare");if(sh)sh.href="/cartao.html?nome="+encodeURIComponent(nome||"")+"&grau="+encodeURIComponent(gl);
     }else{
       mostra("jPagar");
       if(r&&r.data){var g=function(id,v){var e=document.getElementById(id);if(e&&v)e.value=v;};g("jConv",r.data.convidado_nome);g("jRest",r.data.restricao);g("jRestc",r.data.restricao_convidado);}

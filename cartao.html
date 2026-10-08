@@ -75,7 +75,7 @@ function desenha(){
 function avisa(m){var t=document.getElementById('toast');t.textContent=m;t.style.opacity='1';clearTimeout(t._h);t._h=setTimeout(function(){t.style.opacity='0';},3500);}
 function copiar(){document.getElementById('c').toBlob(function(b){if(navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({'image/png':b})]).then(function(){avisa('✓ Imagem copiada! Cole (Cmd+V) na conversa do WhatsApp.');}).catch(function(){baixar();});}else{baixar();}});}
 function baixar(){var a=document.createElement('a');a.download='commanderie-jantar-eu-vou.png';a.href=document.getElementById('c').toDataURL('image/png');a.click();}
-function compartilhar(){document.getElementById('c').toBlob(function(b){var f=new File([b],'commanderie-jantar-eu-vou.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:'Eu vou ao Jantar de 1 Ano da Commanderie'});}else{baixar();}});}
+function compartilhar(){document.getElementById('c').toBlob(function(b){var f=new File([b],'commanderie-jantar-eu-vou.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f]});}else{baixar();}});}
 window.addEventListener('DOMContentLoaded',function(){
   if(params.get('foto'))document.body.classList.add('foto');
   var mobile=/iPhone|iPad|Android/i.test(navigator.userAgent);

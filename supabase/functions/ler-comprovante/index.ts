@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
     if (!url) return json({ pago: false, motivo: "sem_url" });
     const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
-    let esperado = V_COMENDADOR, temConvidado = false, jaPago = 0, externo = false, quem = "";
+    let esperado = V_COMENDADOR, temConvidado = false, jaPago = 0, externo = false, quem = "", uid = "";
     if (rsvp_id) {
       const { data: rr } = await sb.from("evento_rsvp")
         .select("convidado_nome,pago_valor,categoria,evento_id,user_id").eq("id", rsvp_id).maybeSingle();
@@ -28,6 +28,7 @@ Deno.serve(async (req) => {
       else if (rr && rr.convidado_nome && String(rr.convidado_nome).trim()) { temConvidado = true; esperado = V_TOTAL; }
       jaPago = Number(rr?.pago_valor) || 0;
       quem = String(rr?.convidado_nome || "").trim();
+      uid = String(rr?.user_id || "");
     }
     const KEY = Deno.env.get("ANTHROPIC_API_KEY");
     if (!KEY) return json({ pago: false, motivo: "robo_inativo", esperado });
@@ -98,9 +99,11 @@ Deno.serve(async (req) => {
       // é o que fica para trás. O índice único por `fonte` garante que rodar
       // o robô de novo não duplica a receita. (03/10/2026)
       if (full) {
+        let nomeMembro = "";
+        if (uid) { try { const { data: mm } = await sb.from("membros").select("nome").eq("user_id", uid).maybeSingle(); nomeMembro = String(mm?.nome || "").trim(); } catch (_e) { /* nome é um extra; não bloqueia o lançamento */ } }
         const rotulo = externo
-          ? `Jantar de 1 Ano — convidado ${quem || "externo"}`
-          : `Jantar de 1 Ano — ${quem ? "Comendador + convidado" : "Comendador"}`;
+          ? `Jantar de 1 Ano — ${nomeMembro || ("convidado " + (quem || "externo"))}`
+          : `Jantar de 1 Ano — ${nomeMembro || "Comendador"}${quem ? ` + convidado (${quem})` : ""}`;
         await sb.rpc("lancar_receita_rsvp", {
           p_rsvp: rsvp_id, p_valor: novoPago, p_descricao: rotulo,
         });

@@ -320,7 +320,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
   </section>
 
   <div id="sub"><span id="subtxt"></span></div>
-  <audio id="aud" src="narracao.m4a?v=8" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=9" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
     <span class="t" id="tcur">0:00</span>
@@ -328,7 +328,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <span class="t" id="tdur">1:30</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
-    <a id="dl" href="narracao.m4a?v=8" download="Commanderie-Painel-audio.m4a" title="Baixar o áudio">⤓</a>
+    <a id="dl" href="narracao.m4a?v=9" download="Commanderie-Painel-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
 
   <div id="start">
@@ -383,19 +383,19 @@ function sz(svg,px){return svg.replace('<svg ','<svg width="'+px+'" height="'+px
 var scenes=[].slice.call(document.querySelectorAll('.scene'));
 var CUES=[
  {t:0,  dark:true,  fr:"Il existe une confrérie dédiée aux grands vins de Bordeaux. Elle a désormais un espace à la hauteur de son histoire."},
- {t:7.17,  dark:false, fr:"Voici l’Espace du Commandeur — un espace privé, réservé aux Commandeurs de la Commanderie de Bordeaux du Brésil."},
- {t:14.45, dark:false, fr:"Votre carte de membre, toujours avec vous — sur Apple Wallet ou Google Wallet, avec votre QR d’accès."},
- {t:21.77, dark:false, fr:"Votre profil complet, avec photo et coordonnées toujours à jour — votre identité au sein de la confrérie."},
- {t:28.61, dark:false, fr:"Confirmez votre présence aux dîners, événements et voyages en quelques secondes : l’invitation, le paiement, et qui a déjà confirmé."},
- {t:37.24, dark:false, fr:"Toute la partie financière, transparente. Envoyez le justificatif — notre robot vérifie le paiement pour vous."},
- {t:44.74, dark:false, fr:"Proposez de nouveaux noms au Conseil, et découvrez toute la confrérie dans l’Annuaire des Membres."},
- {t:51.96, dark:false, fr:"Des adresses où manger et boire, l’Académie de Bordeaux, et une recherche qui trouve tout."},
- {t:59.31, dark:false, fr:"Transparence totale des comptes, les statuts à portée de main, et des avantages exclusifs."},
- {t:66.52, dark:true,  fr:"Et pour le Conseil, un espace de gestion complet : parrainages, finances et améliorations."},
- {t:73.9, dark:false, fr:"C’est une web app : appuyez sur Partager puis « Sur l’écran d’accueil ». En portugais, anglais et français, avec Face ID."},
- {t:85.09, dark:true,  fr:"Commanderie de Bordeaux du Brésil. commanderiedebordeaux.com.br · Bordeaux, toujours Bordeaux."}
+ {t:7.64,  dark:false, fr:"Voici l’Espace du Commandeur — un espace privé, réservé aux Commandeurs de la Commanderie de Bordeaux du Brésil."},
+ {t:15.56, dark:false, fr:"Votre carte de membre, toujours avec vous — sur Apple Wallet ou Google Wallet, avec votre QR d’accès."},
+ {t:22.24, dark:false, fr:"Votre profil complet, avec photo et coordonnées toujours à jour — votre identité au sein de la confrérie."},
+ {t:29.16, dark:false, fr:"Confirmez votre présence aux dîners en quelques secondes : l’invitation, le paiement, et qui a déjà confirmé."},
+ {t:36.68, dark:false, fr:"Toute la partie financière, transparente. Envoyez le justificatif — notre robot vérifie le paiement pour vous."},
+ {t:43.42, dark:false, fr:"Proposez de nouveaux noms au Conseil, et découvrez toute la confrérie dans l’Annuaire des Membres."},
+ {t:50.76, dark:false, fr:"Des adresses où manger et boire, l’Académie de Bordeaux, et une recherche qui trouve tout."},
+ {t:58.2, dark:false, fr:"Transparence totale des comptes, les statuts à portée de main, et des avantages exclusifs."},
+ {t:65.62, dark:true,  fr:"Et pour le Conseil, un espace de gestion complet : parrainages, finances et améliorations."},
+ {t:73.08, dark:false, fr:"C’est une web app : appuyez sur Partager puis « Sur l’écran d’accueil ». En portugais, anglais et français, avec Face ID."},
+ {t:84.98, dark:true,  fr:"Commanderie de Bordeaux du Brésil. Bordeaux, toujours Bordeaux."}
 ];
-var END=94.9;
+var END=90.9;
 var raf=null,lastIdx=-1;
 var A=function(){return document.getElementById('aud');};
 function $(id){return document.getElementById(id);}

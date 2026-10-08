@@ -16,7 +16,7 @@ html,body{height:100%;background:#05070d;overflow:hidden;font-family:var(--ui);}
 #stage{position:absolute;inset:0;margin:auto;width:min(100vw,177.78vh);height:min(56.25vw,100vh);background:var(--ivory);overflow:hidden;}
 .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   opacity:0;visibility:hidden;transition:opacity .9s cubic-bezier(.4,0,.2,1),transform 1.3s cubic-bezier(.22,.61,.36,1);
-  transform:scale(1.05);padding:0 7%;text-align:center;}
+  transform:scale(1.05);padding:0 7% 7vh;text-align:center;}
 .scene.on{opacity:1;visibility:visible;transform:scale(1);}
 .scene.dark{background:radial-gradient(130% 110% at 50% 28%,#28386e 0%,#1a244a 48%,#0d1430 100%);color:#fff;}
 .scene.ivory{background:radial-gradient(120% 90% at 50% 0%,#fbf7ec 0%,var(--ivory) 55%,#efe7d2 100%);color:var(--ink);}
@@ -28,7 +28,7 @@ html,body{height:100%;background:#05070d;overflow:hidden;font-family:var(--ui);}
 .scene.on [data-anim="1"]{transition-delay:.12s}.scene.on [data-anim="2"]{transition-delay:.34s}
 .scene.on [data-anim="3"]{transition-delay:.56s}.scene.on [data-anim="4"]{transition-delay:.78s}
 .scene.on [data-anim="5"]{transition-delay:1s}.scene.on [data-anim="6"]{transition-delay:1.22s}
-.kick{font-size:1.15vw;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+.kick{font-size:1.75vw;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.4vw;}
 .kick.d{color:#d9c28b;}
 h1.big{font-family:var(--serif);font-weight:400;font-size:4.6vw;line-height:1.03;letter-spacing:.01em;}
 .lema{font-family:var(--serif);font-style:italic;font-size:1.8vw;color:var(--gold);}
@@ -66,16 +66,16 @@ h1.big{font-family:var(--serif);font-weight:400;font-size:4.6vw;line-height:1.03
 .walletchips{display:flex;gap:1vw;margin-top:1.5vw;justify-content:center;}
 .wchip{display:flex;align-items:center;gap:.5vw;background:#111;color:#fff;border-radius:.7vw;padding:.65vw 1.1vw;font-size:.92vw;font-weight:600;}
 .wchip.g{background:#fff;color:#222;border:1px solid #ddd;}
-.panel{background:#fff;border:1px solid var(--line);border-radius:1.1vw;box-shadow:0 1.4vw 3vw rgba(40,30,10,.1);padding:1.7vw;text-align:left;}
-.row{display:flex;gap:1.5vw;align-items:center;justify-content:center;width:84%;}
+.panel{background:#fff;border:1px solid var(--line);border-radius:1vw;box-shadow:0 .9vw 2.2vw rgba(40,30,10,.08);padding:1.6vw;text-align:left;display:flex;flex-direction:column;justify-content:center;}
+.row{display:flex;gap:1.5vw;align-items:stretch;justify-content:center;width:84%;}
 .chip{display:inline-flex;align-items:center;gap:.45vw;background:#fff;border:1px solid var(--line);border-radius:999px;padding:.55vw 1.05vw;font-size:.98vw;color:var(--navy);box-shadow:0 .5vw 1.2vw rgba(40,30,10,.06);}
 .chip svg{width:1.05vw;height:1.05vw;color:var(--gold2);}
 .big-num{font-family:var(--serif);font-size:4.6vw;line-height:.9;color:var(--navy);}
 .avatars{display:flex;}
 .avatars .av{width:3vw;height:3vw;border-radius:50%;background:linear-gradient(140deg,var(--navy),#38477f);color:#f4e9cf;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.15vw;border:2px solid var(--ivory);margin-left:-.7vw;}
 .avatars .av:first-child{margin-left:0;}
-.bars{display:flex;align-items:flex-end;gap:.9vw;height:8vw;}
-.bars i{width:2.2vw;background:linear-gradient(180deg,var(--gold),var(--gold2));border-radius:.4vw .4vw 0 0;display:block;transform-origin:bottom;transform:scaleY(0);}
+.bars{display:flex;align-items:flex-end;justify-content:center;gap:.8vw;height:6vw;}
+.bars i{width:1.8vw;background:linear-gradient(180deg,var(--gold),var(--gold2));border-radius:.35vw .35vw 0 0;display:block;transform-origin:bottom;transform:scaleY(0);}
 .scene.on .bars i{animation:growbar .9s cubic-bezier(.22,.61,.36,1) forwards;}
 .scene.on .bars i:nth-child(1){animation-delay:.4s}.scene.on .bars i:nth-child(2){animation-delay:.5s}.scene.on .bars i:nth-child(3){animation-delay:.6s}
 .scene.on .bars i:nth-child(4){animation-delay:.7s}.scene.on .bars i:nth-child(5){animation-delay:.8s}.scene.on .bars i:nth-child(6){animation-delay:.9s}
@@ -210,7 +210,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
   </section>
 
   <section class="scene ivory" data-scene="4">
-    <div class="kick" data-anim="1">Jantares & Eventos</div>
+    <div class="kick" data-anim="1">Jantares, Eventos & Viagens</div>
     <div class="row" data-anim="2" style="margin-top:1vw;align-items:stretch;">
       <div class="panel" style="width:25vw;">
         <div style="font-size:.82vw;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);font-weight:700;">Próximo evento · 22 out 2026</div>
@@ -272,12 +272,12 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
 
   <section class="scene ivory" data-scene="8">
     <div class="kick" data-anim="1">Contas abertas</div>
-    <div class="row" data-anim="2" style="margin-top:1vw;align-items:flex-end;">
-      <div class="panel" style="width:22vw;"><div style="font-family:var(--serif);color:var(--navy);font-size:1.25vw;margin-bottom:.9vw;">Transparência</div>
+    <div class="row" data-anim="2" style="margin-top:1vw;">
+      <div class="panel" style="width:18.5vw;text-align:center;"><div style="font-family:var(--serif);color:var(--navy);font-size:1.3vw;margin-bottom:1vw;">Transparência</div>
         <div class="bars"><i style="height:40%"></i><i style="height:65%"></i><i style="height:52%"></i><i style="height:80%"></i><i style="height:70%"></i><i style="height:95%"></i></div>
-        <div style="font-size:.8vw;color:#9a8f72;margin-top:.6vw;">Receitas · despesas · saldo</div></div>
-      <div class="panel" style="width:16vw;text-align:center;"><div style="color:var(--gold2);">__IC_DOC_L__</div><div style="font-family:var(--serif);color:var(--navy);font-size:1.15vw;margin-top:.4vw;">Estatuto social</div><div style="font-size:.8vw;color:var(--ink2);">sempre à mão</div></div>
-      <div class="panel" style="width:16vw;text-align:center;"><div style="font-family:var(--serif);color:var(--navy);font-size:1.15vw;">Parceiros</div><div style="font-size:.8vw;color:var(--ink2);margin-top:.2vw;">Benefícios exclusivos<br>aos membros</div></div>
+        <div style="font-size:.85vw;color:#9a8f72;margin-top:.9vw;">Receitas · despesas · saldo</div></div>
+      <div class="panel" style="width:18.5vw;text-align:center;"><div style="color:var(--gold2);margin-bottom:.3vw;">__IC_DOC_L__</div><div style="font-family:var(--serif);color:var(--navy);font-size:1.3vw;margin-top:.4vw;">Estatuto social</div><div style="font-size:.85vw;color:var(--ink2);margin-top:.3vw;">sempre à mão</div></div>
+      <div class="panel" style="width:18.5vw;text-align:center;"><div style="font-family:var(--serif);color:var(--navy);font-size:1.3vw;">Parceiros</div><div style="font-size:.85vw;color:var(--ink2);margin-top:.4vw;">Benefícios exclusivos<br>aos membros</div></div>
     </div>
   </section>
 
@@ -316,10 +316,11 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <h1 class="big" data-anim="2" style="font-size:3.2vw;">Commanderie de Bordeaux</h1>
     <div class="kick d" data-anim="2" style="letter-spacing:.62em;">do Brasil</div>
     <div class="lema" data-anim="3" style="margin-top:1.4vw;font-size:2vw;">« Bordeaux, toujours Bordeaux »</div>
+    <div data-anim="4" style="margin-top:1.4vw;font-size:1.25vw;letter-spacing:.14em;color:#e4cd97;">commanderiedebordeaux.com.br</div>
   </section>
 
   <div id="sub"><span id="subtxt"></span></div>
-  <audio id="aud" src="narracao.m4a?v=7" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=8" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
     <span class="t" id="tcur">0:00</span>
@@ -327,7 +328,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <span class="t" id="tdur">1:30</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
-    <a id="dl" href="narracao.m4a?v=7" download="Commanderie-Painel-audio.m4a" title="Baixar o áudio">⤓</a>
+    <a id="dl" href="narracao.m4a?v=8" download="Commanderie-Painel-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
 
   <div id="start">
@@ -385,16 +386,16 @@ var CUES=[
  {t:7.17,  dark:false, fr:"Voici l’Espace du Commandeur — un espace privé, réservé aux Commandeurs de la Commanderie de Bordeaux du Brésil."},
  {t:14.45, dark:false, fr:"Votre carte de membre, toujours avec vous — sur Apple Wallet ou Google Wallet, avec votre QR d’accès."},
  {t:21.77, dark:false, fr:"Votre profil complet, avec photo et coordonnées toujours à jour — votre identité au sein de la confrérie."},
- {t:28.61, dark:false, fr:"Confirmez votre présence aux dîners en quelques secondes : l’invitation, le paiement, et qui a déjà confirmé."},
- {t:35.94, dark:false, fr:"Toute la partie financière, transparente. Envoyez le justificatif — notre robot vérifie le paiement pour vous."},
- {t:43.44, dark:false, fr:"Proposez de nouveaux noms au Conseil, et découvrez toute la confrérie dans l’Annuaire des Membres."},
- {t:50.66, dark:false, fr:"Des adresses où manger et boire, l’Académie de Bordeaux, et une recherche qui trouve tout."},
- {t:58.01, dark:false, fr:"Transparence totale des comptes, les statuts à portée de main, et des avantages exclusifs."},
- {t:65.22, dark:true,  fr:"Et pour le Conseil, un espace de gestion complet : parrainages, finances et améliorations."},
- {t:72.6, dark:false, fr:"C’est une web app : appuyez sur Partager puis « Sur l’écran d’accueil ». En portugais, anglais et français, avec Face ID."},
- {t:83.79, dark:true,  fr:"Commanderie de Bordeaux du Brésil. Bordeaux, toujours Bordeaux."}
+ {t:28.61, dark:false, fr:"Confirmez votre présence aux dîners, événements et voyages en quelques secondes : l’invitation, le paiement, et qui a déjà confirmé."},
+ {t:37.24, dark:false, fr:"Toute la partie financière, transparente. Envoyez le justificatif — notre robot vérifie le paiement pour vous."},
+ {t:44.74, dark:false, fr:"Proposez de nouveaux noms au Conseil, et découvrez toute la confrérie dans l’Annuaire des Membres."},
+ {t:51.96, dark:false, fr:"Des adresses où manger et boire, l’Académie de Bordeaux, et une recherche qui trouve tout."},
+ {t:59.31, dark:false, fr:"Transparence totale des comptes, les statuts à portée de main, et des avantages exclusifs."},
+ {t:66.52, dark:true,  fr:"Et pour le Conseil, un espace de gestion complet : parrainages, finances et améliorations."},
+ {t:73.9, dark:false, fr:"C’est une web app : appuyez sur Partager puis « Sur l’écran d’accueil ». En portugais, anglais et français, avec Face ID."},
+ {t:85.09, dark:true,  fr:"Commanderie de Bordeaux du Brésil. commanderiedebordeaux.com.br · Bordeaux, toujours Bordeaux."}
 ];
-var END=90.1;
+var END=94.9;
 var raf=null,lastIdx=-1;
 var A=function(){return document.getElementById('aud');};
 function $(id){return document.getElementById(id);}

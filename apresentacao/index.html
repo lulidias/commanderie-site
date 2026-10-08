@@ -52,8 +52,8 @@ h1.big{font-family:var(--serif);font-weight:400;font-size:4.6vw;line-height:1.03
 .mc{position:relative;width:21vw;background:linear-gradient(160deg,#243161,#161f3f);color:#f3ecd9;border:2px solid var(--gcard);border-radius:1.4vw;
   padding:1.8vw 1.6vw 1.6vw;box-shadow:0 2vw 5vw rgba(10,12,30,.45);display:flex;flex-direction:column;align-items:center;gap:.5vw;text-align:center;overflow:hidden;}
 .mc-year{font-family:var(--serif);font-size:1.5vw;font-weight:bold;letter-spacing:.2em;color:var(--gcard);line-height:1;}
-.mc-med{width:7.6vw;height:7.6vw;border-radius:50%;background:radial-gradient(circle,#faf6ea 60%,#f1ead6 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 .4vw 1.4vw rgba(0,0,0,.3);margin:.3vw 0;}
-.mc-med img{width:6vw;height:6vw;object-fit:contain;}
+.mc-med{width:7.6vw;height:7.6vw;border-radius:50%;background:radial-gradient(circle,#faf6ea 60%,#f1ead6 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 .4vw 1.4vw rgba(0,0,0,.3);margin:.3vw 0;overflow:hidden;border:2px solid var(--gcard);}
+.mc-med img{width:100%;height:100%;object-fit:cover;}
 .mc-conf{font-size:.72vw;letter-spacing:.25em;text-transform:uppercase;color:var(--gcard);}
 .mc-grau{font-size:.92vw;letter-spacing:.38em;font-weight:bold;color:var(--gcard);}
 .mc-nome{font-family:var(--serif);font-size:2.1vw;line-height:1.05;color:#f3ecd9;}
@@ -160,7 +160,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
       <div class="mc">
         <div class="shine"></div>
         <div class="mc-year">2026</div>
-        <div class="mc-med"><img src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt=""></div>
+        <div class="mc-med"><img src="luli.jpg" alt="Luli Dias"></div>
         <div class="mc-conf">Commanderie de Bordeaux</div>
         <div class="mc-grau">MESTRE</div>
         <div class="mc-nome">Luli Dias</div>
@@ -183,7 +183,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <div class="kick" data-anim="1">Cadastro do Comendador</div>
     <div class="row" data-anim="2" style="margin-top:1vw;align-items:center;gap:2.2vw;">
       <div style="display:flex;flex-direction:column;align-items:center;gap:.8vw;">
-        <div class="avatarbig">LD</div>
+        <div class="avatarbig" style="overflow:hidden;border:2px solid var(--gold);"><img src="luli.jpg" alt="Luli Dias" style="width:100%;height:100%;object-fit:cover;"></div>
         <div class="toast">__IC_CHK2__ Cadastro salvo</div>
       </div>
       <div class="panel" style="width:26vw;">
@@ -310,7 +310,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
 
   <div id="sub"><span id="subtxt"></span></div>
   <div id="prog"></div>
-  <audio id="aud" src="narracao.m4a?v=5" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=6" preload="auto"></audio>
 
   <div id="start">
     <img class="startbr" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="">

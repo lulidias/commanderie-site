@@ -297,6 +297,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
   <!-- legenda FR + progresso -->
   <div id="sub"><span id="subtxt"></span></div>
   <div id="prog"></div>
+  <audio id="aud" src="narracao.m4a" preload="auto"></audio>
 
   <!-- start -->
   <div id="start">
@@ -304,7 +305,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <div class="startk">Commanderie de Bordeaux do Brasil</div>
     <div class="starth">Painel do Comendador</div>
     <button class="btnplay" onclick="play()">▶ Reproduzir</button>
-    <div class="hint">Toque em Reproduzir — cerca de 2 minutos, com legendas em francês.</div>
+    <div class="hint">Toque em Reproduzir — cerca de 2 minutos, com narração em português e legendas em francês.</div>
   </div>
 
   <!-- end -->
@@ -378,6 +379,7 @@ function play(){
   document.getElementById('start').style.display='none';
   document.getElementById('end').style.display='none';
   clearTimeout(timer); if(raf)cancelAnimationFrame(raf);
+  var _aud=document.getElementById('aud'); if(_aud){try{_aud.currentTime=0;_aud.play();}catch(e){}}
   t0=performance.now();
   // agenda cada cena
   CUES.forEach(function(c,i){ setTimeout(function(){ showScene(i); }, c.t*1000); });
@@ -390,6 +392,7 @@ function play(){
   })();
 }
 function finish(){
+  var _aud=document.getElementById('aud'); if(_aud){try{_aud.pause();}catch(e){}}
   scenes.forEach(function(s){s.classList.remove('on');});
   document.getElementById('subtxt').textContent='';
   document.getElementById('prog').style.width='100%';

@@ -115,7 +115,17 @@ h1.big{font-family:var(--serif);font-weight:400;font-size:4.6vw;line-height:1.03
 #sub span{font-size:1.45vw;line-height:1.4;font-weight:500;transition:opacity .5s;}
 body.onDark #sub span{color:#f3ecd9;text-shadow:0 2px 14px rgba(0,0,0,.55);}
 body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
-#prog{position:absolute;left:0;bottom:0;height:.28vw;background:var(--gold);width:0;z-index:50;transition:width .25s linear;opacity:.9;}
+#ctl{position:absolute;left:0;right:0;bottom:0;z-index:55;display:flex;align-items:center;gap:1.1vw;padding:.9vw 1.6vw;
+  background:linear-gradient(0deg,rgba(8,10,20,.6),rgba(8,10,20,0));transition:opacity .4s;font-family:var(--ui);}
+#ctl.hide{opacity:0;pointer-events:none;}
+#ctl button,#ctl a{background:none;border:none;color:#fff;cursor:pointer;font-size:1.5vw;line-height:1;text-decoration:none;display:flex;align-items:center;opacity:.92;}
+#ctl button:hover,#ctl a:hover{opacity:1;}
+#ctl .t{color:#e9e4d6;font-size:.95vw;font-variant-numeric:tabular-nums;min-width:3vw;text-align:center;}
+#bar{flex:1;height:.5vw;background:rgba(255,255,255,.22);border-radius:1vw;cursor:pointer;position:relative;}
+#prog{position:absolute;left:0;top:0;bottom:0;background:var(--gold);width:0;border-radius:1vw;}
+#bar .knob{position:absolute;top:50%;width:1.1vw;height:1.1vw;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.4);transform:translate(-50%,-50%);left:0;}
+#vol{width:7vw;accent-color:var(--gold);cursor:pointer;}
+#ctl svg{width:1.5vw;height:1.5vw;}
 #start,#end{position:absolute;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8vw;background:radial-gradient(130% 110% at 50% 28%,#28386e 0%,#1a244a 48%,#0d1430 100%);color:#fff;text-align:center;}
 #end{display:none;}
 .btnplay{display:inline-flex;align-items:center;gap:.8vw;background:var(--gold);color:#201a0b;border:none;border-radius:999px;padding:1vw 2.3vw;font-size:1.3vw;font-weight:700;font-family:var(--ui);cursor:pointer;box-shadow:0 1.4vw 3vw rgba(197,163,90,.3);transition:transform .2s;}
@@ -309,8 +319,16 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
   </section>
 
   <div id="sub"><span id="subtxt"></span></div>
-  <div id="prog"></div>
-  <audio id="aud" src="narracao.m4a?v=6" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=7" preload="auto"></audio>
+  <div id="ctl" class="hide">
+    <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
+    <span class="t" id="tcur">0:00</span>
+    <div id="bar" onclick="seekBar(event)"><div id="prog"></div><div class="knob" id="knob"></div></div>
+    <span class="t" id="tdur">1:30</span>
+    <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
+    <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
+    <a id="dl" href="narracao.m4a?v=7" download="Commanderie-Painel-audio.m4a" title="Baixar o áudio">⤓</a>
+  </div>
 
   <div id="start">
     <img class="startbr" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="">
@@ -377,7 +395,10 @@ var CUES=[
  {t:83.79, dark:true,  fr:"Commanderie de Bordeaux du Brésil. Bordeaux, toujours Bordeaux."}
 ];
 var END=90.1;
-var raf=null,t0=0;
+var raf=null,lastIdx=-1;
+var A=function(){return document.getElementById('aud');};
+function $(id){return document.getElementById(id);}
+function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,x=s%60;return m+':'+(x<10?'0':'')+x;}
 function animCounts(sc){
   var els=sc.querySelectorAll('.count'); [].forEach.call(els,function(el){
     var to=parseInt(el.getAttribute('data-to'),10)||0, dur=900, s=performance.now();
@@ -391,26 +412,51 @@ function showScene(i){
   });
   document.body.classList.toggle('onDark', !!CUES[i].dark);
   document.body.classList.toggle('onLight', !CUES[i].dark);
-  var st=document.getElementById('subtxt'); st.style.opacity=0;
-  setTimeout(function(){ st.textContent=CUES[i].fr; st.style.opacity=1; },220);
+  var st=$('subtxt'); st.style.opacity=0;
+  setTimeout(function(){ st.textContent=CUES[i].fr; st.style.opacity=1; },200);
+}
+function curScene(ct){var idx=0;for(var i=0;i<CUES.length;i++){if(ct>=CUES[i].t)idx=i;}return idx;}
+function paint(ct){var p=Math.min(100,ct/END*100);$('prog').style.width=p+'%';$('knob').style.left=p+'%';$('tcur').textContent=fmt(ct);}
+function tick(){
+  var a=A(),ct=a.currentTime; paint(ct);
+  var idx=curScene(ct); if(idx!==lastIdx){lastIdx=idx;showScene(idx);}
+  if(a.ended||ct>=END-0.05){ finish(); return; }
+  raf=requestAnimationFrame(tick);
 }
 function play(){
-  document.getElementById('start').style.display='none';
-  document.getElementById('end').style.display='none';
-  if(raf)cancelAnimationFrame(raf);
-  var a=document.getElementById('aud'); if(a){try{a.currentTime=0;a.play();}catch(e){}}
-  t0=performance.now();
-  CUES.forEach(function(c,i){ setTimeout(function(){ showScene(i); }, c.t*1000); });
-  (function loop(){var el=(performance.now()-t0)/1000;document.getElementById('prog').style.width=Math.min(100,el/END*100)+'%';if(el<END){raf=requestAnimationFrame(loop);}else{finish();}})();
+  $('start').style.display='none'; $('end').style.display='none';
+  lastIdx=-1; var a=A(); try{a.currentTime=0;}catch(e){}
+  try{a.play();}catch(e){} setPP(true);
+  if(raf)cancelAnimationFrame(raf); raf=requestAnimationFrame(tick); armAutoHide();
 }
+function togglePlay(){
+  var a=A();
+  if($('end').style.display==='flex'){ play(); return; }
+  if(a.paused){ a.play(); setPP(true); if(!raf)raf=requestAnimationFrame(tick); armAutoHide(); }
+  else { a.pause(); setPP(false); if(raf){cancelAnimationFrame(raf);raf=null;} armAutoHide(); }
+}
+function setPP(p){ $('pp').textContent=p?'⏸':'▶'; }
+function seekBar(ev){
+  var r=$('bar').getBoundingClientRect(); var frac=Math.min(1,Math.max(0,(ev.clientX-r.left)/r.width));
+  var a=A(); $('end').style.display='none'; try{a.currentTime=frac*END;}catch(e){}
+  lastIdx=-1; var idx=curScene(a.currentTime); lastIdx=idx; showScene(idx); paint(a.currentTime);
+  if(!a.paused && !raf){ raf=requestAnimationFrame(tick); }
+}
+function setVol(v){ var a=A(); a.muted=false; a.volume=+v; $('mute').textContent=(+v===0?'🔇':'🔊'); }
+function toggleMute(){ var a=A(); a.muted=!a.muted; $('mute').textContent=a.muted?'🔇':'🔊'; }
 function finish(){
-  var a=document.getElementById('aud'); if(a){try{a.pause();}catch(e){}}
+  if(raf){cancelAnimationFrame(raf);raf=null;}
+  var a=A(); try{a.pause();}catch(e){} setPP(false);
   scenes.forEach(function(s){s.classList.remove('on');});
-  document.getElementById('subtxt').textContent='';
-  document.getElementById('prog').style.width='100%';
-  document.getElementById('end').style.display='flex';
+  $('subtxt').textContent=''; $('prog').style.width='100%'; $('knob').style.left='100%';
+  $('end').style.display='flex'; lastIdx=-1;
 }
-document.addEventListener('keydown',function(e){ if(e.code==='Space'){ e.preventDefault(); if(document.getElementById('start').style.display!=='none') play(); } });
+var hideTimer=null;
+function armAutoHide(){ if(hideTimer)clearTimeout(hideTimer); $('ctl').classList.remove('hide');
+  hideTimer=setTimeout(function(){ if(!A().paused)$('ctl').classList.add('hide'); },2800); }
+document.addEventListener('mousemove',armAutoHide);
+A().addEventListener('loadedmetadata',function(){ $('tdur').textContent=fmt(Math.min(this.duration||END,END)); });
+document.addEventListener('keydown',function(e){ if(e.code==='Space'){ e.preventDefault(); if($('start').style.display!=='none')play(); else togglePlay(); } });
 </script>
 </body>
 </html>

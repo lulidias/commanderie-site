@@ -297,7 +297,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
   <!-- legenda FR + progresso -->
   <div id="sub"><span id="subtxt"></span></div>
   <div id="prog"></div>
-  <audio id="aud" src="narracao.m4a?v=2" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=3" preload="auto"></audio>
 
   <!-- start -->
   <div id="start">
@@ -355,18 +355,18 @@ function sz(svg,px){return svg.replace('<svg ','<svg width="'+px+'" height="'+px
 var scenes=[].slice.call(document.querySelectorAll('.scene'));
 var CUES=[
  {t:0,  dark:true,  fr:"Il existe une confrérie dédiée aux grands vins de Bordeaux. Désormais, elle tient dans votre poche."},
- {t:6.5,  dark:false, fr:"Voici l’Espace du Commandeur — le cœur numérique de la Commanderie de Bordeaux du Brésil."},
- {t:14.5, dark:false, fr:"Votre carte de membre, toujours avec vous — sur Apple Wallet ou Google Wallet."},
- {t:22.2, dark:false, fr:"Confirmez votre présence aux dîners en quelques secondes : l’invitation, le paiement, et qui a déjà confirmé."},
- {t:30.0, dark:false, fr:"Toute la partie financière, transparente. Envoyez le justificatif — notre robot vérifie le paiement pour vous."},
- {t:37.9, dark:false, fr:"Proposez de nouveaux noms au Conseil, et découvrez toute la confrérie dans l’Annuaire des Membres."},
- {t:45.5, dark:false, fr:"Des adresses où manger et boire, l’Académie de Bordeaux, et une recherche qui trouve tout."},
- {t:53.2, dark:false, fr:"Transparence totale des comptes, les statuts à portée de main, et des avantages exclusifs."},
- {t:60.6, dark:true,  fr:"Et pour le Conseil, un espace de gestion complet : parrainages, finances et améliorations."},
- {t:68.4,dark:false, fr:"En portugais, anglais et français. Accès par Face ID. Et installable comme application."},
- {t:76.8,dark:true,  fr:"Commanderie de Bordeaux du Brésil. Bordeaux, toujours Bordeaux."}
+ {t:6.42,  dark:false, fr:"Voici l’Espace du Commandeur — le cœur numérique de la Commanderie de Bordeaux du Brésil."},
+ {t:14.25, dark:false, fr:"Votre carte de membre, toujours avec vous — sur Apple Wallet ou Google Wallet."},
+ {t:21.65, dark:false, fr:"Confirmez votre présence aux dîners en quelques secondes : l’invitation, le paiement, et qui a déjà confirmé."},
+ {t:29.17, dark:false, fr:"Toute la partie financière, transparente. Envoyez le justificatif — notre robot vérifie le paiement pour vous."},
+ {t:36.9, dark:false, fr:"Proposez de nouveaux noms au Conseil, et découvrez toute la confrérie dans l’Annuaire des Membres."},
+ {t:44.3, dark:false, fr:"Des adresses où manger et boire, l’Académie de Bordeaux, et une recherche qui trouve tout."},
+ {t:51.78, dark:false, fr:"Transparence totale des comptes, les statuts à portée de main, et des avantages exclusifs."},
+ {t:59.15, dark:true,  fr:"Et pour le Conseil, un espace de gestion complet : parrainages, finances et améliorations."},
+ {t:66.76,dark:false, fr:"En portugais, anglais et français. Accès par Face ID. Et installable comme application."},
+ {t:74.74,dark:true,  fr:"Commanderie de Bordeaux du Brésil. Bordeaux, toujours Bordeaux."}
 ];
-var END=83.1;
+var END=81.0;
 var timer=null, raf=null, t0=0;
 function showScene(i){
   scenes.forEach(function(s,idx){ s.classList.toggle('on', idx===i); });

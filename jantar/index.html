@@ -291,7 +291,7 @@ async function statusJantar(){
     var u=(await sb.auth.getUser()).data.user; if(!u){mostra("jPagar");return;}
     var nome="",grau="";try{var mm=await sb.from("membros").select("nome,grau").eq("user_id",u.id).maybeSingle();nome=(mm.data&&mm.data.nome)||"";grau=(mm.data&&mm.data.grau)||"";}catch(e){}
     var gl=(function(g){g=(""+g).toLowerCase();if(g.indexOf("grão")>=0||g.indexOf("grao")>=0)return "Grão-Mestre";if(g.indexOf("mestre")>=0)return "Mestre";return "Comendador";})(grau);
-    var r=await sb.from("evento_rsvp").select("status,convidado_nome,restricao,restricao_convidado,comprovante_url").eq("evento_id",EVID).eq("user_id",u.id).maybeSingle();
+    var r=await sb.from("evento_rsvp").select("status,convidado_nome,restricao,restricao_convidado,comprovante_url").eq("evento_id",EVID).eq("user_id",u.id).order("pago_valor",{ascending:false,nullsFirst:false}).limit(1).maybeSingle();
     var st=(r&&r.data)?r.data.status:null;
     if(st==="Confirmado"){
       mostra("jConfirmado");moverTopo("jConfirmado");

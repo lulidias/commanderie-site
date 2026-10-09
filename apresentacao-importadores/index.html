@@ -326,7 +326,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
   </section>
 
   <div id="sub"><span id="subtxt"></span></div>
-  <audio id="aud" src="narracao.m4a?v=6" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=7" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
     <span class="t" id="tcur">0:00</span>
@@ -334,7 +334,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <span class="t" id="tdur">0:00</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
-    <a id="dl" href="narracao.m4a?v=6" download="Commanderie-Importadores-audio.m4a" title="Baixar o áudio">⤓</a>
+    <a id="dl" href="narracao.m4a?v=7" download="Commanderie-Importadores-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
 
   <div id="start">
@@ -382,22 +382,22 @@ function sz(svg,px){return svg.replace('<svg ','<svg width="'+px+'" height="'+px
 var scenes=[].slice.call(document.querySelectorAll('.scene'));
 var CUES=[
  {t:0.0, dark:true, s:"La Commanderie de Bordeaux du Brésil présente le Programme des Importateurs Officiels."},
- {t:5.6, dark:false, s:"Votre importateur aux côtés de ceux qui apprécient le plus les grands vins de Bordeaux."},
- {t:11.82, dark:false, s:"Deux façons de s'associer : Or et Argent."},
- {t:19.09, dark:false, s:"Votre représentant est intronisé Commandeur, cotisation offerte."},
- {t:25.36, dark:false, s:"Commandeur parrainé : 1re année incluse, puis 200 €/an. Ambassades : sans frais, validation annuelle."},
- {t:38.96, dark:false, s:"Ambassades : restaurants avec une carte de Bordeaux — Plaque Or, Argent ou Bronze."},
- {t:45.47, dark:true, s:"Quatre événements exclusifs par an — les vins des membres y sont servis (6 bouteilles/événement)."},
- {t:59.75, dark:true, s:"Activez votre réseau : la base des Commandeurs pour inviter ou vendre dîners, dégustations et salons."},
- {t:70.76, dark:false, s:"La Boutique Bordeaux relie votre portefeuille aux Commandeurs — sans commission pour la Commanderie."},
- {t:82.62, dark:false, s:"Votre marque mise en avant sur le site de la Commanderie."},
- {t:87.87, dark:true, s:"Séminaire annuel Ideal Consulting : le marché de Bordeaux au Brésil et dans le monde."},
- {t:101.03, dark:false, s:"Et bien plus : dégustations, Road Show et tous les avantages de la confrérie."},
- {t:109.06, dark:false, s:"Espace Importateur : parrainages, cotisations et coordonnées toujours à jour."},
- {t:117.45, dark:true, s:"Associez votre importateur : Or ou Argent · facturation en novembre."},
- {t:126.85, dark:true, s:"Bordeaux, toujours Bordeaux."},
+ {t:4.96, dark:false, s:"Votre importateur aux côtés de ceux qui apprécient le plus les grands vins de Bordeaux."},
+ {t:11.6, dark:false, s:"Deux façons de s'associer : Or et Argent."},
+ {t:18.98, dark:false, s:"Votre représentant est intronisé Commandeur, cotisation offerte."},
+ {t:25.48, dark:false, s:"Commandeur parrainé : 1re année incluse, puis 200 €/an. Ambassades : sans frais, validation annuelle."},
+ {t:39.26, dark:false, s:"Ambassades : restaurants avec une carte de Bordeaux — Plaque Or, Argent ou Bronze."},
+ {t:45.58, dark:true, s:"Quatre événements exclusifs par an — les vins des membres y sont servis (6 bouteilles/événement)."},
+ {t:60.7, dark:true, s:"Activez votre réseau : la base des Commandeurs pour inviter ou vendre dîners, dégustations et salons."},
+ {t:72.18, dark:false, s:"La Boutique Bordeaux relie votre portefeuille aux Commandeurs — sans commission pour la Commanderie."},
+ {t:84.14, dark:false, s:"Votre marque mise en avant sur le site de la Commanderie."},
+ {t:89.8, dark:true, s:"Séminaire annuel Ideal Consulting : le marché de Bordeaux au Brésil et dans le monde."},
+ {t:102.74, dark:false, s:"Et bien plus : dégustations, Road Show et tous les avantages de la confrérie."},
+ {t:110.88, dark:false, s:"Espace Importateur : parrainages, cotisations et coordonnées toujours à jour."},
+ {t:119.74, dark:true, s:"Associez votre importateur : Or ou Argent · facturation en novembre."},
+ {t:128.9, dark:true, s:"Bordeaux, toujours Bordeaux."},
 ];
-var END=135.9;
+var END=138.7;
 var raf=null,lastIdx=-1;
 function $(id){return document.getElementById(id);}function A(){return $('aud');}
 function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,x=s%60;return m+':'+(x<10?'0':'')+x;}

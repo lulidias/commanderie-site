@@ -91,7 +91,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
         <textarea class="inp" id="mApres" rows="4" placeholder="Apresentação do indicado — por que você o indica, o perfil dele e a ligação com os vinhos de Bordeaux…" style="margin-top:10px;resize:vertical;"></textarea>
         <label style="font-size:12px;color:#8a8270;display:block;margin:10px 0 5px;">Quem paga a anuidade do convidado?</label>
         <select class="inp" id="mPagador"><option value="padrinho_primeira">A importadora paga a 1ª anuidade (incluída)</option><option value="indicado">O indicado paga a própria anuidade</option><option value="padrinho_sempre">A importadora paga a anuidade do convidado para sempre</option></select>
-        <div class="hint"><b>2 indicações por ano</b> incluídas; extras a <b>R$ 1.000</b> por indicação.</div>
+        <div class="hint">Comendadores incluídos pelo seu plano (<b>Ouro: 3/ano</b> · <b>Prata: 1/ano</b>). Extras a <b>R$ 1.200</b>. Cada Comendador indicado paga a anuidade de <b>R$ 1.200/ano</b>.</div>
         <div style="margin-top:12px;"><button class="btn-n" id="btnMem" onclick="addMembro()">Indicar membro</button><span class="msg" id="mMsg"></span></div>
       </div>
       <div class="sec-sub">Todos os indicados</div>
@@ -110,7 +110,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
           <input class="inp" id="eResp" placeholder="Responsável">
           <input class="inp" id="eTel" placeholder="Telefone do responsável">
         </div>
-        <div class="hint"><b>Ouro</b> (30+ rótulos) · <b>Prata</b> (20+) · <b>Bronze</b> (10+). 2/ano incluídas; extras a <b>R$ 1.000</b> cada.</div>
+        <div class="hint">Placa da embaixada: <b>Ouro</b> (30+ rótulos) · <b>Prata</b> (20+) · <b>Bronze</b> (10+). Embaixadas incluídas pelo seu plano (<b>Ouro: 2/ano</b> · <b>Prata: 1/ano</b>); cada embaixada: <b>R$ 2.000/ano</b>.</div>
         <div style="margin-top:12px;"><button class="btn-n" id="btnEmb" onclick="addEmb()">Indicar embaixada</button><span class="msg" id="eMsg"></span></div>
       </div>
       <div class="sec-sub">Todas as embaixadas indicadas</div>
@@ -158,13 +158,21 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <div id="secProg" class="secblk"><a class="backsec" href="painel-importador.html">&#8592; Voltar</a>
       <div class="sec-title">Reunião anual dos Embaixadores</div><div class="sec-rule"></div>
       <div class="card info"><p>Os Importadores Embaixadores se reúnem ao menos <b>uma vez por ano</b> para deliberar sobre o programa, votar novas entronizações de importadores e alinhar o Road Show da Commanderie.</p></div>
+      <div class="sec-title">Calendário do programa · 4 eventos por ano</div><div class="sec-rule"></div>
+      <div class="card info"><ul style="margin:0;padding-left:18px;line-height:1.8;">
+        <li><b>Entronização de Primavera</b> — entronização dos novos Comendadores indicados.</li>
+        <li><b>Entronização de Outono</b> — o indicado escolhe em qual das duas será entronizado.</li>
+        <li><b>Cerimônia das Embaixadas</b> — jantar de entrega das Placas (Ouro/Prata/Bronze) aos restaurantes que conquistaram ou mantiveram o selo.</li>
+        <li><b>Jantar dos Importadores</b> — entre a <b>Wine Paris</b> e a <b>Vinitaly</b>, com todos os importadores juntos. Única ocasião em que se entronizam os <b>donos de importadoras</b>.</li>
+      </ul></div>
       <div class="sec-title">Seus benefícios no programa</div><div class="sec-rule"></div>
-      <div class="card info"><ul style="margin:0;padding-left:18px;">
-        <li>Anuidade isenta para o responsável (pessoa física).</li>
-        <li>2 indicações de membros e 2 de embaixadas por ano (extras a R$ 1.000).</li>
-        <li>Placas de Embaixada (Ouro/Prata/Bronze) e restaurantes parceiros (rolha grátis).</li>
-        <li>Curso “Disciple de la Commanderie” · Semaine des Primeurs · eventos.</li>
-        <li>Logo nas comunicações · voto nas entronizações · reunião anual.</li>
+      <div class="card info"><ul style="margin:0;padding-left:18px;line-height:1.75;">
+        <li><b>Plano Ouro — R$ 10.000/ano:</b> indicar <b>3 Comendadores</b> e <b>2 Embaixadas</b> por ano.</li>
+        <li><b>Plano Prata — R$ 5.000/ano:</b> indicar <b>1 Comendador</b> e <b>1 Embaixada</b> por ano.</li>
+        <li>Um representante da importadora é <b>entronizado Comendador</b>, com <b>anuidade isenta</b>.</li>
+        <li>Indicações extras: <b>R$ 1.200</b> por Comendador · <b>R$ 2.000</b> por Embaixada. Cada Comendador indicado paga a anuidade de R$ 1.200/ano.</li>
+        <li>Placas de Embaixada (Ouro/Prata/Bronze) e restaurantes parceiros (rolha grátis aos Comendadores).</li>
+        <li>Logo nas comunicações · voto nas entronizações · reunião anual · prioridade no Road Show.</li>
       </ul></div>
     </div>
 
@@ -252,24 +260,27 @@ function loadSec(sec){try{
   else if(sec==="importadoras")carregarImportadoras();
 }catch(e){console.error(e);}}
 function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
-function cotaUI(usado,cota,elId,btnId,verbo){var el=document.getElementById(elId);var extra=usado>=cota;if(el){el.textContent=usado+" de "+cota+" incluídas em "+ANO+(extra?" · próximas a R$ 1.000":"");el.className="cota"+(extra?" full":"");}var b=document.getElementById(btnId);if(b)b.textContent=extra?(verbo+" extra (R$ 1.000)"):verbo;}
+function cotaUI(usado,cota,elId,btnId,verbo,preco){var el=document.getElementById(elId);var extra=usado>=cota;var pr="R$ "+Number(preco||1200).toLocaleString("pt-BR");if(el){el.textContent=usado+" de "+cota+" incluídas em "+ANO+(extra?(" · próximas a "+pr):"");el.className="cota"+(extra?" full":"");}var b=document.getElementById(btnId);if(b)b.textContent=extra?(verbo+" extra ("+pr+")"):verbo;}
 async function carregarAnuidade(){
   var box=document.getElementById("anuidBox");if(!box)return;
   if(!IMP||!IMP.id){box.innerHTML="<p style=\"color:#8a8270;font-size:13px;\">"+(IS_CONSELHO?"Selecione uma importadora no seletor acima para ver a anuidade.":"Anuidade indisponivel.")+"</p>";return;}
   box.innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Carregando…</p>";
-  var q=await sb.from("importadora_membros").select("id",{count:"exact",head:true}).eq("importadora_id",IMP.id).eq("ano",ANO).eq("extra",true);
-  var extras=q.count||0;var base=10000;var total=base+extras*1000;
+  var qm=await sb.from("importadora_membros").select("id",{count:"exact",head:true}).eq("importadora_id",IMP.id).eq("ano",ANO).eq("extra",true);
+  var qe=await sb.from("importadora_restaurantes").select("id",{count:"exact",head:true}).eq("importadora_id",IMP.id).eq("ano",ANO).eq("extra",true);
+  var exM=qm.count||0,exE=qe.count||0;var base=Number(IMP.anuidade_valor)||10000;var total=base+exM*1200+exE*2000;
   var paga=(IMP.anuidade_paga===true&&Number(IMP.anuidade_ano)===ANO);
   function brl(n){return "R$ "+Number(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
   var pill=paga?"<span class=\"pill\" style=\"background:#eef6ef;color:#2f6b3a;border:1px solid #cfe6d3;\">Anuidade em dia</span>":"<span class=\"pill\" style=\"background:#f6efdc;color:#8a6a1f;border:1px solid var(--line);\">A pagar</span>";
-  var linhas="<div style=\"display:flex;justify-content:space-between;\"><span>Anuidade base "+ANO+"</span><b>"+brl(base)+"</b></div>";
-  if(extras>0)linhas+="<div style=\"display:flex;justify-content:space-between;\"><span>"+extras+" indica"+(extras>1?"ções":"ção")+" extra"+(extras>1?"s":"")+" (R$ 1.000 cada)</span><b>"+brl(extras*1000)+"</b></div>";
+  var plano=(IMP.plano||"Ouro");var linhas="<div style=\"display:flex;justify-content:space-between;\"><span>Cota "+plano+" "+ANO+"</span><b>"+brl(base)+"</b></div>";
+  if(exM>0)linhas+="<div style=\"display:flex;justify-content:space-between;\"><span>"+exM+" Comendador(es) extra (R$ 1.200 cada)</span><b>"+brl(exM*1200)+"</b></div>";
+  if(exE>0)linhas+="<div style=\"display:flex;justify-content:space-between;\"><span>"+exE+" Embaixada(s) extra (R$ 2.000 cada)</span><b>"+brl(exE*2000)+"</b></div>";
   linhas+="<div style=\"display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:6px;padding-top:6px;\"><span><b>Total "+ANO+"</b></span><b style=\"color:var(--navy);\">"+brl(total)+"</b></div>";
   var pix=paga?"":"<div style=\"background:#faf6ea;border:1px solid #e6d9b3;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13.5px;line-height:1.6;\"><b>Como pagar (PIX)</b><br>Chave: <b>69.296.264/0001-30</b><br>Commanderie de Bordeaux do Brasil<br>Depois envie o comprovante para <a href=\"mailto:sac@commanderiedebordeaux.com.br\" style=\"color:var(--navy);font-weight:bold;\">sac@commanderiedebordeaux.com.br</a>.<br><span style=\"display:inline-block;margin-top:8px;color:#8a6a1f;font-size:11.5px;line-height:1.5;\">&#8987; Por enquanto os pagamentos são recebidos por <b>Commanderie de Bordeaux do Brasil</b> (Presidente). Em breve será direto à Commanderie, com opção de <b>cartão de crédito</b>.</span></div>";
   var admin="";
-  if(IS_CONSELHO){admin="<div style=\"margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;\">"+(paga?("<span style=\"font-size:12.5px;color:#2f6b3a;\">Paga em "+fdata(IMP.anuidade_pago_em)+".</span> <button class=\"btn-n\" style=\"background:#8a8270;margin-left:8px;\" onclick=\"marcarAnuid(false)\">Reabrir</button>"):("<button class=\"btn-n\" onclick=\"marcarAnuid(true)\">Marcar anuidade como paga</button>"))+" <span class=\"msg\" id=\"anuidMsg\"></span></div>";}
-  box.innerHTML="<div style=\"display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;\"><div style=\"font-family:Georgia,serif;color:var(--navy);font-size:18px;\">"+esc(IMP.nome)+"</div>"+pill+"</div><div style=\"font-size:14px;color:#2a2620;\">"+linhas+"</div>"+pix+admin;
+  if(IS_CONSELHO){admin="<div style=\"margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;\">"+(paga?("<span style=\"font-size:12.5px;color:#2f6b3a;\">Paga em "+fdata(IMP.anuidade_pago_em)+".</span> <button class=\"btn-n\" style=\"background:#8a8270;margin-left:8px;\" onclick=\"marcarAnuid(false)\">Reabrir</button>"):("<button class=\"btn-n\" onclick=\"marcarAnuid(true)\">Marcar anuidade como paga</button>"))+" <span class=\"msg\" id=\"anuidMsg\"></span><div style=\"margin-top:10px;font-size:12.5px;color:#5b5446;\">Plano: <select class=\"inp\" style=\"max-width:180px;display:inline-block;\" onchange=\"setPlano(this.value)\"><option value=\"Ouro\""+(plano==="Ouro"?" selected":"")+">Ouro — R$ 10.000 (3/3)</option><option value=\"Prata\""+(plano==="Prata"?" selected":"")+">Prata — R$ 5.000 (1/1)</option></select> <span class=\"msg\" id=\"planoMsg\"></span></div></div>";}
+  var planoSelo="<span class=\"placa-b "+(plano==="Prata"?"b-prata":"b-ouro")+"\" style=\"margin-left:8px;\">Plano "+plano+"</span>";box.innerHTML="<div style=\"display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;\"><div style=\"font-family:Georgia,serif;color:var(--navy);font-size:18px;\">"+esc(IMP.nome)+planoSelo+"</div>"+pill+"</div><div style=\"font-size:14px;color:#2a2620;\">"+linhas+"</div>"+pix+admin;
 }
+async function setPlano(v){var m=document.getElementById("planoMsg");if(m){m.style.color="#2f6b3a";m.textContent="Salvando…";}var r=await sb.rpc("importadora_set_plano",{p_imp:IMP.id,p_plano:v});if(r.error){if(m){m.style.color="#8f1d24";m.textContent=r.error.message;}return;}IMP.plano=v;IMP.cota_membros=(v==="Prata"?1:3);IMP.cota_restaurantes=(v==="Prata"?1:2);IMP.anuidade_valor=(v==="Prata"?5000:10000);if(IMPS_BY_ID[IMP.id]){IMPS_BY_ID[IMP.id].plano=v;IMPS_BY_ID[IMP.id].cota_membros=IMP.cota_membros;IMPS_BY_ID[IMP.id].cota_restaurantes=IMP.cota_restaurantes;IMPS_BY_ID[IMP.id].anuidade_valor=IMP.anuidade_valor;}carregarAnuidade();}
 async function marcarAnuid(paga){
   var msg=document.getElementById("anuidMsg");if(msg){msg.style.color="#2f6b3a";msg.textContent="Salvando...";}
   var r=await sb.rpc("marcar_anuidade_programa",{p_tipo:"importadora",p_id:IMP.id,p_paga:paga,p_ano:ANO});
@@ -282,7 +293,7 @@ async function carregarComendadores(){
   var q=await sb.from("importadora_membros").select("*,importadoras(nome)").order("created_at",{ascending:false});
   var rows=q.error?[]:(q.data||[]);
   MEUS_MEM=rows.filter(function(x){return x.importadora_id===IMP.id;});
-  cotaUI(MEUS_MEM.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_membros||2,"cotaMem","btnMem","Indicar membro");
+  cotaUI(MEUS_MEM.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_membros||3,"cotaMem","btnMem","Indicar membro",1200);
   if(q.error){document.getElementById("tabComend").innerHTML="<p style=\"color:#9a937f;font-size:13px;\">"+esc(q.error.message)+"</p>";return;}
   if(!rows.length){document.getElementById("tabComend").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhum comendador indicado ainda.</p>";return;}
   var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Indicado</th><th>Tipo</th><th>Núcleo</th><th>Entronização</th><th>Status</th><th></th></tr></thead><tbody>";
@@ -294,7 +305,7 @@ async function carregarEmbaixadas(){
   var rows=q.error?[]:(q.data||[]);
   MINHAS_EMB=rows.filter(function(x){return x.importadora_id===IMP.id;});
   if(IMP&&IMP.__ilimitado){var elc=document.getElementById("cotaEmb");if(elc){elc.textContent="Ilimitado · Conselho/Grão-Mestre";elc.className="cota";}var bbtn=document.getElementById("btnEmb");if(bbtn)bbtn.textContent="Indicar embaixada";}
-  else cotaUI(MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_restaurantes||2,"cotaEmb","btnEmb","Indicar embaixada");
+  else cotaUI(MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_restaurantes||3,"cotaEmb","btnEmb","Indicar embaixada",2000);
   if(q.error){document.getElementById("tabEmb").innerHTML="<p style=\"color:#9a937f;font-size:13px;\">"+esc(q.error.message)+"</p>";return;}
   if(!rows.length){document.getElementById("tabEmb").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma embaixada indicada ainda.</p>";return;}
   var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Restaurante</th><th>Endereço</th><th>Cidade</th><th>Responsável</th><th>Telefone</th><th>Categoria</th><th>Status</th><th></th></tr></thead><tbody>";
@@ -332,7 +343,7 @@ async function addMembro(){
   var msg=document.getElementById("mMsg");var nome=val("mNome");
   if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o nome.";return;}
   var doAno=MEUS_MEM.filter(function(x){return Number(x.ano)===ANO;}).length;var extra=doAno>=(IMP.cota_membros||2);
-  if(extra&&!confirm("Esta indicação é EXTRA (além das 2 incluídas no ano). Custo: R$ 1.000. Confirmar?"))return;
+  if(extra&&!confirm("Esta indicação é EXTRA (além das "+(IMP.cota_membros||3)+" do seu plano). Custo: R$ 1.200. O Comendador indicado paga a anuidade de R$ 1.200/ano. Confirmar?"))return;
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
   var r=await sb.from("importadora_membros").insert({importadora_id:IMP.id,ano:ANO,nome:nome,email:val("mEmail")||null,tipo:val("mTipo"),nucleo:val("mNucleo")||null,apresentacao:val("mApres")||null,anuidade_por:val("mPagador")||"padrinho_primeira",extra:extra});
   if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}
@@ -343,7 +354,7 @@ async function addEmb(){
   if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o restaurante.";return;}
   var ilim=!!(IMP&&IMP.__ilimitado);var extra=false;
   if(!ilim){var doAno=MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length;extra=doAno>=(IMP.cota_restaurantes||2);
-    if(extra&&!confirm("Esta embaixada é EXTRA (além das 2 incluídas no ano). Custo: R$ 1.000. Confirmar?"))return;}
+    if(extra&&!confirm("Esta embaixada é EXTRA (além das "+(IMP.cota_restaurantes||3)+" do seu plano). Custo: R$ 2.000/ano. Confirmar?"))return;}
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
   var r=await sb.from("importadora_restaurantes").insert({importadora_id:IMP.id,ano:ANO,nome:nome,endereco:val("eEndereco")||null,cidade:val("eCidade")||null,responsavel:val("eResp")||null,telefone:val("eTel")||null,placa:val("eCat"),extra:extra});
   if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}

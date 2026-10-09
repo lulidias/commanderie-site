@@ -159,7 +159,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
         <div class="tn"><span class="dot"></span>Ouro</div>
         
         <ul>
-          <li>__CHK__ Indicar <b>3 Comendadores</b> por ano</li>
+          <li>__CHK__ Indicar <b>2 Comendadores</b> por ano</li>
           <li>__CHK__ Indicar <b>2 Embaixadas</b> por ano</li>
           <li>__CHK__ 1 representante entronizado Comendador</li>
         </ul>
@@ -304,12 +304,12 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <div class="cotas" data-anim="3">
       <div class="cota ouro">
         <div class="cn">Ouro</div>
-        <div class="cp">R$ 10.000<span> / ano</span></div>
-        <ul><li>3 Comendadores + 2 Embaixadas por ano</li><li>Representante entronizado · anuidade isenta</li><li>6 garrafas de Bordeaux por evento</li><li>Marca no site · Loja Bordeaux</li></ul>
+        <div class="cp">€ 1.800<span> / ano</span></div>
+        <ul><li>2 Comendadores + 2 Embaixadas por ano</li><li>Representante entronizado · anuidade isenta</li><li>6 garrafas de Bordeaux por evento</li><li>Marca no site · Loja Bordeaux</li></ul>
       </div>
       <div class="cota prata">
         <div class="cn">Prata</div>
-        <div class="cp">R$ 5.000<span> / ano</span></div>
+        <div class="cp">€ 900<span> / ano</span></div>
         <ul><li>1 Comendador + 1 Embaixada por ano</li><li>Representante entronizado · anuidade isenta</li><li>6 garrafas de Bordeaux por evento</li><li>Marca no site · Loja Bordeaux</li></ul>
       </div>
     </div>
@@ -326,7 +326,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
   </section>
 
   <div id="sub"><span id="subtxt"></span></div>
-  <audio id="aud" src="narracao.m4a?v=5" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=6" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
     <span class="t" id="tcur">0:00</span>
@@ -334,7 +334,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <span class="t" id="tdur">0:00</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
-    <a id="dl" href="narracao.m4a?v=5" download="Commanderie-Importadores-audio.m4a" title="Baixar o áudio">⤓</a>
+    <a id="dl" href="narracao.m4a?v=6" download="Commanderie-Importadores-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
 
   <div id="start">
@@ -395,9 +395,9 @@ var CUES=[
  {t:101.03, dark:false, s:"Et bien plus : dégustations, Road Show et tous les avantages de la confrérie."},
  {t:109.06, dark:false, s:"Espace Importateur : parrainages, cotisations et coordonnées toujours à jour."},
  {t:117.45, dark:true, s:"Associez votre importateur : Or ou Argent · facturation en novembre."},
- {t:125.85, dark:true, s:"Bordeaux, toujours Bordeaux."},
+ {t:126.85, dark:true, s:"Bordeaux, toujours Bordeaux."},
 ];
-var END=134.9;
+var END=135.9;
 var raf=null,lastIdx=-1;
 function $(id){return document.getElementById(id);}function A(){return $('aud');}
 function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,x=s%60;return m+':'+(x<10?'0':'')+x;}

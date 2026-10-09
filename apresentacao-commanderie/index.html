@@ -138,7 +138,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
 .scene.cine{padding:0;justify-content:flex-end;align-items:flex-start;text-align:left;transform:none;}
 .scene.cine.on{transform:none;}
 .scene.cine .bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.14);will-change:transform;}
-.scene.cine.on .bg{animation:kenburns 10s ease-out forwards;}
+.scene.cine.on .bg{animation:kenburns 8s ease-out forwards;}
 @keyframes kenburns{from{transform:scale(1.14)}to{transform:scale(1.0)}}
 .scene.cine .scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,7,13,.90) 0%,rgba(5,7,13,.30) 42%,rgba(5,7,13,.30) 70%,rgba(5,7,13,.72) 100%);}
 .scene.cine .cwrap{position:relative;z-index:2;width:100%;padding:0 8% 11vh;}
@@ -176,7 +176,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
   <section class="scene cine center" data-scene="13"><div class="bg" style="background-image:url('https://commanderiedebordeaux.com.br/img/home/hero-vinhedo.jpg')"></div><div class="scrim"></div><div class="cwrap"><img src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" class="cbr" alt=""><div class="lemac">« Bordeaux, toujours Bordeaux »</div><div class="ckick" style="text-align:center;margin-top:1vw;">Commanderie de Bordeaux do Brasil</div></div></section>
 
   <div id="sub"><span id="subtxt"></span></div>
-  <audio id="aud" src="narracao.m4a?v=3" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=4" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
     <span class="t" id="tcur">0:00</span>
@@ -184,7 +184,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <span class="t" id="tdur">0:00</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
-    <a id="dl" href="narracao.m4a?v=3" download="Commanderie-Um-Ano-audio.m4a" title="Baixar o áudio">⤓</a>
+    <a id="dl" href="narracao.m4a?v=4" download="Commanderie-Um-Ano-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
 
   <div id="start">
@@ -232,21 +232,21 @@ function sz(svg,px){return svg.replace('<svg ','<svg width="'+px+'" height="'+px
 var scenes=[].slice.call(document.querySelectorAll('.scene'));
 var CUES=[
  {t:0.0, dark:true, s:"Commanderie de Bordeaux"},
- {t:6.81, dark:true, s:"Apreciar, celebrar e difundir os grandes vinhos de Bordeaux."},
- {t:15.06, dark:true, s:"Nova York, 1959 — Henri Martin, do Château Gloria."},
- {t:22.7, dark:true, s:"27 países · 40.000 Comendadores no mundo."},
- {t:29.45, dark:true, s:"Cada capítulo, uma embaixada dos vinhos de Bordeaux."},
- {t:34.8, dark:true, s:"E a história chegou ao Brasil."},
- {t:39.5, dark:true, s:"14 de novembro de 2025 — Consulado-Geral da França, São Paulo."},
- {t:47.61, dark:true, s:"Três cidades com eventos · cinco núcleos pelo Brasil."},
- {t:56.68, dark:true, s:"Primeurs — capítulo no Château Bellefont-Belcier."},
- {t:63.77, dark:true, s:"A Mesa: Grão-Mestre Manu Brandão e os Mestres."},
- {t:72.09, dark:true, s:"Quase cinquenta Comendadores."},
- {t:77.23, dark:true, s:"Produtores e importadores, ao lado dos Comendadores."},
- {t:84.77, dark:true, s:"Jantar de 1 Ano · 22 de outubro de 2026."},
- {t:94.57, dark:true, s:"Bordeaux, toujours Bordeaux."},
+ {t:5.91, dark:true, s:"Apreciar, celebrar e difundir os grandes vinhos de Bordeaux."},
+ {t:13.09, dark:true, s:"Nova York, 1959 — Henri Martin, do Château Gloria."},
+ {t:19.75, dark:true, s:"27 países · 40.000 Comendadores no mundo."},
+ {t:25.65, dark:true, s:"Cada capítulo, uma embaixada dos vinhos de Bordeaux."},
+ {t:30.24, dark:true, s:"E a história chegou ao Brasil."},
+ {t:34.33, dark:true, s:"14 de novembro de 2025 — Consulado-Geral da França, São Paulo."},
+ {t:41.43, dark:true, s:"Três cidades com eventos · cinco núcleos pelo Brasil."},
+ {t:49.37, dark:true, s:"Primeurs — capítulo no Château Bellefont-Belcier."},
+ {t:55.59, dark:true, s:"A Mesa: Grão-Mestre Manu Brandão e os Mestres."},
+ {t:62.84, dark:true, s:"Quase cinquenta Comendadores."},
+ {t:67.26, dark:true, s:"Produtores e importadores, ao lado dos Comendadores."},
+ {t:73.91, dark:true, s:"Jantar de 1 Ano · 22 de outubro de 2026."},
+ {t:82.62, dark:true, s:"Bordeaux, toujours Bordeaux."},
 ];
-var END=103.4;
+var END=90.6;
 var raf=null,lastIdx=-1;
 function $(id){return document.getElementById(id);}function A(){return $('aud');}
 function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,x=s%60;return m+':'+(x<10?'0':'')+x;}

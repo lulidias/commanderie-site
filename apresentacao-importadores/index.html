@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Commanderie de Bordeaux — Importadores Embaixadores</title>
+<title>Commanderie de Bordeaux — Importadoras Oficiais</title>
 <style>
 :root{
   --navy:#1e2a56; --gold:#c5a35a; --gold2:#b08a3a; --gcard:#c9a85c; --prata:#9aa3ad;
@@ -61,9 +61,8 @@ h1.big{font-family:var(--serif);font-weight:400;font-size:4vw;line-height:1.05;l
 /* placas */
 .plaques{display:flex;gap:1.4vw;justify-content:center;}
 .plaque{width:12vw;background:#fff;border:1px solid var(--line);border-radius:1vw;padding:1.3vw;text-align:center;box-shadow:0 1vw 2.4vw rgba(40,30,10,.1);display:flex;flex-direction:column;align-items:center;gap:.4vw;}
-.plaque .pm{width:4.4vw;height:4.4vw;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#faf6ea,#f1ead6);}
-.plaque .pm img{width:2.9vw;}
-.pm.o{border:3px solid var(--gold);} .pm.p{border:3px solid #aab3bd;} .pm.b{border:3px solid #c08a5f;}
+.plaque .pm{width:5.6vw;height:5.6vw;display:flex;align-items:center;justify-content:center;}
+.plaque .pm img{width:5.6vw;height:auto;filter:drop-shadow(0 .5vw 1.1vw rgba(40,30,10,.22));}
 .plaque b{font-family:var(--serif);color:var(--navy);font-size:1.25vw;font-weight:400;}
 .plaque span{font-size:.82vw;color:var(--ink2);}
 /* calendário */
@@ -97,7 +96,7 @@ h1.big{font-family:var(--serif);font-weight:400;font-size:4vw;line-height:1.05;l
 .browser .lg{flex:1;max-width:8vw;height:3vw;border-radius:.6vw;background:#efe7d2;border:1px dashed #d8c9a0;display:flex;align-items:center;justify-content:center;font-size:.72vw;color:#b7ac90;}
 .browser .lg.me{background:#fff7e6;border:2px solid var(--gold);color:var(--gold2);font-weight:700;letter-spacing:.08em;box-shadow:0 .5vw 1.4vw rgba(197,163,90,.3);}
 /* grade de benefícios */
-.bgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:.9vw;width:90%;}
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1vw;width:72%;}
 .bcard{background:#fff;border:1px solid var(--line);border-radius:.9vw;padding:1.1vw 1vw;text-align:left;box-shadow:0 .8vw 2vw rgba(40,30,10,.08);display:flex;flex-direction:column;gap:.4vw;}
 .bcard .ic{width:2vw;height:2vw;border-radius:.55vw;background:linear-gradient(140deg,#f7efd9,#efe2bd);display:flex;align-items:center;justify-content:center;color:var(--gold2);}
 .bcard .ic svg{width:1.2vw;height:1.2vw;}
@@ -122,6 +121,18 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
 .startbr{width:11vw;margin-bottom:.6vw;filter:drop-shadow(0 10px 30px rgba(0,0,0,.4));}
 .startk{font-size:1.05vw;letter-spacing:.38em;text-transform:uppercase;color:#d9c28b;font-weight:700;}
 .starth{font-family:var(--serif);font-weight:400;font-size:2.9vw;}
+.chip.cd{background:rgba(255,255,255,.08);color:#f3ecd9;border-color:rgba(197,163,90,.4);}
+.cotas{display:flex;gap:1.8vw;justify-content:center;margin-top:.4vw;}
+.cota{width:21vw;border:1px solid rgba(197,163,90,.4);border-radius:1vw;padding:1.4vw 1.6vw;background:rgba(255,255,255,.05);text-align:left;}
+.cota.ouro{border-color:rgba(231,197,114,.6);box-shadow:0 1vw 2.4vw rgba(0,0,0,.25);}
+.cota .cn{font-family:var(--serif);font-size:1.5vw;letter-spacing:.04em;}
+.cota.ouro .cn{color:#e7c572;} .cota.prata .cn{color:#dfe4e9;}
+.cota .cp{font-family:var(--serif);font-size:2.9vw;color:#fff;line-height:1.05;margin:.1vw 0 .6vw;}
+.cota .cp span{font-size:.95vw;color:#c9bfa6;font-family:Arial,sans-serif;letter-spacing:.02em;}
+.cota ul{list-style:none;padding:.65vw 0 0;margin:0;border-top:1px solid rgba(197,163,90,.25);}
+.cota li{font-size:.88vw;color:#ddd5c4;line-height:1.4;padding-left:1.1vw;position:relative;margin-bottom:.28vw;}
+.cota li:before{content:"\2726";position:absolute;left:0;color:#c5a35a;font-size:.72vw;top:.08vw;}
+.ideallogo{width:19vw;margin:.5vw 0 .2vw;filter:drop-shadow(0 .5vw 1.2vw rgba(0,0,0,.3));}
 </style>
 </head>
 <body class="onDark">
@@ -132,11 +143,11 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <img class="brasao" data-anim="1" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="" style="width:12vw;margin-bottom:1.4vw;">
     <div class="kick d" data-anim="2">Confraria dos Vinhos de Bordeaux</div>
     <h1 class="big" data-anim="3" style="font-size:4.4vw;margin:.4vw 0 .5vw;">Commanderie de Bordeaux</h1>
-    <div class="kick d" data-anim="4" style="letter-spacing:.28em;">Programa dos Importadores Embaixadores</div>
+    <div class="kick d" data-anim="4" style="letter-spacing:.28em;">Programa das Importadoras Oficiais da Commanderie</div>
   </section>
 
   <section class="scene ivory" data-scene="1">
-    <div class="kick" data-anim="1">Importadores Embaixadores</div>
+    <div class="kick" data-anim="1">Importadoras Oficiais da Commanderie</div>
     <h1 class="big" data-anim="2" style="font-size:3.4vw;">A sua importadora no<br>coração de Bordeaux</h1>
     <p class="sub" data-anim="3">A sua marca ao lado de quem mais aprecia e consome os grandes vinhos de Bordeaux — os Comendadores da confraria, em todo o Brasil.</p>
   </section>
@@ -190,16 +201,16 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
       <span class="chip">__USERS__ Comendador · 1º ano incluído</span>
       <span class="chip">__PLAQ__ Embaixada · sem custo</span>
     </div>
-    <p class="sub" data-anim="4" style="margin-top:1vw;">O 1º ano da anuidade do Comendador indicado já está incluído; do 2º ano em diante, R$ 1.200/ano. As Embaixadas não têm custo — apenas validação anual.</p>
+    <p class="sub" data-anim="4" style="margin-top:1vw;">O 1º ano da anuidade do Comendador indicado já está incluído; do 2º ano em diante, € 200/ano. As Embaixadas não têm custo — apenas validação anual.</p>
   </section>
 
   <section class="scene ivory" data-scene="5">
     <div class="kick" data-anim="1">Embaixadas · Placas de Bordeaux</div>
     <h1 class="big" data-anim="2" style="font-size:2.3vw;margin-bottom:1.1vw;">Restaurantes com carta de Bordeaux</h1>
     <div class="plaques" data-anim="3">
-      <div class="plaque"><div class="pm o"><img src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt=""></div><b>Ouro</b><span>30+ rótulos</span></div>
-      <div class="plaque"><div class="pm p"><img src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt=""></div><b>Prata</b><span>20+ rótulos</span></div>
-      <div class="plaque"><div class="pm b"><img src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt=""></div><b>Bronze</b><span>10+ rótulos</span></div>
+      <div class="plaque"><div class="pm o"><img src="https://commanderiedebordeaux.com.br/img/placa-ouro.png" alt="Placa Ouro"></div><b>Ouro</b><span>30+ rótulos</span></div>
+      <div class="plaque"><div class="pm p"><img src="https://commanderiedebordeaux.com.br/img/placa-prata.png" alt="Placa Prata"></div><b>Prata</b><span>20+ rótulos</span></div>
+      <div class="plaque"><div class="pm b"><img src="https://commanderiedebordeaux.com.br/img/placa-bronze.png" alt="Placa Bronze"></div><b>Bronze</b><span>10+ rótulos</span></div>
     </div>
   </section>
 
@@ -210,9 +221,22 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
       <div class="ev"><span class="n">1</span><div><b>Entronização de Primavera</b><p>Entronização dos novos Comendadores indicados.</p></div></div>
       <div class="ev"><span class="n">2</span><div><b>Entronização de Outono</b><p>O indicado escolhe em qual das duas será entronizado.</p></div></div>
       <div class="ev"><span class="n">3</span><div><b>Cerimônia das Embaixadas</b><p>Entrega das Placas Ouro, Prata e Bronze aos restaurantes.</p></div></div>
-      <div class="ev"><span class="n">4</span><div><b>Jantar dos Importadores</b><p>Entre a Wine Paris e a Vinitaly. Única ocasião em que se entronizam os donos de importadoras.</p></div></div>
+      <div class="ev"><span class="n">4</span><div><b>Jantar dos Importadores</b><p>Única ocasião em que se entronizam os donos de importadoras.</p></div></div>
     </div>
     <p class="sub" data-anim="3" style="max-width:80%;margin-top:1.2vw;">Exclusivos dos importadores — e, neles, são servidos os <b>vinhos das associadas</b> (6 garrafas de Bordeaux por evento). Como Comendador, você vive toda a agenda da confraria.</p>
+  </section>
+
+  <section class="scene dark" data-scene="rede">
+    <div class="glow"></div>
+    <div class="kick d" data-anim="1">A base de Comendadores a seu favor</div>
+    <h1 class="big" data-anim="2" style="font-size:2.5vw;margin-bottom:1vw;">Ative a sua rede</h1>
+    <div class="chips" data-anim="3" style="margin-top:.2vw;">
+      <span class="chip cd">__CUP__ Jantar</span>
+      <span class="chip cd">__GLASS__ Degustação</span>
+      <span class="chip cd">__STORE__ Feira</span>
+      <span class="chip cd">__WINE__ Lançamento</span>
+    </div>
+    <p class="sub" data-anim="4" style="max-width:82%;margin-top:1.2vw;">Use a base de Comendadores da Commanderie para <b>convidar ou vender</b> — um jantar, uma degustação, uma feira, qualquer atividade com os vinhos e os produtores de Bordeaux parceiros da sua importadora.</p>
   </section>
 
   <section class="scene ivory" data-scene="7">
@@ -223,7 +247,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
       <div class="wine"><div class="bot">__BOTTLE__</div><div class="bt">Médoc</div><div class="bn">Cru Bourgeois</div><div class="bb">Importadora associada</div></div>
       <div class="wine"><div class="bot">__BOTTLE__</div><div class="bt">Pessac-Léognan</div><div class="bn">Grand Vin</div><div class="bb">Compra direta</div></div>
     </div>
-    <p class="sub" data-anim="4" style="margin-top:1vw;">A Loja Bordeaux reúne o portfólio das importadoras associadas e liga o Comendador direto a você.</p>
+    <p class="sub" data-anim="4" style="margin-top:1vw;">A Loja Bordeaux reúne o portfólio das importadoras associadas e liga o Comendador direto a você. <b>Sem comissão para a Commanderie</b> — um benefício das importadoras oficiais.</p>
   </section>
 
   <section class="scene ivory" data-scene="8">
@@ -240,6 +264,29 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <p class="sub" data-anim="3" style="margin-top:.9vw;">Logo e perfil da sua importadora à vista de toda a confraria — no site e nas comunicações.</p>
   </section>
 
+  <section class="scene dark" data-scene="ideal">
+    <div class="glow"></div>
+    <div class="kick d" data-anim="1">Seminário anual · Ideal Consulting</div>
+    <h1 class="big" data-anim="2" style="font-size:2.4vw;margin-bottom:.6vw;">O mercado de Bordeaux, por dentro</h1>
+    <img class="ideallogo" data-anim="3" src="https://commanderiedebordeaux.com.br/img/ideal-mono.png" alt="Ideal Consulting">
+    <p class="sub" data-anim="4" style="max-width:80%;margin-top:.8vw;">Todos os anos, os importadores oficiais se reúnem para discutir o mercado de Bordeaux no Brasil e no mundo — em parceria com a <b>Ideal Consulting</b>, a maior empresa de auditoria de importação e distribuição do país.</p>
+  </section>
+
+  <section class="scene ivory" data-scene="9">
+    <div class="kick" data-anim="1">Todos os benefícios</div>
+    <div class="bgrid" data-anim="2" style="margin-top:.4vw;">
+      <div class="bcard"><div class="ic">__SHIELD__</div><b>Representante Comendador</b><span>Entronizado, anuidade isenta</span></div>
+      <div class="bcard"><div class="ic">__USERS__</div><b>Indicar membros</b><span>Comendadores e Embaixadas</span></div>
+      <div class="bcard"><div class="ic">__PLAQ__</div><b>Placas de Embaixada</b><span>Restaurantes Ouro/Prata/Bronze</span></div>
+      <div class="bcard"><div class="ic">__CAL__</div><b>4 eventos exclusivos</b><span>+ toda a agenda da confraria</span></div>
+      <div class="bcard"><div class="ic">__STORE__</div><b>Loja Bordeaux</b><span>Sem comissão · portfólio aos Comendadores</span></div>
+      <div class="bcard"><div class="ic">__TAG__</div><b>Marca no site</b><span>Logo e perfil em destaque</span></div>
+      <div class="bcard"><div class="ic">__GLASS__</div><b>Jantares com produtores</b><span>Degustações com os seus produtores de Bordeaux</span></div>
+      <div class="bcard"><div class="ic">__WINE__</div><b>Seus vinhos nos eventos</b><span>Servidos aos Comendadores · 6 garrafas/evento</span></div>
+      <div class="bcard"><div class="ic">__MAP__</div><b>Road Show &amp; parceiros</b><span>Prioridade nas cidades · rolha grátis</span></div>
+    </div>
+  </section>
+
   <section class="scene ivory" data-scene="8b">
     <div class="kick" data-anim="1">Painel do Importador</div>
     <h1 class="big" data-anim="2" style="font-size:2.5vw;margin-bottom:1vw;">Você gere tudo num só lugar</h1>
@@ -250,31 +297,23 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     </div>
   </section>
 
-  <section class="scene ivory" data-scene="9">
-    <div class="kick" data-anim="1">Todos os benefícios</div>
-    <div class="bgrid" data-anim="2" style="margin-top:.4vw;">
-      <div class="bcard"><div class="ic">__SHIELD__</div><b>Representante Comendador</b><span>Entronizado, anuidade isenta</span></div>
-      <div class="bcard"><div class="ic">__USERS__</div><b>Indicar membros</b><span>Comendadores e Embaixadas</span></div>
-      <div class="bcard"><div class="ic">__PLAQ__</div><b>Placas de Embaixada</b><span>Restaurantes Ouro/Prata/Bronze</span></div>
-      <div class="bcard"><div class="ic">__CAL__</div><b>4 eventos exclusivos</b><span>+ toda a agenda da confraria</span></div>
-      <div class="bcard"><div class="ic">__STORE__</div><b>Loja Bordeaux</b><span>Portfólio ligado aos Comendadores</span></div>
-      <div class="bcard"><div class="ic">__TAG__</div><b>Marca no site</b><span>Logo e perfil em destaque</span></div>
-      <div class="bcard"><div class="ic">__GLASS__</div><b>Jantares com produtores</b><span>Degustações com os seus produtores de Bordeaux</span></div>
-      <div class="bcard"><div class="ic">__WINE__</div><b>Seus vinhos nos eventos</b><span>Servidos aos Comendadores · 6 garrafas/evento</span></div>
-      <div class="bcard"><div class="ic">__MAP__</div><b>Road Show &amp; parceiros</b><span>Prioridade nas cidades · rolha grátis</span></div>
-      <div class="bcard"><div class="ic">__CHART__</div><b>Painel Ideal Consulting</b><span>Debate anual sobre os vinhos de Bordeaux no mundo e no Brasil</span></div>
-    </div>
-  </section>
-
   <section class="scene dark" data-scene="10">
     <div class="glow"></div>
     <div class="kick d" data-anim="1">Faça parte</div>
-    <h1 class="big" data-anim="2" style="font-size:3vw;">Associe a sua importadora</h1>
-    <div class="chips" data-anim="3" style="margin-top:1.3vw;">
-      <span class="chip" style="background:rgba(255,255,255,.08);color:#f3ecd9;border-color:rgba(197,163,90,.4);">Ouro · R$ 10.000/ano</span>
-      <span class="chip" style="background:rgba(255,255,255,.08);color:#f3ecd9;border-color:rgba(197,163,90,.4);">Prata · R$ 5.000/ano</span>
+    <h1 class="big" data-anim="2" style="font-size:2.2vw;margin-bottom:1vw;">Associe a sua importadora</h1>
+    <div class="cotas" data-anim="3">
+      <div class="cota ouro">
+        <div class="cn">Ouro</div>
+        <div class="cp">R$ 10.000<span> / ano</span></div>
+        <ul><li>3 Comendadores + 2 Embaixadas por ano</li><li>Representante entronizado · anuidade isenta</li><li>6 garrafas de Bordeaux por evento</li><li>Marca no site · Loja Bordeaux</li></ul>
+      </div>
+      <div class="cota prata">
+        <div class="cn">Prata</div>
+        <div class="cp">R$ 5.000<span> / ano</span></div>
+        <ul><li>1 Comendador + 1 Embaixada por ano</li><li>Representante entronizado · anuidade isenta</li><li>6 garrafas de Bordeaux por evento</li><li>Marca no site · Loja Bordeaux</li></ul>
+      </div>
     </div>
-    <p class="sub" data-anim="4" style="margin-top:1vw;">Cobrança anual, sempre em novembro.</p>
+    <p class="sub" data-anim="4" style="margin-top:1.1vw;">Cobrança anual, sempre em novembro.</p>
   </section>
 
   <section class="scene dark" data-scene="11">
@@ -287,7 +326,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
   </section>
 
   <div id="sub"><span id="subtxt"></span></div>
-  <audio id="aud" src="narracao.m4a?v=4" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=5" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
     <span class="t" id="tcur">0:00</span>
@@ -295,13 +334,13 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <span class="t" id="tdur">0:00</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
-    <a id="dl" href="narracao.m4a?v=4" download="Commanderie-Importadores-audio.m4a" title="Baixar o áudio">⤓</a>
+    <a id="dl" href="narracao.m4a?v=5" download="Commanderie-Importadores-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
 
   <div id="start">
     <img class="startbr" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="">
     <div class="startk">Commanderie de Bordeaux do Brasil</div>
-    <div class="starth">Importadores Embaixadores</div>
+    <div class="starth">Importadoras Oficiais da Commanderie</div>
     <button class="btnplay" onclick="play()">▶ Reproduzir</button>
     <div class="hint">Com narração e música. Melhor em tela cheia, na horizontal.</div>
   </div>
@@ -342,21 +381,23 @@ function sz(svg,px){return svg.replace('<svg ','<svg width="'+px+'" height="'+px
 
 var scenes=[].slice.call(document.querySelectorAll('.scene'));
 var CUES=[
- {t:0.0, dark:true, s:"A Commanderie de Bordeaux do Brasil apresenta o Programa dos Importadores Embaixadores."},
- {t:5.18, dark:false, s:"A sua importadora ao lado de quem mais aprecia os grandes vinhos de Bordeaux."},
- {t:11.4, dark:false, s:"Duas formas de se associar: Ouro e Prata."},
- {t:18.67, dark:false, s:"O seu representante é entronizado Comendador, com anuidade isenta."},
- {t:24.94, dark:false, s:"Comendador indicado: 1º ano incluído. Embaixadas: sem custo, só validação anual."},
- {t:38.82, dark:false, s:"Embaixadas: restaurantes com carta de Bordeaux — Placa Ouro, Prata ou Bronze."},
- {t:45.33, dark:true, s:"Quatro eventos exclusivos — e os vinhos das associadas servidos neles (6 garrafas/evento)."},
- {t:65.64, dark:false, s:"A Loja Bordeaux leva o seu portfólio direto aos Comendadores."},
- {t:73.56, dark:false, s:"E a sua marca em destaque no site da Commanderie."},
- {t:78.85, dark:false, s:"No Painel do Importador você gere indicações, anuidades e cadastro."},
- {t:87.24, dark:false, s:"Degustações com os seus produtores e o painel anual da Ideal Consulting."},
- {t:98.64, dark:true, s:"Associe a sua importadora: Ouro ou Prata · cobrança em novembro."},
- {t:107.05, dark:true, s:"Bordeaux, toujours Bordeaux."},
+ {t:0.0, dark:true, s:"La Commanderie de Bordeaux du Brésil présente le Programme des Importateurs Officiels."},
+ {t:5.6, dark:false, s:"Votre importateur aux côtés de ceux qui apprécient le plus les grands vins de Bordeaux."},
+ {t:11.82, dark:false, s:"Deux façons de s'associer : Or et Argent."},
+ {t:19.09, dark:false, s:"Votre représentant est intronisé Commandeur, cotisation offerte."},
+ {t:25.36, dark:false, s:"Commandeur parrainé : 1re année incluse, puis 200 €/an. Ambassades : sans frais, validation annuelle."},
+ {t:38.96, dark:false, s:"Ambassades : restaurants avec une carte de Bordeaux — Plaque Or, Argent ou Bronze."},
+ {t:45.47, dark:true, s:"Quatre événements exclusifs par an — les vins des membres y sont servis (6 bouteilles/événement)."},
+ {t:59.75, dark:true, s:"Activez votre réseau : la base des Commandeurs pour inviter ou vendre dîners, dégustations et salons."},
+ {t:70.76, dark:false, s:"La Boutique Bordeaux relie votre portefeuille aux Commandeurs — sans commission pour la Commanderie."},
+ {t:82.62, dark:false, s:"Votre marque mise en avant sur le site de la Commanderie."},
+ {t:87.87, dark:true, s:"Séminaire annuel Ideal Consulting : le marché de Bordeaux au Brésil et dans le monde."},
+ {t:101.03, dark:false, s:"Et bien plus : dégustations, Road Show et tous les avantages de la confrérie."},
+ {t:109.06, dark:false, s:"Espace Importateur : parrainages, cotisations et coordonnées toujours à jour."},
+ {t:117.45, dark:true, s:"Associez votre importateur : Or ou Argent · facturation en novembre."},
+ {t:125.85, dark:true, s:"Bordeaux, toujours Bordeaux."},
 ];
-var END=116.1;
+var END=134.9;
 var raf=null,lastIdx=-1;
 function $(id){return document.getElementById(id);}function A(){return $('aud');}
 function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,x=s%60;return m+':'+(x<10?'0':'')+x;}

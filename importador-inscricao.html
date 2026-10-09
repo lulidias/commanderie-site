@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Associar importadora — Commanderie de Bordeaux do Brasil</title>
+<meta name="description" content="Inscrição das importadoras no Programa dos Importadores Embaixadores da Commanderie de Bordeaux do Brasil.">
+<link rel="icon" href="/img/favicon-64.png">
+<style>
+:root{--navy:#1e2a56;--gold:#b08a3a;--gold-lt:#c9a85c;--red:#8f1d24;--paper:#faf7ef;--ink:#2a2620;--ink2:#5b5446;--line:#ddd0ad;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#eee7d5;font-family:Georgia,'Times New Roman',serif;color:var(--ink);line-height:1.5;padding:22px 12px;}
+.card{max-width:640px;margin:0 auto;background:var(--paper);border:1px solid var(--gold);box-shadow:0 10px 40px rgba(30,26,20,.12);border-radius:6px;overflow:hidden;}
+.inner{border:1px solid var(--line);margin:10px;border-radius:4px;padding:34px 30px 28px;}
+.brasao{display:block;width:84px;margin:2px auto 14px;}
+.kick{text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:bold;}
+h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-height:1.1;margin:8px 0 4px;}
+.sub{text-align:center;font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;max-width:460px;margin:6px auto 0;line-height:1.55;}
+.sep{height:1px;background:var(--line);margin:22px 0;}
+.lbl{font-family:Arial,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;margin-bottom:10px;}
+.planos{display:flex;gap:12px;flex-wrap:wrap;}
+.plano{flex:1;min-width:210px;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;background:#fff;transition:border-color .15s,box-shadow .15s;position:relative;}
+.plano:hover{border-color:var(--gold-lt);}
+.plano.sel{border-color:var(--navy);box-shadow:0 8px 22px rgba(30,42,86,.12);}
+.plano .pn{font-size:20px;color:var(--navy);display:flex;align-items:center;gap:8px;}
+.plano .pn .d{width:12px;height:12px;border-radius:50%;}
+.plano.ouro .d{background:linear-gradient(140deg,#e7c572,#b08a3a);}
+.plano.prata .d{background:linear-gradient(140deg,#dfe4e9,#aab3bd);}
+.plano .pp{font-size:22px;color:var(--navy);margin:2px 0 6px;}
+.plano .pp small{font-size:13px;color:var(--ink2);font-family:Arial,sans-serif;}
+.plano ul{list-style:none;font-family:Arial,sans-serif;font-size:12.5px;color:var(--ink2);line-height:1.7;}
+.plano .ck{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line);}
+.plano.sel .ck{background:var(--navy);border-color:var(--navy);}
+.plano.sel .ck:after{content:"✓";color:#fff;font-size:13px;position:absolute;top:0;left:4px;}
+.grid{display:flex;gap:12px;flex-wrap:wrap;}
+.fld{flex:1;min-width:200px;margin-top:12px;}
+.fld.full{flex-basis:100%;}
+.fld label{display:block;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:var(--ink2);margin-bottom:4px;}
+.fld input,.fld textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:9px;font-size:16px;font-family:Arial,sans-serif;background:#fff;}
+.fld .req{color:var(--red);}
+.btn{display:inline-block;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:14px 30px;font-size:16px;font-family:Arial,sans-serif;cursor:pointer;}
+.btn:disabled{opacity:.6;cursor:default;}
+#msg{font-family:Arial,sans-serif;font-size:15px;margin-top:14px;min-height:20px;line-height:1.5;}
+.note{font-family:Arial,sans-serif;font-size:12.5px;color:var(--ink2);line-height:1.6;background:#faf6ea;border:1px solid #e6d9b3;border-radius:10px;padding:12px 14px;margin-top:14px;}
+.foot{text-align:center;margin-top:24px;}
+.foot img{height:60px;opacity:.95;}
+.lema{text-align:center;font-style:italic;color:var(--gold);font-size:18px;margin-top:14px;}
+.ok-wrap{display:none;text-align:center;}
+.ok-wrap .big{font-family:Georgia,serif;color:var(--navy);font-size:26px;margin:10px 0 6px;}
+@media(max-width:480px){h1{font-size:27px;}.inner{padding:24px 18px;}}
+</style>
+</head>
+<body>
+<div class="card"><div class="inner">
+  <img class="brasao" src="/img/brasao-alta.png" alt="Commanderie de Bordeaux do Brasil">
+  <div class="kick">Commanderie de Bordeaux do Brasil</div>
+  <h1>Associar a sua importadora</h1>
+  <p class="sub">Programa dos Importadores Embaixadores. Preencha a inscrição abaixo — o Conselho entrará em contato para concluir a associação.</p>
+
+  <div id="form">
+    <div class="sep"></div>
+    <div class="lbl">Escolha a cota</div>
+    <div class="planos">
+      <div class="plano ouro sel" data-plano="Ouro" onclick="selPlano(this)"><span class="ck"></span>
+        <div class="pn"><span class="d"></span>Ouro</div>
+        <div class="pp">R$ 10.000<small> / ano</small></div>
+        <ul><li>3 Comendadores + 2 Embaixadas / ano</li><li>Representante entronizado (anuidade isenta)</li></ul>
+      </div>
+      <div class="plano prata" data-plano="Prata" onclick="selPlano(this)"><span class="ck"></span>
+        <div class="pn"><span class="d"></span>Prata</div>
+        <div class="pp">R$ 5.000<small> / ano</small></div>
+        <ul><li>1 Comendador + 1 Embaixada / ano</li><li>Representante entronizado (anuidade isenta)</li></ul>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+    <div class="lbl">Dados da importadora</div>
+    <div class="grid">
+      <div class="fld full"><label>Nome da importadora <span class="req">*</span></label><input id="nome" placeholder="Razão social ou nome comercial"></div>
+      <div class="fld"><label>CNPJ</label><input id="cnpj" placeholder="00.000.000/0001-00"></div>
+      <div class="fld"><label>Cidade</label><input id="cidade" placeholder="Cidade / UF"></div>
+      <div class="fld"><label>Representante legal <span class="req">*</span></label><input id="responsavel" placeholder="Quem será entronizado Comendador"></div>
+      <div class="fld"><label>E-mail <span class="req">*</span></label><input id="email" type="email" placeholder="contato@importadora.com"></div>
+      <div class="fld"><label>Telefone / WhatsApp</label><input id="telefone" placeholder="(11) 90000-0000"></div>
+      <div class="fld"><label>Instagram</label><input id="instagram" placeholder="@suaimportadora"></div>
+      <div class="fld full"><label>Observações</label><textarea id="obs" rows="3" placeholder="Portfólio de Bordeaux, expectativas, algo que queira nos contar…"></textarea></div>
+    </div>
+
+    <div class="note">A anuidade é <b>cobrada todos os anos em novembro</b>. Após a inscrição, o Conselho confirma a associação e envia os dados para pagamento (PIX).</div>
+
+    <div style="text-align:center;margin-top:18px;">
+      <button class="btn" id="btn" onclick="enviar()">Enviar inscrição</button>
+      <div id="msg"></div>
+    </div>
+  </div>
+
+  <div class="ok-wrap" id="ok">
+    <div style="font-size:40px;">✦</div>
+    <div class="big">Inscrição recebida!</div>
+    <p class="sub">Obrigado. O Conselho da Commanderie entrará em contato em breve para concluir a associação da sua importadora.</p>
+  </div>
+
+  <div class="foot"><img src="/img/brasao-alta.png" alt=""></div>
+  <div class="lema">« Bordeaux, toujours Bordeaux »</div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+var PLANO="Ouro";
+function selPlano(el){PLANO=el.getAttribute("data-plano");document.querySelectorAll(".plano").forEach(function(p){p.classList.toggle("sel",p===el);});}
+function v(id){var e=document.getElementById(id);return e?e.value.trim():"";}
+function diz(t,cor){var m=document.getElementById("msg");m.style.color=cor||"#5b5446";m.textContent=t;}
+async function enviar(){
+  var nome=v("nome"),resp=v("responsavel"),email=v("email");
+  if(!nome){diz("Informe o nome da importadora.","#8f1d24");return;}
+  if(!resp){diz("Informe o representante legal (será entronizado Comendador).","#8f1d24");return;}
+  if(!email||email.indexOf("@")<0){diz("Informe um e-mail válido.","#8f1d24");return;}
+  var btn=document.getElementById("btn");btn.disabled=true;diz("Enviando…");
+  try{
+    var r=await sb.rpc("inscrever_importadora",{p:{nome:nome,responsavel:resp,cnpj:v("cnpj"),email:email,telefone:v("telefone"),cidade:v("cidade"),instagram:v("instagram"),plano:PLANO,obs:v("obs")}});
+    if(r.error){btn.disabled=false;diz("Não foi possível enviar: "+r.error.message,"#8f1d24");return;}
+    document.getElementById("form").style.display="none";
+    document.getElementById("ok").style.display="block";
+    window.scrollTo({top:0,behavior:"smooth"});
+  }catch(e){btn.disabled=false;diz("Não foi possível enviar. Tente de novo.","#8f1d24");}
+}
+</script>
+</body>
+</html>

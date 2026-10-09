@@ -70,7 +70,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       <a class="ccard" href="?sec=parceiros"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12V7a2 2 0 0 1 2-2h3M19 12v5a2 2 0 0 1-2 2h-3M8 9l4-4 4 4M12 5v9"/></svg></div><b>Restaurantes parceiros</b><span>Rolha grátis aos Comendadores</span></a>
       <a class="ccard" href="?sec=beneficios"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 7v14"/></svg></div><b>Benefícios</b><span>Ofertas aos Comendadores</span></a>
       <a class="ccard" href="?sec=importadoras"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-4h6v4"/></svg></div><b>Relação das importadoras</b><span>Membros do programa</span></a>
-      <a class="ccard" href="?sec=programa"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg></div><b>Reunião & programa</b><span>Encontro anual e benefícios</span></a><a class="ccard" href="/apresentacao-importadores/" target="_blank" rel="noopener"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z"/></svg></div><b>Apresentação do programa</b><span>Vídeo para enviar a importadoras</span></a><a class="ccard" href="?sec=representante"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-5.5 7-5.5s7 1.9 7 5.5"/></svg></div><b>Meu representante</b><span>Quem será entronizado Comendador</span></a>
+      <a class="ccard" href="?sec=programa"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg></div><b>Reunião & programa</b><span>Encontro anual e benefícios</span></a><a class="ccard" href="/apresentacao-importadores/" target="_blank" rel="noopener"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z"/></svg></div><b>Apresentação do programa</b><span>Vídeo para enviar a importadoras</span></a><a class="ccard" href="?sec=cadastro"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h5M9.5 15.5h5"/></svg></div><b>Cadastro da importadora</b><span>Dados, contatos e e-mails</span></a>
     </div></div>
 
     <div id="secAnuid" class="secblk"><a class="backsec" href="painel-importador.html">&#8592; Voltar</a>
@@ -177,16 +177,41 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
       </ul></div>
     </div>
 
-    <div id="secRep" class="secblk"><a class="backsec" href="painel-importador.html">&#8592; Voltar</a>
-      <div class="sec-title">Representante na Commanderie</div><div class="sec-rule"></div>
+    <div id="secCad" class="secblk"><a class="backsec" href="painel-importador.html">&#8592; Voltar</a>
+      <div class="sec-title">Cadastro da importadora</div><div class="sec-rule"></div>
       <div class="card imp-form">
-        <p style="font-size:13px;color:#5b5446;margin:0 0 10px;">A pessoa que representa a importadora na Commanderie. Ela será <b>entronizada Comendador</b> e tem a <b>anuidade isenta</b> enquanto a importadora for associada.</p>
+        <p style="font-size:13px;color:#5b5446;margin:0 0 4px;">Preencha os dados da importadora. Eles nos ajudam a organizar as cobranças, as entronizações e a comunicação do programa.</p>
+        <div class="sec-sub">Dados da importadora</div>
         <div class="grid">
-          <input class="inp" id="repNome" placeholder="Nome do representante">
-          <input class="inp" id="repEmail" placeholder="E-mail">
-          <input class="inp" id="repTel" placeholder="Telefone / WhatsApp">
+          <input class="inp" id="ciNome" placeholder="Nome (como aparece no programa)">
+          <input class="inp" id="ciRazao" placeholder="Razão social">
+          <input class="inp" id="ciFantasia" placeholder="Nome fantasia">
+          <input class="inp" id="ciCnpj" placeholder="CNPJ">
+          <input class="inp" id="ciEnd" placeholder="Endereço completo">
+          <input class="inp" id="ciCidade" placeholder="Cidade / UF">
+          <input class="inp" id="ciTel" placeholder="Telefone">
+          <input class="inp" id="ciInsta" placeholder="Instagram">
         </div>
-        <div style="margin-top:12px;"><button class="btn-n" onclick="salvarRepresentante()">Salvar representante</button><span class="msg" id="repMsg"></span></div>
+        <div class="sec-sub">E-mails</div>
+        <div class="grid">
+          <input class="inp" id="ciEmailOf" placeholder="E-mail oficial">
+          <input class="inp" id="ciEmailCor" placeholder="E-mail de correspondência">
+          <input class="inp" id="ciEmailFin" placeholder="E-mail do financeiro (cobranças anuais)">
+          <input class="inp" id="ciEmailInst" placeholder="E-mail institucional (entronizações e eventos)">
+        </div>
+        <div class="sec-sub">Representante — será entronizado Comendador (anuidade isenta)</div>
+        <div class="grid">
+          <input class="inp" id="ciRepNome" placeholder="Nome do representante">
+          <input class="inp" id="ciRepEmail" placeholder="E-mail">
+          <input class="inp" id="ciRepTel" placeholder="Telefone / WhatsApp">
+        </div>
+        <div class="sec-sub">Contato de comunicação com a Commanderie</div>
+        <div class="grid">
+          <input class="inp" id="ciContNome" placeholder="Nome do contato">
+          <input class="inp" id="ciContEmail" placeholder="E-mail">
+          <input class="inp" id="ciContTel" placeholder="Telefone / WhatsApp">
+        </div>
+        <div style="margin-top:14px;"><button class="btn-n" onclick="salvarCadastro()">Salvar cadastro</button><span class="msg" id="ciMsg"></span></div>
       </div>
     </div>
 
@@ -220,9 +245,8 @@ async function init(){
       var li=await sb.from("importadoras").select("*").order("nome",{ascending:true});
       var selImp=document.getElementById("impAs");var minhaImp=null;
       if(!li.error&&selImp){(li.data||[]).forEach(function(im){IMPS_BY_ID[im.id]=im;if(im.owner_user_id===u.id)minhaImp=im;selImp.innerHTML+="<option value=\""+im.id+"\">"+esc(im.nome)+(im.owner_user_id===u.id?" (a minha)":"")+"</option>";});}
-      var w=document.getElementById("impAsWrap");if(w)w.style.display="block";
       if(selImp){var saved=null;try{saved=localStorage.getItem("imp_as");}catch(e){}
-        var initVal=(saved==="__conselho__"||saved===""||(saved&&IMPS_BY_ID[saved]))?saved:(minhaImp?minhaImp.id:"");
+        var initVal=(minhaImp?minhaImp.id:"");
         selImp.value=initVal;trocarImp();}
     }
   } else {
@@ -257,11 +281,11 @@ function trocarImp(){
   }
   var s=curSec();if(s)loadSec(s);
 }
-function carregarRepresentante(){if(!IMP)return;var g=function(id,v){var e=document.getElementById(id);if(e)e.value=v||"";};g("repNome",IMP.responsavel_nome);g("repEmail",IMP.email);g("repTel",IMP.telefone);}
-async function salvarRepresentante(){var msg=document.getElementById("repMsg");var nome=val("repNome");if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o nome do representante.";return;}if(!IMP||!IMP.id){msg.style.color="#8f1d24";msg.textContent="Selecione a sua importadora.";return;}msg.style.color="#2f6b3a";msg.textContent="Salvando…";var r=await sb.rpc("importadora_set_representante",{p_imp:IMP.id,p_nome:nome,p_email:val("repEmail"),p_tel:val("repTel")});if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}IMP.responsavel_nome=nome;if(IMPS_BY_ID[IMP.id])IMPS_BY_ID[IMP.id].responsavel_nome=nome;msg.textContent="Salvo! ✓";}
+function carregarCadastro(){if(!IMP)return;var g=function(id,v){var e=document.getElementById(id);if(e)e.value=v||"";};g("ciNome",IMP.nome);g("ciRazao",IMP.razao_social);g("ciFantasia",IMP.nome_fantasia);g("ciCnpj",IMP.cnpj);g("ciEnd",IMP.endereco);g("ciCidade",IMP.cidade);g("ciTel",IMP.telefone);g("ciInsta",IMP.instagram);g("ciEmailOf",IMP.email);g("ciEmailCor",IMP.email_correspondencia);g("ciEmailFin",IMP.email_financeiro);g("ciEmailInst",IMP.email_institucional);g("ciRepNome",IMP.responsavel_nome);g("ciRepEmail",IMP.representante_email);g("ciRepTel",IMP.representante_tel);g("ciContNome",IMP.contato_nome);g("ciContEmail",IMP.contato_email);g("ciContTel",IMP.contato_tel);}
+async function salvarCadastro(){var msg=document.getElementById("ciMsg");var nome=val("ciNome");if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o nome da importadora.";return;}if(!IMP||!IMP.id){msg.style.color="#8f1d24";msg.textContent="Selecione a sua importadora.";return;}msg.style.color="#2f6b3a";msg.textContent="Salvando…";var pl={nome:nome,razao_social:val("ciRazao"),nome_fantasia:val("ciFantasia"),cnpj:val("ciCnpj"),endereco:val("ciEnd"),cidade:val("ciCidade"),telefone:val("ciTel"),instagram:val("ciInsta"),email:val("ciEmailOf"),email_correspondencia:val("ciEmailCor"),email_financeiro:val("ciEmailFin"),email_institucional:val("ciEmailInst"),representante_nome:val("ciRepNome"),representante_email:val("ciRepEmail"),representante_tel:val("ciRepTel"),contato_nome:val("ciContNome"),contato_email:val("ciContEmail"),contato_tel:val("ciContTel")};var r=await sb.rpc("importadora_set_cadastro",{p_imp:IMP.id,p:pl});if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}for(var k in pl){if(k==="representante_nome")IMP.responsavel_nome=pl[k];else IMP[k]=pl[k];}if(IMPS_BY_ID[IMP.id])IMPS_BY_ID[IMP.id]=IMP;document.getElementById("impNome").textContent=IMP.nome;msg.textContent="Salvo! ✓";}
 function mostrarSecao(){
   var sec=curSec();
-  var map={anuidade:"secAnuid",comendadores:"secComend",embaixadas:"secEmb",parceiros:"secParc",beneficios:"secBenef",importadoras:"secImps",programa:"secProg",representante:"secRep"};
+  var map={anuidade:"secAnuid",comendadores:"secComend",embaixadas:"secEmb",parceiros:"secParc",beneficios:"secBenef",importadoras:"secImps",programa:"secProg",cadastro:"secCad"};
   Object.keys(map).forEach(function(k){var e=document.getElementById(map[k]);if(e)e.style.display="none";});
   var menu=document.getElementById("menu");
   if(sec&&map[sec]){if(menu)menu.style.display="none";var b=document.getElementById(map[sec]);if(b)b.style.display="block";loadSec(sec);}
@@ -274,7 +298,7 @@ function loadSec(sec){try{
   else if(sec==="parceiros")carregarParceiros();
   else if(sec==="beneficios")carregarBeneficios();
   else if(sec==="importadoras")carregarImportadoras();
-  else if(sec==="representante")carregarRepresentante();
+  else if(sec==="cadastro")carregarCadastro();
 }catch(e){console.error(e);}}
 function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
 function cotaUI(usado,cota,elId,btnId,verbo,preco){var el=document.getElementById(elId);var extra=usado>=cota;var pr=(preco?("R$ "+Number(preco).toLocaleString("pt-BR")):"");if(el){el.textContent=usado+" de "+cota+" incluídas em "+ANO+(extra?(pr?(" · próximas a "+pr):" · acima da cota"):"");el.className="cota"+(extra?" full":"");}var b=document.getElementById(btnId);if(b)b.textContent=extra?(verbo+(pr?(" extra ("+pr+")"):" extra")):verbo;}

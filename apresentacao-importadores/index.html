@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commanderie de Bordeaux — Importadores Embaixadores</title>
+<style>
+:root{
+  --navy:#1e2a56; --gold:#c5a35a; --gold2:#b08a3a; --gcard:#c9a85c; --prata:#9aa3ad;
+  --ivory:#f6f1e7; --cream:#f3ecd9; --ink:#2b2416; --ink2:#5b5446; --line:#e3d8b8;
+  --ui:-apple-system,"SF Pro Display","SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;
+  --serif:Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+html,body{height:100%;background:#05070d;overflow:hidden;font-family:var(--ui);}
+#stage{position:absolute;inset:0;margin:auto;width:min(100vw,177.78vh);height:min(56.25vw,100vh);background:var(--ivory);overflow:hidden;}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:opacity .9s cubic-bezier(.4,0,.2,1),transform 1.3s cubic-bezier(.22,.61,.36,1);
+  transform:scale(1.05);padding:0 7% 7vh;text-align:center;}
+.scene.on{opacity:1;visibility:visible;transform:scale(1);}
+.scene.dark{background:radial-gradient(130% 110% at 50% 28%,#28386e 0%,#1a244a 48%,#0d1430 100%);color:#fff;}
+.scene.ivory{background:radial-gradient(120% 90% at 50% 0%,#fbf7ec 0%,var(--ivory) 55%,#efe7d2 100%);color:var(--ink);}
+.scene.dark .glow{position:absolute;width:52vw;height:52vw;border-radius:50%;left:50%;top:48%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(197,163,90,.30),rgba(197,163,90,0) 62%);pointer-events:none;animation:breathe 6s ease-in-out infinite;}
+@keyframes breathe{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+[data-anim]{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.4,0,.2,1),transform 1s cubic-bezier(.22,.61,.36,1);}
+.scene.on [data-anim]{opacity:1;transform:translateY(0);}
+.scene.on [data-anim="1"]{transition-delay:.12s}.scene.on [data-anim="2"]{transition-delay:.34s}
+.scene.on [data-anim="3"]{transition-delay:.56s}.scene.on [data-anim="4"]{transition-delay:.78s}
+.kick{font-size:1.7vw;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.5vw;}
+.kick.d{color:#d9c28b;}
+h1.big{font-family:var(--serif);font-weight:400;font-size:4.2vw;line-height:1.05;letter-spacing:.01em;color:var(--navy);}
+.scene.dark h1.big{color:#fff;}
+.sub{font-size:1.35vw;color:var(--ink2);max-width:62%;line-height:1.55;margin-top:1vw;}
+.scene.dark .sub{color:#c9d0e8;}
+.lema{font-family:var(--serif);font-style:italic;font-size:1.9vw;color:var(--gold);}
+.brasao{filter:drop-shadow(0 10px 30px rgba(0,0,0,.45));animation:float 6s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.row{display:flex;gap:2vw;align-items:stretch;justify-content:center;width:86%;}
+/* cartões de cota */
+.tier{background:#fff;border:1px solid var(--line);border-radius:1.2vw;padding:1.8vw 1.7vw;width:25vw;text-align:left;
+  box-shadow:0 1vw 2.6vw rgba(40,30,10,.1);position:relative;display:flex;flex-direction:column;}
+.tier.ouro{border:2px solid var(--gold);box-shadow:0 1.4vw 3.4vw rgba(197,163,90,.22);}
+.tier.prata{border:2px solid #c3cad2;box-shadow:0 1.4vw 3.4vw rgba(120,130,140,.18);}
+.tier .tn{font-family:var(--serif);font-size:1.7vw;color:var(--navy);display:flex;align-items:center;gap:.6vw;}
+.tier .tn .dot{width:1vw;height:1vw;border-radius:50%;}
+.tier.ouro .dot{background:linear-gradient(140deg,#e7c572,var(--gold2));}
+.tier.prata .dot{background:linear-gradient(140deg,#dfe4e9,#aab3bd);}
+.tier .tp{font-family:var(--serif);font-size:2.3vw;color:var(--navy);margin:.2vw 0 .2vw;}
+.tier .tp small{font-size:1vw;color:var(--ink2);font-family:var(--ui);}
+.tier ul{list-style:none;margin:.8vw 0 0;display:grid;gap:.55vw;}
+.tier li{display:flex;align-items:flex-start;gap:.6vw;font-size:1.02vw;color:var(--ink2);line-height:1.4;}
+.tier li svg{width:1.1vw;height:1.1vw;color:var(--gold2);flex:none;margin-top:.15vw;}
+.tier .isento{margin-top:1vw;display:inline-flex;align-items:center;gap:.4vw;align-self:flex-start;font-size:.9vw;color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;border-radius:999px;padding:.4vw 1vw;}
+/* cartão de membro (representante) */
+.mc{position:relative;width:17vw;background:linear-gradient(160deg,#243161,#161f3f);color:#f3ecd9;border:2px solid var(--gcard);border-radius:1.2vw;
+  padding:1.5vw 1.3vw;box-shadow:0 2vw 5vw rgba(10,12,30,.45);display:flex;flex-direction:column;align-items:center;gap:.4vw;text-align:center;}
+.mc-med{width:6vw;height:6vw;border-radius:50%;background:radial-gradient(circle,#faf6ea,#f1ead6);display:flex;align-items:center;justify-content:center;border:2px solid var(--gcard);overflow:hidden;}
+.mc-med img{width:4.6vw;}
+.mc-conf{font-size:.62vw;letter-spacing:.24em;text-transform:uppercase;color:var(--gcard);}
+.mc-grau{font-size:.82vw;letter-spacing:.34em;font-weight:bold;color:var(--gcard);}
+.mc-nome{font-family:var(--serif);font-size:1.5vw;color:#f3ecd9;}
+/* placas */
+.plaques{display:flex;gap:1.4vw;justify-content:center;}
+.plaque{width:12vw;background:#fff;border:1px solid var(--line);border-radius:1vw;padding:1.3vw;text-align:center;box-shadow:0 1vw 2.4vw rgba(40,30,10,.1);display:flex;flex-direction:column;align-items:center;gap:.4vw;}
+.plaque .pm{width:3.4vw;height:3.4vw;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);color:#3a2f14;font-size:1.3vw;}
+.pm.o{background:linear-gradient(140deg,#f0d896,var(--gold));} .pm.p{background:linear-gradient(140deg,#e7ebef,#b7c0ca);} .pm.b{background:linear-gradient(140deg,#e6c3a2,#c08a5f);}
+.plaque b{font-family:var(--serif);color:var(--navy);font-size:1.25vw;font-weight:400;}
+.plaque span{font-size:.82vw;color:var(--ink2);}
+/* calendário */
+.cal{display:grid;grid-template-columns:1fr 1fr;gap:1vw 2.2vw;width:76%;text-align:left;margin-top:.5vw;}
+.cal .ev{display:flex;gap:.9vw;align-items:flex-start;}
+.cal .ev .n{flex:none;width:2.2vw;height:2.2vw;border-radius:50%;background:rgba(197,163,90,.18);color:#e4cd97;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1vw;border:1px solid rgba(197,163,90,.5);}
+.cal .ev b{color:#fff;font-family:var(--serif);font-weight:400;font-size:1.25vw;}
+.cal .ev p{color:#c9d0e8;font-size:.92vw;line-height:1.4;margin-top:.15vw;}
+.chips{display:flex;gap:1vw;justify-content:center;flex-wrap:wrap;}
+.chip{display:inline-flex;align-items:center;gap:.5vw;background:#fff;border:1px solid var(--line);border-radius:999px;padding:.6vw 1.2vw;font-size:1.02vw;color:var(--navy);box-shadow:0 .5vw 1.2vw rgba(40,30,10,.06);}
+.chip svg{width:1.1vw;height:1.1vw;color:var(--gold2);}
+#sub{position:absolute;left:0;right:0;bottom:4%;text-align:center;padding:0 10%;pointer-events:none;z-index:40;}
+#sub span{font-size:1.4vw;line-height:1.4;font-weight:500;transition:opacity .5s;}
+body.onDark #sub span{color:#f3ecd9;text-shadow:0 2px 14px rgba(0,0,0,.55);}
+body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
+#ctl{position:absolute;left:0;right:0;bottom:0;z-index:55;display:flex;align-items:center;gap:1.1vw;padding:.9vw 1.6vw;background:linear-gradient(0deg,rgba(8,10,20,.6),rgba(8,10,20,0));transition:opacity .4s;}
+#ctl.hide{opacity:0;pointer-events:none;}
+#ctl button,#ctl a{background:none;border:none;color:#fff;cursor:pointer;font-size:1.5vw;line-height:1;text-decoration:none;display:flex;align-items:center;opacity:.92;}
+#ctl .t{color:#e9e4d6;font-size:.95vw;font-variant-numeric:tabular-nums;min-width:3vw;text-align:center;}
+#bar{flex:1;height:.5vw;background:rgba(255,255,255,.22);border-radius:1vw;cursor:pointer;position:relative;}
+#prog{position:absolute;left:0;top:0;bottom:0;background:var(--gold);width:0;border-radius:1vw;}
+#bar .knob{position:absolute;top:50%;width:1.1vw;height:1.1vw;border-radius:50%;background:#fff;transform:translate(-50%,-50%);left:0;}
+#vol{width:7vw;accent-color:var(--gold);cursor:pointer;}
+#start,#end{position:absolute;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8vw;background:radial-gradient(130% 110% at 50% 28%,#28386e 0%,#1a244a 48%,#0d1430 100%);color:#fff;text-align:center;}
+#end{display:none;}
+.btnplay{display:inline-flex;align-items:center;gap:.8vw;background:var(--gold);color:#201a0b;border:none;border-radius:999px;padding:1vw 2.3vw;font-size:1.3vw;font-weight:700;font-family:var(--ui);cursor:pointer;box-shadow:0 1.4vw 3vw rgba(197,163,90,.3);}
+.hint{font-size:1vw;color:#aeb7d6;max-width:50%;line-height:1.6;}
+.startbr{width:11vw;margin-bottom:.6vw;filter:drop-shadow(0 10px 30px rgba(0,0,0,.4));}
+.startk{font-size:1.05vw;letter-spacing:.38em;text-transform:uppercase;color:#d9c28b;font-weight:700;}
+.starth{font-family:var(--serif);font-weight:400;font-size:2.9vw;}
+</style>
+</head>
+<body class="onDark">
+<div id="stage">
+
+  <section class="scene dark" data-scene="0">
+    <div class="glow"></div>
+    <img class="brasao" data-anim="1" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="" style="width:12vw;margin-bottom:1.4vw;">
+    <div class="kick d" data-anim="2">Confraria dos Vinhos de Bordeaux</div>
+    <h1 class="big" data-anim="3" style="font-size:4.4vw;margin:.4vw 0 .5vw;">Commanderie de Bordeaux</h1>
+    <div class="kick d" data-anim="4" style="letter-spacing:.3em;">Programa dos Importadores Embaixadores</div>
+  </section>
+
+  <section class="scene ivory" data-scene="1">
+    <div class="kick" data-anim="1">Importadores Embaixadores</div>
+    <h1 class="big" data-anim="2" style="font-size:3.4vw;">A sua importadora no<br>coração de Bordeaux</h1>
+    <p class="sub" data-anim="3">A sua marca ao lado de quem mais aprecia e consome os grandes vinhos de Bordeaux — os Comendadores da confraria, em todo o Brasil.</p>
+  </section>
+
+  <section class="scene ivory" data-scene="2">
+    <div class="kick" data-anim="1">Duas formas de se associar</div>
+    <div class="row" data-anim="2" style="margin-top:1vw;">
+      <div class="tier ouro">
+        <div class="tn"><span class="dot"></span>Ouro</div>
+        <div class="tp">R$ 10.000<small> / ano</small></div>
+        <ul>
+          <li>__CHK__ Indicar <b>3 Comendadores</b> por ano</li>
+          <li>__CHK__ Indicar <b>2 Embaixadas</b> por ano</li>
+          <li>__CHK__ 1 representante entronizado Comendador</li>
+        </ul>
+        <span class="isento">__CHK2__ Anuidade do representante isenta</span>
+      </div>
+      <div class="tier prata">
+        <div class="tn"><span class="dot"></span>Prata</div>
+        <div class="tp">R$ 5.000<small> / ano</small></div>
+        <ul>
+          <li>__CHK__ Indicar <b>1 Comendador</b> por ano</li>
+          <li>__CHK__ Indicar <b>1 Embaixada</b> por ano</li>
+          <li>__CHK__ 1 representante entronizado Comendador</li>
+        </ul>
+        <span class="isento">__CHK2__ Anuidade do representante isenta</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene ivory" data-scene="3">
+    <div class="kick" data-anim="1">O seu representante, Comendador</div>
+    <div class="row" data-anim="2" style="align-items:center;gap:2.6vw;margin-top:.6vw;">
+      <div class="mc">
+        <div class="mc-med"><img src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt=""></div>
+        <div class="mc-conf">Commanderie de Bordeaux</div>
+        <div class="mc-grau">COMENDADOR</div>
+        <div class="mc-nome">Sua Importadora</div>
+      </div>
+      <div style="text-align:left;max-width:30vw;">
+        <div style="font-family:var(--serif);color:var(--navy);font-size:2vw;line-height:1.15;">Um lugar à mesa, para sempre</div>
+        <p class="sub" style="max-width:none;margin-top:.6vw;">O dono ou representante legal é <b>entronizado Comendador</b>, com <b>anuidade isenta</b> — e passa a viver toda a confraria por dentro.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene ivory" data-scene="4">
+    <div class="kick" data-anim="1">Indicar Comendadores & Embaixadas</div>
+    <h1 class="big" data-anim="2" style="font-size:2.6vw;">Você leva nomes à confraria</h1>
+    <div class="chips" data-anim="3" style="margin-top:1.2vw;">
+      <span class="chip">__USERS__ Comendador extra · R$ 1.200</span>
+      <span class="chip">__PLAQ__ Embaixada · R$ 2.000 / ano</span>
+    </div>
+    <p class="sub" data-anim="4" style="margin-top:1vw;">Cada Comendador indicado paga a sua anuidade de R$ 1.200/ano. As cotas do plano já incluem as indicações do ano.</p>
+  </section>
+
+  <section class="scene ivory" data-scene="5">
+    <div class="kick" data-anim="1">Embaixadas · Placas de Bordeaux</div>
+    <h1 class="big" data-anim="2" style="font-size:2.4vw;margin-bottom:1.2vw;">Restaurantes com carta de Bordeaux</h1>
+    <div class="plaques" data-anim="3">
+      <div class="plaque"><div class="pm o">Au</div><b>Ouro</b><span>30+ rótulos</span></div>
+      <div class="plaque"><div class="pm p">Ag</div><b>Prata</b><span>20+ rótulos</span></div>
+      <div class="plaque"><div class="pm b">Br</div><b>Bronze</b><span>10+ rótulos</span></div>
+    </div>
+  </section>
+
+  <section class="scene dark" data-scene="6">
+    <div class="glow"></div>
+    <div class="kick d" data-anim="1">Quatro eventos exclusivos por ano</div>
+    <div class="cal" data-anim="2">
+      <div class="ev"><span class="n">1</span><div><b>Entronização de Primavera</b><p>Entronização dos novos Comendadores indicados.</p></div></div>
+      <div class="ev"><span class="n">2</span><div><b>Entronização de Outono</b><p>O indicado escolhe em qual das duas será entronizado.</p></div></div>
+      <div class="ev"><span class="n">3</span><div><b>Cerimônia das Embaixadas</b><p>Entrega das Placas Ouro, Prata e Bronze aos restaurantes.</p></div></div>
+      <div class="ev"><span class="n">4</span><div><b>Jantar dos Importadores</b><p>Entre a Wine Paris e a Vinitaly. Única ocasião em que se entronizam os donos de importadoras.</p></div></div>
+    </div>
+    <p class="sub" data-anim="3" style="max-width:74%;margin-top:1.4vw;">Exclusivos dos importadores — e, como Comendador, o seu representante participa de <b>toda a agenda da confraria</b>.</p>
+  </section>
+
+  <section class="scene ivory" data-scene="7">
+    <div class="kick" data-anim="1">Vitrine para a sua marca</div>
+    <div class="row" data-anim="2" style="margin-top:1vw;">
+      <div class="tier" style="width:20vw;"><div class="tn" style="font-size:1.35vw;">Exposição</div><ul style="margin-top:.6vw;"><li>__CHK__ Logo nas comunicações e eventos</li><li>__CHK__ Perfil e portfólio no site</li><li>__CHK__ Prioridade no Road Show</li></ul></div>
+      <div class="tier" style="width:20vw;"><div class="tn" style="font-size:1.35vw;">Relacionamento</div><ul style="margin-top:.6vw;"><li>__CHK__ Benefícios aos Comendadores</li><li>__CHK__ Restaurantes parceiros (rolha grátis)</li><li>__CHK__ Voto e assento na reunião anual</li></ul></div>
+    </div>
+  </section>
+
+  <section class="scene dark" data-scene="8">
+    <div class="glow"></div>
+    <div class="kick d" data-anim="1">Faça parte</div>
+    <h1 class="big" data-anim="2" style="font-size:3vw;">Associe a sua importadora</h1>
+    <div class="chips" data-anim="3" style="margin-top:1.3vw;">
+      <span class="chip" style="background:rgba(255,255,255,.08);color:#f3ecd9;border-color:rgba(197,163,90,.4);">Ouro · R$ 10.000/ano</span>
+      <span class="chip" style="background:rgba(255,255,255,.08);color:#f3ecd9;border-color:rgba(197,163,90,.4);">Prata · R$ 5.000/ano</span>
+    </div>
+  </section>
+
+  <section class="scene dark" data-scene="9">
+    <div class="glow"></div>
+    <img class="brasao" data-anim="1" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="" style="width:10vw;margin-bottom:1.2vw;">
+    <h1 class="big" data-anim="2" style="font-size:3vw;">Commanderie de Bordeaux</h1>
+    <div class="kick d" data-anim="2" style="letter-spacing:.6em;">do Brasil</div>
+    <div data-anim="3" style="margin-top:1vw;font-size:1.2vw;letter-spacing:.14em;color:#e4cd97;">commanderiedebordeaux.com.br</div>
+    <div class="lema" data-anim="3" style="margin-top:.8vw;font-size:1.9vw;">« Bordeaux, toujours Bordeaux »</div>
+  </section>
+
+  <div id="sub"><span id="subtxt"></span></div>
+  <audio id="aud" src="narracao.m4a?v=1" preload="auto"></audio>
+  <div id="ctl" class="hide">
+    <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
+    <span class="t" id="tcur">0:00</span>
+    <div id="bar" onclick="seekBar(event)"><div id="prog"></div><div class="knob" id="knob"></div></div>
+    <span class="t" id="tdur">0:00</span>
+    <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
+    <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
+    <a id="dl" href="narracao.m4a?v=1" download="Commanderie-Importadores-audio.m4a" title="Baixar o áudio">⤓</a>
+  </div>
+
+  <div id="start">
+    <img class="startbr" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="">
+    <div class="startk">Commanderie de Bordeaux do Brasil</div>
+    <div class="starth">Importadores Embaixadores</div>
+    <button class="btnplay" onclick="play()">▶ Reproduzir</button>
+    <div class="hint">Com narração e música.</div>
+  </div>
+  <div id="end">
+    <img class="startbr" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="" style="width:9vw;">
+    <div class="lema" style="color:#e4cd97;font-size:1.8vw;">« Bordeaux, toujours Bordeaux »</div>
+    <button class="btnplay" onclick="play()">↺ Reproduzir de novo</button>
+  </div>
+</div>
+
+<script>
+var S='stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"';
+var IC={
+ CHK:'<svg viewBox="0 0 24 24" '+S+'><path d="M20 6L9 17l-5-5"/></svg>',
+ USERS:'<svg viewBox="0 0 24 24" '+S+'><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.2 2.7-4.8 6-4.8s6 1.6 6 4.8"/><path d="M16 5.2A3 3 0 0 1 16 11"/></svg>',
+ PLAQ:'<svg viewBox="0 0 24 24" '+S+'><path d="M5 21V5l7-2v18M12 8l7 2v11M3 21h18"/></svg>'
+};
+function sz(svg,px){return svg.replace('<svg ','<svg width="'+px+'" height="'+px+'" ');}
+(function(){
+  var map={'__CHK__':sz(IC.CHK,15),'__CHK2__':sz(IC.CHK,14),'__USERS__':sz(IC.USERS,16),'__PLAQ__':sz(IC.PLAQ,16)};
+  var h=document.getElementById('stage').innerHTML;
+  for(var k in map){h=h.split(k).join(map[k]);}
+  document.getElementById('stage').innerHTML=h;
+})();
+
+var scenes=[].slice.call(document.querySelectorAll('.scene'));
+var CUES=[
+ {t:0,  dark:true,  s:"A Commanderie de Bordeaux do Brasil apresenta o Programa dos Importadores Embaixadores."},
+ {t:5.18,  dark:false, s:"A sua importadora ao lado de quem mais aprecia os grandes vinhos de Bordeaux."},
+ {t:14.39, dark:false, s:"Duas cotas de associação: Ouro, R$ 10.000/ano, e Prata, R$ 5.000/ano."},
+ {t:21.78, dark:false, s:"Um representante da sua importadora é entronizado Comendador, com anuidade isenta."},
+ {t:28.05, dark:false, s:"Você indica Comendadores e Embaixadas à confraria."},
+ {t:39.39, dark:false, s:"Embaixadas: restaurantes com carta de Bordeaux, com Placa Ouro, Prata ou Bronze."},
+ {t:45.9, dark:true,  s:"Quatro eventos exclusivos por ano — além de toda a agenda da confraria."},
+ {t:66.41, dark:false, s:"Vitrine para a sua marca: exposição e relacionamento."},
+ {t:75.01, dark:true,  s:"Associe a sua importadora à Commanderie de Bordeaux."},
+ {t:80.85, dark:true,  s:"Bordeaux, toujours Bordeaux."}
+];
+var END=89.9;
+var raf=null,lastIdx=-1;
+function $(id){return document.getElementById(id);}function A(){return $('aud');}
+function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,x=s%60;return m+':'+(x<10?'0':'')+x;}
+function showScene(i){
+  scenes.forEach(function(s,idx){s.classList.toggle('on',idx===i);});
+  document.body.classList.toggle('onDark',!!CUES[i].dark);document.body.classList.toggle('onLight',!CUES[i].dark);
+  var st=$('subtxt');st.style.opacity=0;setTimeout(function(){st.textContent=CUES[i].s;st.style.opacity=1;},200);
+}
+function curScene(ct){var idx=0;for(var i=0;i<CUES.length;i++){if(ct>=CUES[i].t)idx=i;}return idx;}
+function paint(ct){var p=Math.min(100,ct/END*100);$('prog').style.width=p+'%';$('knob').style.left=p+'%';$('tcur').textContent=fmt(ct);}
+function tick(){var a=A(),ct=a.currentTime;paint(ct);var idx=curScene(ct);if(idx!==lastIdx){lastIdx=idx;showScene(idx);}if(a.ended||ct>=END-0.05){finish();return;}raf=requestAnimationFrame(tick);}
+function play(){$('start').style.display='none';$('end').style.display='none';lastIdx=-1;var a=A();try{a.currentTime=0;}catch(e){}try{a.play();}catch(e){}setPP(true);if(raf)cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);armAutoHide();}
+function togglePlay(){var a=A();if($('end').style.display==='flex'){play();return;}if(a.paused){a.play();setPP(true);if(!raf)raf=requestAnimationFrame(tick);armAutoHide();}else{a.pause();setPP(false);if(raf){cancelAnimationFrame(raf);raf=null;}armAutoHide();}}
+function setPP(p){$('pp').textContent=p?'⏸':'▶';}
+function seekBar(ev){var r=$('bar').getBoundingClientRect();var frac=Math.min(1,Math.max(0,(ev.clientX-r.left)/r.width));var a=A();$('end').style.display='none';try{a.currentTime=frac*END;}catch(e){}lastIdx=-1;var idx=curScene(a.currentTime);lastIdx=idx;showScene(idx);paint(a.currentTime);if(!a.paused&&!raf)raf=requestAnimationFrame(tick);}
+function setVol(v){var a=A();a.muted=false;a.volume=+v;$('mute').textContent=(+v===0?'🔇':'🔊');}
+function toggleMute(){var a=A();a.muted=!a.muted;$('mute').textContent=a.muted?'🔇':'🔊';}
+function finish(){if(raf){cancelAnimationFrame(raf);raf=null;}var a=A();try{a.pause();}catch(e){}setPP(false);scenes.forEach(function(s){s.classList.remove('on');});$('subtxt').textContent='';$('prog').style.width='100%';$('knob').style.left='100%';$('end').style.display='flex';lastIdx=-1;}
+var hideTimer=null;
+function armAutoHide(){if(hideTimer)clearTimeout(hideTimer);$('ctl').classList.remove('hide');hideTimer=setTimeout(function(){if(!A().paused)$('ctl').classList.add('hide');},2800);}
+document.addEventListener('mousemove',armAutoHide);
+A().addEventListener('loadedmetadata',function(){$('tdur').textContent=fmt(Math.min(this.duration||END,END));});
+document.addEventListener('keydown',function(e){if(e.code==='Space'){e.preventDefault();if($('start').style.display!=='none')play();else togglePlay();}});
+</script>
+</body>
+</html>

@@ -351,7 +351,7 @@ body.pfs{height:100dvh;}
 
   <div id="sub"><span id="subtxt"></span></div>
   <div id="fsub"><span></span></div>
-  <audio id="aud" src="narracao.m4a?v=7" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=8" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
     <span class="t" id="tcur">0:00</span>
@@ -361,7 +361,7 @@ body.pfs{height:100dvh;}
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
     <button id="ccb" onclick="toggleSub()" title="Sous-titres en français">CC</button>
     <button id="fsb" onclick="toggleFS()" title="Tela inteira"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
-    <a id="dl" href="narracao.m4a?v=7" download="Commanderie-Importadores-audio.m4a" title="Baixar o áudio">⤓</a>
+    <a id="dl" href="narracao.m4a?v=8" download="Commanderie-Importadores-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
 
   <div id="start">
@@ -409,23 +409,23 @@ function sz(svg,px){return svg.replace('<svg ','<svg width="'+px+'" height="'+px
 
 var scenes=[].slice.call(document.querySelectorAll('.scene'));
 var CUES=[
- {t:0.0, dark:true, s:"La Commanderie de Bordeaux du Brésil présente le Programme des Importateurs Officiels."},
+ {t:0.00, dark:true, s:"La Commanderie de Bordeaux du Brésil présente le Programme des Importateurs Officiels."},
  {t:4.96, dark:false, s:"Votre importateur aux côtés de ceux qui apprécient le plus les grands vins de Bordeaux."},
- {t:11.6, dark:false, s:"Deux façons de s'associer : Or et Argent."},
+ {t:11.60, dark:false, s:"Deux façons de s'associer : Or et Argent."},
  {t:18.98, dark:false, s:"Votre représentant est intronisé Commandeur, cotisation offerte."},
  {t:25.48, dark:false, s:"Commandeur parrainé : 1re année incluse, puis 200 €/an. Ambassades : sans frais, validation annuelle."},
  {t:39.26, dark:false, s:"Ambassades : restaurants avec une carte de Bordeaux — Plaque Or, Argent ou Bronze."},
  {t:45.58, dark:true, s:"Quatre événements exclusifs par an — les vins des membres y sont servis (6 bouteilles/événement)."},
- {t:60.7, dark:true, s:"Activez votre réseau : la base des Commandeurs pour inviter ou vendre dîners, dégustations et salons."},
+ {t:60.70, dark:true, s:"Activez votre réseau : la base des Commandeurs pour inviter ou vendre dîners, dégustations et salons."},
  {t:72.18, dark:false, s:"La Boutique Bordeaux relie votre portefeuille aux Commandeurs — sans commission pour la Commanderie."},
  {t:84.14, dark:false, s:"Votre marque mise en avant : site, événements et supports de la Commanderie."},
- {t:89.8, dark:true, s:"Séminaire annuel Ideal Consulting : le marché de Bordeaux au Brésil et dans le monde."},
- {t:102.74, dark:false, s:"Et bien plus : dégustations, Road Show et tous les avantages de la confrérie."},
- {t:110.88, dark:false, s:"Espace Importateur : parrainages, cotisations et coordonnées toujours à jour."},
- {t:119.74, dark:true, s:"Associez votre importateur : Or ou Argent · facturation en novembre."},
- {t:128.9, dark:true, s:"Bordeaux, toujours Bordeaux."},
+ {t:94.89, dark:true, s:"Séminaire annuel Ideal Consulting : le marché de Bordeaux au Brésil et dans le monde."},
+ {t:107.83, dark:false, s:"Et bien plus : dégustations, Road Show et tous les avantages de la confrérie."},
+ {t:115.97, dark:false, s:"Espace Importateur : parrainages, cotisations et coordonnées toujours à jour."},
+ {t:124.83, dark:true, s:"Associez votre importateur : Or ou Argent · facturation en novembre."},
+ {t:133.99, dark:true, s:"Bordeaux, toujours Bordeaux."},
 ];
-var END=138.7;
+var END=143.8;
 var raf=null,lastIdx=-1;
 function $(id){return document.getElementById(id);}function A(){return $('aud');}
 function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,x=s%60;return m+':'+(x<10?'0':'')+x;}
@@ -458,7 +458,7 @@ function exitFS(){try{if(document.exitFullscreen)document.exitFullscreen();else 
 function toggleFS(){if(fsEl()||document.body.classList.contains('pfs'))exitFS();else enterFS();}
 document.addEventListener('keydown',function(e){if(e.key==='f'||e.key==='F'){toggleFS();}});
 
-var FSUB=[[0, 2.96, "La Commanderie de Bordeaux du Brésil présente"], [2.92, 5.2, "le programme des Importateurs Officiels."], [5.16, 8.84, "Ici, votre maison est aux côtés de ceux qui apprécient"], [8.8, 11.84, "et consomment le plus les grands vins de Bordeaux."], [11.8, 14.97, "Deux façons de s’associer : la formule Or"], [14.93, 19.22, "et la formule Argent, chacune avec ses parrainages et avantages."], [19.18, 22.74, "Dans les deux, un représentant de votre maison est intronisé"], [22.7, 25.72, "Commandeur, avec cotisation offerte."], [25.68, 28.76, "Vous parrainez des Commandeurs et des Ambassades."], [28.72, 32.54, "La première année du Commandeur parrainé est incluse."], [32.5, 35.74, "À partir de la deuxième année, 200 euros par an."], [35.7, 39.5, "Les Ambassades sont sans frais, avec une simple validation annuelle."], [39.46, 42.43, "Les Ambassades sont des restaurants avec une carte de Bordeaux,"], [42.39, 45.82, "distingués par la plaque Or, Argent ou Bronze."], [45.78, 48.5, "Quatre événements exclusifs par an :"], [48.46, 51.72, "deux intronisations, la cérémonie des Ambassades"], [51.68, 53.54, "et le dîner des importateurs."], [53.5, 56.34, "On y sert les vins des maisons associées."], [56.3, 60.92, "Chaque importateur apporte six bouteilles de Bordeaux par événement."], [60.88, 62.96, "Et le réseau travaille pour vous."], [62.92, 66.6, "Utilisez la base des Commandeurs pour inviter ou vendre un dîner,"], [66.56, 68.88, "une dégustation, un salon,"], [68.84, 72.42, "toute activité autour des vins et des producteurs de Bordeaux."], [72.38, 76.0, "La Boutique Bordeaux réunit le portefeuille exclusif des associés"], [75.96, 79.76, "et relie le Commandeur directement à vous."], [79.72, 82.63, "Et la Commanderie ne prend aucune commission :"], [82.59, 84.38, "c’est un avantage des Importateurs Officiels."], [84.34, 87.77, "Votre marque est mise en avant sur le site de la Commanderie,"], [87.73, 90.0, "sous les yeux de toute la confrérie."], [89.96, 93.02, "Chaque année, le Séminaire Ideal Consulting"], [92.98, 94.56, "réunit les importateurs officiels"], [94.52, 97.94, "pour analyser le marché de Bordeaux au Brésil et dans le monde,"], [97.9, 101.01, "avec le premier cabinet d’audit de l’importation"], [100.97, 102.98, "et de la distribution du pays."], [102.94, 104.4, "Et bien plus encore !"], [104.36, 107.55, "Des dégustations avec vos producteurs, le Road Show"], [107.51, 109.54, "et tous les avantages de la confrérie,"], [109.5, 111.12, "réunis en un seul programme."], [111.08, 114.18, "Et vous gérez tout dans l’Espace Importateur :"], [114.14, 117.45, "vos parrainages, le paiement des cotisations"], [117.41, 120.02, "et vos coordonnées toujours à jour."], [119.98, 124.04, "Associez votre maison : formule Or, 1 800 euros,"], [124.0, 126.62, "ou Argent, 900 euros par an,"], [126.58, 128.84, "avec facturation toujours au mois de novembre."], [128.8, 131.54, "Commanderie de Bordeaux du Brésil."], [131.5, 134.96, "Rendez-vous sur commanderiedebordeaux.com.br"], [134.92, 138.1, "Bordeaux, toujours Bordeaux."]];
+var FSUB=[[0, 2.96, "La Commanderie de Bordeaux du Brésil présente"], [2.92, 5.2, "le programme des Importateurs Officiels."], [5.16, 8.84, "Ici, votre maison est aux côtés de ceux qui apprécient"], [8.8, 11.84, "et consomment le plus les grands vins de Bordeaux."], [11.8, 14.97, "Deux façons de s’associer : la formule Or"], [14.93, 19.22, "et la formule Argent, chacune avec ses parrainages et avantages."], [19.18, 22.74, "Dans les deux, un représentant de votre maison est intronisé"], [22.7, 25.72, "Commandeur, avec cotisation offerte."], [25.68, 28.76, "Vous parrainez des Commandeurs et des Ambassades."], [28.72, 32.54, "La première année du Commandeur parrainé est incluse."], [32.5, 35.74, "À partir de la deuxième année, 200 euros par an."], [35.7, 39.5, "Les Ambassades sont sans frais, avec une simple validation annuelle."], [39.46, 42.43, "Les Ambassades sont des restaurants avec une carte de Bordeaux,"], [42.39, 45.82, "distingués par la plaque Or, Argent ou Bronze."], [45.78, 48.5, "Quatre événements exclusifs par an :"], [48.46, 51.72, "deux intronisations, la cérémonie des Ambassades"], [51.68, 53.54, "et le dîner des importateurs."], [53.5, 56.34, "On y sert les vins des maisons associées."], [56.3, 60.92, "Chaque importateur apporte six bouteilles de Bordeaux par événement."], [60.88, 62.96, "Et le réseau travaille pour vous."], [62.92, 66.6, "Utilisez la base des Commandeurs pour inviter ou vendre un dîner,"], [66.56, 68.88, "une dégustation, un salon,"], [68.84, 72.42, "toute activité autour des vins et des producteurs de Bordeaux."], [72.38, 76.0, "La Boutique Bordeaux réunit le portefeuille exclusif des associés"], [75.96, 79.76, "et relie le Commandeur directement à vous."], [79.72, 82.63, "Et la Commanderie ne prend aucune commission :"], [82.59, 84.38, "c’est un avantage des Importateurs Officiels."], [84.67, 87.82, "Votre marque est mise en avant sur le site de la Commanderie,"], [87.87, 92.42, "dans tous nos événements et sur tous les supports de la confrérie,"], [92.47, 95.12, "sous les yeux de tous les Commandeurs."], [95.05, 98.11, "Chaque année, le Séminaire Ideal Consulting"], [98.07, 99.65, "réunit les importateurs officiels"], [99.61, 103.03, "pour analyser le marché de Bordeaux au Brésil et dans le monde,"], [102.99, 106.1, "avec le premier cabinet d’audit de l’importation"], [106.06, 108.07, "et de la distribution du pays."], [108.03, 109.49, "Et bien plus encore !"], [109.45, 112.64, "Des dégustations avec vos producteurs, le Road Show"], [112.6, 114.63, "et tous les avantages de la confrérie,"], [114.59, 116.21, "réunis en un seul programme."], [116.17, 119.27, "Et vous gérez tout dans l’Espace Importateur :"], [119.23, 122.54, "vos parrainages, le paiement des cotisations"], [122.5, 125.11, "et vos coordonnées toujours à jour."], [125.07, 129.13, "Associez votre maison : formule Or, 1 800 euros,"], [129.09, 131.71, "ou Argent, 900 euros par an,"], [131.67, 133.93, "avec facturation toujours au mois de novembre."], [133.89, 136.63, "Commanderie de Bordeaux du Brésil."], [136.59, 140.05, "Rendez-vous sur commanderiedebordeaux.com.br"], [140.01, 143.19, "Bordeaux, toujours Bordeaux."]];
 var fsubOn=true;try{if(localStorage.getItem('cdbFsub')==='0')fsubOn=false;}catch(e){}
 function fsubTick(){var el=document.getElementById('fsub'),a=document.getElementById('aud');if(!el||!a)return;var t=a.currentTime,txt='';if(fsubOn&&t>0){for(var i=0;i<FSUB.length;i++){if(t>=FSUB[i][0]&&t<FSUB[i][1]){txt=FSUB[i][2];break;}}}var en=document.getElementById('end');if(en&&en.style.display==='flex')txt='';if(el.getAttribute('data-t')!==txt){el.setAttribute('data-t',txt);el.firstChild.textContent=txt;el.classList.toggle('on',!!txt);}}
 setInterval(fsubTick,60);

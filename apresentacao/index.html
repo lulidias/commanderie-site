@@ -2,7 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Commanderie de Bordeaux — Painel do Comendador</title>
 <style>
 :root{
@@ -118,6 +120,15 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
 #ctl{position:absolute;left:0;right:0;bottom:0;z-index:55;display:flex;align-items:center;gap:1.1vw;padding:.9vw 1.6vw;
   background:linear-gradient(0deg,rgba(8,10,20,.6),rgba(8,10,20,0));transition:opacity .4s;font-family:var(--ui);}
 #ctl.hide{opacity:0;pointer-events:none;}
+.startbtns{display:flex;gap:1vw;flex-wrap:wrap;justify-content:center;}
+.btnplay.ghost{background:transparent;color:#f3ecd9;border:1px solid rgba(228,205,151,.55);box-shadow:none;}
+#rot{position:fixed;inset:0;z-index:90;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(9,14,38,.94);color:#f3ecd9;text-align:center;padding:24px;font-family:var(--ui);}
+#rot b{font-family:var(--serif);font-weight:400;font-size:26px;}
+#rot span{font-size:15px;color:#c9d0e8;max-width:280px;line-height:1.5;}
+#rot small{font-size:12px;color:#8f98b8;margin-top:8px;}
+@media (orientation:portrait) and (max-width:900px){body.pfs #rot{display:flex;}}
+body.pfs{height:100dvh;}
+@media (max-width:900px){.btnplay{font-size:15px;padding:12px 20px;}#ctl button,#ctl a{font-size:20px;}#ctl .t{font-size:12px;}}
 #ctl button,#ctl a{background:none;border:none;color:#fff;cursor:pointer;font-size:1.5vw;line-height:1;text-decoration:none;display:flex;align-items:center;opacity:.92;}
 #ctl button:hover,#ctl a:hover{opacity:1;}
 #ctl .t{color:#e9e4d6;font-size:.95vw;font-variant-numeric:tabular-nums;min-width:3vw;text-align:center;}
@@ -328,6 +339,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <span class="t" id="tdur">1:30</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
+    <button id="fsb" onclick="toggleFS()" title="Tela inteira"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <a id="dl" href="narracao.m4a?v=10" download="Commanderie-Painel-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
 
@@ -335,7 +347,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <img class="startbr" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="">
     <div class="startk">Commanderie de Bordeaux do Brasil</div>
     <div class="starth">Painel do Comendador</div>
-    <button class="btnplay" onclick="play()">▶ Reproduzir</button>
+    <div class="startbtns"><button class="btnplay" onclick="enterFS();play()"><svg width="1.1em" height="1.1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg> Assistir em tela inteira</button><button class="btnplay ghost" onclick="play()">▶ Reproduzir aqui</button></div>
     <div class="hint">Com narração em português, música e legendas em francês.</div>
   </div>
   <div id="end">
@@ -343,6 +355,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <div class="lema" style="color:#e4cd97;font-size:1.8vw;">« Bordeaux, toujours Bordeaux »</div>
     <button class="btnplay" onclick="play()">↺ Reproduzir de novo</button>
   </div>
+  <div id="rot" onclick="this.style.display='none'"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#e4cd97" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M3 8a9 9 0 0 1 4-5M21 16a9 9 0 0 1-4 5"/></svg><b>Gire o celular</b><span>Na horizontal o vídeo ocupa a tela inteira.</span><small>Toque para fechar</small></div>
 </div>
 
 <script>
@@ -458,6 +471,14 @@ function armAutoHide(){ if(hideTimer)clearTimeout(hideTimer); $('ctl').classList
 document.addEventListener('mousemove',armAutoHide);
 A().addEventListener('loadedmetadata',function(){ $('tdur').textContent=fmt(Math.min(this.duration||END,END)); });
 document.addEventListener('keydown',function(e){ if(e.code==='Space'){ e.preventDefault(); if($('start').style.display!=='none')play(); else togglePlay(); } });
+
+function fsEl(){return document.fullscreenElement||document.webkitFullscreenElement;}
+function lockL(){try{if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(function(){});}catch(e){}}
+function pseudoFS(){document.body.classList.add('pfs');var r=document.getElementById('rot');if(r)r.style.display='';try{window.scrollTo(0,1);}catch(e){}}
+function enterFS(){var d=document.documentElement;try{if(d.requestFullscreen){var pr=d.requestFullscreen({navigationUI:'hide'});if(pr&&pr.then)pr.then(lockL).catch(pseudoFS);else lockL();}else if(d.webkitRequestFullscreen){d.webkitRequestFullscreen();lockL();}else pseudoFS();}catch(e){pseudoFS();}}
+function exitFS(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();}catch(e){}document.body.classList.remove('pfs');}
+function toggleFS(){if(fsEl()||document.body.classList.contains('pfs'))exitFS();else enterFS();}
+document.addEventListener('keydown',function(e){if(e.key==='f'||e.key==='F'){toggleFS();}});
 </script>
 </body>
 </html>

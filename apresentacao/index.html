@@ -321,7 +321,7 @@ body.pfs{height:100dvh;}
 
   <div id="sub"><span id="subtxt"></span></div>
   <div id="fsub"><span></span></div>
-  <audio id="aud" src="narracao.m4a?v=12" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=13" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
     <span class="t" id="tcur">0:00</span>
@@ -331,7 +331,7 @@ body.pfs{height:100dvh;}
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
     <button id="ccb" onclick="toggleSub()" title="Sous-titres en français">CC</button>
     <button id="fsb" onclick="toggleFS()" title="Tela inteira"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
-    <a id="dl" href="narracao.m4a?v=12" download="Commanderie-Painel-audio.m4a" title="Baixar o áudio">⤓</a>
+    <a id="dl" href="narracao.m4a?v=13" download="Commanderie-Painel-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
 
   <div id="start">
@@ -391,15 +391,15 @@ var CUES=[
  {t:7.68,  dark:false, fr:"Voici l’Espace du Commandeur — un espace privé, réservé aux Commandeurs de la Commanderie de Bordeaux du Brésil."},
  {t:15.64, dark:false, fr:"Votre carte de membre, toujours avec vous — sur Apple Wallet ou Google Wallet, avec votre QR d’accès."},
  {t:22.36, dark:false, fr:"Votre profil complet, avec photo et coordonnées toujours à jour — votre identité au sein de la confrérie."},
- {t:29.54, dark:false, fr:"Confirmez votre présence aux dîners, événements et voyages en quelques secondes : l’invitation, le paiement, et qui a déjà confirmé."},
- {t:38.42, dark:false, fr:"Proposez de nouveaux noms au Conseil, et découvrez toute la confrérie dans l’Annuaire des Membres."},
- {t:45.50, dark:false, fr:"Des adresses où manger et boire, l’Académie de Bordeaux, et une recherche qui trouve tout."},
- {t:53.21, dark:false, fr:"Des comptes ouverts à tout Commandeur, les statuts à portée de main, et des avantages exclusifs."},
- {t:68.38, dark:true,  fr:"Et pour le Conseil, un espace de gestion complet : parrainages, finances et améliorations."},
- {t:76.18, dark:false, fr:"C’est une web app : appuyez sur Partager puis « Sur l’écran d’accueil ». En portugais, anglais et français, avec Face ID."},
- {t:87.76, dark:true,  fr:"Commanderie de Bordeaux du Brésil. commanderiedebordeaux.com.br · Bordeaux, toujours Bordeaux."}
+ {t:29.54, dark:false, fr:"Confirmez votre présence aux dîners, événements et voyages en quelques secondes : l’invitation, et qui a déjà confirmé."},
+ {t:37.29, dark:false, fr:"Proposez de nouveaux noms au Conseil, et découvrez toute la confrérie dans l’Annuaire des Membres."},
+ {t:44.37, dark:false, fr:"Des adresses où manger et boire, l’Académie de Bordeaux, et une recherche qui trouve tout."},
+ {t:52.08, dark:false, fr:"Des comptes ouverts à tout Commandeur, les statuts à portée de main, et des avantages exclusifs."},
+ {t:67.25, dark:true,  fr:"Et pour le Conseil, un espace de gestion complet : parrainages, finances et améliorations."},
+ {t:75.05, dark:false, fr:"C’est une web app : appuyez sur Partager puis « Sur l’écran d’accueil ». En portugais, anglais et français, avec Face ID."},
+ {t:86.63, dark:true,  fr:"Commanderie de Bordeaux du Brésil. commanderiedebordeaux.com.br · Bordeaux, toujours Bordeaux."}
 ];
-var END=97.5;
+var END=96.4;
 var raf=null,lastIdx=-1;
 var A=function(){return document.getElementById('aud');};
 function $(id){return document.getElementById(id);}
@@ -471,7 +471,7 @@ function exitFS(){try{if(document.exitFullscreen)document.exitFullscreen();else 
 function toggleFS(){if(fsEl()||document.body.classList.contains('pfs'))exitFS();else enterFS();}
 document.addEventListener('keydown',function(e){if(e.key==='f'||e.key==='F'){toggleFS();}});
 
-var FSUB=[[0, 3.86, "Il existe une confrérie dédiée aux grands vins de Bordeaux."], [3.82, 7.6, "Et elle a désormais un espace à la hauteur de son histoire."], [7.56, 11.56, "Voici l’Espace du Commandeur, un espace privé,"], [11.52, 15.58, "réservé aux Commandeurs de la Commanderie de Bordeaux du Brésil."], [15.54, 18.3, "Votre carte de membre, toujours avec vous,"], [18.26, 22.3, "sur Apple Wallet ou Google Wallet, avec votre QR d’accès."], [22.26, 26.82, "Votre profil complet, avec photo et coordonnées à jour."], [26.78, 29.26, "Votre identité au sein de la confrérie."], [29.22, 32.7, "Confirmez votre présence aux dîners, événements et voyages"], [32.66, 34.38, "en quelques secondes."], [34.4, 37.95, "Voyez l’invitation, payez par Pix et suivez qui a déjà confirmé."], [38.32, 42.3, "Proposez de nouveaux noms au Conseil et suivez chaque étape."], [42.26, 45.84, "Et découvrez toute la confrérie dans l’Annuaire des Membres."], [45.8, 49.02, "Des adresses où manger et boire, l’Académie de Bordeaux"], [48.98, 53.21, "et une recherche qui trouve vins, restaurants et membres."], [53.46, 55.06, "Des comptes ouverts :"], [55.16, 58.16, "toutes les recettes et dépenses de la Commanderie"], [58.21, 59.96, "figurent dans l’espace Transparence,"], [60.06, 62.8, "à la vue de tout Commandeur, à tout moment."], [62.85, 65.7, "Les statuts toujours à portée de main,"], [65.66, 68.32, "et des avantages exclusifs avec nos partenaires."], [68.28, 72.12, "Et pour le Conseil, un espace de gestion complet :"], [72.1, 76.12, "parrainages, finances par cellule et améliorations de la confrérie."], [76.08, 77.16, "Et c’est une web app."], [77.12, 81.82, "Sur iPhone, touchez Partager, puis « Sur l’écran d’accueil »."], [81.78, 83.6, "Elle s’installe comme une application."], [83.56, 87.7, "Le tout en portugais, anglais et français, avec Face ID."], [87.66, 89.84, "Commanderie de Bordeaux du Brésil."], [89.8, 93.28, "Rendez-vous sur commanderiedebordeaux.com.br"], [93.24, 96.86, "Bordeaux, toujours Bordeaux."]];
+var FSUB=[[0, 3.86, "Il existe une confrérie dédiée aux grands vins de Bordeaux."], [3.82, 7.6, "Et elle a désormais un espace à la hauteur de son histoire."], [7.56, 11.56, "Voici l’Espace du Commandeur, un espace privé,"], [11.52, 15.58, "réservé aux Commandeurs de la Commanderie de Bordeaux du Brésil."], [15.54, 18.3, "Votre carte de membre, toujours avec vous,"], [18.26, 22.3, "sur Apple Wallet ou Google Wallet, avec votre QR d’accès."], [22.26, 26.82, "Votre profil complet, avec photo et coordonnées à jour."], [26.78, 29.26, "Votre identité au sein de la confrérie."], [29.22, 32.7, "Confirmez votre présence aux dîners, événements et voyages"], [32.66, 34.38, "en quelques secondes."], [34.4, 36.82, "Voyez l’invitation et suivez qui a déjà confirmé."], [37.19, 41.17, "Proposez de nouveaux noms au Conseil et suivez chaque étape."], [41.13, 44.71, "Et découvrez toute la confrérie dans l’Annuaire des Membres."], [44.67, 47.89, "Des adresses où manger et boire, l’Académie de Bordeaux"], [47.85, 52.08, "et une recherche qui trouve vins, restaurants et membres."], [52.33, 53.93, "Des comptes ouverts :"], [54.03, 57.03, "toutes les recettes et dépenses de la Commanderie"], [57.08, 58.83, "figurent dans l’espace Transparence,"], [58.93, 61.58, "à la vue de tout Commandeur, à tout moment."], [61.73, 64.57, "Les statuts toujours à portée de main,"], [64.53, 67.19, "et des avantages exclusifs avec nos partenaires."], [67.15, 70.99, "Et pour le Conseil, un espace de gestion complet :"], [70.97, 74.99, "parrainages, finances par cellule et améliorations de la confrérie."], [74.95, 76.03, "Et c’est une web app."], [75.99, 80.69, "Sur iPhone, touchez Partager, puis « Sur l’écran d’accueil »."], [80.65, 82.47, "Elle s’installe comme une application."], [82.43, 86.57, "Le tout en portugais, anglais et français, avec Face ID."], [86.53, 88.71, "Commanderie de Bordeaux du Brésil."], [88.67, 92.15, "Rendez-vous sur commanderiedebordeaux.com.br"], [92.11, 95.73, "Bordeaux, toujours Bordeaux."]];
 var fsubOn=true;try{if(localStorage.getItem('cdbFsub')==='0')fsubOn=false;}catch(e){}
 function fsubTick(){var el=document.getElementById('fsub'),a=document.getElementById('aud');if(!el||!a)return;var t=a.currentTime,txt='';if(fsubOn&&t>0){for(var i=0;i<FSUB.length;i++){if(t>=FSUB[i][0]&&t<FSUB[i][1]){txt=FSUB[i][2];break;}}}var en=document.getElementById('end');if(en&&en.style.display==='flex')txt='';if(el.getAttribute('data-t')!==txt){el.setAttribute('data-t',txt);el.firstChild.textContent=txt;el.classList.toggle('on',!!txt);}}
 setInterval(fsubTick,60);

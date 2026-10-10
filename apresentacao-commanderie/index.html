@@ -188,7 +188,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
 .nucl{list-style:none;margin:1.6vw 0 0;padding:0;max-width:44%;}
 .nucl li{display:flex;align-items:baseline;justify-content:space-between;gap:2vw;padding:.75vw 0;border-bottom:1px solid rgba(228,205,151,.28);opacity:0;transform:translateY(8px);transition:opacity .7s ease,transform .7s ease;}
 .scene.on .nucl li{opacity:1;transform:none;}
-.scene.on .nucl li:nth-child(1){transition-delay:3.9s}.scene.on .nucl li:nth-child(2){transition-delay:7.2s}.scene.on .nucl li:nth-child(3){transition-delay:9.3s}.scene.on .nucl li:nth-child(4){transition-delay:11.8s}.scene.on .nucl li:nth-child(5){transition-delay:14.4s}
+.scene.on .nucl li:nth-child(1){transition-delay:4.2s}.scene.on .nucl li:nth-child(2){transition-delay:8.2s}.scene.on .nucl li:nth-child(3){transition-delay:10.7s}.scene.on .nucl li:nth-child(4){transition-delay:13.2s}.scene.on .nucl li:nth-child(5){transition-delay:15.7s}
 .nucl li.gm{border-bottom-color:rgba(228,205,151,.6);}
 .nucl li.gm b{color:#e4cd97;}
 .nucl li.gm span{color:#fff;}
@@ -221,7 +221,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
 
   <img id="filmlogo" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="">
   <div id="sub"><span id="subtxt"></span></div>
-  <audio id="aud" src="narracao.m4a?v=11" preload="auto"></audio>
+  <audio id="aud" src="narracao.m4a?v=12" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
     <span class="t" id="tcur">0:00</span>
@@ -229,7 +229,7 @@ body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
     <span class="t" id="tdur">0:00</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
-    <a id="dl" href="narracao.m4a?v=11" download="Commanderie-Um-Ano-audio.m4a" title="Baixar o áudio">⤓</a>
+    <a id="dl" href="narracao.m4a?v=12" download="Commanderie-Um-Ano-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
 
   <div id="start">
@@ -277,21 +277,21 @@ function sz(svg,px){return svg.replace('<svg ','<svg width="'+px+'" height="'+px
 var scenes=[].slice.call(document.querySelectorAll('.scene'));
 var CUES=[
  {t:0.0, dark:true, s:"Commanderie de Bordeaux"},
- {t:5.91, dark:true, s:"Apreciar, celebrar e difundir os grandes vinhos de Bordeaux."},
- {t:13.09, dark:true, s:"Nova York, 1959 — Henri Martin, do Château Gloria."},
- {t:19.75, dark:true, s:"27 países · 97 capítulos · 40.000 Comendadores."},
- {t:25.65, dark:true, s:"Cada capítulo, uma embaixada dos vinhos de Bordeaux."},
- {t:30.24, dark:true, s:"E a história chegou ao Brasil."},
- {t:34.33, dark:true, s:"14 de novembro de 2025 — Consulado-Geral da França, São Paulo."},
- {t:41.43, dark:true, s:"Oito capítulos · quatro núcleos e os seus Mestres."},
- {t:58.51, dark:true, s:"Abril de 2026 — Primeurs, capítulo no Château Bellefont-Belcier."},
- {t:65.45, dark:true, s:"A nossa gratidão a Jean-Marc."},
- {t:77.53, dark:true, s:"Quase cinquenta Comendadores."},
- {t:81.95, dark:true, s:"Produtores e importadores, ao lado dos Comendadores."},
- {t:88.6, dark:true, s:"O nosso primeiro ano. E isto é só o começo."},
- {t:96.14, dark:true, s:"Bordeaux, toujours Bordeaux."},
+ {t:6.78, dark:true, s:"Apreciar, celebrar e difundir os grandes vinhos de Bordeaux."},
+ {t:15.22, dark:true, s:"Nova York, 1959 — Henri Martin, do Château Gloria."},
+ {t:22.18, dark:true, s:"27 países · 97 capítulos · 40.000 Comendadores."},
+ {t:27.78, dark:true, s:"Cada capítulo, uma embaixada dos vinhos de Bordeaux."},
+ {t:32.8, dark:true, s:"E a história chegou ao Brasil."},
+ {t:36.66, dark:true, s:"14 de novembro de 2025 — Consulado-Geral da França, São Paulo."},
+ {t:43.66, dark:true, s:"Oito capítulos · quatro núcleos e os seus Mestres."},
+ {t:62.0, dark:true, s:"Abril de 2026 — Primeurs, capítulo no Château Bellefont-Belcier."},
+ {t:69.44, dark:true, s:"A nossa gratidão a Jean-Marc."},
+ {t:82.2, dark:true, s:"Quase cinquenta Comendadores."},
+ {t:86.8, dark:true, s:"Produtores e importadores, ao lado dos Comendadores."},
+ {t:93.5, dark:true, s:"O nosso primeiro ano. E isto é só o começo."},
+ {t:101.48, dark:true, s:"Bordeaux, toujours Bordeaux."},
 ];
-var END=104.2;
+var END=111.3;
 var raf=null,lastIdx=-1;
 function $(id){return document.getElementById(id);}function A(){return $('aud');}
 function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,x=s%60;return m+':'+(x<10?'0':'')+x;}

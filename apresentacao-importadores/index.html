@@ -109,6 +109,13 @@ h1.big{font-family:var(--serif);font-weight:400;font-size:4vw;line-height:1.05;l
 body.onDark #sub span{color:#f3ecd9;text-shadow:0 2px 14px rgba(0,0,0,.55);}
 body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
 #ctl{position:absolute;left:0;right:0;bottom:0;z-index:55;display:flex;align-items:center;gap:1.1vw;padding:.9vw 1.6vw;background:linear-gradient(0deg,rgba(8,10,20,.6),rgba(8,10,20,0));transition:opacity .4s;}
+#sub{display:none!important;}
+#fsub{position:absolute;left:0;right:0;bottom:3.2%;z-index:45;display:flex;justify-content:center;pointer-events:none;padding:0 12%;}
+#fsub span{display:inline-block;max-width:100%;text-align:center;font-family:var(--ui);font-weight:600;font-size:1.95vw;line-height:1.3;color:#fff;background:rgba(6,10,28,.6);padding:.35vw 1.1vw .45vw;border-radius:.5vw;text-shadow:0 1px 3px rgba(0,0,0,.8);opacity:0;transform:translateY(4px);transition:opacity .16s ease,transform .16s ease;}
+#fsub.on span{opacity:1;transform:none;}
+#ccb{font-family:var(--ui)!important;font-size:.85vw!important;font-weight:800;letter-spacing:.06em;border:1.5px solid currentColor!important;border-radius:.3vw;padding:.15vw .4vw!important;}
+#ccb.off{opacity:.4!important;text-decoration:line-through;}
+@media (max-width:900px){#fsub span{font-size:15px;padding:3px 9px 4px;border-radius:5px;}#fsub{padding:0 5%;bottom:2.4%;}#ccb{font-size:11px!important;}}
 #ctl.hide{opacity:0;pointer-events:none;}
 .startbtns{display:flex;gap:1vw;flex-wrap:wrap;justify-content:center;}
 .btnplay.ghost{background:transparent;color:#f3ecd9;border:1px solid rgba(228,205,151,.55);box-shadow:none;}
@@ -337,6 +344,7 @@ body.pfs{height:100dvh;}
   </section>
 
   <div id="sub"><span id="subtxt"></span></div>
+  <div id="fsub"><span></span></div>
   <audio id="aud" src="narracao.m4a?v=7" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
@@ -345,6 +353,7 @@ body.pfs{height:100dvh;}
     <span class="t" id="tdur">0:00</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
+    <button id="ccb" onclick="toggleSub()" title="Sous-titres en français">CC</button>
     <button id="fsb" onclick="toggleFS()" title="Tela inteira"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <a id="dl" href="narracao.m4a?v=7" download="Commanderie-Importadores-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
@@ -442,6 +451,13 @@ function enterFS(){var d=document.documentElement;try{if(d.requestFullscreen){va
 function exitFS(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();}catch(e){}document.body.classList.remove('pfs');}
 function toggleFS(){if(fsEl()||document.body.classList.contains('pfs'))exitFS();else enterFS();}
 document.addEventListener('keydown',function(e){if(e.key==='f'||e.key==='F'){toggleFS();}});
+
+var FSUB=[[0, 2.96, "La Commanderie de Bordeaux du Brésil présente"], [2.92, 5.2, "le programme des Importateurs Officiels."], [5.16, 8.84, "Ici, votre maison est aux côtés de ceux qui apprécient"], [8.8, 11.84, "et consomment le plus les grands vins de Bordeaux."], [11.8, 14.97, "Deux façons de s’associer : la formule Or"], [14.93, 19.22, "et la formule Argent, chacune avec ses parrainages et avantages."], [19.18, 22.74, "Dans les deux, un représentant de votre maison est intronisé"], [22.7, 25.72, "Commandeur, avec cotisation offerte."], [25.68, 28.76, "Vous parrainez des Commandeurs et des Ambassades."], [28.72, 32.54, "La première année du Commandeur parrainé est incluse."], [32.5, 35.74, "À partir de la deuxième année, 200 euros par an."], [35.7, 39.5, "Les Ambassades sont sans frais, avec une simple validation annuelle."], [39.46, 42.43, "Les Ambassades sont des restaurants avec une carte de Bordeaux,"], [42.39, 45.82, "distingués par la plaque Or, Argent ou Bronze."], [45.78, 48.5, "Quatre événements exclusifs par an :"], [48.46, 51.72, "deux intronisations, la cérémonie des Ambassades"], [51.68, 53.54, "et le dîner des importateurs."], [53.5, 56.34, "On y sert les vins des maisons associées."], [56.3, 60.92, "Chaque importateur apporte six bouteilles de Bordeaux par événement."], [60.88, 62.96, "Et le réseau travaille pour vous."], [62.92, 66.6, "Utilisez la base des Commandeurs pour inviter ou vendre un dîner,"], [66.56, 68.88, "une dégustation, un salon,"], [68.84, 72.42, "toute activité autour des vins et des producteurs de Bordeaux."], [72.38, 76.0, "La Boutique Bordeaux réunit le portefeuille exclusif des associés"], [75.96, 79.76, "et relie le Commandeur directement à vous."], [79.72, 82.63, "Et la Commanderie ne prend aucune commission :"], [82.59, 84.38, "c’est un avantage des Importateurs Officiels."], [84.34, 87.77, "Votre marque est mise en avant sur le site de la Commanderie,"], [87.73, 90.0, "sous les yeux de toute la confrérie."], [89.96, 93.02, "Chaque année, le Séminaire Ideal Consulting"], [92.98, 94.56, "réunit les importateurs officiels"], [94.52, 97.94, "pour analyser le marché de Bordeaux au Brésil et dans le monde,"], [97.9, 101.01, "avec le premier cabinet d’audit de l’importation"], [100.97, 102.98, "et de la distribution du pays."], [102.94, 104.4, "Et bien plus encore !"], [104.36, 107.55, "Des dégustations avec vos producteurs, le Road Show"], [107.51, 109.54, "et tous les avantages de la confrérie,"], [109.5, 111.12, "réunis en un seul programme."], [111.08, 114.18, "Et vous gérez tout dans l’Espace Importateur :"], [114.14, 117.45, "vos parrainages, le paiement des cotisations"], [117.41, 120.02, "et vos coordonnées toujours à jour."], [119.98, 124.04, "Associez votre maison : formule Or, 1 800 euros,"], [124.0, 126.62, "ou Argent, 900 euros par an,"], [126.58, 128.84, "avec facturation toujours au mois de novembre."], [128.8, 131.54, "Commanderie de Bordeaux du Brésil."], [131.5, 134.96, "Rendez-vous sur commanderiedebordeaux.com.br"], [134.92, 138.1, "Bordeaux, toujours Bordeaux."]];
+var fsubOn=true;try{if(localStorage.getItem('cdbFsub')==='0')fsubOn=false;}catch(e){}
+function fsubTick(){var el=document.getElementById('fsub'),a=document.getElementById('aud');if(!el||!a)return;var t=a.currentTime,txt='';if(fsubOn&&t>0){for(var i=0;i<FSUB.length;i++){if(t>=FSUB[i][0]&&t<FSUB[i][1]){txt=FSUB[i][2];break;}}}var en=document.getElementById('end');if(en&&en.style.display==='flex')txt='';if(el.getAttribute('data-t')!==txt){el.setAttribute('data-t',txt);el.firstChild.textContent=txt;el.classList.toggle('on',!!txt);}}
+setInterval(fsubTick,60);
+function toggleSub(){fsubOn=!fsubOn;try{localStorage.setItem('cdbFsub',fsubOn?'1':'0');}catch(e){}var b=document.getElementById('ccb');if(b)b.classList.toggle('off',!fsubOn);fsubTick();}
+document.addEventListener('DOMContentLoaded',function(){var b=document.getElementById('ccb');if(b)b.classList.toggle('off',!fsubOn);});
 </script>
 </body>
 </html>

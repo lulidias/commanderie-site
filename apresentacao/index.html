@@ -119,6 +119,13 @@ body.onDark #sub span{color:#f3ecd9;text-shadow:0 2px 14px rgba(0,0,0,.55);}
 body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
 #ctl{position:absolute;left:0;right:0;bottom:0;z-index:55;display:flex;align-items:center;gap:1.1vw;padding:.9vw 1.6vw;
   background:linear-gradient(0deg,rgba(8,10,20,.6),rgba(8,10,20,0));transition:opacity .4s;font-family:var(--ui);}
+#sub{display:none!important;}
+#fsub{position:absolute;left:0;right:0;bottom:3.2%;z-index:45;display:flex;justify-content:center;pointer-events:none;padding:0 12%;}
+#fsub span{display:inline-block;max-width:100%;text-align:center;font-family:var(--ui);font-weight:600;font-size:1.95vw;line-height:1.3;color:#fff;background:rgba(6,10,28,.6);padding:.35vw 1.1vw .45vw;border-radius:.5vw;text-shadow:0 1px 3px rgba(0,0,0,.8);opacity:0;transform:translateY(4px);transition:opacity .16s ease,transform .16s ease;}
+#fsub.on span{opacity:1;transform:none;}
+#ccb{font-family:var(--ui)!important;font-size:.85vw!important;font-weight:800;letter-spacing:.06em;border:1.5px solid currentColor!important;border-radius:.3vw;padding:.15vw .4vw!important;}
+#ccb.off{opacity:.4!important;text-decoration:line-through;}
+@media (max-width:900px){#fsub span{font-size:15px;padding:3px 9px 4px;border-radius:5px;}#fsub{padding:0 5%;bottom:2.4%;}#ccb{font-size:11px!important;}}
 #ctl.hide{opacity:0;pointer-events:none;}
 .startbtns{display:flex;gap:1vw;flex-wrap:wrap;justify-content:center;}
 .btnplay.ghost{background:transparent;color:#f3ecd9;border:1px solid rgba(228,205,151,.55);box-shadow:none;}
@@ -331,6 +338,7 @@ body.pfs{height:100dvh;}
   </section>
 
   <div id="sub"><span id="subtxt"></span></div>
+  <div id="fsub"><span></span></div>
   <audio id="aud" src="narracao.m4a?v=10" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
@@ -339,6 +347,7 @@ body.pfs{height:100dvh;}
     <span class="t" id="tdur">1:30</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
+    <button id="ccb" onclick="toggleSub()" title="Sous-titres en français">CC</button>
     <button id="fsb" onclick="toggleFS()" title="Tela inteira"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <a id="dl" href="narracao.m4a?v=10" download="Commanderie-Painel-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
@@ -479,6 +488,13 @@ function enterFS(){var d=document.documentElement;try{if(d.requestFullscreen){va
 function exitFS(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();}catch(e){}document.body.classList.remove('pfs');}
 function toggleFS(){if(fsEl()||document.body.classList.contains('pfs'))exitFS();else enterFS();}
 document.addEventListener('keydown',function(e){if(e.key==='f'||e.key==='F'){toggleFS();}});
+
+var FSUB=[[0, 3.86, "Il existe une confrérie dédiée aux grands vins de Bordeaux."], [3.82, 7.6, "Et elle a désormais un espace à la hauteur de son histoire."], [7.56, 11.56, "Voici l’Espace du Commandeur, un espace privé,"], [11.52, 15.58, "réservé aux Commandeurs de la Commanderie de Bordeaux du Brésil."], [15.54, 18.3, "Votre carte de membre, toujours avec vous,"], [18.26, 22.3, "sur Apple Wallet ou Google Wallet, avec votre QR d’accès."], [22.26, 26.82, "Votre profil complet, avec photo et coordonnées à jour."], [26.78, 29.26, "Votre identité au sein de la confrérie."], [29.22, 32.7, "Confirmez votre présence aux dîners, événements et voyages"], [32.66, 34.38, "en quelques secondes."], [34.4, 38.36, "Voyez l’invitation, payez par Pix et suivez qui a déjà confirmé."], [38.32, 41.08, "Toute la partie financière, transparente."], [41.04, 45.12, "Envoyez le justificatif : notre robot vérifie le montant pour vous."], [45.08, 49.06, "Proposez de nouveaux noms au Conseil et suivez chaque étape."], [49.02, 52.6, "Et découvrez toute la confrérie dans l’Annuaire des Membres."], [52.56, 55.78, "Des adresses où manger et boire, l’Académie de Bordeaux"], [55.74, 60.06, "et une recherche qui trouve vins, restaurants et membres."], [60.02, 62.5, "Transparence totale des comptes."], [62.46, 64.94, "Les statuts toujours à portée de main,"], [64.9, 67.56, "et des avantages exclusifs avec nos partenaires."], [67.52, 71.36, "Et pour le Conseil, un espace de gestion complet :"], [71.34, 75.36, "parrainages, finances par cellule et améliorations de la confrérie."], [75.32, 76.4, "Et c’est une web app."], [76.36, 81.06, "Sur iPhone, touchez Partager, puis « Sur l’écran d’accueil »."], [81.02, 82.84, "Elle s’installe comme une application."], [82.8, 86.94, "Le tout en portugais, anglais et français, avec Face ID."], [86.9, 89.08, "Commanderie de Bordeaux du Brésil."], [89.04, 92.52, "Rendez-vous sur commanderiedebordeaux.com.br"], [92.48, 96.1, "Bordeaux, toujours Bordeaux."]];
+var fsubOn=true;try{if(localStorage.getItem('cdbFsub')==='0')fsubOn=false;}catch(e){}
+function fsubTick(){var el=document.getElementById('fsub'),a=document.getElementById('aud');if(!el||!a)return;var t=a.currentTime,txt='';if(fsubOn&&t>0){for(var i=0;i<FSUB.length;i++){if(t>=FSUB[i][0]&&t<FSUB[i][1]){txt=FSUB[i][2];break;}}}var en=document.getElementById('end');if(en&&en.style.display==='flex')txt='';if(el.getAttribute('data-t')!==txt){el.setAttribute('data-t',txt);el.firstChild.textContent=txt;el.classList.toggle('on',!!txt);}}
+setInterval(fsubTick,60);
+function toggleSub(){fsubOn=!fsubOn;try{localStorage.setItem('cdbFsub',fsubOn?'1':'0');}catch(e){}var b=document.getElementById('ccb');if(b)b.classList.toggle('off',!fsubOn);fsubTick();}
+document.addEventListener('DOMContentLoaded',function(){var b=document.getElementById('ccb');if(b)b.classList.toggle('off',!fsubOn);});
 </script>
 </body>
 </html>

@@ -109,6 +109,13 @@ h1.big{font-family:var(--serif);font-weight:400;font-size:4vw;line-height:1.05;l
 body.onDark #sub span{color:#f3ecd9;text-shadow:0 2px 14px rgba(0,0,0,.55);}
 body.onLight #sub span{color:#2b2416;text-shadow:0 1px 0 rgba(255,255,255,.4);}
 #ctl{position:absolute;left:0;right:0;bottom:0;z-index:55;display:flex;align-items:center;gap:1.1vw;padding:.9vw 1.6vw;background:linear-gradient(0deg,rgba(8,10,20,.6),rgba(8,10,20,0));transition:opacity .4s;}
+#fsub{position:absolute;left:0;right:0;bottom:3.2%;z-index:45;display:flex;justify-content:center;pointer-events:none;padding:0 12%;}
+#fsub span{display:inline-block;max-width:100%;text-align:center;font-family:var(--ui);font-weight:600;font-size:1.95vw;line-height:1.3;color:#fff;background:rgba(6,10,28,.55);padding:.35vw 1.1vw .45vw;border-radius:.5vw;text-shadow:0 1px 3px rgba(0,0,0,.8);opacity:0;transform:translateY(4px);transition:opacity .16s ease,transform .16s ease;}
+#fsub.on span{opacity:1;transform:none;}
+#ccb{font-family:var(--ui)!important;font-size:.85vw!important;font-weight:800;letter-spacing:.06em;border:1.5px solid currentColor!important;border-radius:.3vw;padding:.15vw .4vw!important;}
+#ccb.off{opacity:.4!important;text-decoration:line-through;}
+.scene.cine .cwrap{padding-bottom:15vh;}
+@media (max-width:900px){#fsub span{font-size:15px;padding:3px 9px 4px;border-radius:5px;}#fsub{padding:0 5%;bottom:2.4%;}#ccb{font-size:11px!important;}}
 #ctl.hide{opacity:0;pointer-events:none;}
 .startbtns{display:flex;gap:1vw;flex-wrap:wrap;justify-content:center;}
 .btnplay.ghost{background:transparent;color:#f3ecd9;border:1px solid rgba(228,205,151,.55);box-shadow:none;}
@@ -193,7 +200,7 @@ body.pfs{height:100dvh;}
 .infog .rd{fill:#e4cd97;}
 .infog .lb{fill:#e4cd97;font-family:Arial,sans-serif;font-size:21px;letter-spacing:.28em;text-anchor:middle;font-weight:700;}
 .infog .lbc{fill:#fff;}
-.scene.cine.infoscene .cwrap{text-align:center;padding-bottom:9vh;}
+.scene.cine.infoscene .cwrap{text-align:center;padding-bottom:15vh;}
 .scene.cine.infoscene .ctitle{font-size:2.9vw;max-width:100%;margin:0 auto;}
 .scene.cine.infoscene .csub{margin:.6vw auto 0;}
 .nucl{list-style:none;margin:1.6vw 0 0;padding:0;max-width:44%;}
@@ -232,6 +239,7 @@ body.pfs{height:100dvh;}
 
   <img id="filmlogo" src="https://commanderiedebordeaux.com.br/img/brasao-alta.png" alt="">
   <div id="sub"><span id="subtxt"></span></div>
+  <div id="fsub"><span></span></div>
   <audio id="aud" src="narracao.m4a?v=13" preload="auto"></audio>
   <div id="ctl" class="hide">
     <button id="pp" onclick="togglePlay()" title="Reproduzir/Pausar">▶</button>
@@ -240,6 +248,7 @@ body.pfs{height:100dvh;}
     <span class="t" id="tdur">0:00</span>
     <button id="mute" onclick="toggleMute()" title="Mudo">🔊</button>
     <input id="vol" type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)" title="Volume">
+    <button id="ccb" onclick="toggleSub()" title="Legendas em francês">CC</button>
     <button id="fsb" onclick="toggleFS()" title="Tela inteira"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="fsin" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <a id="dl" href="narracao.m4a?v=13" download="Commanderie-Um-Ano-audio.m4a" title="Baixar o áudio">⤓</a>
   </div>
@@ -336,6 +345,13 @@ function enterFS(){var d=document.documentElement;try{if(d.requestFullscreen){va
 function exitFS(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();}catch(e){}document.body.classList.remove('pfs');}
 function toggleFS(){if(fsEl()||document.body.classList.contains('pfs'))exitFS();else enterFS();}
 document.addEventListener('keydown',function(e){if(e.key==='f'||e.key==='F'){toggleFS();}});
+
+var FSUB=[[0, 3.22, "Il y a plus de soixante ans, naissait une idée :"], [3.18, 6.87, "faire découvrir les grands vins de Bordeaux au monde entier."], [6.88, 8.96, "Ainsi naquit la Commanderie de Bordeaux :"], [8.92, 11.42, "une confrérie vouée à apprécier,"], [11.38, 15.38, "célébrer et faire rayonner les grands vins de Bordeaux."], [15.34, 18.12, "Tout a commencé à New York, en 1959,"], [18.08, 22.03, "sous l’impulsion d’Henri Martin, du Château Gloria."], [22.14, 23.93, "Aujourd’hui, vingt-sept pays"], [23.89, 27.56, "et plus de quarante mille Commandeurs à travers le monde."], [27.52, 29.88, "Chaque chapitre, une véritable ambassade"], [29.84, 32.4, "des vins de Bordeaux dans le monde."], [32.38, 36.0, "Et en 2025, cette histoire est arrivée au Brésil."], [35.96, 40.28, "Le 14 novembre, au Consulat général de France, à São Paulo,"], [40.24, 43.2, "naissait la Commanderie de Bordeaux du Brésil."], [43.16, 46.26, "En moins d’un an, déjà neuf chapitres."], [46.38, 48.67, "Sous la conduite du Grand Maître Manu Brandão,"], [48.63, 50.9, "nous comptons aujourd’hui quatre cellules :"], [50.86, 53.38, "São Paulo, avec le Maître Luli Dias ;"], [53.34, 55.95, "Recife, avec le Maître Tito Dias ;"], [55.91, 58.36, "Curitiba, avec le Maître Abner Almeida ;"], [58.32, 61.34, "et Porto Alegre, avec le Maître Jadir Engers."], [61.3, 64.42, "En avril, nous avons emmené la confrérie à Bordeaux même :"], [64.38, 68.74, "un voyage aux Primeurs, avec un chapitre au Château Bellefont-Belcier."], [68.74, 72.32, "Rien de tout cela n’aurait été possible sans ceux qui ont cru en nous."], [72.28, 75.4, "Toute notre gratitude au Grand Maître mondial, Jean-Marc,"], [75.36, 78.36, "pour son soutien, sa confiance et son amitié,"], [78.32, 81.2, "qui ont rendu possible la Commanderie de Bordeaux du Brésil."], [81.16, 83.52, "Nous sommes déjà près de cinquante Commandeurs,"], [83.48, 85.77, "unis par la même passion."], [85.73, 87.26, "Et la confrérie grandit."], [87.22, 90.87, "Elle accueille désormais aussi producteurs et importateurs,"], [90.83, 92.64, "aux côtés des Commandeurs."], [92.6, 95.5, "Tout nous mène jusqu’ici : notre première année."], [95.46, 96.97, "En à peine douze mois,"], [96.93, 100.66, "la Commanderie de Bordeaux du Brésil est devenue une famille."], [100.62, 102.82, "Commanderie de Bordeaux du Brésil."], [102.78, 103.76, "Un an."], [103.72, 105.84, "Et ce n’est que le début."], [105.8, 108.8, "Bordeaux, toujours Bordeaux."]];
+var fsubOn=true;try{if(localStorage.getItem('cdbFsub')==='0')fsubOn=false;}catch(e){}
+function fsubTick(){var el=document.getElementById('fsub');if(!el)return;var a=A(),t=a.currentTime,txt='';if(fsubOn&&!a.paused||fsubOn&&t>0){for(var i=0;i<FSUB.length;i++){if(t>=FSUB[i][0]&&t<FSUB[i][1]){txt=FSUB[i][2];break;}}}if(document.getElementById('end').style.display==='flex')txt='';if(el.getAttribute('data-t')!==txt){el.setAttribute('data-t',txt);el.firstChild.textContent=txt;el.classList.toggle('on',!!txt);}}
+setInterval(fsubTick,60);
+function toggleSub(){fsubOn=!fsubOn;try{localStorage.setItem('cdbFsub',fsubOn?'1':'0');}catch(e){}var b=document.getElementById('ccb');if(b)b.classList.toggle('off',!fsubOn);fsubTick();}
+document.addEventListener('DOMContentLoaded',function(){var b=document.getElementById('ccb');if(b)b.classList.toggle('off',!fsubOn);});
 </script>
 <script>
 (function(){var _ss=showScene;showScene=function(i){_ss(i);var sc=scenes[i];if(!sc)return;var els=sc.querySelectorAll('[data-count]');els.forEach(function(el){var tgt=parseFloat(el.getAttribute('data-count'));var dur=1200,t0=null;function step(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);var e=1-Math.pow(1-p,3);el.textContent=Math.round(tgt*e).toLocaleString('pt-BR');if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);});};})();

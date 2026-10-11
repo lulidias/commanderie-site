@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /painel-
+Disallow: /preview-painel.html
+Disallow: /area-do-socio-manu.html
+
+Sitemap: https://commanderiedebordeaux.com.br/sitemap.xml

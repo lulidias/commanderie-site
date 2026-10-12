@@ -35,7 +35,7 @@ body.foto{padding:0;gap:0}body.foto .acoes,body.foto .aviso{display:none}body.fo
 <body>
 <canvas id="c" width="1080" height="1350"></canvas>
 <div class="acoes">
-  <button class="btn" id="b-share" onclick="compartilhar()">📲 Compartilhar</button>
+  <button class="btn" id="b-share" onclick="whatsapp()" style="background:#25D366">WhatsApp</button>
   <button class="btn" id="b-copy" onclick="copiar()">📋 Copiar imagem</button>
   <button class="btn ghost" onclick="baixar()">Baixar</button>
 </div>
@@ -88,11 +88,12 @@ function desenha(){
 function avisa(m){var t=document.getElementById('toast');t.textContent=m;t.style.opacity='1';clearTimeout(t._h);t._h=setTimeout(function(){t.style.opacity='0';},3500);}
 function copiar(){document.getElementById('c').toBlob(function(b){if(navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({'image/png':b})]).then(function(){avisa('✓ Imagem copiada! Cole (Cmd+V) na conversa do WhatsApp.');}).catch(function(){baixar();});}else{baixar();}});}
 function baixar(){var a=document.createElement('a');a.download='commanderie-jantar-eu-vou.png';a.href=document.getElementById('c').toDataURL('image/png');a.click();}
+function whatsapp(){var mobile=/iPhone|iPad|Android/i.test(navigator.userAgent);if(mobile){compartilhar();return;}var w=window.open('about:blank','_blank');document.getElementById('c').toBlob(function(b){var ir=function(){if(w)w.location='https://web.whatsapp.com/';};if(navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({'image/png':b})]).then(function(){avisa('✓ Imagem copiada! Cole (Cmd+V / Ctrl+V) na conversa do WhatsApp.');ir();}).catch(function(){baixar();ir();});}else{baixar();ir();}});}
 function compartilhar(){document.getElementById('c').toBlob(function(b){var f=new File([b],'commanderie-jantar-eu-vou.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f]});}else{baixar();}});}
 window.addEventListener('DOMContentLoaded',function(){
   if(params.get('foto'))document.body.classList.add('foto');
   var mobile=/iPhone|iPad|Android/i.test(navigator.userAgent);
-  if(!mobile){document.getElementById('b-share').style.display='none';document.getElementById('aviso').textContent='Clique em Copiar imagem e cole (Cmd+V) na conversa do WhatsApp. 🍷';}
+  if(!mobile){document.getElementById('aviso').textContent='Clique em WhatsApp: a imagem é copiada e o WhatsApp Web abre — é só colar (Cmd+V / Ctrl+V) na conversa. 🍷';}
   BRAS.onload=desenha;BRAS.onerror=desenha;BRAS.src='/img/brasao-alta.png';
   var fonts=[document.fonts.load('400 70px "Playfair Display"'),document.fonts.load('italic 600 100px "Playfair Display"'),document.fonts.load('600 25px Montserrat'),document.fonts.load('italic 400 40px "Cormorant Garamond"')];
   Promise.all(fonts).then(function(){setTimeout(desenha,60);}).catch(desenha);

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartão de Comendador — Commanderie de Bordeaux</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="/img/favicon-64.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#141d38;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:24px;font-family:'Montserrat',sans-serif}
+canvas{max-width:min(92vw,400px);height:auto;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.acoes{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn{padding:14px 26px;background:#b08a3a;color:#fff;border:none;font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:6px}
+.btn.wa{background:#25D366}
+.btn.ghost{background:none;border:1px solid rgba(197,163,90,.6);color:#c5a35a}
+.aviso{color:rgba(243,236,217,.6);font-size:11px;text-align:center;max-width:430px;line-height:1.6}
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:#2E7D4F;color:#fff;padding:13px 26px;font-size:12px;letter-spacing:1px;opacity:0;transition:opacity .3s;pointer-events:none;border-radius:6px;text-align:center}
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1500"></canvas>
+<div class="acoes">
+  <button class="btn wa" onclick="whatsapp()">WhatsApp</button>
+  <button class="btn" onclick="copiar()">📋 Copiar imagem</button>
+  <button class="btn ghost" onclick="baixar()">Baixar</button>
+</div>
+<p class="aviso" id="aviso">No celular, toque em WhatsApp e escolha a conversa. No computador, a imagem é copiada e o WhatsApp Web abre: é só colar (Cmd+V / Ctrl+V) na conversa.</p>
+<div id="toast"></div>
+<script>
+'use strict';
+var P=new URLSearchParams(location.search);
+var NOME=(P.get('nome')||'Comendador').trim();
+var GRAU=(P.get('grau')||'Comendador').trim();
+var COD=(P.get('codigo')||'').trim();
+var ANO=(P.get('ano')||'2026').trim();
+var MESTRE=GRAU.toLowerCase().indexOf('mestre')>=0;
+var C=MESTRE?{a:'#243161',b:'#161f3f',fg:'#f3ecd9',ac:'#c9a85c'}:{a:'#faf5e8',b:'#efe6cf',fg:'#1e2a56',ac:'#b08a3a'};
+var BRAS=new Image();BRAS.crossOrigin='anonymous';
+var QR=null;
+function rr(x,X,Y,W,H,R){x.beginPath();x.moveTo(X+R,Y);x.arcTo(X+W,Y,X+W,Y+H,R);x.arcTo(X+W,Y+H,X,Y+H,R);x.arcTo(X,Y+H,X,Y,R);x.arcTo(X,Y,X+W,Y,R);x.closePath();}
+function ls(x,v){try{x.letterSpacing=v;}catch(e){}}
+function desenha(){
+  var c=document.getElementById('c'),x=c.getContext('2d'),W=1080,H=1500,CX=W/2;
+  x.fillStyle='#141d38';x.fillRect(0,0,W,H);
+  var g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,C.a);g.addColorStop(1,C.b);
+  rr(x,30,30,W-60,H-60,60);x.fillStyle=g;x.fill();x.strokeStyle=C.ac;x.lineWidth=7;x.stroke();
+  x.textAlign='center';
+  x.fillStyle=C.ac;x.font='600 62px "Playfair Display", Georgia, serif';ls(x,'8px');x.fillText(ANO,CX,150);ls(x,'0px');
+  var EC=340,RR=150;
+  var rg=x.createRadialGradient(CX,EC,10,CX,EC,RR);rg.addColorStop(0,'#faf6ea');rg.addColorStop(.6,'#faf6ea');rg.addColorStop(1,'#f1ead6');
+  x.save();x.shadowColor='rgba(0,0,0,.18)';x.shadowBlur=30;x.shadowOffsetY=8;x.beginPath();x.arc(CX,EC,RR,0,7);x.fillStyle=rg;x.fill();x.restore();
+  if(BRAS.complete&&BRAS.naturalWidth){var iw=220,ih=iw*BRAS.naturalHeight/BRAS.naturalWidth;x.drawImage(BRAS,CX-iw/2,EC-ih/2,iw,ih);}
+  x.fillStyle=C.ac;x.font='500 30px Montserrat';ls(x,'8px');x.fillText('COMMANDERIE DE BORDEAUX',CX,570);
+  x.font='600 36px Montserrat';ls(x,'14px');x.fillText(GRAU.toUpperCase(),CX+7,640);ls(x,'0px');
+  x.fillStyle=C.fg;var tam=96;x.font='400 '+tam+'px "Playfair Display", Georgia, serif';
+  var linhas=[NOME];
+  if(x.measureText(NOME).width>900){var p=NOME.split(' ');var best=null;for(var i=1;i<p.length;i++){var a=p.slice(0,i).join(' '),b=p.slice(i).join(' ');var m=Math.max(x.measureText(a).width,x.measureText(b).width);if(!best||m<best[0])best=[m,a,b];}if(best)linhas=[best[1],best[2]];}
+  while(linhas.some(function(l){return x.measureText(l).width>900;})&&tam>48){tam-=4;x.font='400 '+tam+'px "Playfair Display", Georgia, serif';}
+  var y0=linhas.length>1?760:790;linhas.forEach(function(l,i){x.fillText(l,CX,y0+i*tam*1.1);});
+  var yr=y0+(linhas.length-1)*tam*1.1+60;
+  x.fillStyle=C.ac;rr(x,CX-110,yr,220,5,2);x.fill();
+  x.font='500 32px Montserrat';ls(x,'4px');x.fillText(COD,CX,yr+70);ls(x,'0px');
+  if(QR){var q=300,qy=yr+120;rr(x,CX-q/2-18,qy-18,q+36,q+36,20);x.fillStyle='#fff';x.fill();x.drawImage(QR,CX-q/2,qy,q,q);}
+  x.fillStyle=C.ac;x.font='italic 400 34px "Playfair Display", Georgia, serif';x.fillText('Bordeaux, toujours Bordeaux',CX,H-90);
+}
+function avisa(m){var t=document.getElementById('toast');t.textContent=m;t.style.opacity='1';clearTimeout(t._h);t._h=setTimeout(function(){t.style.opacity='0';},4000);}
+var ARQ='cartao-comendador-'+(COD||'commanderie')+'.png';
+function baixar(){var a=document.createElement('a');a.download=ARQ;a.href=document.getElementById('c').toDataURL('image/png');a.click();}
+function copiar(cb){document.getElementById('c').toBlob(function(b){if(navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({'image/png':b})]).then(function(){avisa('✓ Imagem copiada! Cole (Cmd+V / Ctrl+V) na conversa do WhatsApp.');if(cb)cb();}).catch(function(){baixar();if(cb)cb();});}else{baixar();if(cb)cb();}});}
+function whatsapp(){var mobile=/iPhone|iPad|Android/i.test(navigator.userAgent);
+  if(mobile){document.getElementById('c').toBlob(function(b){var f=new File([b],ARQ,{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f]}).catch(function(){});}else{baixar();}});return;}
+  var w=window.open('about:blank','_blank');copiar(function(){if(w)w.location='https://web.whatsapp.com/';});}
+window.addEventListener('DOMContentLoaded',function(){
+  if(COD){try{var q=qrcode(0,'M');q.addData('https://commanderiedebordeaux.com.br/?m='+COD);q.make();var im=new Image();im.onload=function(){QR=im;desenha();};im.src=q.createDataURL(8,0);}catch(e){}}
+  BRAS.onload=desenha;BRAS.onerror=desenha;BRAS.src='/img/brasao-alta.png';
+  Promise.all([document.fonts.load('400 90px "Playfair Display"'),document.fonts.load('600 30px Montserrat'),document.fonts.load('italic 400 34px "Playfair Display"')]).then(function(){setTimeout(desenha,60);}).catch(desenha);
+});
+</script>
+</body>
+</html>

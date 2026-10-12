@@ -1,6 +1,19 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Painel do Importador — Commanderie de Bordeaux</title><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
+<title>Painel do Importador — Commanderie de Bordeaux</title>
+<meta name="description" content="Commanderie de Bordeaux do Brasil — a confraria oficial dos vinhos de Bordeaux. Bordeaux, toujours Bordeaux.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Commanderie de Bordeaux do Brasil">
+<meta property="og:title" content="Painel do Importador — Commanderie de Bordeaux">
+<meta property="og:description" content="Commanderie de Bordeaux do Brasil — a confraria oficial dos vinhos de Bordeaux. Bordeaux, toujours Bordeaux.">
+<meta property="og:url" content="https://commanderiedebordeaux.com.br/painel-importador.html">
+<meta property="og:image" content="https://commanderiedebordeaux.com.br/img/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://commanderiedebordeaux.com.br/img/og-card.png">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#1e2a56"><meta name="apple-mobile-web-app-title" content="Commanderie">
 <style>
 :root{--parch:#f3ecd9;--parch2:#ece3cd;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
 *{box-sizing:border-box;}
@@ -48,13 +61,26 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .info{font-size:13.5px;color:#5b5446;line-height:1.6;}
 .msg{font-size:13px;margin-left:8px;}
 .hint{font-size:12px;color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin:8px 0 0;}
+.vhero{background:linear-gradient(135deg,#26335f,#161f3f);border:1px solid var(--gold);border-radius:16px;padding:22px 24px;color:#f3ecd9;margin-bottom:16px;box-shadow:0 10px 30px rgba(30,26,20,.14);}
+.vhero h2{font-family:Georgia,serif;font-weight:normal;font-size:24px;margin:0 0 6px;color:#fff;}
+.vhero p{font-size:13.5px;color:#c9d0e8;line-height:1.6;margin:0 0 14px;max-width:640px;}
+.vhero .cotas2{display:flex;gap:12px;flex-wrap:wrap;}
+.vhero .ct{flex:1;min-width:190px;background:rgba(255,255,255,.06);border:1px solid rgba(197,163,90,.4);border-radius:12px;padding:12px 15px;}
+.vhero .ct b{font-family:Georgia,serif;font-size:15px;color:#e4cd97;letter-spacing:.04em;}
+.vhero .ct .v{font-family:Georgia,serif;font-size:22px;color:#fff;margin:2px 0;}
+.vhero .ct span{font-size:12px;color:#c9d0e8;}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px;}
+.vcard{background:#fffdf7;border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:14px;padding:15px 16px;box-shadow:0 6px 16px rgba(40,30,10,.05);}
+.vcard .vi{width:40px;height:40px;border-radius:11px;background:#f6efdc;border:1px solid #e6d9b3;color:#b08a3a;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.vcard h4{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:16px;margin:0 0 4px;}
+.vcard p{font-size:12.8px;color:#5b5446;line-height:1.5;margin:0;}
 </style></head><body>
 <div class="dtop"><a href="index.html?painel=1" style="display:inline-flex;align-items:center;" title="Painel do Comendador"><img src="img/brasao.png" alt="Brasão"></a><b>Painel do Importador</b><a class="back" href="index.html?painel=1">&#8592; Voltar</a></div>
 <div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para acessar.</p><a class="btn" href="index.html">Entrar</a></div>
-<div id="notImp" class="state" style="display:none;"><h2>Área dos Importadores Embaixadores</h2><p>Este painel é exclusivo para as importadoras associadas à Commanderie.</p><a class="btn" href="importadores.html">Conhecer o programa</a></div>
+<div id="notImp" class="state" style="display:none;"><h2>Área das Importadoras Oficiais</h2><p>Este painel é exclusivo para as importadoras associadas à Commanderie.</p><a class="btn" href="importadores.html">Conhecer o programa</a></div>
 <div id="loading" class="state">Carregando…</div>
 <div id="panel" style="display:none;">
-  <div class="dhead"><div class="k">Importador Embaixador</div><h1 id="impNome">—</h1><div class="sub" id="impSub"></div></div>
+  <div class="dhead"><div class="k">Importadora Oficial</div><h1 id="impNome">—</h1><div class="sub" id="impSub"></div></div>
   <div class="wrap">
 
     <div id="impAsWrap" style="display:none;background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 16px;text-align:center;">
@@ -64,14 +90,29 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     </div>
 
     <div id="menu"><div class="cmenu">
+      <a class="ccard" href="?sec=vantagens" style="grid-column:1/-1;background:linear-gradient(135deg,#26335f,#161f3f);border-color:var(--gold);color:#f3ecd9;"><div class="ic" style="background:rgba(197,163,90,.18);border-color:var(--gold);color:#e4cd97;"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 18.6 7.2 17l.9-5.4L4.2 7.7l5.4-.8z"/></svg></div><b style="color:#fff;">Vantagens de ser Importadora Oficial</b><span style="color:#c9d0e8;">Tudo o que a sua importadora ganha no programa</span></a>
       <a class="ccard" href="?sec=anuidade"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h4"/></svg></div><b>Anuidade</b><span>Valor do ano e como pagar</span></a>
       <a class="ccard" href="?sec=comendadores"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.2 2.7-4.8 6-4.8s6 1.6 6 4.8"/><path d="M16 5.2A3 3 0 0 1 16 11"/></svg></div><b>Indicar Comendadores</b><span>Indicar e ver todos os indicados</span></a>
       <a class="ccard" href="?sec=embaixadas"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V5l7-2v18M12 8l7 2v11M3 21h18"/></svg></div><b>Indicar Embaixadas</b><span>Placas Ouro/Prata/Bronze</span></a>
       <a class="ccard" href="?sec=parceiros"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12V7a2 2 0 0 1 2-2h3M19 12v5a2 2 0 0 1-2 2h-3M8 9l4-4 4 4M12 5v9"/></svg></div><b>Restaurantes parceiros</b><span>Rolha grátis aos Comendadores</span></a>
       <a class="ccard" href="?sec=beneficios"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 7v14"/></svg></div><b>Benefícios</b><span>Ofertas aos Comendadores</span></a>
       <a class="ccard" href="?sec=importadoras"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-4h6v4"/></svg></div><b>Relação das importadoras</b><span>Membros do programa</span></a>
-      <a class="ccard" href="?sec=programa"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg></div><b>Reunião & programa</b><span>Encontro anual e benefícios</span></a>
+      <a class="ccard" href="?sec=programa"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/></svg></div><b>Reunião & programa</b><span>Encontro anual e benefícios</span></a><a class="ccard" href="/apresentacao-importadores/" target="_blank" rel="noopener"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z"/></svg></div><b>Apresentação do programa</b><span>Vídeo para enviar a importadoras</span></a><a class="ccard" href="?sec=cadastro"><div class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h5M9.5 15.5h5"/></svg></div><b>Cadastro da importadora</b><span>Dados, contatos e e-mails</span></a>
     </div></div>
+
+    <div id="secVant" class="secblk"><a class="backsec" href="painel-importador.html">&#8592; Voltar</a>
+      <div class="sec-title">Vantagens de ser Importadora Oficial</div><div class="sec-rule"></div>
+      <div class="vhero">
+        <h2>A sua importadora no coração da Commanderie</h2>
+        <p>Ao lado de quem mais aprecia e consome os grandes vinhos de Bordeaux no Brasil. Veja tudo o que a sua importadora ganha no programa.</p>
+        <div class="cotas2">
+          <div class="ct"><b>Ouro</b><div class="v">€ 1.800<span style="font-size:13px;color:#c9bfa6;"> / ano</span></div><span>2 Comendadores + 2 Embaixadas por ano</span></div>
+          <div class="ct"><b>Prata</b><div class="v">€ 900<span style="font-size:13px;color:#c9bfa6;"> / ano</span></div><span>1 Comendador + 1 Embaixada por ano</span></div>
+        </div>
+      </div>
+      <div class="vgrid"><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/><path d="M9.3 12l1.8 1.8 3.6-3.6"/></svg></div><h4>Representante entronizado Comendador</h4><p>Um representante da sua importadora é entronizado Comendador, com a <b>anuidade isenta</b> enquanto a importadora for associada.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.2 2.7-4.8 6-4.8s6 1.6 6 4.8"/><path d="M16 5.2A3 3 0 0 1 16 11"/></svg></div><h4>Indicar Comendadores</h4><p>Leve nomes à confraria: <b>Ouro 2/ano · Prata 1/ano</b>. O 1º ano da anuidade do indicado já está incluído.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V5l7-2v18M12 8l7 2v11M3 21h18"/></svg></div><h4>Indicar Embaixadas</h4><p>Restaurantes com carta de Bordeaux premiados com a <b>Placa Ouro, Prata ou Bronze</b> — sem custo, só validação anual.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3"/></svg></div><h4>4 eventos exclusivos por ano</h4><p>Duas entronizações, a Cerimônia das Embaixadas e o Jantar dos Importadores — só para as importadoras.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l-1 7a5 5 0 0 1-10 0zM12 15v5M8 21h8"/></svg></div><h4>Toda a agenda da confraria</h4><p>Como Comendador, o seu representante vive <b>jantares, capítulos e viagens</b> da Commanderie.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M5 9l1-4h12l1 4M5 9v10h14V9M9 19v-5h6v5"/></svg></div><h4>Loja Bordeaux</h4><p>O seu portfólio exclusivo ligado diretamente aos Comendadores — <b>sem comissão</b> para a Commanderie.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 4v6c0 5-3.8 8.2-9 10-5.2-1.8-9-5-9-10V6z"/><circle cx="12" cy="10" r="2.2"/></svg></div><h4>Marca no site da Commanderie</h4><p>Logo e perfil da sua importadora no site e nas comunicações, à vista de toda a confraria.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-.6 6a3.4 3.4 0 0 1-6.8 0zM12 15v5M8.5 21h7"/></svg></div><h4>Seus vinhos nos eventos</h4><p>Os vinhos das associadas são servidos aos Comendadores — <b>6 garrafas de Bordeaux por evento</b>.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M7.6 7.6 11 15m2 0 3.4-7.4M8 6h8"/></svg></div><h4>Ative a sua rede</h4><p>Use a base de Comendadores para <b>convidar ou vender</b> jantares, degustações e feiras com os seus produtores de Bordeaux.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg></div><h4>Seminário Ideal Consulting</h4><p>Debate anual do mercado de Bordeaux no Brasil e no mundo, com a maior empresa de auditoria de importação do país.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3 3 5v16l6-2 6 2 6-2V3l-6 2-6-2zM9 3v16M15 5v16"/></svg></div><h4>Road Show & parceiros</h4><p>Prioridade nas cidades do Road Show e restaurantes parceiros com <b>rolha grátis</b> aos Comendadores.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><h4>Voz, voto e reunião anual</h4><p>Voto nas entronizações e participação na reunião anual que delibera sobre o programa.</p></div><div class="vcard"><div class="vi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 13h8M8 16h5"/></svg></div><h4>Painel do Importador</h4><p>Gerencie num só lugar as suas <b>indicações</b>, o <b>pagamento das anuidades</b> e os <b>dados cadastrais</b>.</p></div></div>
+      <div class="card info" style="margin-top:14px;"><p style="font-size:12.8px;color:#5b5446;line-height:1.6;margin:0;">Cobrança anual, sempre em <b>novembro</b>. Quer enviar a uma importadora? Use a <a href="/apresentacao-importadores/" target="_blank" rel="noopener" style="color:var(--navy);font-weight:bold;">apresentação do programa</a>.</p></div>
+    </div>
 
     <div id="secAnuid" class="secblk"><a class="backsec" href="painel-importador.html">&#8592; Voltar</a>
       <div class="sec-title">Anuidade</div><div class="sec-rule"></div>
@@ -91,7 +132,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
         <textarea class="inp" id="mApres" rows="4" placeholder="Apresentação do indicado — por que você o indica, o perfil dele e a ligação com os vinhos de Bordeaux…" style="margin-top:10px;resize:vertical;"></textarea>
         <label style="font-size:12px;color:#8a8270;display:block;margin:10px 0 5px;">Quem paga a anuidade do convidado?</label>
         <select class="inp" id="mPagador"><option value="padrinho_primeira">A importadora paga a 1ª anuidade (incluída)</option><option value="indicado">O indicado paga a própria anuidade</option><option value="padrinho_sempre">A importadora paga a anuidade do convidado para sempre</option></select>
-        <div class="hint"><b>2 indicações por ano</b> incluídas; extras a <b>R$ 1.000</b> por indicação.</div>
+        <div class="hint">Comendadores incluídos pelo seu plano (<b>Ouro: 2/ano</b> · <b>Prata: 1/ano</b>). <b>O 1º ano da anuidade do indicado já está incluído</b>; do 2º ano em diante, <b>€ 200/ano</b> — pago pelo Comendador ou pela importadora (cobrança anual).</div>
         <div style="margin-top:12px;"><button class="btn-n" id="btnMem" onclick="addMembro()">Indicar membro</button><span class="msg" id="mMsg"></span></div>
       </div>
       <div class="sec-sub">Todos os indicados</div>
@@ -110,7 +151,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
           <input class="inp" id="eResp" placeholder="Responsável">
           <input class="inp" id="eTel" placeholder="Telefone do responsável">
         </div>
-        <div class="hint"><b>Ouro</b> (30+ rótulos) · <b>Prata</b> (20+) · <b>Bronze</b> (10+). 2/ano incluídas; extras a <b>R$ 1.000</b> cada.</div>
+        <div class="hint">Placa da embaixada: <b>Ouro</b> (30+ rótulos) · <b>Prata</b> (20+) · <b>Bronze</b> (10+). Incluídas pelo seu plano (<b>Ouro: 2/ano</b> · <b>Prata: 1/ano</b>). <b>Sem custo</b> — apenas <b>validação anual</b> dos critérios.</div>
         <div style="margin-top:12px;"><button class="btn-n" id="btnEmb" onclick="addEmb()">Indicar embaixada</button><span class="msg" id="eMsg"></span></div>
       </div>
       <div class="sec-sub">Todas as embaixadas indicadas</div>
@@ -156,16 +197,63 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     </div>
 
     <div id="secProg" class="secblk"><a class="backsec" href="painel-importador.html">&#8592; Voltar</a>
-      <div class="sec-title">Reunião anual dos Embaixadores</div><div class="sec-rule"></div>
-      <div class="card info"><p>Os Importadores Embaixadores se reúnem ao menos <b>uma vez por ano</b> para deliberar sobre o programa, votar novas entronizações de importadores e alinhar o Road Show da Commanderie.</p></div>
+      <div class="sec-title">Reunião anual das Importadoras Oficiais</div><div class="sec-rule"></div>
+      <div class="card info"><p>As Importadoras Oficiais se reúnem ao menos <b>uma vez por ano</b> para deliberar sobre o programa, votar novas entronizações de importadores e alinhar o Road Show da Commanderie.</p></div>
+      <div class="sec-title">Calendário do programa · 4 eventos por ano</div><div class="sec-rule"></div>
+      <div class="card info"><ul style="margin:0;padding-left:18px;line-height:1.8;">
+        <li><b>Entronização de Primavera</b> — entronização dos novos Comendadores indicados.</li>
+        <li><b>Entronização de Outono</b> — o indicado escolhe em qual das duas será entronizado.</li>
+        <li><b>Cerimônia das Embaixadas</b> — jantar de entrega das Placas (Ouro/Prata/Bronze) aos restaurantes que conquistaram ou mantiveram o selo.</li>
+        <li><b>Jantar dos Importadores</b> — entre a <b>Wine Paris</b> e a <b>Vinitaly</b>, com todos os importadores juntos. Única ocasião em que se entronizam os <b>donos de importadoras</b>.</li>
+      </ul>
+      <p style="font-size:12.5px;color:#8a6a1f;margin:12px 0 0;line-height:1.6;">Estes 4 são <b>exclusivos dos importadores</b>. Além deles, o seu representante — já Comendador — participa de <b>toda a agenda da confraria</b> (jantares, capítulos e viagens).</p></div>
       <div class="sec-title">Seus benefícios no programa</div><div class="sec-rule"></div>
-      <div class="card info"><ul style="margin:0;padding-left:18px;">
-        <li>Anuidade isenta para o responsável (pessoa física).</li>
-        <li>2 indicações de membros e 2 de embaixadas por ano (extras a R$ 1.000).</li>
-        <li>Placas de Embaixada (Ouro/Prata/Bronze) e restaurantes parceiros (rolha grátis).</li>
-        <li>Curso “Disciple de la Commanderie” · Semaine des Primeurs · eventos.</li>
-        <li>Logo nas comunicações · voto nas entronizações · reunião anual.</li>
+      <div class="card info"><ul style="margin:0;padding-left:18px;line-height:1.75;">
+        <li><b>Plano Ouro — € 1.800/ano:</b> indicar <b>2 Comendadores</b> e <b>2 Embaixadas</b> por ano.</li>
+        <li><b>Plano Prata — € 900/ano:</b> indicar <b>1 Comendador</b> e <b>1 Embaixada</b> por ano.</li>
+        <li>Um representante da importadora é <b>entronizado Comendador</b>, com <b>anuidade isenta</b>.</li>
+        <li>Comendador indicado: <b>1º ano incluído</b>; do 2º ano em diante <b>€ 200/ano</b> (pelo Comendador ou pela importadora). <b>Embaixadas sem custo</b> — apenas validação anual.</li>
+        <li>Placas de Embaixada (Ouro/Prata/Bronze) e restaurantes parceiros (rolha grátis aos Comendadores).</li>
+        <li>Logo nas comunicações · voto nas entronizações · reunião anual · prioridade no Road Show.</li>
       </ul></div>
+    </div>
+
+    <div id="secCad" class="secblk"><a class="backsec" href="painel-importador.html">&#8592; Voltar</a>
+      <div class="sec-title">Cadastro da importadora</div><div class="sec-rule"></div>
+      <div class="card imp-form">
+        <p style="font-size:13px;color:#5b5446;margin:0 0 4px;">Preencha os dados da importadora. Eles nos ajudam a organizar as cobranças, as entronizações e a comunicação do programa.</p>
+        <div class="sec-sub">Dados da importadora</div>
+        <div class="grid">
+          <input class="inp" id="ciNome" placeholder="Nome (como aparece no programa)">
+          <input class="inp" id="ciRazao" placeholder="Razão social">
+          <input class="inp" id="ciFantasia" placeholder="Nome fantasia">
+          <input class="inp" id="ciCnpj" placeholder="CNPJ">
+          <input class="inp" id="ciEnd" placeholder="Endereço completo">
+          <input class="inp" id="ciCidade" placeholder="Cidade / UF">
+          <input class="inp" id="ciTel" placeholder="Telefone">
+          <input class="inp" id="ciInsta" placeholder="Instagram">
+        </div>
+        <div class="sec-sub">E-mails</div>
+        <div class="grid">
+          <input class="inp" id="ciEmailOf" placeholder="E-mail oficial">
+          <input class="inp" id="ciEmailCor" placeholder="E-mail de correspondência">
+          <input class="inp" id="ciEmailFin" placeholder="E-mail do financeiro (cobranças anuais)">
+          <input class="inp" id="ciEmailInst" placeholder="E-mail institucional (entronizações e eventos)">
+        </div>
+        <div class="sec-sub">Representante — será entronizado Comendador (anuidade isenta)</div>
+        <div class="grid">
+          <input class="inp" id="ciRepNome" placeholder="Nome do representante">
+          <input class="inp" id="ciRepEmail" placeholder="E-mail">
+          <input class="inp" id="ciRepTel" placeholder="Telefone / WhatsApp">
+        </div>
+        <div class="sec-sub">Contato de comunicação com a Commanderie</div>
+        <div class="grid">
+          <input class="inp" id="ciContNome" placeholder="Nome do contato">
+          <input class="inp" id="ciContEmail" placeholder="E-mail">
+          <input class="inp" id="ciContTel" placeholder="Telefone / WhatsApp">
+        </div>
+        <div style="margin-top:14px;"><button class="btn-n" onclick="salvarCadastro()">Salvar cadastro</button><span class="msg" id="ciMsg"></span></div>
+      </div>
     </div>
 
   </div>
@@ -198,9 +286,8 @@ async function init(){
       var li=await sb.from("importadoras").select("*").order("nome",{ascending:true});
       var selImp=document.getElementById("impAs");var minhaImp=null;
       if(!li.error&&selImp){(li.data||[]).forEach(function(im){IMPS_BY_ID[im.id]=im;if(im.owner_user_id===u.id)minhaImp=im;selImp.innerHTML+="<option value=\""+im.id+"\">"+esc(im.nome)+(im.owner_user_id===u.id?" (a minha)":"")+"</option>";});}
-      var w=document.getElementById("impAsWrap");if(w)w.style.display="block";
       if(selImp){var saved=null;try{saved=localStorage.getItem("imp_as");}catch(e){}
-        var initVal=(saved==="__conselho__"||saved===""||(saved&&IMPS_BY_ID[saved]))?saved:(minhaImp?minhaImp.id:"");
+        var initVal=(minhaImp?minhaImp.id:"");
         selImp.value=initVal;trocarImp();}
     }
   } else {
@@ -235,9 +322,11 @@ function trocarImp(){
   }
   var s=curSec();if(s)loadSec(s);
 }
+function carregarCadastro(){if(!IMP)return;var g=function(id,v){var e=document.getElementById(id);if(e)e.value=v||"";};g("ciNome",IMP.nome);g("ciRazao",IMP.razao_social);g("ciFantasia",IMP.nome_fantasia);g("ciCnpj",IMP.cnpj);g("ciEnd",IMP.endereco);g("ciCidade",IMP.cidade);g("ciTel",IMP.telefone);g("ciInsta",IMP.instagram);g("ciEmailOf",IMP.email);g("ciEmailCor",IMP.email_correspondencia);g("ciEmailFin",IMP.email_financeiro);g("ciEmailInst",IMP.email_institucional);g("ciRepNome",IMP.responsavel_nome);g("ciRepEmail",IMP.representante_email);g("ciRepTel",IMP.representante_tel);g("ciContNome",IMP.contato_nome);g("ciContEmail",IMP.contato_email);g("ciContTel",IMP.contato_tel);}
+async function salvarCadastro(){var msg=document.getElementById("ciMsg");var nome=val("ciNome");if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o nome da importadora.";return;}if(!IMP||!IMP.id){msg.style.color="#8f1d24";msg.textContent="Selecione a sua importadora.";return;}msg.style.color="#2f6b3a";msg.textContent="Salvando…";var pl={nome:nome,razao_social:val("ciRazao"),nome_fantasia:val("ciFantasia"),cnpj:val("ciCnpj"),endereco:val("ciEnd"),cidade:val("ciCidade"),telefone:val("ciTel"),instagram:val("ciInsta"),email:val("ciEmailOf"),email_correspondencia:val("ciEmailCor"),email_financeiro:val("ciEmailFin"),email_institucional:val("ciEmailInst"),representante_nome:val("ciRepNome"),representante_email:val("ciRepEmail"),representante_tel:val("ciRepTel"),contato_nome:val("ciContNome"),contato_email:val("ciContEmail"),contato_tel:val("ciContTel")};var r=await sb.rpc("importadora_set_cadastro",{p_imp:IMP.id,p:pl});if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}for(var k in pl){if(k==="representante_nome")IMP.responsavel_nome=pl[k];else IMP[k]=pl[k];}if(IMPS_BY_ID[IMP.id])IMPS_BY_ID[IMP.id]=IMP;document.getElementById("impNome").textContent=IMP.nome;msg.textContent="Salvo! ✓";}
 function mostrarSecao(){
   var sec=curSec();
-  var map={anuidade:"secAnuid",comendadores:"secComend",embaixadas:"secEmb",parceiros:"secParc",beneficios:"secBenef",importadoras:"secImps",programa:"secProg"};
+  var map={vantagens:"secVant",anuidade:"secAnuid",comendadores:"secComend",embaixadas:"secEmb",parceiros:"secParc",beneficios:"secBenef",importadoras:"secImps",programa:"secProg",cadastro:"secCad"};
   Object.keys(map).forEach(function(k){var e=document.getElementById(map[k]);if(e)e.style.display="none";});
   var menu=document.getElementById("menu");
   if(sec&&map[sec]){if(menu)menu.style.display="none";var b=document.getElementById(map[sec]);if(b)b.style.display="block";loadSec(sec);}
@@ -250,26 +339,30 @@ function loadSec(sec){try{
   else if(sec==="parceiros")carregarParceiros();
   else if(sec==="beneficios")carregarBeneficios();
   else if(sec==="importadoras")carregarImportadoras();
+  else if(sec==="cadastro")carregarCadastro();
 }catch(e){console.error(e);}}
 function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
-function cotaUI(usado,cota,elId,btnId,verbo){var el=document.getElementById(elId);var extra=usado>=cota;if(el){el.textContent=usado+" de "+cota+" incluídas em "+ANO+(extra?" · próximas a R$ 1.000":"");el.className="cota"+(extra?" full":"");}var b=document.getElementById(btnId);if(b)b.textContent=extra?(verbo+" extra (R$ 1.000)"):verbo;}
+function cotaUI(usado,cota,elId,btnId,verbo,preco){var el=document.getElementById(elId);var extra=usado>=cota;var pr=(preco?(typeof preco==="string"?preco:("R$ "+Number(preco).toLocaleString("pt-BR"))):"");if(el){el.textContent=usado+" de "+cota+" incluídas em "+ANO+(extra?(pr?(" · próximas a "+pr):" · acima da cota"):"");el.className="cota"+(extra?" full":"");}var b=document.getElementById(btnId);if(b)b.textContent=extra?(verbo+(pr?(" extra ("+pr+")"):" extra")):verbo;}
 async function carregarAnuidade(){
   var box=document.getElementById("anuidBox");if(!box)return;
   if(!IMP||!IMP.id){box.innerHTML="<p style=\"color:#8a8270;font-size:13px;\">"+(IS_CONSELHO?"Selecione uma importadora no seletor acima para ver a anuidade.":"Anuidade indisponivel.")+"</p>";return;}
   box.innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Carregando…</p>";
-  var q=await sb.from("importadora_membros").select("id",{count:"exact",head:true}).eq("importadora_id",IMP.id).eq("ano",ANO).eq("extra",true);
-  var extras=q.count||0;var base=10000;var total=base+extras*1000;
+  var qm=await sb.from("importadora_membros").select("id",{count:"exact",head:true}).eq("importadora_id",IMP.id).eq("ano",ANO).eq("extra",true);
+  var qe=await sb.from("importadora_restaurantes").select("id",{count:"exact",head:true}).eq("importadora_id",IMP.id).eq("ano",ANO).eq("extra",true);
+  var exM=qm.count||0,exE=qe.count||0;var base=Number(IMP.anuidade_valor)||1800;var total=base+exM*200;
   var paga=(IMP.anuidade_paga===true&&Number(IMP.anuidade_ano)===ANO);
   function brl(n){return "R$ "+Number(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function eur(n){return "€ "+Number(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
   var pill=paga?"<span class=\"pill\" style=\"background:#eef6ef;color:#2f6b3a;border:1px solid #cfe6d3;\">Anuidade em dia</span>":"<span class=\"pill\" style=\"background:#f6efdc;color:#8a6a1f;border:1px solid var(--line);\">A pagar</span>";
-  var linhas="<div style=\"display:flex;justify-content:space-between;\"><span>Anuidade base "+ANO+"</span><b>"+brl(base)+"</b></div>";
-  if(extras>0)linhas+="<div style=\"display:flex;justify-content:space-between;\"><span>"+extras+" indica"+(extras>1?"ções":"ção")+" extra"+(extras>1?"s":"")+" (R$ 1.000 cada)</span><b>"+brl(extras*1000)+"</b></div>";
-  linhas+="<div style=\"display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:6px;padding-top:6px;\"><span><b>Total "+ANO+"</b></span><b style=\"color:var(--navy);\">"+brl(total)+"</b></div>";
+  var plano=(IMP.plano||"Ouro");var linhas="<div style=\"display:flex;justify-content:space-between;\"><span>Cota "+plano+" "+ANO+"</span><b>"+eur(base)+"</b></div>";
+  if(exM>0)linhas+="<div style=\"display:flex;justify-content:space-between;\"><span>"+exM+" Comendador(es) extra (€ 200 cada)</span><b>"+eur(exM*200)+"</b></div>";
+    linhas+="<div style=\"display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:6px;padding-top:6px;\"><span><b>Total "+ANO+"</b></span><b style=\"color:var(--navy);\">"+eur(total)+"</b></div>";
   var pix=paga?"":"<div style=\"background:#faf6ea;border:1px solid #e6d9b3;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13.5px;line-height:1.6;\"><b>Como pagar (PIX)</b><br>Chave: <b>69.296.264/0001-30</b><br>Commanderie de Bordeaux do Brasil<br>Depois envie o comprovante para <a href=\"mailto:sac@commanderiedebordeaux.com.br\" style=\"color:var(--navy);font-weight:bold;\">sac@commanderiedebordeaux.com.br</a>.<br><span style=\"display:inline-block;margin-top:8px;color:#8a6a1f;font-size:11.5px;line-height:1.5;\">&#8987; Por enquanto os pagamentos são recebidos por <b>Commanderie de Bordeaux do Brasil</b> (Presidente). Em breve será direto à Commanderie, com opção de <b>cartão de crédito</b>.</span></div>";
   var admin="";
-  if(IS_CONSELHO){admin="<div style=\"margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;\">"+(paga?("<span style=\"font-size:12.5px;color:#2f6b3a;\">Paga em "+fdata(IMP.anuidade_pago_em)+".</span> <button class=\"btn-n\" style=\"background:#8a8270;margin-left:8px;\" onclick=\"marcarAnuid(false)\">Reabrir</button>"):("<button class=\"btn-n\" onclick=\"marcarAnuid(true)\">Marcar anuidade como paga</button>"))+" <span class=\"msg\" id=\"anuidMsg\"></span></div>";}
-  box.innerHTML="<div style=\"display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;\"><div style=\"font-family:Georgia,serif;color:var(--navy);font-size:18px;\">"+esc(IMP.nome)+"</div>"+pill+"</div><div style=\"font-size:14px;color:#2a2620;\">"+linhas+"</div>"+pix+admin;
+  if(IS_CONSELHO){admin="<div style=\"margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;\">"+(paga?("<span style=\"font-size:12.5px;color:#2f6b3a;\">Paga em "+fdata(IMP.anuidade_pago_em)+".</span> <button class=\"btn-n\" style=\"background:#8a8270;margin-left:8px;\" onclick=\"marcarAnuid(false)\">Reabrir</button>"):("<button class=\"btn-n\" onclick=\"marcarAnuid(true)\">Marcar anuidade como paga</button>"))+" <span class=\"msg\" id=\"anuidMsg\"></span><div style=\"margin-top:10px;font-size:12.5px;color:#5b5446;\">Plano: <select class=\"inp\" style=\"max-width:180px;display:inline-block;\" onchange=\"setPlano(this.value)\"><option value=\"Ouro\""+(plano==="Ouro"?" selected":"")+">Ouro — € 1.800 (2/2)</option><option value=\"Prata\""+(plano==="Prata"?" selected":"")+">Prata — € 900 (1/1)</option></select> <span class=\"msg\" id=\"planoMsg\"></span></div></div>";}
+  var planoSelo="<span class=\"placa-b "+(plano==="Prata"?"b-prata":"b-ouro")+"\" style=\"margin-left:8px;\">Plano "+plano+"</span>";box.innerHTML="<div style=\"display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;\"><div style=\"font-family:Georgia,serif;color:var(--navy);font-size:18px;\">"+esc(IMP.nome)+planoSelo+"</div>"+pill+"</div><div style=\"font-size:14px;color:#2a2620;\">"+linhas+"</div>"+pix+admin;
 }
+async function setPlano(v){var m=document.getElementById("planoMsg");if(m){m.style.color="#2f6b3a";m.textContent="Salvando…";}var r=await sb.rpc("importadora_set_plano",{p_imp:IMP.id,p_plano:v});if(r.error){if(m){m.style.color="#8f1d24";m.textContent=r.error.message;}return;}IMP.plano=v;IMP.cota_membros=(v==="Prata"?1:2);IMP.cota_restaurantes=(v==="Prata"?1:2);IMP.anuidade_valor=(v==="Prata"?900:1800);if(IMPS_BY_ID[IMP.id]){IMPS_BY_ID[IMP.id].plano=v;IMPS_BY_ID[IMP.id].cota_membros=IMP.cota_membros;IMPS_BY_ID[IMP.id].cota_restaurantes=IMP.cota_restaurantes;IMPS_BY_ID[IMP.id].anuidade_valor=IMP.anuidade_valor;}carregarAnuidade();}
 async function marcarAnuid(paga){
   var msg=document.getElementById("anuidMsg");if(msg){msg.style.color="#2f6b3a";msg.textContent="Salvando...";}
   var r=await sb.rpc("marcar_anuidade_programa",{p_tipo:"importadora",p_id:IMP.id,p_paga:paga,p_ano:ANO});
@@ -282,7 +375,7 @@ async function carregarComendadores(){
   var q=await sb.from("importadora_membros").select("*,importadoras(nome)").order("created_at",{ascending:false});
   var rows=q.error?[]:(q.data||[]);
   MEUS_MEM=rows.filter(function(x){return x.importadora_id===IMP.id;});
-  cotaUI(MEUS_MEM.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_membros||2,"cotaMem","btnMem","Indicar membro");
+  cotaUI(MEUS_MEM.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_membros||2,"cotaMem","btnMem","Indicar membro","€ 200");
   if(q.error){document.getElementById("tabComend").innerHTML="<p style=\"color:#9a937f;font-size:13px;\">"+esc(q.error.message)+"</p>";return;}
   if(!rows.length){document.getElementById("tabComend").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhum comendador indicado ainda.</p>";return;}
   var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Indicado</th><th>Tipo</th><th>Núcleo</th><th>Entronização</th><th>Status</th><th></th></tr></thead><tbody>";
@@ -294,7 +387,7 @@ async function carregarEmbaixadas(){
   var rows=q.error?[]:(q.data||[]);
   MINHAS_EMB=rows.filter(function(x){return x.importadora_id===IMP.id;});
   if(IMP&&IMP.__ilimitado){var elc=document.getElementById("cotaEmb");if(elc){elc.textContent="Ilimitado · Conselho/Grão-Mestre";elc.className="cota";}var bbtn=document.getElementById("btnEmb");if(bbtn)bbtn.textContent="Indicar embaixada";}
-  else cotaUI(MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_restaurantes||2,"cotaEmb","btnEmb","Indicar embaixada");
+  else cotaUI(MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length,IMP.cota_restaurantes||3,"cotaEmb","btnEmb","Indicar embaixada",0);
   if(q.error){document.getElementById("tabEmb").innerHTML="<p style=\"color:#9a937f;font-size:13px;\">"+esc(q.error.message)+"</p>";return;}
   if(!rows.length){document.getElementById("tabEmb").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma embaixada indicada ainda.</p>";return;}
   var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Restaurante</th><th>Endereço</th><th>Cidade</th><th>Responsável</th><th>Telefone</th><th>Categoria</th><th>Status</th><th></th></tr></thead><tbody>";
@@ -332,7 +425,7 @@ async function addMembro(){
   var msg=document.getElementById("mMsg");var nome=val("mNome");
   if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o nome.";return;}
   var doAno=MEUS_MEM.filter(function(x){return Number(x.ano)===ANO;}).length;var extra=doAno>=(IMP.cota_membros||2);
-  if(extra&&!confirm("Esta indicação é EXTRA (além das 2 incluídas no ano). Custo: R$ 1.000. Confirmar?"))return;
+  if(extra&&!confirm("Esta indicação é EXTRA (além das "+(IMP.cota_membros||2)+" do seu plano). O 1º ano da anuidade fica por conta da importadora (€ 200); do 2º ano em diante, € 200/ano pelo Comendador ou pela importadora. Confirmar?"))return;
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
   var r=await sb.from("importadora_membros").insert({importadora_id:IMP.id,ano:ANO,nome:nome,email:val("mEmail")||null,tipo:val("mTipo"),nucleo:val("mNucleo")||null,apresentacao:val("mApres")||null,anuidade_por:val("mPagador")||"padrinho_primeira",extra:extra});
   if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}
@@ -343,7 +436,7 @@ async function addEmb(){
   if(!nome){msg.style.color="#8f1d24";msg.textContent="Informe o restaurante.";return;}
   var ilim=!!(IMP&&IMP.__ilimitado);var extra=false;
   if(!ilim){var doAno=MINHAS_EMB.filter(function(x){return Number(x.ano)===ANO;}).length;extra=doAno>=(IMP.cota_restaurantes||2);
-    if(extra&&!confirm("Esta embaixada é EXTRA (além das 2 incluídas no ano). Custo: R$ 1.000. Confirmar?"))return;}
+    if(extra&&!confirm("Esta embaixada é EXTRA (além das "+(IMP.cota_restaurantes||3)+" do seu plano). As Embaixadas não têm custo; ficam sujeitas à validação anual do Conselho. Confirmar?"))return;}
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
   var r=await sb.from("importadora_restaurantes").insert({importadora_id:IMP.id,ano:ANO,nome:nome,endereco:val("eEndereco")||null,cidade:val("eCidade")||null,responsavel:val("eResp")||null,telefone:val("eTel")||null,placa:val("eCat"),extra:extra});
   if(r.error){msg.style.color="#8f1d24";msg.textContent=r.error.message;return;}

@@ -184,6 +184,18 @@
   <p style="text-align:center;margin-top:16px;" class="valor"><small>R$</small> 950,00 <span style="font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;" data-i18n="valsub">· por Comendador</span></p>
   <p style="text-align:center;font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;margin-top:2px;" data-i18n="convl">Convidado: <b style="color:var(--navy);">R$ 1.250,00</b> &middot; cada Comendador tem direito a <b>um convidado</b></p>
 
+  <div id="jGate" style="display:none;text-align:center;margin-top:16px;">
+    <div id="jGateLogin" style="display:none;">
+      <p style="font-family:Arial,sans-serif;font-size:14.5px;color:var(--ink2);max-width:430px;margin:0 auto 12px;line-height:1.6;">Para ver o PIX e confirmar a sua presença, entre com o seu e-mail de Comendador.</p>
+      <a href="/?login=1" style="display:inline-block;background:#b08a3a;color:#fff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;border-radius:9px;padding:12px 22px;">Entrar</a>
+      <p style="font-family:Arial,sans-serif;font-size:12.5px;color:var(--ink2);margin-top:12px;">Ainda não é Comendador? Peça à Secretaria o link de convite.</p>
+    </div>
+    <div id="jGateVou" style="display:none;">
+      <button class="btn" type="button" onclick="reservarJantar()" id="btnVou">Eu vou! Mostrar o PIX</button>
+      <div id="vouMsg" style="font-family:Arial,sans-serif;font-size:13px;color:var(--ink2);margin-top:10px;"></div>
+    </div>
+  </div>
+  <div id="jCorpo">
   <div class="pixbox" style="margin-top:14px;">
     <img src="/img/pix-commanderie.png" alt="QR Code PIX — Commanderie de Bordeaux do Brasil">
     <div class="pixinfo">
@@ -206,6 +218,7 @@
     <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;margin-bottom:10px;" data-i18n="cmplbl">Comprovante do pagamento</div>
     <label class="cmpfile"><span data-i18n="cmpbtn">&#128206; Enviar comprovante do PIX</span><input type="file" accept="image/*,application/pdf" style="display:none" onchange="enviarComp(this)"></label>
     <div id="compMsg" style="font-size:14px;color:var(--ink2);margin-top:14px;font-family:Arial,sans-serif;line-height:1.55;min-height:18px;"></div>
+  </div>
   </div>
   </div>
 
@@ -284,11 +297,13 @@ function atualizarContagem(){
     ["jCount","jCount2"].forEach(function(id){var b=document.getElementById(id);if(b)b.innerHTML=html;});
   }catch(e){}
 }
+function portao(m){var g=document.getElementById("jGate"),c=document.getElementById("jCorpo");if(!g||!c)return;g.style.display=m?"block":"none";c.style.display=m?"none":"block";document.getElementById("jGateLogin").style.display=m==="login"?"block":"none";document.getElementById("jGateVou").style.display=m==="vou"?"block":"none";}
+async function reservarJantar(){var b=document.getElementById("btnVou"),m=document.getElementById("vouMsg");b.disabled=true;m.textContent="Reservando o seu lugar\u2026";var r=await sb.rpc("rsvp_reservar_jantar",{p_evento:EVID});if(r.error){b.disabled=false;m.style.color="#8f1d24";m.textContent="N\u00e3o foi poss\u00edvel reservar agora. Tente de novo ou fale com a Secretaria.";return;}portao("");var c=document.getElementById("jCorpo");if(c)c.scrollIntoView({behavior:"smooth",block:"start"});}
 async function statusJantar(){
   var load=document.getElementById("jLoad"),pay=document.getElementById("jPagar"),ok=document.getElementById("jConfirmado");
   function mostra(el){["jLoad","jPagar","jConfirmado","jAnalise"].forEach(function(id){var e=document.getElementById(id);if(e)e.style.display=(id===el)?"block":"none";});}
   try{
-    var u=(await sb.auth.getUser()).data.user; if(!u){mostra("jPagar");return;}
+    var u=(await sb.auth.getUser()).data.user; if(!u){mostra("jPagar");portao("login");return;}
     var nome="",grau="";try{var mm=await sb.from("membros").select("nome,grau").eq("user_id",u.id).maybeSingle();nome=(mm.data&&mm.data.nome)||"";grau=(mm.data&&mm.data.grau)||"";}catch(e){}
     var gl=(function(g){g=(""+g).toLowerCase();if(g.indexOf("grão")>=0||g.indexOf("grao")>=0)return "Grão-Mestre";if(g.indexOf("mestre")>=0)return "Mestre";return "Comendador";})(grau);
     var r=await sb.from("evento_rsvp").select("status,convidado_nome,restricao,restricao_convidado,comprovante_url").eq("evento_id",EVID).eq("user_id",u.id).order("pago_valor",{ascending:false,nullsFirst:false}).limit(1).maybeSingle();
@@ -305,10 +320,10 @@ async function statusJantar(){
       _nomeJ=nome||"";atualizarContagem();
       carregarConfirmados();
     }else{
-      mostra("jPagar");
+      mostra("jPagar");portao((r&&r.data)?"":"vou");
       if(r&&r.data){var g=function(id,v){var e=document.getElementById(id);if(e&&v)e.value=v;};g("jConv",r.data.convidado_nome);g("jRest",r.data.restricao);g("jRestc",r.data.restricao_convidado);}
     }
-  }catch(e){mostra("jPagar");}
+  }catch(e){mostra("jPagar");portao("login");}
 }
 async function carregarConfirmados(){
   try{

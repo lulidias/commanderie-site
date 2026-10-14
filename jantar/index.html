@@ -327,11 +327,14 @@ async function statusJantar(){
 }
 async function carregarConfirmados(){
   try{
-    var r=await sb.rpc("lista_confirmados",{p_evento:EVID});
+    var r=await sb.rpc("lista_presenca_jantar",{p_evento:EVID});var novo=!!(r&&!r.error&&Array.isArray(r.data));
+    if(!novo)r=await sb.rpc("lista_confirmados",{p_evento:EVID});
     var rows=(r&&r.data)||[];
     var gl=function(g){g=(""+g).toLowerCase();if(g.indexOf("grão")>=0||g.indexOf("grao")>=0)return "Grão-Mestre";if(g.indexOf("mestre")>=0)return "Mestre";return "Comendador";};
     var esc=function(s){return (""+(s==null?"":s)).replace(/[&<>]/g,function(c){return c==="&"?"&amp;":(c==="<"?"&lt;":"&gt;");});};
-    var html=rows.map(function(x){var conv=x.convidado?(" <span style=\"color:var(--gold);font-size:13px;\">+ "+esc(x.convidado)+"</span>"):"";return "<div style=\"display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line);\"><span style=\"color:var(--navy);font-size:15px;\">"+esc(x.nome)+conv+"</span><span style=\"font-family:Arial,sans-serif;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:#9a8f72;\">"+gl(x.grau)+"</span></div>";}).join("");
+    var gl0=gl;gl=function(g){var t=(""+(g||"")).toLowerCase();if(t==="produtor"||t==="convidado"||t==="futuro membro")return g;return gl0(g);};
+    var _tit={1:"Comendadores",2:"Produtores",3:"Convidados"},_ult=0;
+    var html=rows.map(function(x){var cab="";if(novo&&x.ord&&x.ord!==_ult){_ult=x.ord;var n=rows.filter(function(z){return z.ord===x.ord;}).length;cab="<div style=\"font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;margin:18px 0 4px;\">"+_tit[x.ord]+" ("+n+")</div>";}var conv=(x.convidado?(" <span style=\"color:var(--gold);font-size:13px;\">+ "+esc(x.convidado)+"</span>"):"")+(x.detalhe?(" <span style=\"color:#9a8f72;font-size:12.5px;\">· "+esc(x.detalhe)+"</span>"):"");return cab+"<div style=\"display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line);\"><span style=\"color:var(--navy);font-size:15px;\">"+esc(x.nome)+conv+"</span><span style=\"font-family:Arial,sans-serif;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:#9a8f72;\">"+gl(x.grau)+"</span></div>";}).join("");
     ["jLista","jLista2"].forEach(function(id){var b=document.getElementById(id);if(b)b.innerHTML=html;});
     var _tot=rows.length;for(var _i=0;_i<rows.length;_i++){if(rows[_i].convidado&&(""+rows[_i].convidado).trim())_tot++;}
     ["jListaCount","jListaCount2"].forEach(function(id){var c=document.getElementById(id);if(c)c.textContent="("+_tot+")";});

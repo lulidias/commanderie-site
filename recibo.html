@@ -6,6 +6,7 @@
 <title>Recibo — Commanderie de Bordeaux do Brasil</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="/img/favicon-64.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:#2a2620;padding:24px 16px 60px}
@@ -82,10 +83,17 @@ body{background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:#2a2620;pad
       <div><label>Cargo</label><input id="f_cargo" value="Grão-Mestre"></div>
       <div><label>Local</label><input id="f_local" value="Curitiba"></div>
     </div>
+    <div class="grid" style="margin-top:12px;border-top:1px solid #ddd0ad;padding-top:12px;">
+      <div><label>Enviar para (e-mail)</label><input id="f_email" type="email" placeholder="email@exemplo.com"></div>
+      <div><label>WhatsApp (opcional)</label><input id="f_tel" placeholder="(11) 90000-0000"></div>
+    </div>
     <div class="btns">
+      <button class="btn g" onclick="enviarEmail()">&#9993; Enviar por e-mail</button>
+      <button class="btn" style="background:#25D366" onclick="enviarWhats()">WhatsApp</button>
       <button class="btn" onclick="window.print()">Imprimir / Salvar em PDF</button>
       <button class="btn o" onclick="history.length>1?history.back():window.close()">Voltar</button>
     </div>
+    <div id="envMsg" style="font-size:13px;margin-top:10px;min-height:16px;"></div>
   </div>
 
   <div class="rec"><div class="in">
@@ -154,12 +162,25 @@ function render(){var tp=TIPOS[$("f_tipo").value]||TIPOS.outro;var v=num($("f_va
   $("r_local").textContent=$("f_local").value||"Curitiba";$("r_sig").textContent=$("f_ass").value;$("r_ass").textContent=$("f_ass").value;$("r_cargo").textContent=$("f_cargo").value;
   document.title="Recibo "+($("f_num").value||"")+" — "+($("f_nome").value||"");}
 (function(){var P=new URLSearchParams(location.search);
-  var map={tipo:"f_tipo",nome:"f_nome",doc:"f_doc",valor:"f_valor",data:"f_data",n:"f_num",desc:"f_desc",forma:"f_forma",ass:"f_ass",cargo:"f_cargo",local:"f_local"};
+  var map={tipo:"f_tipo",nome:"f_nome",doc:"f_doc",valor:"f_valor",data:"f_data",n:"f_num",desc:"f_desc",forma:"f_forma",ass:"f_ass",cargo:"f_cargo",local:"f_local",email:"f_email",tel:"f_tel"};
   Object.keys(map).forEach(function(k){if(P.get(k)!=null)$(map[k]).value=P.get(k);});
   if(!$("f_data").value)$("f_data").value=new Date().toISOString().slice(0,10);
   if(!$("f_num").value){var d=new Date();$("f_num").value=d.getFullYear()+"-"+String(Date.now()).slice(-5);}
   ["f_tipo","f_nome","f_doc","f_valor","f_data","f_num","f_desc","f_forma","f_ass","f_cargo","f_local"].forEach(function(i){$(i).addEventListener("input",render);$(i).addEventListener("change",render);});
   render();})();
+function linkRecibo(){var ks={tipo:"f_tipo",nome:"f_nome",doc:"f_doc",valor:"f_valor",data:"f_data",n:"f_num",desc:"f_desc",forma:"f_forma",ass:"f_ass",cargo:"f_cargo",local:"f_local"};return location.origin+"/recibo.html?"+Object.keys(ks).filter(function(k){return $(ks[k]).value;}).map(function(k){return k+"="+encodeURIComponent($(ks[k]).value);}).join("&")+"&v=1";}
+function msg(t,c){var m=$("envMsg");m.style.color=c||"#5b5446";m.textContent=t;}
+async function enviarEmail(){var para=($("f_email").value||"").trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(para)){msg("Informe um e-mail v\u00e1lido.","#8f1d24");return;}
+  if(!confirm("Enviar o recibo de "+brl(num($("f_valor").value))+" para "+para+"?"))return;
+  msg("Enviando\u2026");
+  try{var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+    var tp=TIPOS[$("f_tipo").value]||TIPOS.outro;
+    var r=await sb.rpc("conselho_enviar_recibo",{p_para:para,p_nome:$("f_nome").value||"",p_valor:brl(num($("f_valor").value)),p_descricao:tp.t+(($("f_desc").value||"").trim()?(" \u2014 "+$("f_desc").value.trim()):""),p_link:linkRecibo()});
+    if(r.error){msg("Erro: "+r.error.message+(/negado|JWT|auth/i.test(r.error.message)?" (entre no site com a conta do Conselho e abra o recibo de novo)":""),"#8f1d24");return;}
+    msg("\u2714 Recibo enviado para "+para+".","#2f6b3a");
+  }catch(e){msg("N\u00e3o foi poss\u00edvel enviar agora.","#8f1d24");}}
+function enviarWhats(){var tp=TIPOS[$("f_tipo").value]||TIPOS.outro;var t="Ol\u00e1"+($("f_nome").value?(" "+$("f_nome").value.split(" ")[0]):"")+", segue o seu recibo da Commanderie de Bordeaux ("+tp.t+", "+brl(num($("f_valor").value))+"): "+linkRecibo();
+  var tel=($("f_tel").value||"").replace(/\D/g,"");if(tel&&tel.length<=11)tel="55"+tel;window.open("https://wa.me/"+(tel||"")+"?text="+encodeURIComponent(t),"_blank");}
 </script>
 </body>
 </html>

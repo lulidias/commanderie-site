@@ -7,6 +7,7 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="/img/favicon-64.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:#2a2620;padding:24px 16px 60px}
@@ -89,7 +90,8 @@ body{background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:#2a2620;pad
     </div>
     <div class="btns">
       <button class="btn g" onclick="enviarEmail()">&#9993; Enviar por e-mail</button>
-      <button class="btn" style="background:#25D366" onclick="enviarWhats()">WhatsApp</button>
+      <button class="btn" style="background:#25D366" onclick="whatsImagem()">WhatsApp (recibo em imagem)</button>
+      <button class="btn o" onclick="enviarWhats()">WhatsApp (link)</button>
       <button class="btn" onclick="window.print()">Imprimir / Salvar em PDF</button>
       <button class="btn o" onclick="history.length>1?history.back():window.close()">Voltar</button>
     </div>
@@ -175,10 +177,23 @@ async function enviarEmail(){var para=($("f_email").value||"").trim();if(!/^[^@\
   msg("Enviando\u2026");
   try{var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
     var tp=TIPOS[$("f_tipo").value]||TIPOS.outro;
-    var r=await sb.rpc("conselho_enviar_recibo",{p_para:para,p_nome:$("f_nome").value||"",p_valor:brl(num($("f_valor").value)),p_descricao:tp.t+(($("f_desc").value||"").trim()?(" \u2014 "+$("f_desc").value.trim()):""),p_link:linkRecibo()});
+    var img=null;try{msg("Gerando a imagem do recibo\u2026");var bl=await imagemRecibo(true);var path="recibos/"+new Date().getFullYear()+"/"+(($("f_num").value||"r").replace(/[^A-Za-z0-9-]/g,""))+"-"+Date.now()+".jpg";var up=await sb.storage.from("comprovantes").upload(path,bl,{contentType:"image/jpeg"});if(!up.error)img=sb.storage.from("comprovantes").getPublicUrl(path).data.publicUrl;}catch(e){}
+    msg("Enviando\u2026");
+    var args={p_para:para,p_nome:$("f_nome").value||"",p_valor:brl(num($("f_valor").value)),p_descricao:tp.t+(($("f_desc").value||"").trim()?(" \u2014 "+$("f_desc").value.trim()):""),p_link:linkRecibo()};if(img)args.p_imagem=img;
+    var r=await sb.rpc("conselho_enviar_recibo",args);
     if(r.error){msg("Erro: "+r.error.message+(/negado|JWT|auth/i.test(r.error.message)?" (entre no site com a conta do Conselho e abra o recibo de novo)":""),"#8f1d24");return;}
-    msg("\u2714 Recibo enviado para "+para+".","#2f6b3a");
+    msg("\u2714 Recibo enviado para "+para+(img?" (com a imagem do recibo).":"."),"#2f6b3a");
   }catch(e){msg("N\u00e3o foi poss\u00edvel enviar agora.","#8f1d24");}}
+function imagemRecibo(jpg){return new Promise(function(ok,err){if(!window.html2canvas){err("sem html2canvas");return;}html2canvas(document.querySelector(".rec"),{scale:jpg?1.5:2,backgroundColor:"#ffffff",useCORS:true}).then(function(c){c.toBlob(function(b){b?ok(b):err("vazio");},jpg?"image/jpeg":"image/png",0.88);}).catch(err);});}
+async function whatsImagem(){msg("Gerando a imagem do recibo\u2026");var b;try{b=await imagemRecibo();}catch(e){msg("N\u00e3o foi poss\u00edvel gerar a imagem. Use \u201cWhatsApp (link)\u201d.","#8f1d24");return;}
+  var nome="recibo-"+(($("f_num").value||"commanderie").replace(/[^A-Za-z0-9-]/g,""))+".png";var f=new File([b],nome,{type:"image/png"});
+  var mobile=/iPhone|iPad|Android/i.test(navigator.userAgent);
+  if(mobile&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],text:"Recibo \u2014 Commanderie de Bordeaux do Brasil"});msg("\u2714 Escolha o WhatsApp e a conversa.","#2f6b3a");}catch(e){msg("");}return;}
+  var tel=($("f_tel").value||"").replace(/\D/g,"");if(tel&&tel.length<=11)tel="55"+tel;
+  var w=window.open("about:blank","_blank");
+  try{await navigator.clipboard.write([new ClipboardItem({"image/png":b})]);msg("\u2714 Imagem do recibo copiada. Na conversa do WhatsApp, cole (Cmd+V / Ctrl+V) e envie.","#2f6b3a");}
+  catch(e){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=nome;a.click();msg("A imagem foi baixada ("+nome+"). Na conversa do WhatsApp, anexe o arquivo.","#5b5446");}
+  if(w)w.location=tel?("https://web.whatsapp.com/send?phone="+tel):"https://web.whatsapp.com/";}
 function enviarWhats(){var tp=TIPOS[$("f_tipo").value]||TIPOS.outro;var t="Ol\u00e1"+($("f_nome").value?(" "+$("f_nome").value.split(" ")[0]):"")+", segue o seu recibo da Commanderie de Bordeaux ("+tp.t+", "+brl(num($("f_valor").value))+"): "+linkRecibo();
   var tel=($("f_tel").value||"").replace(/\D/g,"");if(tel&&tel.length<=11)tel="55"+tel;window.open("https://wa.me/"+(tel||"")+"?text="+encodeURIComponent(t),"_blank");}
 </script>

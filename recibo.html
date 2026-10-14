@@ -185,10 +185,17 @@ async function enviarEmail(){var para=($("f_email").value||"").trim();if(!/^[^@\
     msg("\u2714 Recibo enviado para "+para+(img?" (com a imagem do recibo).":"."),"#2f6b3a");
   }catch(e){msg("N\u00e3o foi poss\u00edvel enviar agora.","#8f1d24");}}
 function imagemRecibo(jpg){return new Promise(function(ok,err){if(!window.html2canvas){err("sem html2canvas");return;}html2canvas(document.querySelector(".rec"),{scale:jpg?1.5:2,backgroundColor:"#ffffff",useCORS:true}).then(function(c){c.toBlob(function(b){b?ok(b):err("vazio");},jpg?"image/jpeg":"image/png",0.88);}).catch(err);});}
-async function whatsImagem(){msg("Gerando a imagem do recibo\u2026");var b;try{b=await imagemRecibo();}catch(e){msg("N\u00e3o foi poss\u00edvel gerar a imagem. Use \u201cWhatsApp (link)\u201d.","#8f1d24");return;}
+var _pre={b:null,k:""};function chaveRec(){return ["f_tipo","f_nome","f_doc","f_valor","f_data","f_num","f_desc","f_forma","f_ass","f_cargo","f_local"].map(function(i){return $(i).value;}).join("|");}
+function preparar(){var k=chaveRec();if(_pre.k===k&&_pre.b)return;_pre.b=null;_pre.k=k;imagemRecibo().then(function(b){if(_pre.k===k)_pre.b=b;}).catch(function(){});}
+var _t=null;document.addEventListener("input",function(){clearTimeout(_t);_t=setTimeout(preparar,900);});document.addEventListener("change",function(){clearTimeout(_t);_t=setTimeout(preparar,900);});
+window.addEventListener("load",function(){setTimeout(preparar,700);});
+async function whatsImagem(){var b=(_pre.k===chaveRec())?_pre.b:null;var mobile=/iPhone|iPad|Android/i.test(navigator.userAgent);
+  if(!b&&mobile){msg("Preparando a imagem\u2026 toque de novo em \u201cWhatsApp (recibo em imagem)\u201d em 2 segundos.","#8a6a1f");preparar();return;}
+  if(!b){msg("Gerando a imagem do recibo\u2026");try{b=await imagemRecibo();}catch(e){msg("N\u00e3o foi poss\u00edvel gerar a imagem. Use \u201cWhatsApp (link)\u201d.","#8f1d24");return;}}
   var nome="recibo-"+(($("f_num").value||"commanderie").replace(/[^A-Za-z0-9-]/g,""))+".png";var f=new File([b],nome,{type:"image/png"});
   var mobile=/iPhone|iPad|Android/i.test(navigator.userAgent);
-  if(mobile&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],text:"Recibo \u2014 Commanderie de Bordeaux do Brasil"});msg("\u2714 Escolha o WhatsApp e a conversa.","#2f6b3a");}catch(e){msg("");}return;}
+  if(mobile&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]});msg("\u2714 Enviado.","#2f6b3a");}catch(e){if(e&&e.name==="AbortError"){msg("");}else{msg("O celular n\u00e3o abriu o compartilhamento ("+(e&&e.name||"erro")+"). A imagem foi baixada: anexe no WhatsApp.","#8f1d24");var a2=document.createElement("a");a2.href=URL.createObjectURL(b);a2.download=nome;a2.click();}}return;}
+  if(mobile){var a3=document.createElement("a");a3.href=URL.createObjectURL(b);a3.download=nome;a3.click();msg("A imagem do recibo foi salva. Abra o WhatsApp e anexe a imagem.","#5b5446");return;}
   var tel=($("f_tel").value||"").replace(/\D/g,"");if(tel&&tel.length<=11)tel="55"+tel;
   var w=window.open("about:blank","_blank");
   try{await navigator.clipboard.write([new ClipboardItem({"image/png":b})]);msg("\u2714 Imagem do recibo copiada. Na conversa do WhatsApp, cole (Cmd+V / Ctrl+V) e envie.","#2f6b3a");}

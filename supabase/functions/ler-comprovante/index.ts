@@ -7,7 +7,7 @@ const CORS = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 const V_COMENDADOR = 950, V_CONVIDADO = 1250, V_TOTAL = 2200, CNPJ = "69296264000130";
-const VALIDOS = [V_COMENDADOR, V_CONVIDADO, V_TOTAL];
+let VALIDOS = [V_COMENDADOR, V_CONVIDADO, V_TOTAL];
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   const json = (o: unknown) => new Response(JSON.stringify(o), { headers: { ...CORS, "Content-Type": "application/json" } });
@@ -16,6 +16,7 @@ Deno.serve(async (req) => {
     if (!url) return json({ pago: false, motivo: "sem_url" });
     const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
+    let nomeEvento = "Jantar de 1 Ano", precoUnico = false;
     let esperado = V_COMENDADOR, temConvidado = false, jaPago = 0, externo = false, quem = "", uid = "";
     if (rsvp_id) {
       const { data: rr } = await sb.from("evento_rsvp")
@@ -27,6 +28,18 @@ Deno.serve(async (req) => {
       if (rr && rr.categoria === "convidado-externo") { externo = true; esperado = V_CONVIDADO; }
       else if (rr && rr.convidado_nome && String(rr.convidado_nome).trim()) { temConvidado = true; esperado = V_TOTAL; }
       jaPago = Number(rr?.pago_valor) || 0;
+      // Evento com preço único por pessoa (ex.: Capítulo X, R$ 1.200 para todos):
+      // o valor vem do próprio evento, e não das constantes do Jantar de 1 Ano.
+      if (rr?.evento_id) {
+        const { data: ev } = await sb.from("eventos").select("titulo,numero,valor").eq("id", rr.evento_id).maybeSingle();
+        const vEv = Number(ev?.valor) || 0;
+        nomeEvento = ev?.numero ? `Capítulo ${ev.numero}` : String(ev?.titulo || nomeEvento);
+        if (vEv > 0 && vEv !== V_COMENDADOR) {
+          precoUnico = true;
+          esperado = temConvidado && !externo ? vEv * 2 : vEv;
+          VALIDOS = [vEv, vEv * 2];
+        }
+      }
       quem = String(rr?.convidado_nome || "").trim();
       uid = String(rr?.user_id || "");
     }
@@ -102,8 +115,8 @@ Deno.serve(async (req) => {
         let nomeMembro = "";
         if (uid) { try { const { data: mm } = await sb.from("membros").select("nome").eq("user_id", uid).maybeSingle(); nomeMembro = String(mm?.nome || "").trim(); } catch (_e) { /* nome é um extra; não bloqueia o lançamento */ } }
         const rotulo = externo
-          ? `Jantar de 1 Ano — ${nomeMembro || ("convidado " + (quem || "externo"))}`
-          : `Jantar de 1 Ano — ${nomeMembro || "Comendador"}${quem ? ` + convidado (${quem})` : ""}`;
+          ? `${nomeEvento} — ${nomeMembro || ("convidado " + (quem || "externo"))}`
+          : `${nomeEvento} — ${nomeMembro || "Comendador"}${quem ? ` + convidado (${quem})` : ""}`;
         await sb.rpc("lancar_receita_rsvp", {
           p_rsvp: rsvp_id, p_valor: novoPago, p_descricao: rotulo,
         });

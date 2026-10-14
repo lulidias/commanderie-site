@@ -115,7 +115,7 @@ async function carregar(){
   document.getElementById("loading").style.display="none";
   if(!u){document.getElementById("needLogin").style.display="block";return;}
   MYRSVP={};try{var rr=await sb.from("evento_rsvp").select("evento_id,status").eq("user_id",u.id);if(rr.data)rr.data.forEach(function(x){MYRSVP[x.evento_id]=x.status;});}catch(e){}
-  var q=await sb.from("eventos").select("*, evento_fotos(id,url,ordem)").order("data",{ascending:true});
+  var q=await sb.from("eventos").select("*, evento_fotos(id,url,ordem)").or("oculto.eq.false,realizado.eq.true").order("data",{ascending:true});
   if(q.error){document.getElementById("needLogin").style.display="block";document.getElementById("needLogin").querySelector("p").textContent="Não foi possível carregar ("+q.error.message+").";return;}
   var rows=q.data||[];
   var hoje=new Date();hoje=new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());

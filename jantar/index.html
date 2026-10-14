@@ -202,7 +202,7 @@
       <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;" data-i18n="pixlbl">Pague por PIX</div>
       <span data-i18n="fav">Favorecido:</span> <b>Commanderie de Bordeaux do Brasil</b><br>
       <span data-i18n="chave">Chave (CNPJ):</span> <b>69.296.264/0001-30</b>
-      <div style="margin-top:10px;"><button class="btn gold" type="button" onclick="copiarPix()" data-i18n="pixbtn">Copiar código PIX</button><span id="pixMsg" class="copied"></span></div>
+      <div style="margin-top:10px;"><button class="btn gold" type="button" onclick="copiarPix()" data-i18n="pixbtn">Copiar código PIX</button> <button class="btn" type="button" onclick="copiarChave()" style="background:transparent;color:var(--navy);border:1px solid var(--gold);">Copiar chave CNPJ</button><span id="pixMsg" class="copied"></span></div><div style="font-family:Arial,sans-serif;font-size:12px;color:var(--ink2);margin-top:8px;line-height:1.5;">No app do banco: o <b>código</b> vai em <b>Pix Copia e Cola</b>; a <b>chave</b> vai em <b>Pix → chave CNPJ</b>.</div>
     </div>
   </div>
 
@@ -267,7 +267,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var PIX="00020126360014BR.GOV.BCB.PIX0114692962640001305204000053039865802BR5925ASSOCIACAO COMMANDERIE DE6008CURITIBA622605224JEzl0eT1M6tFHm5Isrpua6304E2FA";
-function copiarPix(){var m=document.getElementById("pixMsg");try{navigator.clipboard.writeText(PIX);m.textContent="Código copiado!";}catch(e){m.textContent="Copie a chave: 69.296.264/0001-30";}setTimeout(function(){m.textContent="";},3000);}
+function copiarChave(){var m=document.getElementById("pixMsg");try{navigator.clipboard.writeText("69296264000130");m.textContent="Chave CNPJ copiada! No banco: Pix → chave CNPJ.";}catch(e){m.textContent="Chave CNPJ: 69.296.264/0001-30";}setTimeout(function(){m.textContent="";},5000);}
+function copiarPix(){var m=document.getElementById("pixMsg");try{navigator.clipboard.writeText(PIX);m.textContent="Código copiado! No banco, use “Pix Copia e Cola”.";}catch(e){m.textContent="Copie a chave: 69.296.264/0001-30";}setTimeout(function(){m.textContent="";},3000);}
 var EVID="c5adcdf2-07a7-4aa3-ad73-a7b6f88efb2c";
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
 // Portão: sem sessão, a página não mostra nada do evento. Não é só estética —

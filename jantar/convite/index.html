@@ -279,8 +279,8 @@ async function inscrever(ev){
   document.getElementById("frm").style.display="none";
   var p=document.getElementById("passe");
   p.className="passe"; p.style.display="block";
-  p.innerHTML='<div class="okb">\u2713 Dados recebidos \u2014 falta o pagamento</div>'
-    +'<h3>At\u00e9 l\u00e1, '+esc(val("f_nome").split(" ")[0])+'!</h3>'
+  p.innerHTML='<div class="okb" style="color:#8f1d24;">\u26A0 Reserva ainda N\u00c3O confirmada \u2014 falta o pagamento</div>'
+    +'<h3>Falta s\u00f3 o pagamento, '+esc(val("f_nome").split(" ")[0])+'</h3>'+'<p style="font-family:Arial,sans-serif;font-size:14px;color:var(--ink2);max-width:430px;margin:6px auto 0;line-height:1.6;">Recebemos os seus dados. O seu lugar <b>s\u00f3 fica reservado depois do pagamento</b> de <b>'+brlC(PRECO)+'</b> e do envio do comprovante aqui nesta p\u00e1gina.</p>'
     +'<div class="pdet">Jantar de 1 Ano da Commanderie de Bordeaux<br>Quinta, 22 de outubro de 2026 \u00b7 20h30<br>Restaurante Piselli \u2014 Boa Vista, S\u00e3o Paulo</div>'
     +'<div class="pbtns"><a class="pbtn solid" onclick="baixarICS()">+ Adicionar ao calend\u00e1rio</a>'
     +'<a class="pbtn" onclick="abrirArte()">Ver o convite</a></div>'
@@ -298,7 +298,7 @@ function blocoComp(estado,dados){
   if(!estado)
     return '<div class="lbl2">Comprovante do PIX</div>'
       +'<p>J\u00e1 fez o PIX de <b>'+brlC(PRECO)+'</b>? Envie o comprovante e confirmamos na hora. '
-      +'Se ainda n\u00e3o fez, pode voltar a esta p\u00e1gina depois \u2014 o seu lugar est\u00e1 guardado.</p>'
+      +'Se ainda n\u00e3o fez, volte a esta p\u00e1gina depois de pagar. <b>Sem o pagamento, o lugar n\u00e3o fica reservado</b> (as vagas s\u00e3o limitadas).</p>'
       +botao+'<div id="cmpMsg" class="msgc"></div>';
   var cab,txt,cor;
   if(estado==="aprovado"){cor="#2f6b3a";cab="\u2713 Pagamento confirmado";

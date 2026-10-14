@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Convite · Capítulo X da Commanderie de Bordeaux</title>
-<meta name="description" content="Capítulo X da Commanderie de Bordeaux do Brasil — 21 de outubro de 2026, 19h30, Casa Comitê, São Paulo. 24 Grands Crus Classés de Saint-Émilion em magnum.">
+<meta name="description" content="Capítulo X da Commanderie de Bordeaux do Brasil — 21 de outubro de 2026, 19h30, Casa Comitê, Jardim Guedala, São Paulo. 24 Grands Crus Classés de Saint-Émilion em magnum.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Convite — Capítulo X da Commanderie de Bordeaux">
 <meta property="og:description" content="24 Grands Crus Classés de Saint-Émilion em magnum · 21 de outubro de 2026, 19h30 · Casa Comitê, São Paulo. Reserve o seu lugar.">
@@ -190,8 +190,8 @@
   <div class="mcourse"><div class="ct">Dessert</div><div class="cn">Mascarpone com frutas vermelhas</div></div>
 <div class="sep"></div>
   <div class="lbl">A Casa</div>
-  <div style="text-align:center;line-height:1.1;margin:2px 0 4px;"><div style="font-family:Georgia,serif;color:var(--navy);font-size:30px;letter-spacing:6px;">COMITÊ</div><div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:6px;color:var(--ink2);margin-top:4px;">CASA DE RECEPÇÕES</div></div>
-  <p class="local" style="margin-top:14px;"><b>Casa Comitê</b><br>Jardim Guedala · São Paulo — SP<br><span style="font-size:13px;color:var(--ink2);">O endereço completo segue na confirmação da sua reserva.</span></p>
+  <img src="/img/casa-comite-logo.jpg" alt="Casa Comitê" style="display:block;width:260px;max-width:70%;margin:8px auto 4px;mix-blend-mode:multiply;">
+  <p class="local" style="margin-top:14px;"><b>Casa Comitê</b><br>Rua Magalhães de Araújo, 84 · Jardim Guedala<br>São Paulo — SP · CEP 05611-020<br><a href="https://www.google.com/maps/search/?api=1&query=Rua+Magalh%C3%A3es+de+Ara%C3%BAjo+84+Jardim+Guedala+S%C3%A3o+Paulo" target="_blank" rel="noopener" style="font-family:Arial,sans-serif;font-size:13px;color:var(--navy);border-bottom:1px solid var(--gold);text-decoration:none;">Abrir no mapa</a></p>
 
   <div class="sep"></div>
   <h2 class="sec">Reservar o meu lugar</h2>
@@ -237,7 +237,7 @@ function abrirFoto(src){document.getElementById("artLBimg").src=src;document.get
 function fecharArte(){document.getElementById("artLB").style.display="none";}
 function baixarICS(){
   var dt="20261021T223000Z",end="20261022T013000Z";
-  var ics="BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Commanderie de Bordeaux//Capitulo X//PT\nBEGIN:VEVENT\nUID:capitulo-x-cdb@commanderiedebordeaux.com.br\nDTSTAMP:"+dt+"\nDTSTART:"+dt+"\nDTEND:"+end+"\nSUMMARY:Capitulo X da Commanderie de Bordeaux\nLOCATION:Casa Comite - Jardim Guedala, Sao Paulo\nDESCRIPTION:24 Grands Crus Classes de Saint-Emilion em magnum. Bordeaux, toujours Bordeaux.\nEND:VEVENT\nEND:VCALENDAR";
+  var ics="BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Commanderie de Bordeaux//Capitulo X//PT\nBEGIN:VEVENT\nUID:capitulo-x-cdb@commanderiedebordeaux.com.br\nDTSTAMP:"+dt+"\nDTSTART:"+dt+"\nDTEND:"+end+"\nSUMMARY:Capitulo X da Commanderie de Bordeaux\nLOCATION:Casa Comite - Rua Magalhaes de Araujo 84, Jardim Guedala, Sao Paulo\nDESCRIPTION:24 Grands Crus Classes de Saint-Emilion em magnum. Bordeaux, toujours Bordeaux.\nEND:VEVENT\nEND:VCALENDAR";
   var a=document.createElement("a");a.href="data:text/calendar;charset=utf-8,"+encodeURIComponent(ics);a.download="Capitulo-X-Commanderie.ics";document.body.appendChild(a);a.click();a.remove();
 }
 </script>
@@ -275,7 +275,7 @@ async function inscrever(ev){
   p.className="passe"; p.style.display="block";
   p.innerHTML='<div class="okb" style="color:#8f1d24;">\u26A0 Reserva ainda N\u00c3O confirmada \u2014 falta o pagamento</div>'
     +'<h3>Falta s\u00f3 o pagamento, '+esc(val("f_nome").split(" ")[0])+'</h3>'+'<p style="font-family:Arial,sans-serif;font-size:14px;color:var(--ink2);max-width:430px;margin:6px auto 0;line-height:1.6;">Recebemos os seus dados. O seu lugar <b>s\u00f3 fica reservado depois do pagamento</b> de <b>'+brlC(PRECO)+'</b> e do envio do comprovante aqui nesta p\u00e1gina.</p>'
-    +'<div class="pdet">Cap\u00edtulo X da Commanderie de Bordeaux<br>Quarta, 21 de outubro de 2026 \u00b7 19h30<br>Casa Comit\u00ea \u2014 Jardim Guedala, S\u00e3o Paulo</div>'
+    +'<div class="pdet">Cap\u00edtulo X da Commanderie de Bordeaux<br>Quarta, 21 de outubro de 2026 \u00b7 19h30<br>Casa Comit\u00ea \u2014 Rua Magalh\u00e3es de Ara\u00fajo, 84 \u00b7 Jardim Guedala, S\u00e3o Paulo</div>'
     +'<div class="pbtns"><a class="pbtn solid" onclick="baixarICS()">+ Adicionar ao calend\u00e1rio</a>'
     +'</div>'
     +'<div style="margin:18px 0 6px;font-family:Arial,sans-serif;font-size:14px;color:var(--ink2);text-align:center;">Pague <b>'+brlC(PRECO)+'</b> por PIX e envie o comprovante logo abaixo.</div>'+PIXBOX

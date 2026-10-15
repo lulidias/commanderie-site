@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Certificados MAPA · Commanderie de Bordeaux</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
+<style>
+:root{--parch:#f3ecd9;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;padding-top:calc(12px + env(safe-area-inset-top));background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;}
+.dhead{text-align:center;padding:26px 20px 4px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:28px;margin:6px 0 4px;}
+.dhead .sub{font-size:13px;color:#8a8270;max-width:620px;margin:0 auto;line-height:1.5;}
+.wrap{max-width:960px;margin:0 auto;padding:14px 16px 60px;}
+.stats{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0 16px;}
+.stat{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:8px 14px;text-align:center;min-width:110px;cursor:pointer;}
+.stat b{display:block;font-family:Georgia,serif;font-size:22px;color:var(--navy);font-weight:normal;}
+.stat span{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;}
+.stat.on{border-color:var(--navy);box-shadow:0 0 0 1px var(--navy) inset;}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.inp{padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit;background:#fffdf7;}
+.bn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-size:14px;cursor:pointer;}
+.card{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:9px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;}
+.card .ic{width:42px;height:50px;border-radius:6px;background:#fbeaea;border:1px solid #e6cccc;color:var(--red);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;flex:none;}
+.card .tx{flex:1;min-width:200px;}
+.card .t{font-family:Georgia,serif;color:var(--navy);font-size:16px;}
+.card .m{font-size:12.5px;color:#6a634f;margin-top:3px;line-height:1.5;}
+.card .ac{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.dl{background:var(--gold);color:#fff;border:none;border-radius:9px;padding:8px 14px;font-size:13px;cursor:pointer;white-space:nowrap;}
+.lk{background:none;border:none;color:var(--navy);font-size:12.5px;cursor:pointer;text-decoration:underline;padding:4px;}
+.lk.r{color:var(--red);}
+.pill{display:inline-block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:3px 9px;white-space:nowrap;vertical-align:middle;}
+.v-ok{color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;} .v-av{color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);} .v-x{color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;} .v-n{color:#5b5446;background:#efe9da;border:1px solid var(--line);}
+.priv{color:#5b5446;background:#efe9da;border:1px solid var(--line);}
+.modal{position:fixed;inset:0;background:rgba(20,25,45,.55);display:none;align-items:flex-start;justify-content:center;z-index:20;overflow:auto;padding:24px 12px;}
+.box{background:#fffdf7;border-radius:14px;max-width:640px;width:100%;padding:18px 18px 16px;border:1px solid var(--gold);}
+.box h3{font-family:Georgia,serif;font-weight:normal;color:var(--navy);margin:0 0 12px;font-size:20px;}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;}
+.fg label span{display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fbf7ec;font-family:inherit;}
+.full{grid-column:1/-1;}
+.arq{border:1.5px dashed var(--gold);border-radius:10px;padding:12px;text-align:center;background:#faf6ea;font-size:13px;color:#5b5446;cursor:pointer;display:block;}
+.msg{font-size:13px;margin-left:8px;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
+.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+.vazio{color:#8a8270;font-size:13.5px;text-align:center;padding:30px 10px;}
+</style></head>
+<body>
+<div class="dtop"><a id="lnkHome" href="painel-conselho.html" style="display:inline-flex;align-items:center;"><img src="img/brasao.png" alt="Brasão"></a><b>Certificados MAPA</b><a class="back" id="lnkBack" href="painel-conselho.html">&#8592; Voltar</a></div>
+<div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para acessar.</p><a class="btn" href="index.html">Entrar</a></div>
+<div id="notAllowed" class="state" style="display:none;"><h2>Área do Conselho e das Importadoras</h2><p>Os certificados de inspeção são exclusivos do Conselho e das Importadoras Oficiais.</p><a class="btn" href="index.html">Voltar</a></div>
+<div id="loading" class="state">Carregando…</div>
+<div id="panel" style="display:none;">
+  <div class="dhead"><div class="k" id="kicker">Conselho</div><h1>Certificados de Inspeção MAPA</h1><div class="sub" id="subt">Vinhos de Bordeaux de mercado aberto: certificados do MAPA para consulta e download pelas Importadoras Oficiais.</div></div>
+  <div class="wrap">
+    <div class="stats" id="stats"></div>
+    <div class="tools">
+      <input class="inp" id="busca" placeholder="Buscar vinho, château, safra, nº, importadora…" oninput="render()" style="flex:1;min-width:200px;">
+      <select class="inp" id="fImp" onchange="render()"><option value="">Todas as importadoras</option></select>
+      <button class="bn" onclick="novo()">+ Enviar certificado</button>
+    </div>
+    <div id="lista"></div>
+  </div>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)fechar()"><div class="box">
+  <h3 id="mTit">Novo certificado</h3>
+  <label class="arq" id="arqLbl">&#128196; <b>Escolher o PDF do certificado</b><br><span id="arqNome" style="font-size:12px;color:#8a8270;">PDF (ou foto JPG/PNG), até 20 MB</span><input type="file" id="arq" accept="application/pdf,image/jpeg,image/png" style="display:none" onchange="arqSel()"></label>
+  <div class="fg" style="margin-top:12px;">
+    <label class="full"><span>Vinho *</span><input autocomplete="off" id="c_vinho" placeholder="ex.: Château Talbot"></label>
+    <label><span>Produtor / Château</span><input autocomplete="off" id="c_produtor"></label>
+    <label><span>Appellation</span><input autocomplete="off" id="c_appellation" placeholder="ex.: Saint-Julien"></label>
+    <label><span>Safra</span><input autocomplete="off" id="c_safra" inputmode="numeric" placeholder="ex.: 2019"></label>
+    <label><span>Cor / tipo</span><select id="c_cor"><option value="">—</option><option>Tinto</option><option>Branco</option><option>Branco doce</option><option>Rosé</option><option>Espumante</option></select></label>
+    <label><span>Volume</span><select id="c_volume"><option value="">—</option><option>375 ml</option><option selected>750 ml</option><option>1,5 L</option><option>3 L</option><option>6 L</option></select></label>
+    <label><span>Nº do certificado</span><input autocomplete="off" id="c_numero"></label>
+    <label><span>Lote</span><input autocomplete="off" id="c_lote"></label>
+    <label><span>Data de emissão</span><input type="date" id="c_data_emissao"></label>
+    <label><span>Data de validade *</span><input type="date" id="c_data_validade"></label>
+    <label class="full" id="impWrap"><span>Importadora que fez a inspeção</span><select id="c_importadora_id" onchange="impSel()"></select></label>
+    <label class="full" id="impOutraWrap" style="display:none;"><span>Nome da importadora</span><input autocomplete="off" id="c_importadora_nome"></label>
+    <label class="full"><span>Observações</span><textarea id="c_obs" rows="2"></textarea></label>
+    <label class="full" style="display:flex;gap:8px;align-items:center;font-size:13.5px;color:#2a2620;"><input type="checkbox" id="c_compartilhado" checked style="width:auto;"> Compartilhar com todas as Importadoras Oficiais</label>
+  </div>
+  <div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <button class="bn" id="bSalvar" onclick="salvar()">Salvar</button>
+    <button class="lk" onclick="fechar()">cancelar</button>
+    <span class="msg" id="mMsg"></span>
+  </div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+var CONSELHO=false,MEU_IMP=null,USER=null,MEU_NOME="",ROWS=[],IMPS=[],FILTRO="todos",EDIT=null;
+var CAMPOS=["vinho","produtor","appellation","safra","cor","volume","numero","lote","data_emissao","data_validade","importadora_nome","obs"];
+function st(id){["needLogin","notAllowed","loading","panel"].forEach(function(x){document.getElementById(x).style.display=(x===id)?"block":"none";});}
+function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function nrm(s){return (""+(s||"")).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
+function fdata(d){if(!d)return "";var p=(""+d).split("T")[0].split("-");return p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):d;}
+function hoje(){var d=new Date();d.setHours(0,0,0,0);return d;}
+function dias(d){if(!d)return null;var p=(""+d).split("-");var x=new Date(+p[0],+p[1]-1,+p[2]);return Math.round((x-hoje())/86400000);}
+function situ(x){var n=dias(x.data_validade);if(n===null)return "n";if(n<0)return "x";if(n<=30)return "av";return "ok";}
+function situTag(x){var n=dias(x.data_validade),s=situ(x);
+  if(s==="n")return "<span class=\"pill v-n\">sem validade</span>";
+  if(s==="x")return "<span class=\"pill v-x\">Vencido em "+fdata(x.data_validade)+"</span>";
+  if(s==="av")return "<span class=\"pill v-av\">Vence em "+(n===0?"hoje":(n+" dia"+(n>1?"s":"")))+" · "+fdata(x.data_validade)+"</span>";
+  return "<span class=\"pill v-ok\">Válido até "+fdata(x.data_validade)+"</span>";}
+function impNome(x){if(x.importadora_id){for(var i=0;i<IMPS.length;i++)if(String(IMPS[i].id)===String(x.importadora_id))return IMPS[i].nome;}return x.importadora_nome||"";}
+function podeEditar(x){return CONSELHO||(MEU_IMP&&String(x.importadora_id)===String(MEU_IMP.id));}
+
+async function init(){
+  var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}USER=u;
+  var c=await sb.rpc("is_conselho");CONSELHO=!c.error&&!!c.data;
+  var own=await sb.from("importadoras").select("id,nome").eq("owner_user_id",u.id).maybeSingle();
+  if(!own.error&&own.data)MEU_IMP=own.data;
+  if(!CONSELHO&&!MEU_IMP){st("notAllowed");return;}
+  var me=await sb.from("membros").select("nome").eq("user_id",u.id).maybeSingle();MEU_NOME=(me.data&&me.data.nome)||"";
+  if(!CONSELHO){
+    document.getElementById("kicker").textContent="Importadora Oficial · "+MEU_IMP.nome;
+    document.getElementById("subt").textContent="Baixe os certificados de inspeção do MAPA compartilhados pelo Conselho e pelas outras importadoras, e compartilhe os seus.";
+    ["lnkBack","lnkHome"].forEach(function(id){document.getElementById(id).href="painel-importador.html";});
+  }
+  var li=await sb.from("importadoras").select("id,nome").order("nome",{ascending:true});IMPS=li.data||[];
+  var f=document.getElementById("fImp");IMPS.forEach(function(i){f.innerHTML+="<option value=\""+esc(i.id)+"\">"+esc(i.nome)+"</option>";});f.innerHTML+="<option value=\"__sem\">Sem importadora</option>";
+  var s=document.getElementById("c_importadora_id");
+  if(CONSELHO){s.innerHTML="<option value=\"\">— nenhuma / não informada</option>"+IMPS.map(function(i){return "<option value=\""+esc(i.id)+"\">"+esc(i.nome)+"</option>";}).join("")+"<option value=\"__outra\">Outra (digitar o nome)</option>";}
+  else{s.innerHTML="<option value=\""+esc(MEU_IMP.id)+"\">"+esc(MEU_IMP.nome)+"</option>";s.disabled=true;}
+  st("panel");carregar();
+}
+async function carregar(){
+  var q=await sb.from("certificados_mapa").select("*").order("vinho",{ascending:true}).order("safra",{ascending:false});
+  if(q.error){document.getElementById("lista").innerHTML="<p style=\"color:#8f1d24;font-size:13px;\">(rode o SQL certificados_mapa.sql no Supabase) "+esc(q.error.message)+"</p>";return;}
+  ROWS=q.data||[];render();
+}
+function setF(v){FILTRO=v;render();}
+function render(){
+  var cnt={todos:ROWS.length,ok:0,av:0,x:0};ROWS.forEach(function(x){var s=situ(x);if(cnt[s]!=null)cnt[s]++;});
+  document.getElementById("stats").innerHTML=[["todos","Certificados"],["ok","Válidos"],["av","Vencem em 30 dias"],["x","Vencidos"]].map(function(t){return "<div class=\"stat"+(FILTRO===t[0]?" on":"")+"\" onclick=\"setF('"+t[0]+"')\"><b>"+cnt[t[0]]+"</b><span>"+t[1]+"</span></div>";}).join("");
+  var q=nrm(document.getElementById("busca").value),fi=document.getElementById("fImp").value;
+  var L=ROWS.filter(function(x){
+    if(FILTRO!=="todos"&&situ(x)!==FILTRO)return false;
+    if(fi==="__sem"&&(x.importadora_id||x.importadora_nome))return false;
+    if(fi&&fi!=="__sem"&&String(x.importadora_id)!==fi)return false;
+    return !q||nrm([x.vinho,x.produtor,x.appellation,x.safra,x.numero,x.lote,impNome(x),x.obs].join(" ")).indexOf(q)>=0;});
+  if(!L.length){document.getElementById("lista").innerHTML="<div class=\"vazio\">"+(ROWS.length?"Nenhum certificado com esse filtro.":"Nenhum certificado ainda. Clique em <b>+ Enviar certificado</b> para incluir o primeiro.")+"</div>";return;}
+  document.getElementById("lista").innerHTML=L.map(function(x){
+    var ext=((x.arquivo_nome||x.arquivo_path||"").split(".").pop()||"").toUpperCase();
+    var l1=[x.produtor&&x.produtor!==x.vinho?x.produtor:"",x.appellation,x.cor,x.volume].filter(Boolean).join(" · ");
+    var l2=[impNome(x)?("Importadora: <b>"+esc(impNome(x))+"</b>"):"",x.numero?("Nº "+esc(x.numero)):"",x.lote?("Lote "+esc(x.lote)):"",x.data_emissao?("Emissão "+fdata(x.data_emissao)):""].filter(Boolean).join(" · ");
+    var l3=(x.origem==="importadora"?"Enviado pela importadora":"Enviado pelo Conselho")+(x.enviado_por_nome?(" ("+esc(x.enviado_por_nome)+")"):"")+(x.compartilhado?"":" · <span class=\"pill priv\">não compartilhado</span>");
+    return "<div class=\"card\"><div class=\"ic\">"+esc(ext||"PDF")+"</div><div class=\"tx\"><div class=\"t\">"+esc(x.vinho)+(x.safra?(" "+esc(x.safra)):"")+"</div>"
+      +(l1?("<div class=\"m\">"+esc(l1)+"</div>"):"")+"<div class=\"m\">"+situTag(x)+"</div>"+(l2?("<div class=\"m\">"+l2+"</div>"):"")
+      +(x.obs?("<div class=\"m\" style=\"font-style:italic;\">"+esc(x.obs)+"</div>"):"")+"<div class=\"m\" style=\"font-size:11.5px;color:#9a937f;\">"+l3+"</div></div>"
+      +"<div class=\"ac\">"+(x.arquivo_path?("<button class=\"dl\" onclick=\"baixar('"+x.id+"')\">&#11015; Baixar</button>"):"<span style=\"font-size:12px;color:#9a937f;\">sem arquivo</span>")
+      +(podeEditar(x)?("<button class=\"lk\" onclick=\"editar('"+x.id+"')\">editar</button><button class=\"lk r\" onclick=\"remover('"+x.id+"')\">remover</button>"):"")+"</div></div>";}).join("");
+}
+function byId(id){for(var i=0;i<ROWS.length;i++)if(ROWS[i].id===id)return ROWS[i];return null;}
+async function baixar(id){var x=byId(id);if(!x||!x.arquivo_path)return;
+  var w=null;try{w=window.open("","_blank");}catch(e){}
+  var r=await sb.storage.from("certificados").createSignedUrl(x.arquivo_path,600);
+  if(r.error||!r.data){if(w)w.close();alert("Não foi possível abrir o arquivo: "+(r.error?r.error.message:""));return;}
+  if(w&&!w.closed)w.location=r.data.signedUrl;else location.href=r.data.signedUrl;}
+function impSel(){document.getElementById("impOutraWrap").style.display=document.getElementById("c_importadora_id").value==="__outra"?"block":"none";}
+function arqSel(){var f=document.getElementById("arq").files[0];document.getElementById("arqNome").textContent=f?(f.name+" · "+(f.size/1048576).toFixed(1)+" MB"):"PDF (ou foto JPG/PNG), até 20 MB";}
+function abrirModal(x){EDIT=x?x.id:null;x=x||{};
+  document.getElementById("mTit").textContent=EDIT?"Editar certificado":"Novo certificado";
+  document.getElementById("arq").value="";arqSel();
+  if(EDIT&&x.arquivo_nome)document.getElementById("arqNome").textContent="Atual: "+x.arquivo_nome+" — escolha outro só se quiser trocar";
+  CAMPOS.forEach(function(c){var e=document.getElementById("c_"+c);if(e)e.value=x[c]||"";});
+  if(!EDIT)document.getElementById("c_volume").value="750 ml";
+  var s=document.getElementById("c_importadora_id");
+  if(CONSELHO){s.value=x.importadora_id!=null?String(x.importadora_id):(x.importadora_nome?"__outra":"");}else s.value=String(MEU_IMP.id);
+  impSel();
+  document.getElementById("c_compartilhado").checked=EDIT?!!x.compartilhado:true;
+  document.getElementById("mMsg").textContent="";document.getElementById("bSalvar").disabled=false;
+  document.getElementById("modal").style.display="flex";}
+function novo(){abrirModal(null);}
+function editar(id){abrirModal(byId(id));}
+function fechar(){document.getElementById("modal").style.display="none";EDIT=null;}
+function limpaNome(n){return (n||"certificado").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9._-]+/g,"_").slice(-80);}
+async function salvar(){
+  var m=document.getElementById("mMsg");function say(t,c){m.style.color=c||"#5b5446";m.textContent=t;}
+  var o={};CAMPOS.forEach(function(c){var e=document.getElementById("c_"+c);o[c]=e?((e.value||"").trim()||null):null;});
+  var sel=document.getElementById("c_importadora_id").value;
+  if(CONSELHO){if(sel==="__outra"){o.importadora_id=null;}else{o.importadora_id=sel||null;o.importadora_nome=null;}}
+  else{o.importadora_id=MEU_IMP.id;o.importadora_nome=null;}
+  o.compartilhado=document.getElementById("c_compartilhado").checked;
+  var fl=document.getElementById("arq").files[0];
+  if(!o.vinho){say("Informe o vinho.","#8f1d24");return;}
+  if(!o.data_validade){say("Informe a data de validade.","#8f1d24");return;}
+  if(!EDIT&&!fl){say("Escolha o PDF do certificado.","#8f1d24");return;}
+  if(fl&&!/pdf|jpeg|png/.test(fl.type||"")){say("Envie um PDF (ou foto JPG/PNG).","#8f1d24");return;}
+  if(fl&&fl.size>20*1048576){say("Arquivo muito grande (máx. 20 MB).","#8f1d24");return;}
+  document.getElementById("bSalvar").disabled=true;
+  var antigo=EDIT?(byId(EDIT)||{}).arquivo_path:null;
+  if(fl){say("Enviando o arquivo…");
+    var path=(o.importadora_id||"conselho")+"/"+Date.now()+"_"+limpaNome(fl.name);
+    var up=await sb.storage.from("certificados").upload(path,fl,{upsert:false,contentType:fl.type});
+    if(up.error){document.getElementById("bSalvar").disabled=false;say("Erro no envio: "+up.error.message,"#8f1d24");return;}
+    o.arquivo_path=path;o.arquivo_nome=fl.name;}
+  say("Salvando…");o.updated_at=new Date().toISOString();
+  var r;
+  if(EDIT){r=await sb.from("certificados_mapa").update(o).eq("id",EDIT);}
+  else{o.origem=CONSELHO?"conselho":"importadora";o.enviado_por=USER.id;o.enviado_por_nome=CONSELHO?(MEU_NOME||null):MEU_IMP.nome;r=await sb.from("certificados_mapa").insert(o);}
+  if(r.error){document.getElementById("bSalvar").disabled=false;say("Erro: "+r.error.message,"#8f1d24");if(o.arquivo_path)sb.storage.from("certificados").remove([o.arquivo_path]);return;}
+  if(fl&&antigo)sb.storage.from("certificados").remove([antigo]);
+  fechar();carregar();
+}
+async function remover(id){var x=byId(id);if(!x)return;if(!confirm("Remover o certificado de "+x.vinho+(x.safra?(" "+x.safra):"")+"?"))return;
+  var r=await sb.from("certificados_mapa").delete().eq("id",id);if(r.error){alert(r.error.message);return;}
+  if(x.arquivo_path)sb.storage.from("certificados").remove([x.arquivo_path]);carregar();}
+document.addEventListener("DOMContentLoaded",init);
+</script></body></html>

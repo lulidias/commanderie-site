@@ -69,7 +69,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
 var UF={AC:"Acre",AL:"Alagoas",AP:"Amapá",AM:"Amazonas",BA:"Bahia",CE:"Ceará",DF:"Distrito Federal",ES:"Espírito Santo",GO:"Goiás",MA:"Maranhão",MT:"Mato Grosso",MS:"Mato Grosso do Sul",MG:"Minas Gerais",PA:"Pará",PB:"Paraíba",PR:"Paraná",PE:"Pernambuco",PI:"Piauí",RJ:"Rio de Janeiro",RN:"Rio Grande do Norte",RS:"Rio Grande do Sul",RO:"Rondônia",RR:"Roraima",SC:"Santa Catarina",SP:"São Paulo",SE:"Sergipe",TO:"Tocantins"};
-var ROWS=[],TAB="pend",ABERTO=null;
+var ROWS=[],TAB="pend",ABERTO=null,DRAFT={};
 function st(id){["needLogin","notAllowed","loading","panel"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function nrm(s){return (""+(s||"")).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
@@ -78,7 +78,7 @@ function placaTag(p){var t=nrm(p);var c=t.indexOf("ouro")>=0?"pl-ouro":(t.indexO
 function origem(x){if(x.importadoras&&x.importadoras.nome)return "Importadora "+x.importadoras.nome;if(x.origem==="membro")return "Comendador "+(x.indicado_por_nome||"");return "Conselho";}
 function ufOpts(sel){return "<option value=\"\">—</option>"+Object.keys(UF).map(function(k){return "<option value=\""+k+"\""+(k===sel?" selected":"")+">"+k+" · "+UF[k]+"</option>";}).join("");}
 function placaOpts(sel){return ["Ouro","Prata","Bronze"].map(function(p){return "<option"+((sel||"Prata")===p?" selected":"")+">"+p+"</option>";}).join("");}
-function f(id,lab,v,tipo){return "<label><span>"+lab+"</span><input id=\""+id+"\" "+(tipo?("type=\""+tipo+"\" "):"")+"value=\""+esc(v||"")+"\"></label>";}
+function f(id,lab,v,tipo){return "<label><span>"+lab+"</span><input autocomplete=\"off\" id=\""+id+"\" "+(tipo?("type=\""+tipo+"\" "):"")+"value=\""+esc(v||"")+"\"></label>";}
 function form(x,pref){x=x||{};return "<div class=\"fg\">"+f(pref+"nome","Restaurante",x.nome)+"<label><span>Placa</span><select id=\""+pref+"placa\">"+placaOpts(x.placa)+"</select></label><label><span>Estado</span><select id=\""+pref+"estado\">"+ufOpts(x.estado)+"</select></label>"+f(pref+"cidade","Cidade",x.cidade)+f(pref+"endereco","Endereço",x.endereco)+f(pref+"bairro","Bairro",x.bairro)+f(pref+"cep","CEP",x.cep)+f(pref+"telefone","Telefone",x.telefone)+f(pref+"responsavel","Responsável / chef",x.responsavel)+f(pref+"site","Site",x.site)+f(pref+"instagram","Instagram",x.instagram)+f(pref+"horario","Horário",x.horario)+"</div><div class=\"fg\" style=\"margin-top:8px;grid-template-columns:1fr;\"><label><span>Descrição (aparece para os Comendadores)</span><textarea id=\""+pref+"descricao\" rows=\"3\">"+esc(x.descricao||"")+"</textarea></label></div>";}
 var CAMPOS=["nome","placa","estado","cidade","endereco","bairro","cep","telefone","responsavel","site","instagram","horario","descricao"];
 function ler(pref){var o={};CAMPOS.forEach(function(c){var e=document.getElementById(pref+c);if(e)o[c]=(e.value||"").trim()||null;});return o;}
@@ -86,10 +86,11 @@ function card(x){var s=stOf(x);var sl={p:"Pendente",a:"Aprovada",r:"Recusada"}[s
   var foto=x.foto_url?("<img class=\"foto\" src=\""+esc(x.foto_url)+"\" alt=\"\">"):"<div class=\"foto\" style=\"display:flex;align-items:center;justify-content:center;color:#b08a3a;font-size:11px;\">sem foto</div>";
   var head="<div class=\"mhead\" onclick=\"abrir('"+x.id+"')\"><div style=\"flex:1;min-width:0;\"><div class=\"mname\">"+esc(x.nome)+" "+placaTag(x.placa)+"</div><div class=\"mmeta\">"+esc([x.cidade,x.estado].filter(Boolean).join(" / "))+" · indicada por "+esc(origem(x))+(x.ano?(" · "+x.ano):"")+"</div></div><span class=\"pill st-"+s+"\">"+sl+"</span></div>";
   var body="<div class=\"mbody\""+(ABERTO===x.id?" style=\"display:block\"":"")+"><div style=\"display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px;\">"+foto+"<div style=\"font-size:12.5px;color:#5b5446;\"><label style=\"cursor:pointer;color:var(--navy);border-bottom:1px solid var(--gold);\">&#128247; "+(x.foto_url?"trocar foto":"enviar foto")+"<input type=\"file\" accept=\"image/*\" style=\"display:none\" onchange=\"enviarFoto('"+x.id+"',this)\"></label><div id=\"fm_"+x.id+"\" style=\"margin-top:4px;\"></div>"+(x.obs_indicacao?("<div style=\"margin-top:8px;\"><b>Observação de quem indicou:</b> "+esc(x.obs_indicacao)+"</div>"):"")+"</div></div>"
-    +form(x,"e_"+x.id+"_")
+    +form(Object.assign({},x,DRAFT[x.id]||{}),"e_"+x.id+"_")
     +"<div class=\"acts\">"+(s!=="a"?"<button style=\"background:#2f6b3a;color:#fff;\" onclick=\"salvar('"+x.id+"','Aprovada')\">&#10003; Aprovar</button>":"")+"<button style=\"background:var(--navy);color:#fff;\" onclick=\"salvar('"+x.id+"')\">Salvar</button>"+(s!=="r"?"<button style=\"background:transparent;color:#8f1d24;border:1px solid #e6cccc;\" onclick=\"salvar('"+x.id+"','Recusada')\">Recusar</button>":"")+(s!=="p"?"<button style=\"background:transparent;color:#8a6a1f;border:1px solid var(--line);\" onclick=\"salvar('"+x.id+"','Pendente')\">Voltar para pendente</button>":"")+"<button style=\"background:transparent;color:#8f1d24;\" onclick=\"remover('"+x.id+"')\">remover</button><span id=\"sm_"+x.id+"\" style=\"font-size:12.5px;margin-left:6px;\"></span></div></div>";
   return "<div class=\"mcard\">"+head+body+"</div>";}
-function render(){var q=nrm(document.getElementById("busca").value);
+function guardar(){if(!ABERTO)return;var o={};CAMPOS.forEach(function(c){var e=document.getElementById("e_"+ABERTO+"_"+c);if(e)o[c]=e.value;});if(Object.keys(o).length)DRAFT[ABERTO]=o;}
+function render(){guardar();var q=nrm(document.getElementById("busca").value);
   var cnt={p:0,a:0,r:0};ROWS.forEach(function(x){cnt[stOf(x)]++;});
   document.getElementById("tabs").innerHTML=[["pend","p","⏳ Pendentes"],["apr","a","✓ Aprovadas"],["rec","r","✗ Recusadas"]].map(function(t){return "<span class=\"tab"+(TAB===t[0]?" on":"")+"\" onclick=\"TAB='"+t[0]+"';render()\">"+t[2]+" ("+cnt[t[1]]+")</span>";}).join("");
   document.getElementById("resumo").textContent=cnt.a+" aprovada(s) · "+cnt.p+" pendente(s)";
@@ -99,15 +100,15 @@ function render(){var q=nrm(document.getElementById("busca").value);
   var h="";if(alvo==="a"){var est={};L.forEach(function(x){var k=x.estado||"—";(est[k]=est[k]||[]).push(x);});Object.keys(est).sort().forEach(function(k){h+="<div class=\"nuctitle\">"+esc(UF[k]||k)+" <span style=\"font-size:13px;color:#8a8270;\">("+est[k].length+")</span></div>"+est[k].map(card).join("");});}
   else h=L.map(card).join("");
   document.getElementById("lista").innerHTML=h;}
-function abrir(id){ABERTO=(ABERTO===id)?null:id;render();}
+function abrir(id){guardar();ABERTO=(ABERTO===id)?null:id;render();}
 async function carregar(){var q=await sb.from("importadora_restaurantes").select("*,importadoras(nome)").order("created_at",{ascending:false});
   if(q.error){document.getElementById("lista").innerHTML="<p style=\"color:#8f1d24;\">(rode o SQL embaixadas.sql) "+esc(q.error.message)+"</p>";return;}
   ROWS=q.data||[];render();}
 async function salvar(id,status){var o=ler("e_"+id+"_");if(!o.nome){alert("Informe o nome.");return;}if(status){o.status=status;if(status==="Aprovada")o.aprovado_em=new Date().toISOString();}
   if(status==="Aprovada"&&(!o.estado||!o.cidade)){alert("Para aprovar, informe o estado e a cidade.");return;}
   var m=document.getElementById("sm_"+id);if(m){m.style.color="#5b5446";m.textContent="Salvando…";}
-  var r=await sb.from("importadora_restaurantes").update(o).eq("id",id);if(r.error){if(m){m.style.color="#8f1d24";m.textContent=r.error.message;}return;}
-  ABERTO=status?null:id;await carregar();}
+  var r=await sb.from("importadora_restaurantes").update(o).eq("id",id);if(r.error){if(m){m.style.color="#8f1d24";m.textContent="Erro: "+r.error.message;}alert("Não foi possível salvar: "+r.error.message);return;}
+  delete DRAFT[id];ABERTO=status?null:id;await carregar();}
 async function remover(id){if(!confirm("Remover esta embaixada definitivamente?"))return;var r=await sb.from("importadora_restaurantes").delete().eq("id",id);if(r.error){alert(r.error.message);return;}ABERTO=null;carregar();}
 async function enviarFoto(id,inp){var fl=inp.files&&inp.files[0];if(!fl)return;var m=document.getElementById("fm_"+id);function say(t,c){if(m){m.style.color=c||"#5b5446";m.textContent=t;}}
   if(!/^image\//.test(fl.type||"")){say("Envie uma imagem.","#8f1d24");return;}if(fl.size>8*1024*1024){say("Imagem muito grande (máx. 8 MB).","#8f1d24");return;}

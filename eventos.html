@@ -117,7 +117,7 @@ async function carregar(){
   MYRSVP={};try{var rr=await sb.from("evento_rsvp").select("evento_id,status").eq("user_id",u.id);if(rr.data)rr.data.forEach(function(x){MYRSVP[x.evento_id]=x.status;});}catch(e){}
   var q=await sb.from("eventos").select("*, evento_fotos(id,url,ordem)").or("oculto.eq.false,realizado.eq.true").order("data",{ascending:true});
   if(q.error){document.getElementById("needLogin").style.display="block";document.getElementById("needLogin").querySelector("p").textContent="Não foi possível carregar ("+q.error.message+").";return;}
-  var rows=q.data||[];
+  var rows=(q.data||[]).filter(function(e){return e.nucleo!=="Importadores";});
   var hoje=new Date();hoje=new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
   function fut(e){if(e.realizado)return false;if(!e.data)return true;return new Date(e.data+"T12:00:00")>=hoje;}
   var prox=rows.filter(fut).sort(function(a,b){return (""+(a.data||"")).localeCompare(""+(b.data||""));});

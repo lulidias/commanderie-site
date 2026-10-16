@@ -162,7 +162,8 @@
   <div class="sep"></div>
   <h2 class="sec">Participação</h2>
     <p style="text-align:center;" class="valor"><small>R$</small> <span id="precoTxt">1.200,00</span> <span id="precoSub" style="font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;">· por pessoa</span></p>
-  <p style="text-align:center;font-size:14.5px;color:var(--ink2);font-family:Arial,sans-serif;margin:6px auto 0;max-width:430px;line-height:1.6;">O jantar completo, os 24 Grands Crus e a companhia dos produtores à mesa. O mesmo valor para Comendadores e convidados.</p>
+  <div id="mestreBox" style="display:none;max-width:440px;margin:12px auto 4px;background:linear-gradient(160deg,#243161,#161f3f);border:1px solid #c9a85c;border-radius:14px;padding:14px 16px;color:#f3ecd9;text-align:center;font-family:Arial,sans-serif;"></div>
+  <p id="precoNota" style="text-align:center;font-size:14.5px;color:var(--ink2);font-family:Arial,sans-serif;margin:6px auto 0;max-width:430px;line-height:1.6;">O jantar completo, os 24 Grands Crus e a companhia dos produtores à mesa. O mesmo valor para Comendadores e convidados.</p>
   <p style="text-align:center;font-size:13px;color:var(--ink2);font-family:Arial,sans-serif;margin:8px auto 0;max-width:430px;line-height:1.6;">Indicados que serão entronizados neste Capítulo: a anuidade da Commanderie é acertada à parte com o Conselho.</p>
   <p style="text-align:center;margin-top:16px;"><a class="btn gold" onclick="document.getElementById('frm').scrollIntoView({behavior:'smooth',block:'start'})" style="cursor:pointer;text-decoration:none;display:inline-block;">Reservar e pagar &darr;</a></p>
   <p style="text-align:center;font-size:13px;color:var(--ink2);font-family:Arial,sans-serif;margin-top:8px;">Os dados do PIX aparecem logo depois de preencher nome, e-mail e telefone.</p>
@@ -252,7 +253,30 @@ var INSC=null;
 function brlC(v){return "R$ "+Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:2});}
 function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
 
-var FUTURO=false;var PRECO=1200;
+var FUTURO=false;var PRECO=1200;var PRECO_CHEIO=1200;var MESTRE=null;
+function brl2(v){return Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:2});}
+async function checarMestre(){try{
+  var u=(await sb.auth.getUser()).data.user;
+  if(!u){if(/[?&]mestre=1/.test(location.search))mostrarLoginMestre();return;}
+  var r=await sb.rpc("sou_mestre");var d=r&&r.data;if(!d||!d.mestre)return;
+  MESTRE=d;PRECO=Math.round(PRECO_CHEIO/2);
+  document.getElementById("precoTxt").textContent=brl2(PRECO);
+  document.getElementById("precoSub").textContent="· Mestres e Grão-Mestre";
+  var b=document.getElementById("mestreBox");b.style.display="block";
+  b.innerHTML='<div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#e4cd97;">'+esc(d.grau||"Mestre")+' · '+esc(d.nome||"")+'</div><div style="font-family:Georgia,serif;font-size:19px;color:#fff;margin:6px 0 2px;">A sua participação: R$ '+brl2(PRECO)+'</div><div style="font-size:12.5px;color:#c9d0e8;">Mestres e Grão-Mestre pagam 50% do valor (R$ '+brl2(PRECO_CHEIO)+'). Visível só para a Mesa.</div>';
+  var nt=document.getElementById("precoNota");if(nt)nt.textContent="O jantar completo, os 24 Grands Crus e a companhia dos produtores à mesa.";
+  var fn=document.getElementById("f_nome"),fe=document.getElementById("f_email"),ft=document.getElementById("f_tel");
+  if(fn){fn.value=d.nome||"";fn.readOnly=true;}if(fe){fe.value=d.email||"";fe.readOnly=true;}if(ft&&d.telefone&&!ft.value)ft.value=d.telefone;
+}catch(e){}}
+function mostrarLoginMestre(){var b=document.getElementById("mestreBox");b.style.display="block";
+  b.innerHTML='<div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#e4cd97;">Mestres e Grão-Mestre</div><div style="font-size:13px;color:#c9d0e8;margin:6px 0 10px;">Entre com o seu e-mail e senha do site para ver o valor da Mesa.</div>'
+   +'<input id="lmEmail" type="email" placeholder="E-mail" style="width:100%;padding:9px;border-radius:9px;border:1px solid #c9a85c;margin-bottom:6px;font-size:14px;"><input id="lmSenha" type="password" placeholder="Senha" style="width:100%;padding:9px;border-radius:9px;border:1px solid #c9a85c;font-size:14px;">'
+   +'<button type="button" onclick="loginMestre()" style="margin-top:10px;background:#c9a85c;color:#1e2a56;border:none;border-radius:9px;padding:9px 18px;font-size:14px;font-weight:bold;cursor:pointer;">Entrar</button><div id="lmMsg" style="font-size:12.5px;color:#f3c3c3;margin-top:6px;"></div>';}
+async function loginMestre(){var m=document.getElementById("lmMsg");m.textContent="Entrando…";
+  var r=await sb.auth.signInWithPassword({email:(document.getElementById("lmEmail").value||"").trim(),password:document.getElementById("lmSenha").value||""});
+  if(r.error){m.textContent="E-mail ou senha incorretos.";return;}
+  document.getElementById("mestreBox").style.display="none";await checarMestre();if(!MESTRE){var b=document.getElementById("mestreBox");b.style.display="block";b.innerHTML='<div style="font-size:13px;color:#c9d0e8;">Esta conta não é de Mestre. O valor é o normal, de R$ '+brl2(PRECO_CHEIO)+'.</div>';}}
+document.addEventListener("DOMContentLoaded",checarMestre);
 var PIXBOX="<div class=\"pixbox\" style=\"margin-top:16px;\">\n    <img src=\"/img/pix-commanderie.png\" alt=\"QR Code PIX \u2014 Commanderie de Bordeaux do Brasil\">\n    <div class=\"pixinfo\">\n      <div style=\"font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;\">Pague por PIX</div>\n      Favorecido: <b>Commanderie de Bordeaux do Brasil</b><br>\n      Chave (CNPJ): <b>69.296.264/0001-30</b>\n      <div style=\"margin-top:10px;\"><button class=\"btn gold\" type=\"button\" onclick=\"copiarChave()\">Copiar chave PIX (CNPJ)</button> <button class=\"btn\" type=\"button\" onclick=\"copiarPix()\" style=\"background:transparent;color:var(--navy);border:1px solid var(--gold);\">Pix Copia e Cola</button><span id=\"pixMsg\" class=\"copied\"></span></div><div style=\"font-family:Arial,sans-serif;font-size:12px;color:var(--ink2);margin-top:8px;line-height:1.5;\">No app do banco: o <b>código</b> vai em <b>Pix Copia e Cola</b>; a <b>chave</b> vai em <b>Pix → chave CNPJ</b>.</div>\n    </div>";
 async function inscrever(ev){
   ev.preventDefault();
@@ -260,7 +284,8 @@ async function inscrever(ev){
   var btn=document.getElementById("btnEnviar"), msg=document.getElementById("frmMsg");
   btn.disabled=true; var rot=btn.textContent; btn.textContent="Reservando\u2026";
   msg.style.color="#5b5446"; msg.textContent="";
-  var r=await sb.rpc(FUTURO?"rsvp_convite_futuro":"rsvp_convite_externo",{
+  var r=MESTRE?await sb.rpc("rsvp_mestre",{p_evento:EVID,p_telefone:val("f_tel")||null,p_restricao:val("f_rest")||null,p_obs:val("f_obs")||null})
+   :await sb.rpc(FUTURO?"rsvp_convite_futuro":"rsvp_convite_externo",{
     p_evento:EVID, p_nome:val("f_nome"), p_email:val("f_email"), p_telefone:val("f_tel"),
     p_empresa:val("f_emp")||null, p_doc:val("f_doc")||null,
     p_nascimento:val("f_nasc")||null, p_restricao:val("f_rest")||null, p_obs:val("f_obs")||null});
@@ -321,7 +346,7 @@ async function enviarComp(inp){
     var up=await sb.storage.from("comprovantes").upload(path,f,{contentType:f.type||"image/jpeg"});
     if(up.error){diz("N\u00e3o conseguimos guardar o arquivo. Tente de novo; se repetir, fale com a Secretaria.","#8f1d24");return;}
     var url=sb.storage.from("comprovantes").getPublicUrl(path).data.publicUrl;
-    if(INSC){try{await sb.rpc(FUTURO?"anexar_comprovante_futuro":"anexar_comprovante",{p_rsvp:INSC,p_url:url});}catch(e){}}
+    if(INSC){try{await sb.rpc(MESTRE?"rsvp_mestre_comprovante":(FUTURO?"anexar_comprovante_futuro":"anexar_comprovante"),{p_rsvp:INSC,p_url:url});}catch(e){}}
     diz("Comprovante guardado. Conferindo o valor\u2026");
     var d={}; try{var rob=await sb.functions.invoke("ler-comprovante",{body:{rsvp_id:INSC,url:url}});d=(rob&&rob.data)||{};}catch(e){}
     var st=d.pago?"aprovado":(d.parcial?"parcial":"revisar");

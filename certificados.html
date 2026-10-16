@@ -16,6 +16,9 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:28px;margin:6px 0 4px;}
 .dhead .sub{font-size:13px;color:#8a8270;max-width:620px;margin:0 auto;line-height:1.5;}
 .wrap{max-width:960px;margin:0 auto;padding:14px 16px 60px;}
+.tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0 4px;}
+.tab{background:#fffdf7;border:1px solid var(--line);border-radius:22px;padding:9px 16px;font-size:13.5px;color:#5b5446;cursor:pointer;}
+.tab.on{background:var(--navy);border-color:var(--navy);color:#fff;}
 .stats{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0 16px;}
 .stat{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:8px 14px;text-align:center;min-width:110px;cursor:pointer;}
 .stat b{display:block;font-family:Georgia,serif;font-size:22px;color:var(--navy);font-weight:normal;}
@@ -58,11 +61,15 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <div id="panel" style="display:none;">
   <div class="dhead"><div class="k" id="kicker">Conselho</div><h1>Certificados de Inspeção MAPA</h1><div class="sub" id="subt">Vinhos de Bordeaux de mercado aberto: certificados do MAPA para consulta e download pelas Importadoras Oficiais.</div></div>
   <div class="wrap">
+    <div class="tabs" id="tabs"></div>
+    <div id="tabInfo" style="font-size:13px;color:#5b5446;text-align:center;max-width:640px;margin:4px auto 0;line-height:1.5;"></div>
     <div class="stats" id="stats"></div>
     <div class="tools">
-      <input class="inp" id="busca" placeholder="Buscar vinho, château, safra, nº, importadora…" oninput="render()" style="flex:1;min-width:200px;">
+      <input class="inp" id="busca" placeholder="Buscar…" oninput="render()" style="flex:1;min-width:200px;">
       <select class="inp" id="fImp" onchange="render()"><option value="">Todas as importadoras</option></select>
-      <button class="bn" onclick="novo()">+ Enviar certificado</button>
+      <button class="bn" id="bNovo" onclick="novo()">+ Enviar certificado</button>
+      <button class="bn" id="bColar" onclick="abrirColar()" style="display:none;background:#fffdf7;color:var(--navy);border:1px solid var(--gold);">&#128203; Colar lista</button>
+      <button class="bn" onclick="exportarCsv()" style="background:#fffdf7;color:var(--navy);border:1px solid var(--line);">&#11015; Baixar lista (Excel)</button>
     </div>
     <div id="lista"></div>
   </div>
@@ -70,7 +77,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 
 <div class="modal" id="modal" onclick="if(event.target===this)fechar()"><div class="box">
   <h3 id="mTit">Novo certificado</h3>
-  <label class="arq" id="arqLbl">&#128196; <b>Escolher o PDF do certificado</b><br><span id="arqNome" style="font-size:12px;color:#8a8270;">PDF (ou foto JPG/PNG), até 20 MB</span><input type="file" id="arq" accept="application/pdf,image/jpeg,image/png" style="display:none" onchange="arqSel()"></label>
+  <label class="arq" id="arqLbl">&#128196; <b id="arqTit">Escolher o PDF do certificado</b><br><span id="arqNome" style="font-size:12px;color:#8a8270;">PDF (ou foto JPG/PNG), até 20 MB</span><input type="file" id="arq" accept="application/pdf,image/jpeg,image/png" style="display:none" onchange="arqSel()"></label>
   <div class="fg" style="margin-top:12px;">
     <label class="full"><span>Vinho *</span><input autocomplete="off" id="c_vinho" placeholder="ex.: Château Talbot"></label>
     <label><span>Produtor / Château</span><input autocomplete="off" id="c_produtor"></label>
@@ -78,11 +85,11 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <label><span>Safra</span><input autocomplete="off" id="c_safra" inputmode="numeric" placeholder="ex.: 2019"></label>
     <label><span>Cor / tipo</span><select id="c_cor"><option value="">—</option><option>Tinto</option><option>Branco</option><option>Branco doce</option><option>Rosé</option><option>Espumante</option></select></label>
     <label><span>Volume</span><select id="c_volume"><option value="">—</option><option>375 ml</option><option selected>750 ml</option><option>1,5 L</option><option>3 L</option><option>6 L</option></select></label>
-    <label><span>Nº do certificado</span><input autocomplete="off" id="c_numero"></label>
+    <label><span id="lbNum">Nº do certificado</span><input autocomplete="off" id="c_numero"></label>
     <label><span>Lote</span><input autocomplete="off" id="c_lote"></label>
-    <label><span>Data de emissão</span><input type="date" id="c_data_emissao"></label>
-    <label><span>Data de validade *</span><input type="date" id="c_data_validade"></label>
-    <label class="full" id="impWrap"><span>Importadora que fez a inspeção</span><select id="c_importadora_id" onchange="impSel()"></select></label>
+    <label><span id="lbEmi">Data de emissão</span><input type="date" id="c_data_emissao"></label>
+    <label><span id="lbVal">Data de validade *</span><input type="date" id="c_data_validade"></label>
+    <label class="full" id="impWrap"><span id="lbImp">Importadora que fez a inspeção</span><select id="c_importadora_id" onchange="impSel()"></select></label>
     <label class="full" id="impOutraWrap" style="display:none;"><span>Nome da importadora</span><input autocomplete="off" id="c_importadora_nome"></label>
     <label class="full"><span>Observações</span><textarea id="c_obs" rows="2"></textarea></label>
     <label class="full" style="display:flex;gap:8px;align-items:center;font-size:13.5px;color:#2a2620;"><input type="checkbox" id="c_compartilhado" checked style="width:auto;"> Compartilhar com todas as Importadoras Oficiais</label>
@@ -94,10 +101,26 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
   </div>
 </div></div>
 
+<div class="modal" id="mColar" onclick="if(event.target===this)this.style.display='none'"><div class="box">
+  <h3>Incluir vinhos isentos de coleta</h3>
+  <p style="font-size:13px;color:#5b5446;line-height:1.55;margin:0 0 8px;">Escreva ou cole a lista: <b>um vinho por linha</b> (pode copiar direto do Excel, Word ou PDF).</p>
+  <textarea id="colarTxt" rows="10" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:9px;font-size:13px;font-family:inherit;background:#fbf7ec;"></textarea>
+  <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><button class="bn" id="bColarOk" onclick="importarColar()">Incluir na lista</button><button class="lk" onclick="document.getElementById('mColar').style.display='none'">cancelar</button><span class="msg" id="colarMsg"></span></div>
+</div></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
-var CONSELHO=false,MEU_IMP=null,USER=null,MEU_NOME="",ROWS=[],IMPS=[],FILTRO="todos",EDIT=null;
+var CONSELHO=false,MEU_IMP=null,USER=null,MEU_NOME="",ROWS=[],IMPS=[],FILTRO="todos",EDIT=null,TIPO="certificado";
+function ISE(){return TIPO==="isento";}
+function tipoDe(x){return x.tipo||"certificado";}
+function setTipo(t){TIPO=t;FILTRO="todos";render();}
+function tabsHtml(){var n1=ROWS.filter(function(x){return tipoDe(x)==="certificado";}).length,n2=ROWS.filter(function(x){return tipoDe(x)==="isento";}).length;
+  document.getElementById("tabs").innerHTML="<span class=\"tab"+(ISE()?"":" on")+"\" onclick=\"setTipo('certificado')\">&#128196; Certificados de inspeção ("+n1+")</span><span class=\"tab"+(ISE()?" on":"")+"\" onclick=\"setTipo('isento')\">&#9989; Vinhos isentos de coleta ("+n2+")</span>";
+  document.getElementById("tabInfo").innerHTML=ISE()?("<b>Lista de Vinhos de Excepcional Qualidade</b> do MAPA (CGVB): vinhos <b>isentos de coleta de amostra</b> — consulte antes de pedir a inspeção.<div style=\"display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;\"><a href=\"docs/lista-vinhos-excepcional-qualidade-commanderie.pdf\" target=\"_blank\" rel=\"noopener\" style=\"background:var(--navy);color:#fff;text-decoration:none;border-radius:10px;padding:9px 14px;font-size:13px;\">&#128196; Lista Commanderie (PDF)</a><a href=\"docs/lista-vinhos-excepcional-qualidade-mapa-oficial.pdf\" target=\"_blank\" rel=\"noopener\" style=\"background:#fffdf7;color:var(--navy);text-decoration:none;border:1px solid var(--gold);border-radius:10px;padding:9px 14px;font-size:13px;\">&#128462; Documento oficial MAPA (PDF)</a></div>"):"";
+  document.getElementById("bNovo").textContent=ISE()?"+ Incluir vinhos":"+ Enviar certificado";
+  document.getElementById("bColar").style.display="none";
+  document.getElementById("fImp").style.display=ISE()?"none":"";}
 var PQ=new URLSearchParams(location.search),DE_IMP=PQ.get("de")==="importador";
 function voltar(){try{if(document.referrer&&document.referrer.indexOf(location.host)>=0&&history.length>1){history.back();return false;}}catch(e){}return true;}
 var CAMPOS=["vinho","produtor","appellation","safra","cor","volume","numero","lote","data_emissao","data_validade","importadora_nome","obs"];
@@ -144,27 +167,53 @@ async function carregar(){
   ROWS=q.data||[];render();
 }
 function setF(v){FILTRO=v;render();}
-function render(){
-  var cnt={todos:ROWS.length,ok:0,av:0,x:0};ROWS.forEach(function(x){var s=situ(x);if(cnt[s]!=null)cnt[s]++;});
-  document.getElementById("stats").innerHTML=[["todos","Certificados"],["ok","Válidos"],["av","Vencem em 30 dias"],["x","Vencidos"]].map(function(t){return "<div class=\"stat"+(FILTRO===t[0]?" on":"")+"\" onclick=\"setF('"+t[0]+"')\"><b>"+cnt[t[0]]+"</b><span>"+t[1]+"</span></div>";}).join("");
+function render(){tabsHtml();var BASE=ROWS.filter(function(x){return tipoDe(x)===TIPO;});
+  var cnt={todos:BASE.length,ok:0,av:0,x:0};BASE.forEach(function(x){var s=situ(x);if(cnt[s]!=null)cnt[s]++;});
+  document.getElementById("stats").innerHTML=(ISE()?[["todos","Vinhos isentos de coleta"]]:[["todos","Certificados"],["ok","Válidos"],["av","Vencem em 30 dias"],["x","Vencidos"]]).map(function(t){return "<div class=\"stat"+(FILTRO===t[0]?" on":"")+"\" onclick=\"setF('"+t[0]+"')\"><b>"+cnt[t[0]]+"</b><span>"+t[1]+"</span></div>";}).join("");
   var q=nrm(document.getElementById("busca").value),fi=document.getElementById("fImp").value;
-  var L=ROWS.filter(function(x){
+  var L=BASE.filter(function(x){
     if(FILTRO!=="todos"&&situ(x)!==FILTRO)return false;
     if(fi==="__sem"&&(x.importadora_id||x.importadora_nome))return false;
     if(fi&&fi!=="__sem"&&String(x.importadora_id)!==fi)return false;
     return !q||nrm([x.vinho,x.produtor,x.appellation,x.safra,x.numero,x.lote,impNome(x),x.obs].join(" ")).indexOf(q)>=0;});
-  if(!L.length){document.getElementById("lista").innerHTML="<div class=\"vazio\">"+(ROWS.length?"Nenhum certificado com esse filtro.":"Nenhum certificado ainda. Clique em <b>+ Enviar certificado</b> para incluir o primeiro.")+"</div>";return;}
+  if(ISE()&&L.length){var PO=["França","Espanha","Portugal","Austrália","EUA","Itália"];
+    L=L.slice().sort(function(a,b){var pa=PO.indexOf(a.pais||""),pb=PO.indexOf(b.pais||"");pa=pa<0?99:pa;pb=pb<0?99:pb;return (pa-pb)||((a.ordem||9999)-(b.ordem||9999))||nrm(a.vinho).localeCompare(nrm(b.vinho));});
+    var h="",ult=null;L.forEach(function(x,i){var g=x.pais||"Outros";if(g!==ult){if(ult!==null)h+="</div>";ult=g;h+="<div style=\"font-family:Georgia,serif;color:var(--navy);font-size:17px;margin:16px 0 6px;border-bottom:1px solid var(--line);padding-bottom:3px;\">"+esc(g)+"</div><div style=\"background:#fffdf7;border:1px solid var(--line);border-radius:12px;overflow:hidden;\">";}
+      h+="<div style=\"display:flex;align-items:center;gap:10px;padding:9px 14px;border-top:1px solid #f0e9d6;\"><span style=\"min-width:24px;color:var(--gold);font-family:Georgia,serif;font-size:13px;\">"+(x.ordem?String(x.ordem).padStart(2,"0"):"&#10003;")+"</span><span style=\"flex:1;min-width:0;\"><span style=\"font-family:Georgia,serif;color:var(--navy);font-size:15px;\">"+esc(x.vinho)+"</span>"+(x.appellation?("<span style=\"display:block;font-size:12px;color:#8a8270;\">"+esc(x.appellation)+"</span>"):"")+"</span>"+(podeEditar(x)?("<button class=\"lk\" onclick=\"renomear('"+x.id+"')\">editar</button><button class=\"lk r\" onclick=\"remover('"+x.id+"')\">remover</button>"):"")+"</div>";});
+    document.getElementById("lista").innerHTML=h+"</div>";return;}
+  if(!L.length){document.getElementById("lista").innerHTML="<div class=\"vazio\">"+(BASE.length?"Nada com esse filtro.":(ISE()?"Nenhum vinho na lista ainda. Clique em <b>+ Incluir vinhos</b> e cole a lista.":"Nenhum certificado ainda. Clique em <b>+ Enviar certificado</b> para incluir o primeiro."))+"</div>";return;}
   document.getElementById("lista").innerHTML=L.map(function(x){
     var ext=((x.arquivo_nome||x.arquivo_path||"").split(".").pop()||"").toUpperCase();
     var l1=[x.produtor&&x.produtor!==x.vinho?x.produtor:"",x.appellation,x.cor,x.volume].filter(Boolean).join(" · ");
-    var l2=[impNome(x)?("Importadora: <b>"+esc(impNome(x))+"</b>"):"",x.numero?("Nº "+esc(x.numero)):"",x.lote?("Lote "+esc(x.lote)):"",x.data_emissao?("Emissão "+fdata(x.data_emissao)):""].filter(Boolean).join(" · ");
+    var l2=[impNome(x)?("Importadora: <b>"+esc(impNome(x))+"</b>"):"",x.numero?((ISE()?"Processo ":"Nº ")+esc(x.numero)):"",x.lote?("Lote "+esc(x.lote)):"",x.data_emissao?((ISE()?"Isenção em ":"Emissão ")+fdata(x.data_emissao)):""].filter(Boolean).join(" · ");
     var l3=(x.origem==="importadora"?"Enviado pela importadora":"Enviado pelo Conselho")+(x.enviado_por_nome?(" ("+esc(x.enviado_por_nome)+")"):"")+(x.compartilhado?"":" · <span class=\"pill priv\">não compartilhado</span>");
-    return "<div class=\"card\"><div class=\"ic\">"+esc(ext||"PDF")+"</div><div class=\"tx\"><div class=\"t\">"+esc(x.vinho)+(x.safra?(" "+esc(x.safra)):"")+"</div>"
-      +(l1?("<div class=\"m\">"+esc(l1)+"</div>"):"")+"<div class=\"m\">"+situTag(x)+"</div>"+(l2?("<div class=\"m\">"+l2+"</div>"):"")
+    return "<div class=\"card\"><div class=\"ic\""+(ISE()?" style=\"background:#eef6ef;border-color:#cfe6d3;color:#2f6b3a;font-size:20px;\"":"")+">"+(ISE()?"&#10003;":esc(ext||"PDF"))+"</div><div class=\"tx\"><div class=\"t\">"+esc(x.vinho)+(x.safra?(" "+esc(x.safra)):"")+"</div>"
+      +(l1?("<div class=\"m\">"+esc(l1)+"</div>"):"")+"<div class=\"m\">"+(ISE()?("<span class=\"pill v-ok\">Isento de coleta</span> "+(x.data_validade?situTag(x):"")):situTag(x))+"</div>"+(l2?("<div class=\"m\">"+l2+"</div>"):"")
       +(x.obs?("<div class=\"m\" style=\"font-style:italic;\">"+esc(x.obs)+"</div>"):"")+"<div class=\"m\" style=\"font-size:11.5px;color:#9a937f;\">"+l3+"</div></div>"
-      +"<div class=\"ac\">"+(x.arquivo_path?("<button class=\"dl\" onclick=\"baixar('"+x.id+"')\">&#11015; Baixar</button>"):"<span style=\"font-size:12px;color:#9a937f;\">sem arquivo</span>")
+      +"<div class=\"ac\">"+(x.arquivo_path?("<button class=\"dl\" onclick=\"baixar('"+x.id+"')\">&#11015; Baixar</button>"):(ISE()?"":"<span style=\"font-size:12px;color:#9a937f;\">sem arquivo</span>"))
       +(podeEditar(x)?("<button class=\"lk\" onclick=\"editar('"+x.id+"')\">editar</button><button class=\"lk r\" onclick=\"remover('"+x.id+"')\">remover</button>"):"")+"</div></div>";}).join("");
 }
+async function renomear(id){var x=byId(id);if(!x)return;var v=prompt("Nome do vinho:",x.vinho||"");if(v===null||!v.trim())return;var r=await sb.from("certificados_mapa").update({vinho:v.trim(),updated_at:new Date().toISOString()}).eq("id",id);if(r.error){alert(r.error.message);return;}carregar();}
+function abrirColar(){document.getElementById("colarTxt").value="";document.getElementById("colarMsg").textContent="";document.getElementById("bColarOk").disabled=false;document.getElementById("mColar").style.display="flex";}
+function impPorNome(n){n=nrm(n).trim();if(!n)return null;for(var i=0;i<IMPS.length;i++){var a=nrm(IMPS[i].nome);if(a===n||a.indexOf(n)>=0||n.indexOf(a)>=0)return IMPS[i];}return null;}
+async function importarColar(){var m=document.getElementById("colarMsg");var linhas=(document.getElementById("colarTxt").value||"").split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean);
+  if(!linhas.length){m.style.color="#8f1d24";m.textContent="Cole pelo menos um vinho.";return;}
+  var regs=[],ja={};ROWS.forEach(function(x){if(tipoDe(x)==="isento")ja[nrm(x.vinho)]=1;});var rep=0;
+  linhas.forEach(function(l){var v=l.replace(/\t+/g," ").replace(/^[-•*\d.)\s]+(?=\D)/,"").replace(/\s{2,}/g," ").trim();if(!v||/^vinhos?$/i.test(v))return;if(ja[nrm(v)]){rep++;return;}ja[nrm(v)]=1;
+    var r={tipo:"isento",vinho:v,compartilhado:true,enviado_por:USER.id,updated_at:new Date().toISOString()};
+    if(CONSELHO){r.importadora_id=null;r.origem="conselho";r.enviado_por_nome=MEU_NOME||null;}
+    else{r.importadora_id=MEU_IMP.id;r.origem="importadora";r.enviado_por_nome=MEU_IMP.nome;}
+    regs.push(r);});
+  if(!regs.length){m.style.color="#8f1d24";m.textContent=rep?"Todos esses vinhos já estão na lista.":"Nenhuma linha válida.";return;}
+  document.getElementById("bColarOk").disabled=true;m.style.color="#5b5446";m.textContent="Importando "+regs.length+"…";
+  var r=await sb.from("certificados_mapa").insert(regs);
+  if(r.error){document.getElementById("bColarOk").disabled=false;m.style.color="#8f1d24";m.textContent="Erro: "+(/tipo/.test(r.error.message)?"falta rodar o SQL certificados_isentos.sql":r.error.message);return;}
+  document.getElementById("mColar").style.display="none";TIPO="isento";carregar();}
+function exportarCsv(){var L=ROWS.filter(function(x){return tipoDe(x)===TIPO;});
+  if(ISE()){L=L.slice().sort(function(a,b){return nrm(a.vinho).localeCompare(nrm(b.vinho));});var qq=function(v){v=(v==null?"":String(v));return /[;"]/.test(v)?("\""+v.replace(/"/g,'""')+"\""):v;};var bb=new Blob(["\ufeff"+["Nº;Vinho;Região / Produtor;País"].concat(L.map(function(x){return [x.ordem||"",x.vinho,x.appellation,x.pais].map(qq).join(";");})).join("\r\n")],{type:"text/csv;charset=utf-8"});var aa=document.createElement("a");aa.href=URL.createObjectURL(bb);aa.download="vinhos-isentos-de-coleta.csv";document.body.appendChild(aa);aa.click();aa.remove();return;}var cab=["Vinho","Safra","Produtor/Château","Appellation","Cor","Volume",ISE()?"Nº processo":"Nº certificado","Lote",ISE()?"Data da isenção":"Emissão","Validade","Importadora","Observações"];
+  var q=function(v){v=(v==null?"":String(v));return /[;"\n]/.test(v)?("\""+v.replace(/"/g,'""')+"\""):v;};
+  var rows=[cab.join(";")].concat(L.map(function(x){return [x.vinho,x.safra,x.produtor,x.appellation,x.cor,x.volume,x.numero,x.lote,fdata(x.data_emissao),fdata(x.data_validade),impNome(x),x.obs].map(q).join(";");}));
+  var b=new Blob(["\ufeff"+rows.join("\r\n")],{type:"text/csv;charset=utf-8"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=(ISE()?"vinhos-isentos-de-coleta":"certificados-mapa")+".csv";document.body.appendChild(a);a.click();a.remove();}
 function byId(id){for(var i=0;i<ROWS.length;i++)if(ROWS[i].id===id)return ROWS[i];return null;}
 async function baixar(id){var x=byId(id);if(!x||!x.arquivo_path)return;
   var w=null;try{w=window.open("","_blank");}catch(e){}
@@ -174,7 +223,12 @@ async function baixar(id){var x=byId(id);if(!x||!x.arquivo_path)return;
 function impSel(){document.getElementById("impOutraWrap").style.display=document.getElementById("c_importadora_id").value==="__outra"?"block":"none";}
 function arqSel(){var f=document.getElementById("arq").files[0];document.getElementById("arqNome").textContent=f?(f.name+" · "+(f.size/1048576).toFixed(1)+" MB"):"PDF (ou foto JPG/PNG), até 20 MB";}
 function abrirModal(x){EDIT=x?x.id:null;x=x||{};
-  document.getElementById("mTit").textContent=EDIT?"Editar certificado":"Novo certificado";
+  document.getElementById("mTit").textContent=ISE()?(EDIT?"Editar vinho isento":"Novo vinho isento de coleta"):(EDIT?"Editar certificado":"Novo certificado");
+  document.getElementById("arqTit").textContent=ISE()?"Documento da isenção (opcional)":"Escolher o PDF do certificado";
+  document.getElementById("lbNum").textContent=ISE()?"Nº do processo / ofício":"Nº do certificado";
+  document.getElementById("lbEmi").textContent=ISE()?"Data da isenção":"Data de emissão";
+  document.getElementById("lbVal").textContent=ISE()?"Válida até (se houver)":"Data de validade *";
+  document.getElementById("lbImp").textContent=ISE()?"Importadora":"Importadora que fez a inspeção";
   document.getElementById("arq").value="";arqSel();
   if(EDIT&&x.arquivo_nome)document.getElementById("arqNome").textContent="Atual: "+x.arquivo_nome+" — escolha outro só se quiser trocar";
   CAMPOS.forEach(function(c){var e=document.getElementById("c_"+c);if(e)e.value=x[c]||"";});
@@ -185,7 +239,7 @@ function abrirModal(x){EDIT=x?x.id:null;x=x||{};
   document.getElementById("c_compartilhado").checked=EDIT?!!x.compartilhado:true;
   document.getElementById("mMsg").textContent="";document.getElementById("bSalvar").disabled=false;
   document.getElementById("modal").style.display="flex";}
-function novo(){abrirModal(null);}
+function novo(){if(ISE()){abrirColar();return;}abrirModal(null);}
 function editar(id){abrirModal(byId(id));}
 function fechar(){document.getElementById("modal").style.display="none";EDIT=null;}
 function limpaNome(n){return (n||"certificado").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9._-]+/g,"_").slice(-80);}
@@ -198,8 +252,8 @@ async function salvar(){
   o.compartilhado=document.getElementById("c_compartilhado").checked;
   var fl=document.getElementById("arq").files[0];
   if(!o.vinho){say("Informe o vinho.","#8f1d24");return;}
-  if(!o.data_validade){say("Informe a data de validade.","#8f1d24");return;}
-  if(!EDIT&&!fl){say("Escolha o PDF do certificado.","#8f1d24");return;}
+  if(!ISE()&&!o.data_validade){say("Informe a data de validade.","#8f1d24");return;}
+  if(!ISE()&&!EDIT&&!fl){say("Escolha o PDF do certificado.","#8f1d24");return;}
   if(fl&&!/pdf|jpeg|png/.test(fl.type||"")){say("Envie um PDF (ou foto JPG/PNG).","#8f1d24");return;}
   if(fl&&fl.size>20*1048576){say("Arquivo muito grande (máx. 20 MB).","#8f1d24");return;}
   document.getElementById("bSalvar").disabled=true;
@@ -212,7 +266,7 @@ async function salvar(){
   say("Salvando…");o.updated_at=new Date().toISOString();
   var r;
   if(EDIT){r=await sb.from("certificados_mapa").update(o).eq("id",EDIT);}
-  else{o.origem=CONSELHO?"conselho":"importadora";o.enviado_por=USER.id;o.enviado_por_nome=CONSELHO?(MEU_NOME||null):MEU_IMP.nome;r=await sb.from("certificados_mapa").insert(o);}
+  else{o.tipo=TIPO;o.origem=CONSELHO?"conselho":"importadora";o.enviado_por=USER.id;o.enviado_por_nome=CONSELHO?(MEU_NOME||null):MEU_IMP.nome;r=await sb.from("certificados_mapa").insert(o);}
   if(r.error){document.getElementById("bSalvar").disabled=false;say("Erro: "+r.error.message,"#8f1d24");if(o.arquivo_path)sb.storage.from("certificados").remove([o.arquivo_path]);return;}
   if(fl&&antigo)sb.storage.from("certificados").remove([antigo]);
   fechar();carregar();

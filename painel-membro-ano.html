@@ -57,10 +57,11 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <div id="notAllowed" class="state" style="display:none;"><h2>Apenas o Conselho</h2><p>Esta página é exclusiva do Conselho.</p><a class="btn" href="index.html">Voltar</a></div>
 <div id="loading" class="state">Carregando…</div>
 <div id="panel" style="display:none;">
-  <div class="dhead"><div class="k">Conselho</div><h1>Membro do Ano <span id="anoTit"></span></h1><div class="sub">Eleito pelos Mestres e pelo Grão-Mestre. A pontuação abaixo ajuda na escolha; o voto é livre.</div></div>
+  <div class="dhead"><div class="k">Conselho</div><h1>Membro do Ano <span id="anoTit"></span></h1><div class="sub">Eleito pelos Mestres e pelo Grão-Mestre. O voto é livre e deve vir com uma breve justificativa.</div></div>
   <div class="wrap">
     <div id="vencedor"></div>
-    <div class="box">
+    <div class="box" id="cartaBox" style="display:none;border-color:var(--gold);"></div>
+    <div class="box" id="critBox">
       <h3>Critérios (pontos no ano)</h3>
       <div class="crit"><span>Capítulo <b>3</b></span><span>Viagem <b>3</b></span><span>Outros eventos <b>1</b></span><span>Convidado levado <b>1</b></span><span>Indicação de novo membro <b>2</b></span><span>Apoio à confraria <b>pontos do Conselho</b></span></div>
       <div style="font-size:11.5px;color:#9a937f;margin-top:6px;" id="regra"></div>
@@ -101,10 +102,20 @@ async function carregar(){
   try{var ms=await sb.rpc("membro_ano_mestres",{p_ano:ano});MESTRES=(ms&&!ms.error&&ms.data)||[];}catch(e){MESTRES=[];}
   var ap=await sb.from("membro_ano_apoio").select("*").eq("ano",ano).order("created_at",{ascending:true});
   APOIO={};(ap.data||[]).forEach(function(x){(APOIO[x.membro_id]=APOIO[x.membro_id]||[]).push(x);});
-  situacao();render();IMG_BLOB=null;if(ST.status!=="encerrada")gerarImagem();
+  situacao();render();IMG_BLOB=null;if(ST.status!=="encerrada")(LIVRE()?gerarCarta():gerarImagem());
   var pv=new URLSearchParams(location.search).get("votar");if(pv&&ST.pode_votar&&ST.status!=="encerrada"&&!window._pvFeito){window._pvFeito=1;setTimeout(function(){votar(pv);},300);}
 }
-function regra(){var a=anoSel();document.getElementById("regra").innerHTML=a<2027?("<b style=\"color:#8f1d24;\">Em "+a+" a participação é lançada pelo Conselho:</b> clique em <b>✎ alterar participação</b> (ou nos números) do membro e informe quantos capítulos, viagens e eventos ele foi. A contagem automática começa em 2027."):"Contagem automática: presença marcada no evento (ou reserva confirmada quando a presença não foi marcada). Eventos das importadoras não contam. Se algum número estiver errado, corrija em <b>✎ alterar participação</b>.";}
+function LIVRE(){return anoSel()<2027;}
+var CARTA_P=["Caros Mestres,",
+ "Abrimos a votação do Membro do Ano {ANO}, a distinção ao Comendador que melhor representou o espírito da Commanderie ao longo do ano.",
+ "Neste primeiro ano a escolha é livre: cada Mestre vota pelo seu conhecimento e pelos seus argumentos — presença, dedicação, generosidade, convívio e o amor pelos vinhos de Bordeaux.",
+ "A partir de 2027, o sistema registrará uma pontuação de participação: Capítulo 3 pontos, Viagem 3, demais eventos 1, convidado levado 1, indicação de novo membro 2, além de pontos de apoio dados pelo Conselho.",
+ "Essa pontuação será apenas uma referência. O voto dos Mestres é soberano e pode ser diferente da pontuação, conforme os argumentos de cada um. Por isso pedimos que cada voto venha com uma breve justificativa.",
+ "O voto do Grão-Mestre vale 2 e o de cada Mestre vale 1.",
+ "Bordeaux, toujours Bordeaux."];
+function cartaPars(){return CARTA_P.map(function(t){return t.replace("{ANO}",anoSel());});}
+function cartaHtml(){var P=cartaPars();return "<h3>Carta aos Mestres</h3>"+P.map(function(t,i){return "<p style=\"font-size:14px;line-height:1.65;margin:0 0 9px;color:#2a2620;"+(i===P.length-1?"font-family:Georgia,serif;font-style:italic;color:#8a6a1f;":"")+"\">"+esc(t)+"</p>";}).join("")+"<p style=\"font-size:13px;color:#5b5446;margin:6px 0 0;\"><b>Manuel Brandão</b><br>Grão-Mestre</p>";}
+function regra(){var cb=document.getElementById("cartaBox"),kb=document.getElementById("critBox");if(LIVRE()){cb.innerHTML=cartaHtml();cb.style.display="block";kb.style.display="none";}else{cb.style.display="none";kb.style.display="block";}var a=anoSel();document.getElementById("regra").innerHTML=a<2027?("<b style=\"color:#8f1d24;\">Em "+a+" a participação é lançada pelo Conselho:</b> clique em <b>✎ alterar participação</b> (ou nos números) do membro e informe quantos capítulos, viagens e eventos ele foi. A contagem automática começa em 2027."):"Contagem automática: presença marcada no evento (ou reserva confirmada quando a presença não foi marcada). Eventos das importadoras não contam. Se algum número estiver errado, corrija em <b>✎ alterar participação</b>.";}
 function situacao(){regra();
   var el=document.getElementById("situacao"),ab=ST.status!=="encerrada";
   var el2=document.getElementById("vencedor");
@@ -121,8 +132,8 @@ function situacao(){regra();
   el.innerHTML=h;
 }
 function waLink(x){var t=(""+(x.telefone||"")).replace(/\D/g,"");if(!t)return "";var d=(""+(x.ddi||"")).replace(/\D/g,"");if(d)t=d+t;else if(t.length<=11)t="55"+t;
-  var top=RK.filter(function(r){return !mesa(r)&&r.pontos>0;}).slice(0,3).map(function(r){return r.nome+" ("+r.pontos+" pts)";}).join(", ");
-  var msg="Olá, "+(x.nome||"").split(" ")[0]+"! A votação do *Membro do Ano "+anoSel()+"* da Commanderie está aberta e o seu voto é muito importante."+(top?(" Mais pontuados até agora: "+top+"."):"")+" Veja o ranking na imagem e vote no Painel do Conselho → Membro do Ano.";
+  var top=LIVRE()?"":RK.filter(function(r){return !mesa(r)&&r.pontos>0;}).slice(0,3).map(function(r){return r.nome+" ("+r.pontos+" pts)";}).join(", ");
+  var msg="Olá, "+(x.nome||"").split(" ")[0]+"! A votação do *Membro do Ano "+anoSel()+"* da Commanderie está aberta e o seu voto é muito importante."+(top?(" Mais pontuados até agora: "+top+"."):"")+(LIVRE()?" Leia a carta na imagem e vote no Painel do Conselho → Membro do Ano, com uma breve justificativa.":" Veja o ranking na imagem e vote no Painel do Conselho → Membro do Ano.");
   return "https://wa.me/"+t+"?text="+encodeURIComponent(msg);}
 function waTexto(x){return decodeURIComponent((waLink(x).split("?text=")[1])||"");}
 var IMG_BLOB=null,IMG_URL="";
@@ -144,6 +155,17 @@ function gerarImagem(cb){var L=topRank();var W=1080,RH=104,H=430+Math.max(L.leng
     x.fillStyle="#ffffff";x.font="italic 30px Georgia, serif";x.fillText("Vote no Painel do Conselho → Membro do Ano",W/2,fy+55);
     c.toBlob(function(b){IMG_BLOB=b;try{if(IMG_URL)URL.revokeObjectURL(IMG_URL);}catch(e){}IMG_URL=b?URL.createObjectURL(b):"";if(cb)cb();},"image/png");}
   var im=new Image();im.onload=function(){x.beginPath();x.arc(W/2,130,82,0,7);x.fillStyle="#faf6ea";x.fill();var iw=118,ih=iw*im.naturalHeight/im.naturalWidth;x.drawImage(im,W/2-iw/2,130-ih/2,iw,ih);fim();};im.onerror=fim;im.src="img/brasao-alta.png";}
+function gerarCarta(cb){var W=1080,P=cartaPars();var c=document.createElement("canvas");var x=c.getContext("2d");
+  function linhas(t,font,max){x.font=font;var w=t.split(" "),L=[],cur="";w.forEach(function(p){var tt=cur?cur+" "+p:p;if(x.measureText(tt).width>max&&cur){L.push(cur);cur=p;}else cur=tt;});if(cur)L.push(cur);return L;}
+  c.width=W;c.height=10;var F="400 33px Georgia, serif",LH=48,blocos=P.map(function(t){return linhas(t,F,W-220);});var H=420+blocos.reduce(function(a,b){return a+b.length*LH+26;},0)+190;c.width=W;c.height=H;x=c.getContext("2d");
+  function rr(X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath();}
+  x.fillStyle="#0f152b";x.fillRect(0,0,W,H);var g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#fbf6e9");g.addColorStop(1,"#efe5cc");rr(24,24,W-48,H-48,40);x.fillStyle=g;x.fill();x.strokeStyle="#b08a3a";x.lineWidth=5;x.stroke();
+  function fim(){x.textAlign="center";x.fillStyle="#b08a3a";x.font="500 24px Arial";try{x.letterSpacing="7px";}catch(e){}x.fillText("COMMANDERIE DE BORDEAUX",W/2,262);try{x.letterSpacing="0px";}catch(e){}
+    x.fillStyle="#1e2a56";x.font="400 58px Georgia, serif";x.fillText("Membro do Ano "+anoSel(),W/2,334);x.fillStyle="#b08a3a";x.fillRect(W/2-80,362,160,3);
+    var y=430;x.textAlign="left";blocos.forEach(function(L,i){var ult=(i===blocos.length-1);x.font=ult?"italic 400 33px Georgia, serif":F;x.fillStyle=ult?"#8a6a1f":"#2a2620";L.forEach(function(l){x.fillText(l,110,y);y+=LH;});y+=26;});
+    x.fillStyle="#1e2a56";x.font="700 30px Georgia, serif";x.fillText("Manuel Brandão",110,y+20);x.font="400 26px Arial";x.fillStyle="#5b5446";x.fillText("Grão-Mestre",110,y+58);
+    c.toBlob(function(b){IMG_BLOB=b;try{if(IMG_URL)URL.revokeObjectURL(IMG_URL);}catch(e){}IMG_URL=b?URL.createObjectURL(b):"";if(cb)cb();},"image/png");}
+  var im=new Image();im.onload=function(){var iw=150,ih=iw*im.naturalHeight/im.naturalWidth;x.drawImage(im,W/2-iw/2,135-ih/2,iw,ih);fim();};im.onerror=fim;im.src="img/brasao-alta.png";}
 function ehMobile(){return /iPhone|iPad|Android/i.test(navigator.userAgent);}
 function arqImg(){return new File([IMG_BLOB],"membro-do-ano-"+anoSel()+".png",{type:"image/png"});}
 function waEnviar(i){var x=MESTRES[i];if(!x)return;var txt=waTexto(x),link=waLink(x);
@@ -151,8 +173,8 @@ function waEnviar(i){var x=MESTRES[i];if(!x)return;var txt=waTexto(x),link=waLin
   var w=window.open("about:blank","_blank");
   function abre(){if(w)w.location=link;else location.href=link;}
   if(IMG_BLOB&&navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"image/png":IMG_BLOB})]).then(function(){aviso("✓ Imagem copiada — no WhatsApp, cole (Cmd+V / Ctrl+V) na conversa.");abre();}).catch(abre);}else abre();}
-function waGrupo(){var top=RK.filter(function(r){return !mesa(r)&&r.pontos>0;}).slice(0,3).map(function(r){return r.nome+" ("+r.pontos+" pts)";}).join(", ");
-  var txt="Caros Mestres, a votação do *Membro do Ano "+anoSel()+"* está aberta! "+(top?("Mais pontuados até agora: "+top+". "):"")+"Veja o ranking na imagem e votem no Painel do Conselho → Membro do Ano. Cada Mestre tem 1 voto.";
+function waGrupo(){var top=LIVRE()?"":RK.filter(function(r){return !mesa(r)&&r.pontos>0;}).slice(0,3).map(function(r){return r.nome+" ("+r.pontos+" pts)";}).join(", ");
+  var txt="Caros Mestres, a votação do *Membro do Ano "+anoSel()+"* está aberta! "+(top?("Mais pontuados até agora: "+top+". "):"")+(LIVRE()?"Leiam a carta na imagem e votem no Painel do Conselho → Membro do Ano, com uma breve justificativa. O voto do Grão-Mestre vale 2 e o de cada Mestre vale 1.":"Veja o ranking na imagem e votem no Painel do Conselho → Membro do Ano. O voto do Grão-Mestre vale 2 e o de cada Mestre vale 1.");
   if(IMG_BLOB&&ehMobile()&&navigator.canShare&&navigator.canShare({files:[arqImg()]})){navigator.share({files:[arqImg()],text:txt}).catch(function(){});return;}
   var link="https://wa.me/?text="+encodeURIComponent(txt);var w=window.open("about:blank","_blank");function abre(){if(w)w.location=link;else location.href=link;}
   if(IMG_BLOB&&navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"image/png":IMG_BLOB})]).then(function(){aviso("✓ Imagem copiada — escolha o grupo Mestres CDB e cole (Cmd+V / Ctrl+V).");abre();}).catch(abre);}else abre();}
@@ -161,7 +183,7 @@ function verImagem(){if(!IMG_URL){alert("A imagem ainda está sendo gerada, tent
 function avisoHtml(){var pend=MESTRES.filter(function(x){return !x.votou;});
   var h="<div style=\"margin-top:14px;border-top:1px solid #ece0c2;padding-top:12px;\"><div style=\"font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:bold;margin-bottom:6px;\">Avisar os Mestres</div>"
    +"<div class=\"acts\" style=\"margin-top:0;\"><button class=\"bv\" onclick=\"avisar(true)\">&#9993; E-mail para quem não votou ("+pend.length+")</button><button class=\"bl\" onclick=\"avisar(false)\">&#9993; E-mail para todos</button><span id=\"avMsg\" style=\"font-size:12.5px;\"></span></div>";
-  if(MESTRES.length)h+="<div style=\"margin-top:10px;\"><button onclick=\"waGrupo()\" style=\"background:#25D366;color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:13.5px;cursor:pointer;font-weight:bold;\">&#128101; Enviar ao grupo Mestres CDB</button><div style=\"font-size:11.5px;color:#8a8270;margin-top:4px;\">No celular, escolha o grupo na lista do WhatsApp. No computador, a imagem é copiada: escolha o grupo e cole.</div></div>"+"<div style=\"margin-top:10px;font-size:12.5px;color:#5b5446;\">Ou para cada Mestre — vai a <b>imagem do ranking</b> com a mensagem (no computador a imagem é copiada: cole na conversa). <a onclick=\"verImagem()\" style=\"color:var(--navy);cursor:pointer;border-bottom:1px solid var(--gold);\">ver / baixar a imagem</a></div>"+MESTRES.map(function(x,i){var l=waLink(x);return "<div style=\"display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0e9d6;font-size:13px;\"><span style=\"flex:1;\">"+esc(x.nome)+" <span style=\"color:#8a8270;font-size:11.5px;\">"+esc(x.grau||"")+"</span></span>"+(x.votou?"<span class=\"chip ok\" style=\"margin:0;\">✓ votou</span>":"")+(l?("<button onclick=\"waEnviar("+i+")\" style=\"background:#25D366;color:#fff;border:none;border-radius:8px;padding:6px 11px;font-size:12.5px;cursor:pointer;\">WhatsApp</button>"):"<span style=\"font-size:11.5px;color:#9a937f;\">sem telefone</span>")+"</div>";}).join("");
+  if(MESTRES.length)h+="<div style=\"margin-top:10px;\"><button onclick=\"waGrupo()\" style=\"background:#25D366;color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:13.5px;cursor:pointer;font-weight:bold;\">&#128101; Enviar ao grupo Mestres CDB</button><div style=\"font-size:11.5px;color:#8a8270;margin-top:4px;\">No celular, escolha o grupo na lista do WhatsApp. No computador, a imagem é copiada: escolha o grupo e cole.</div></div>"+"<div style=\"margin-top:10px;font-size:12.5px;color:#5b5446;\">Ou para cada Mestre — vai a <b>"+(LIVRE()?"carta":"imagem do ranking")+"</b> com a mensagem (no computador a imagem é copiada: cole na conversa). <a onclick=\"verImagem()\" style=\"color:var(--navy);cursor:pointer;border-bottom:1px solid var(--gold);\">ver / baixar a imagem</a></div>"+MESTRES.map(function(x,i){var l=waLink(x);return "<div style=\"display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0e9d6;font-size:13px;\"><span style=\"flex:1;\">"+esc(x.nome)+" <span style=\"color:#8a8270;font-size:11.5px;\">"+esc(x.grau||"")+"</span></span>"+(x.votou?"<span class=\"chip ok\" style=\"margin:0;\">✓ votou</span>":"")+(l?("<button onclick=\"waEnviar("+i+")\" style=\"background:#25D366;color:#fff;border:none;border-radius:8px;padding:6px 11px;font-size:12.5px;cursor:pointer;\">WhatsApp</button>"):"<span style=\"font-size:11.5px;color:#9a937f;\">sem telefone</span>")+"</div>";}).join("");
   return h+"</div>";}
 async function avisar(soPend){var m=document.getElementById("avMsg");if(!confirm(soPend?"Enviar e-mail aos Mestres que ainda não votaram?":"Enviar e-mail a todos os Mestres e ao Grão-Mestre?"))return;
   if(m){m.style.color="#5b5446";m.textContent="Enviando…";}
@@ -171,9 +193,12 @@ async function avisar(soPend){var m=document.getElementById("avMsg");if(!confirm
 function render(){
   var q=nrm(document.getElementById("busca").value),nu=document.getElementById("fNuc").value,ms=document.getElementById("fMesa").checked,ab=ST.status!=="encerrada",V=ST.votos||{};
   var L=RK.filter(function(x){return (ms||!mesa(x))&&(!nu||x.nucleo===nu)&&(!q||nrm(x.nome).indexOf(q)>=0);});
+  if(LIVRE())L=L.slice().sort(function(a,b){return (""+a.nome).localeCompare(""+b.nome);});
   if(!L.length){document.getElementById("lista").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhum membro.</p>";return;}
   document.getElementById("lista").innerHTML=L.map(function(x,i){
     var meu=ST.meu_voto===x.id,v=V[x.id]||0,aps=APOIO[x.id]||[];
+    if(LIVRE()){var a2="";if(ST.pode_votar&&ab&&x.nome!==MEU_NOME)a2=meu?"<span class=\"vt\">✓ seu voto</span>":"<button class=\"bv\" onclick=\"votar('"+x.id+"')\">Votar</button>";else if(meu)a2="<span class=\"vt\">✓ seu voto</span>";
+      return "<div class=\"row"+(meu?" meu":"")+"\" style=\"align-items:center;\"><div class=\"tx\"><div class=\"nm\">"+esc(x.nome)+"</div><div class=\"mt\">"+esc([x.nucleo,x.grau].filter(Boolean).join(" · "))+"</div></div><div class=\"acts\" style=\"margin-top:0;\">"+a2+"</div>"+(ST.votos?("<div class=\"pts\" style=\"min-width:60px;\"><div class=\"vt\" style=\"color:var(--navy);\">"+v+" voto"+(v===1?"":"s")+"</div></div>"):"")+"</div>";}
     var c=[["Capítulos",x.capitulos],["Viagens",x.viagens],["Eventos",x.eventos],["Convidados",x.convidados],["Indicações",x.indicacoes],["Apoio",x.apoio]].map(function(k){return "<span>"+k[0]+" <b>"+k[1]+"</b></span>";}).join("");
     var acts="";
     if(ST.pode_votar&&ab&&x.nome!==MEU_NOME)acts+=meu?"<span class=\"vt\">✓ seu voto</span>":"<button class=\"bv\" onclick=\"votar('"+x.id+"')\">Votar</button>";

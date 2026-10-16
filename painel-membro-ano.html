@@ -63,7 +63,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <div class="box">
       <h3>Critérios (pontos no ano)</h3>
       <div class="crit"><span>Capítulo <b>3</b></span><span>Viagem <b>3</b></span><span>Outros eventos <b>1</b></span><span>Convidado levado <b>1</b></span><span>Indicação de novo membro <b>2</b></span><span>Apoio à confraria <b>pontos do Conselho</b></span></div>
-      <div style="font-size:11.5px;color:#9a937f;margin-top:6px;">Participação = presença marcada no evento (ou reserva confirmada quando a presença não foi marcada). Eventos das importadoras não contam.</div>
+      <div style="font-size:11.5px;color:#9a937f;margin-top:6px;" id="regra"></div>
     </div>
     <div class="box" id="situacao"></div>
     <div class="tools">
@@ -78,7 +78,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
-var RK=[],ST={},APOIO={},MEU_NOME="";
+var RK=[],ST={},APOIO={},MEU_NOME="",EDIT=null;
 function st(id){["needLogin","notAllowed","loading","panel"].forEach(function(x){document.getElementById(x).style.display=(x===id)?"block":"none";});}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function nrm(s){return (""+(s||"")).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
@@ -95,14 +95,15 @@ async function carregar(){
   var ano=anoSel();document.getElementById("anoTit").textContent=ano;
   document.getElementById("lista").innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Calculando…</p>";
   var r=await sb.rpc("membro_ano_ranking",{p_ano:ano});
-  if(r.error){document.getElementById("lista").innerHTML="<p style=\"color:#8f1d24;font-size:13px;\">(rode o SQL membro_do_ano.sql no Supabase) "+esc(r.error.message)+"</p>";return;}
+  if(r.error){document.getElementById("lista").innerHTML="<p style=\"color:#8f1d24;font-size:13px;\">(rode no Supabase o membro_do_ano.sql e depois o membro_do_ano_v2.sql) "+esc(r.error.message)+"</p>";return;}
   RK=r.data||[];
   var s=await sb.rpc("membro_ano_status",{p_ano:ano});ST=s.data||{};
   var ap=await sb.from("membro_ano_apoio").select("*").eq("ano",ano).order("created_at",{ascending:true});
   APOIO={};(ap.data||[]).forEach(function(x){(APOIO[x.membro_id]=APOIO[x.membro_id]||[]).push(x);});
   situacao();render();
 }
-function situacao(){
+function regra(){var a=anoSel();document.getElementById("regra").innerHTML=a<2027?("<b style=\"color:#8f1d24;\">Em "+a+" a participação é lançada pelo Conselho:</b> clique em <b>✎ participação</b> no membro e informe quantos capítulos, viagens e eventos ele foi. A contagem automática começa em 2027."):"Contagem automática: presença marcada no evento (ou reserva confirmada quando a presença não foi marcada). Eventos das importadoras não contam. Se algum número estiver errado, corrija em <b>✎ participação</b>.";}
+function situacao(){regra();
   var el=document.getElementById("situacao"),ab=ST.status!=="encerrada";
   var el2=document.getElementById("vencedor");
   el2.innerHTML=(!ab&&ST.vencedor_nome)?("<div class=\"win\"><div class=\"k\">Membro do Ano "+anoSel()+"</div><div class=\"n\">&#10022; "+esc(ST.vencedor_nome)+" &#10022;</div><div style=\"font-size:12.5px;color:#c9d0e8;\">Eleito pelos Mestres e pelo Grão-Mestre</div></div>"):"";
@@ -126,11 +127,23 @@ function render(){
     var acts="";
     if(ST.pode_votar&&ab&&x.nome!==MEU_NOME)acts+=meu?"<span class=\"vt\">✓ seu voto</span>":"<button class=\"bv\" onclick=\"votar('"+x.id+"')\">Votar</button>";
     else if(meu)acts+="<span class=\"vt\">✓ seu voto</span>";
-    acts+="<button class=\"bl\" onclick=\"apoio('"+x.id+"')\">+ apoio</button>";
+    acts+="<button class=\"bl\" onclick=\"apoio('"+x.id+"')\">+ apoio</button><button class=\"bl\" onclick=\"editar('"+x.id+"')\">&#9998; participação</button>";
     return "<div class=\"row"+(meu?" meu":"")+"\"><div class=\"pos"+(i===0&&x.pontos>0?" p1":"")+"\">"+(i+1)+"</div><div class=\"tx\"><div class=\"nm\">"+esc(x.nome)+"</div><div class=\"mt\">"+esc([x.nucleo,x.grau].filter(Boolean).join(" · "))+"</div><div class=\"ct\">"+c+"</div>"
       +(aps.length?("<div class=\"apo\">"+aps.map(function(a){return "+"+a.pontos+" "+esc(a.motivo||"apoio")+(a.por_nome?(" <span style=\"color:#9a937f;\">("+esc(a.por_nome)+")</span>"):"")+"<a onclick=\"delApoio('"+a.id+"')\">remover</a>";}).join("<br>")+"</div>"):"")
-      +"<div class=\"acts\">"+acts+"</div></div><div class=\"pts\"><b>"+x.pontos+"</b><small>pontos</small>"+(ST.votos?("<div class=\"vt\" style=\"color:var(--navy);\">"+v+" voto"+(v===1?"":"s")+"</div>"):"")+"</div></div>";}).join("");
+      +(x.ajustado?("<div class=\"apo\" style=\"color:#8a6a1f;\">&#9998; corrigido pelo Conselho"+(x.ajuste_por?(" ("+esc(x.ajuste_por)+")"):"")+(x.ajuste_obs?(": "+esc(x.ajuste_obs)):"")+"</div>"):"")
+      +"<div class=\"acts\">"+acts+"</div>"+(EDIT===x.id?formEd(x):"")+"</div><div class=\"pts\"><b>"+x.pontos+"</b><small>pontos</small>"+(ST.votos?("<div class=\"vt\" style=\"color:var(--navy);\">"+v+" voto"+(v===1?"":"s")+"</div>"):"")+"</div></div>";}).join("");
 }
+function formEd(x){var f=[["capitulos","Capítulos"],["viagens","Viagens"],["eventos","Eventos"],["convidados","Convidados"],["indicacoes","Indicações"]];
+  return "<div style=\"margin-top:10px;background:#faf6ea;border:1px solid #eadfbf;border-radius:10px;padding:10px;\"><div style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;\">"+f.map(function(k){return "<label style=\"font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:#8a8270;\">"+k[1]+"<input type=\"number\" min=\"0\" inputmode=\"numeric\" id=\"aj_"+k[0]+"\" value=\""+(x[k[0]]||0)+"\" style=\"width:100%;padding:7px;border:1px solid var(--line);border-radius:8px;font-size:15px;margin-top:3px;\"></label>";}).join("")+"</div>"
+   +"<input id=\"aj_obs\" placeholder=\"Observação (opcional)\" value=\""+esc(x.ajuste_obs||"")+"\" style=\"width:100%;margin-top:8px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;\">"
+   +"<div class=\"acts\"><button class=\"bv\" onclick=\"salvarAj('"+x.id+"')\">Salvar</button>"+(x.ajustado&&anoSel()>=2027?"<button class=\"bl\" onclick=\"limparAj('"+x.id+"')\">voltar ao automático</button>":"")+"<button class=\"bl\" style=\"border-color:var(--line);color:#8a8270;\" onclick=\"EDIT=null;render()\">cancelar</button><span id=\"ajMsg\" style=\"font-size:12.5px;\"></span></div></div>";}
+function editar(id){EDIT=(EDIT===id)?null:id;render();}
+async function salvarAj(id){var o={ano:anoSel(),membro_id:id,obs:(document.getElementById("aj_obs").value||"").trim()||null,por_nome:MEU_NOME||null,updated_at:new Date().toISOString()};
+  ["capitulos","viagens","eventos","convidados","indicacoes"].forEach(function(k){var v=parseInt(document.getElementById("aj_"+k).value,10);o[k]=isNaN(v)||v<0?0:v;});
+  var m=document.getElementById("ajMsg");if(m){m.style.color="#5b5446";m.textContent="Salvando…";}
+  var r=await sb.from("membro_ano_ajuste").upsert(o,{onConflict:"ano,membro_id"});if(r.error){if(m){m.style.color="#8f1d24";m.textContent="Erro: "+r.error.message;}return;}
+  EDIT=null;carregar();}
+async function limparAj(id){var r=await sb.from("membro_ano_ajuste").delete().eq("ano",anoSel()).eq("membro_id",id);if(r.error){alert(r.error.message);return;}EDIT=null;carregar();}
 async function votar(id){var x=RK.find(function(r){return r.id===id;});if(!x)return;
   var j=prompt("Votar em "+x.nome+" como Membro do Ano "+anoSel()+".\n\nJustificativa (opcional):","");if(j===null)return;
   var r=await sb.rpc("membro_ano_votar",{p_ano:anoSel(),p_membro:id,p_justificativa:j||null});if(r.error){alert("Erro: "+r.error.message);return;}carregar();}

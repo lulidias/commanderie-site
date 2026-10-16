@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Membro do Ano — Commanderie de Bordeaux Brasil</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
+<style>
+:root{--parch:#f3ecd9;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;padding-top:calc(12px + env(safe-area-inset-top));background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;}
+.dhead{text-align:center;padding:28px 20px 6px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:30px;margin:6px 0 4px;}
+.dhead .sub{font-size:13.5px;color:#8a8270;max-width:600px;margin:0 auto;line-height:1.55;}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 60px;}
+.hero{background:linear-gradient(160deg,#26335f,#161f3f);border:1px solid var(--gold);border-radius:20px;padding:26px 20px 22px;color:#f3ecd9;text-align:center;box-shadow:0 14px 34px rgba(30,26,20,.18);margin-bottom:18px;}
+.hero .ano{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#e4cd97;}
+.foto{width:150px;height:150px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);background:#f6efdc;margin:14px auto 10px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:52px;color:var(--gold);overflow:hidden;}
+.foto img{width:100%;height:100%;object-fit:cover;}
+.hero .nome{font-family:Georgia,serif;font-size:28px;color:#fff;}
+.hero .meta{font-size:13px;color:#c9d0e8;margin-top:4px;}
+.stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;}
+.stats div{background:rgba(255,255,255,.07);border:1px solid rgba(197,163,90,.45);border-radius:12px;padding:8px 12px;min-width:86px;}
+.stats b{display:block;font-family:Georgia,serif;font-size:22px;color:#fff;font-weight:normal;}
+.stats span{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#c9d0e8;}
+.pal{margin-top:16px;font-family:Georgia,serif;font-style:italic;color:#e4cd97;font-size:15px;line-height:1.55;}
+.pal div{margin-top:6px;}
+.ant{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:center;margin-bottom:8px;}
+.ant .mini{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);background:#f6efdc;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;color:var(--gold);font-size:22px;overflow:hidden;flex:none;}
+.ant .mini img{width:100%;height:100%;object-fit:cover;}
+.ant .a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.ant .n{font-family:Georgia,serif;color:var(--navy);font-size:17px;}
+.ant .m{font-size:12.5px;color:#8a8270;}
+.sec{font-family:Georgia,serif;color:var(--navy);font-size:19px;margin:22px 0 10px;border-bottom:1px solid var(--line);padding-bottom:5px;font-weight:normal;}
+.card{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:16px;font-size:13.5px;color:#5b5446;line-height:1.6;}
+.crit{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.crit span{font-size:12px;background:#f6efdc;border:1px solid var(--line);border-radius:20px;padding:4px 10px;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
+</style></head>
+<body>
+<div class="dtop"><a href="index.html?painel=1" style="display:inline-flex;align-items:center;"><img src="img/brasao.png" alt="Brasão"></a><b>Membro do Ano</b><a class="back" href="index.html?painel=1">&#8592; Voltar</a></div>
+<div id="needLogin" class="state" style="display:none;"><h2 style="font-family:Georgia,serif;color:#1e2a56;font-weight:normal;">Exclusivo para Comendadores</h2><p>Entre na sua conta para ver o Membro do Ano.</p><a href="index.html?login=1" style="display:inline-block;background:#1e2a56;color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;">Entrar</a></div>
+<div id="loading" class="state">Carregando…</div>
+<div id="panel" style="display:none;">
+  <div class="dhead"><div class="k">Commanderie de Bordeaux do Brasil</div><h1>Membro do Ano</h1><div class="sub">O Comendador que mais viveu a confraria no ano, eleito pelos Mestres e pelo Grão-Mestre.</div></div>
+  <div class="wrap">
+    <div id="conteudo"></div>
+    <div class="sec">Como é escolhido</div>
+    <div class="card">Ao longo do ano contam a presença nos <b>capítulos</b>, <b>viagens</b> e <b>eventos</b>, os <b>convidados</b> levados, as <b>indicações</b> de novos membros e o <b>apoio</b> à confraria. No fim do ano, os Mestres e o Grão-Mestre votam e o Membro do Ano é proclamado.
+      <div class="crit"><span>Capítulo · 3 pts</span><span>Viagem · 3 pts</span><span>Evento · 1 pt</span><span>Convidado · 1 pt</span><span>Indicação · 2 pts</span><span>Apoio · Conselho</span></div></div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function ini(n){return esc(((n||"?").trim().split(/\s+/).map(function(p){return p[0];}).slice(0,2).join("")).toUpperCase());}
+function foto(x,cls){return x.foto_url?("<img src=\""+esc(x.foto_url)+"\" alt=\"\" onerror=\"this.parentNode.textContent='"+ini(x.nome)+"'\">"):ini(x.nome);}
+function meta(x){return [x.grau&&!/command/i.test(x.grau)?x.grau:"Comendador",x.nucleo?("Núcleo "+x.nucleo):"",x.capitulo?("Capítulo "+x.capitulo):""].filter(Boolean).map(esc).join(" · ");}
+async function init(){
+  var u=(await sb.auth.getUser()).data.user;document.getElementById("loading").style.display="none";
+  if(!u){document.getElementById("needLogin").style.display="block";return;}
+  document.getElementById("panel").style.display="block";
+  var r=await sb.rpc("membro_ano_vencedores");var el=document.getElementById("conteudo");
+  if(r.error){el.innerHTML="<div class=\"card\">Em breve.</div>";return;}
+  var d=r.data||{},V=d.vencedores||[],h="",ano=new Date().getFullYear();
+  if(d.votacao_aberta&&!(V[0]&&V[0].ano===ano))h+="<div class=\"card\" style=\"text-align:center;margin-bottom:16px;\"><b style=\"font-family:Georgia,serif;color:var(--navy);font-size:16px;font-weight:normal;\">Membro do Ano "+ano+"</b><br>A escolha acontece no fim do ano. Participe dos capítulos, viagens e eventos!</div>";
+  if(V.length){var x=V[0];
+    h+="<div class=\"hero\"><div class=\"ano\">&#10022; Membro do Ano "+x.ano+" &#10022;</div><div class=\"foto\">"+foto(x)+"</div><div class=\"nome\">"+esc(x.nome)+"</div><div class=\"meta\">"+meta(x)+"</div>"
+      +"<div class=\"stats\">"+[["Capítulos",x.capitulos],["Viagens",x.viagens],["Eventos",x.eventos],["Convidados",x.convidados],["Indicações",x.indicacoes]].filter(function(k){return k[1]>0;}).map(function(k){return "<div><b>"+k[1]+"</b><span>"+k[0]+"</span></div>";}).join("")+"</div>"
+      +((x.palavras&&x.palavras.length)?("<div class=\"pal\">"+x.palavras.map(function(p){return "<div>“"+esc(p)+"”</div>";}).join("")+"<div style=\"font-style:normal;font-family:Arial;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#c9d0e8;margin-top:8px;\">Palavras do Conselho</div></div>"):"")+"</div>";
+    if(V.length>1)h+="<div class=\"sec\">Anos anteriores</div>"+V.slice(1).map(function(y){return "<div class=\"ant\"><div class=\"mini\">"+foto(y)+"</div><div><div class=\"a\">"+y.ano+"</div><div class=\"n\">"+esc(y.nome)+"</div><div class=\"m\">"+meta(y)+"</div></div></div>";}).join("");
+  } else if(!h)h="<div class=\"card\" style=\"text-align:center;\">O primeiro Membro do Ano será proclamado em breve.</div>";
+  el.innerHTML=h;
+}
+document.addEventListener("DOMContentLoaded",init);
+</script></body></html>

@@ -111,7 +111,7 @@ function situacao(){regra();
   el2.innerHTML=(!ab&&ST.vencedor_nome)?("<div class=\"win\"><div class=\"k\">Membro do Ano "+anoSel()+"</div><div class=\"n\">&#10022; "+esc(ST.vencedor_nome)+" &#10022;</div><div style=\"font-size:12.5px;color:#c9d0e8;\">Eleito pelos Mestres e pelo Grão-Mestre</div></div>"):"";
   var el_=ST.eleitores||[],vot=el_.filter(function(x){return x.votou;}).length;
   var h="<h3>Votação "+(ab?"<span class=\"chip pend\">aberta</span>":"<span class=\"chip ok\">encerrada</span>")+"</h3>"
-    +"<div style=\"font-size:13px;color:#5b5446;\">"+vot+" de "+el_.length+" votaram:</div><div>"+el_.map(function(x){return "<span class=\"chip "+(x.votou?"ok":"")+"\">"+(x.votou?"✓ ":"")+esc(x.nome)+"</span>";}).join("")+"</div>";
+    +"<div style=\"font-size:13px;color:#5b5446;\">"+vot+" de "+el_.length+" votaram <span style=\"color:#8a8270;font-size:12px;\">(o voto do Grão-Mestre vale 2, o dos Mestres vale 1)</span>:</div><div>"+el_.map(function(x){return "<span class=\"chip "+(x.votou?"ok":"")+"\">"+(x.votou?"✓ ":"")+esc(x.nome)+(x.peso>1?" <b>×"+x.peso+"</b>":"")+"</span>";}).join("")+"</div>";
   if(ST.pode_votar)h+="<div style=\"margin-top:10px;font-size:13.5px;\">"+(ST.meu_voto?("Seu voto: <b>"+esc(ST.meu_voto_nome)+"</b>"+(ab?" <span style=\"color:#8a8270;font-size:12px;\">(pode trocar até o encerramento)</span>":"")):(ab?"Você ainda não votou — escolha abaixo e clique em <b>Votar</b>.":"Você não votou."))+"</div>";
   else h+="<div style=\"margin-top:10px;font-size:12.5px;color:#8a8270;\">Só os Mestres e o Grão-Mestre votam. Você pode acompanhar e lançar pontos de apoio.</div>";
   if(!ST.votos)h+="<div style=\"margin-top:6px;font-size:12px;color:#8a8270;\">O resultado aparece quando a votação for encerrada.</div>";
@@ -203,7 +203,7 @@ async function apoio(id){var x=RK.find(function(r){return r.id===id;});if(!x)ret
   var p=parseInt(prompt("Quantos pontos? (sugestão: 1 a 5)","2"),10);if(isNaN(p))return;
   var r=await sb.from("membro_ano_apoio").insert({ano:anoSel(),membro_id:id,pontos:p,motivo:m.trim(),por_nome:MEU_NOME||null});if(r.error){alert("Erro: "+r.error.message);return;}carregar();}
 async function delApoio(id){if(!confirm("Remover este apoio?"))return;var r=await sb.from("membro_ano_apoio").delete().eq("id",id);if(r.error){alert(r.error.message);return;}carregar();}
-async function encerrar(reabrir){if(!confirm(reabrir?"Reabrir a votação?":"Encerrar a votação e proclamar o Membro do Ano "+anoSel()+"?\n\nVence quem tiver mais votos (empate: mais pontos)."))return;
+async function encerrar(reabrir){if(!confirm(reabrir?"Reabrir a votação?":"Encerrar a votação e proclamar o Membro do Ano "+anoSel()+"?\n\nVence quem tiver mais votos (o do Grão-Mestre vale 2; empate: mais pontos)."))return;
   var r=await sb.rpc("membro_ano_encerrar",{p_ano:anoSel(),p_reabrir:!!reabrir});if(r.error){alert("Erro: "+r.error.message);return;}carregar();}
 document.addEventListener("DOMContentLoaded",init);
 </script></body></html>

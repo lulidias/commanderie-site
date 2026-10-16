@@ -7,7 +7,7 @@
 <meta name="description" content="Capítulo X da Commanderie de Bordeaux do Brasil — 21 de outubro de 2026, 19h30, Casa Comitê, Jardim Guedala, São Paulo. 24 Grands Crus Classés de Saint-Émilion.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Convite — Capítulo X da Commanderie de Bordeaux">
-<meta property="og:description" content="24 Grands Crus Classés de Saint-Émilion · 21 de outubro de 2026, 19h30 · Casa Comitê, São Paulo. Confirme a sua presença.">
+<meta property="og:description" content="24 Grands Crus Classés de Saint-Émilion · 21 de outubro de 2026, 19h30 · Casa Comitê, São Paulo.">
 <meta property="og:image" content="https://commanderiedebordeaux.com.br/img/og-capitulo-x-vinhedo.jpg">
 <meta property="og:image:secure_url" content="https://commanderiedebordeaux.com.br/img/og-capitulo-x-vinhedo.jpg">
 <meta property="og:image:type" content="image/jpeg">
@@ -187,26 +187,12 @@
   <p class="local" style="margin-top:14px;"><b>Casa Comitê</b><br>Rua Magalhães de Araújo, 84 · Jardim Guedala<br>São Paulo — SP · CEP 05611-020<br><a href="https://www.google.com/maps/search/?api=1&query=Rua+Magalh%C3%A3es+de+Ara%C3%BAjo+84+Jardim+Guedala+S%C3%A3o+Paulo" target="_blank" rel="noopener" style="font-family:Arial,sans-serif;font-size:13px;color:var(--navy);border-bottom:1px solid var(--gold);text-decoration:none;">Abrir no mapa</a></p>
 
   <div class="sep"></div>
-  <h2 class="sec">Confirmar a minha presença</h2>
-  <p class="sub">Preencha os seus dados para confirmarmos o seu lugar à mesa. Não é preciso criar conta nem senha.</p>
-
-  <form id="frm" class="cform" onsubmit="return confirmar(event)">
-    <div class="fgrid">
-      <label class="fld fw"><span>Nome completo <i>*</i></span><input id="f_nome" required autocomplete="name"></label>
-      <label class="fld"><span>E-mail <i>*</i></span><input id="f_email" type="email" required autocomplete="email" inputmode="email"></label>
-      <label class="fld"><span>Telefone / WhatsApp <i>*</i></span><input id="f_tel" required autocomplete="tel" inputmode="tel" placeholder="(11) 90000-0000"></label>
-      <label class="fld"><span>Empresa</span><input id="f_emp" autocomplete="organization"></label>
-                  <label class="fld"><span>Restrições alimentares</span><input id="f_rest" placeholder="alergia, intolerância, vegetariano…"></label>
-      <label class="fld fw"><span>Algo que devamos saber</span><input id="f_obs" placeholder="opcional"></label>
-    </div>
-    <p class="freq">Nome, e-mail e telefone são obrigatórios.</p>
-    <div style="text-align:center;margin-top:18px;">
-      <button class="btn" type="submit" id="btnEnviar">Confirmar presença</button>
-      <div id="frmMsg" class="fmsg"></div>
-    </div>
-  </form>
-
-  <div id="passe" style="display:none;"></div>
+  <div class="passe" style="display:block;">
+    <div class="okb">✓ Presença confirmada</div>
+    <h3>Será uma honra recebê-lo</h3>
+    <div class="pdet">Capítulo X da Commanderie de Bordeaux<br>Quarta-feira, 21 de outubro de 2026 · 19h30<br>Casa Comitê — Rua Magalhães de Araújo, 84 · Jardim Guedala, São Paulo</div>
+    <div class="pbtns"><a class="pbtn solid" onclick="baixarICS()">+ Adicionar ao calendário</a><a class="pbtn" href="https://www.google.com/maps/search/?api=1&query=Rua+Magalh%C3%A3es+de+Ara%C3%BAjo+84+Jardim+Guedala+S%C3%A3o+Paulo" target="_blank" rel="noopener">Como chegar</a></div>
+  </div>
 
   <div class="foot">
     <img src="/img/brasao-alta.png" alt="Commanderie de Bordeaux do Brasil" style="height:72px;opacity:.95;">
@@ -230,32 +216,7 @@ function baixarICS(){
 }
 </script>
 
-<script>
-// ---- confirmação do convidado de cortesia ----------------------------------
-// Convidado da Mesa: não paga. A RPC rsvp_convite_cortesia grava a presença
-// já como Confirmado (categoria "conselho"), e ela aparece no painel do Conselho.
-function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
-function esc(t){return String(t==null?"":t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
-async function confirmar(ev){
-  ev.preventDefault();
-  var btn=document.getElementById("btnEnviar"), msg=document.getElementById("frmMsg");
-  if(!val("f_nome")||!val("f_email")||!val("f_tel")){msg.style.color="#8f1d24";msg.textContent="Preencha nome, e-mail e telefone para confirmar.";return false;}
-  btn.disabled=true; var rot=btn.textContent; btn.textContent="Confirmando\u2026"; msg.textContent="";
-  var r=await sb.rpc("rsvp_convite_cortesia",{p_evento:EVID,p_nome:val("f_nome"),p_email:val("f_email"),p_telefone:val("f_tel"),
-    p_empresa:val("f_emp")||null,p_restricao:val("f_rest")||null,p_obs:val("f_obs")||null});
-  if(r.error){btn.disabled=false;btn.textContent=rot;msg.style.color="#8f1d24";
-    msg.textContent=(r.error.message||"").replace(/^.*?:\s*/,"")||"N\u00e3o foi poss\u00edvel confirmar. Tente de novo ou fale com a Secretaria.";return false;}
-  document.getElementById("frm").style.display="none";
-  var p=document.getElementById("passe"); p.className="passe"; p.style.display="block";
-  p.innerHTML='<div class="okb">\u2713 Presen\u00e7a confirmada</div>'
-    +'<h3>Obrigado, '+esc(val("f_nome").split(" ")[0])+'</h3>'
-    +'<div class="pdet">Cap\u00edtulo X da Commanderie de Bordeaux<br>Quarta, 21 de outubro de 2026 \u00b7 19h30<br>Casa Comit\u00ea \u2014 Rua Magalh\u00e3es de Ara\u00fajo, 84 \u00b7 Jardim Guedala, S\u00e3o Paulo</div>'
-    +'<div class="pbtns"><a class="pbtn solid" onclick="baixarICS()">+ Adicionar ao calend\u00e1rio</a></div>'
-    +'<p style="font-family:Arial,sans-serif;font-size:13px;color:var(--ink2);margin-top:14px;">Ser\u00e1 uma honra receb\u00ea-lo. <i>Bordeaux, toujours Bordeaux.</i></p>';
-  p.scrollIntoView({behavior:"smooth",block:"center"});
-  return false;
-}
-</script>
+
 
 
 </body>

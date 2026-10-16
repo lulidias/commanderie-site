@@ -16,19 +16,20 @@ img{width:min(92vw,460px);height:auto;border-radius:14px;box-shadow:0 20px 60px 
 .voltar{align-self:flex-start;color:#e4cd97;border:1px solid rgba(197,163,90,.6);border-radius:20px;padding:8px 14px;font-size:12px;text-decoration:none}
 </style></head><body>
 <a class="voltar" href="painel-conselho.html">&larr; Voltar</a>
-<img id="img" src="comunicado-jantar.png" alt="Comunicado · Jantar de 1 Ano">
+<img id="img" src="comunicado-jantar.jpg" alt="Comunicado · Jantar de 1 Ano">
 <div class="acoes">
   <button class="btn wa" onclick="whatsapp()">Enviar pelo WhatsApp</button>
   <button class="btn" onclick="copiar()">&#128203; Copiar imagem</button>
-  <a class="btn gh" href="comunicado-jantar.png" download="comunicado-jantar-de-1-ano.png" style="text-decoration:none;">Baixar</a>
+  <a class="btn gh" href="comunicado-jantar.jpg" download="comunicado-jantar-de-1-ano.jpg" style="text-decoration:none;">Baixar</a>
 </div>
-<p class="av" id="av">No celular: toque em <b>Enviar pelo WhatsApp</b> e escolha o grupo — vai a foto. No computador: a imagem é copiada e o WhatsApp Web abre; escolha o grupo e cole (Cmd+V / Ctrl+V).</p>
+<p class="av" id="av">No celular: toque em <b>Enviar pelo WhatsApp</b> e escolha o grupo — vai como foto. Se preferir: segure o dedo na imagem → <b>Salvar em Fotos</b> e anexe pela galeria do WhatsApp. No computador: a imagem é copiada e o WhatsApp Web abre; escolha o grupo e cole (Cmd+V / Ctrl+V).</p>
 <div id="toast"></div>
 <script>
-var BLOB=null;fetch("comunicado-jantar.png").then(function(r){return r.blob();}).then(function(b){BLOB=b;}).catch(function(){});
+var BLOB=null;fetch("comunicado-jantar.jpg").then(function(r){return r.blob();}).then(function(b){BLOB=b;}).catch(function(){});
 function avisa(t){var e=document.getElementById("toast");e.textContent=t;e.style.opacity=1;clearTimeout(e._t);e._t=setTimeout(function(){e.style.opacity=0;},4000);}
-function arq(){return new File([BLOB],"comunicado-jantar-de-1-ano.png",{type:"image/png"});}
-function copiar(cb){if(BLOB&&navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"image/png":BLOB})]).then(function(){avisa("✓ Imagem copiada! Cole (Cmd+V / Ctrl+V) na conversa.");if(cb)cb();}).catch(function(){if(cb)cb();});}else{avisa("Use o botão Baixar e envie a imagem.");if(cb)cb();}}
+function arq(){return new File([BLOB],"comunicado-jantar-de-1-ano.jpg",{type:"image/jpeg"});}
+function pngBlob(){return new Promise(function(res){var i=document.getElementById("img"),c=document.createElement("canvas");c.width=i.naturalWidth;c.height=i.naturalHeight;c.getContext("2d").drawImage(i,0,0);c.toBlob(res,"image/png");});}
+function copiar(cb){if(BLOB&&navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"image/png":pngBlob()})]).then(function(){avisa("✓ Imagem copiada! Cole (Cmd+V / Ctrl+V) na conversa.");if(cb)cb();}).catch(function(){if(cb)cb();});}else{avisa("Use o botão Baixar e envie a imagem.");if(cb)cb();}}
 function whatsapp(){if(!BLOB){avisa("Carregando a imagem… tente de novo em 1 segundo.");return;}
   var mob=/iPhone|iPad|Android/i.test(navigator.userAgent);
   if(mob&&navigator.canShare&&navigator.canShare({files:[arq()]})){navigator.share({files:[arq()]}).catch(function(){});return;}

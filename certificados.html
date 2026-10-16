@@ -51,7 +51,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .vazio{color:#8a8270;font-size:13.5px;text-align:center;padding:30px 10px;}
 </style></head>
 <body>
-<div class="dtop"><a id="lnkHome" href="painel-conselho.html" style="display:inline-flex;align-items:center;"><img src="img/brasao.png" alt="Brasão"></a><b>Certificados MAPA</b><a class="back" id="lnkBack" href="painel-conselho.html">&#8592; Voltar</a></div>
+<div class="dtop"><a id="lnkHome" href="painel-conselho.html" style="display:inline-flex;align-items:center;"><img src="img/brasao.png" alt="Brasão"></a><b>Certificados MAPA</b><a class="back" id="lnkBack" href="painel-conselho.html" onclick="return voltar()">&#8592; Voltar</a></div>
 <div id="needLogin" class="state" style="display:none;"><h2>Acesso restrito</h2><p>Entre na sua conta para acessar.</p><a class="btn" href="index.html">Entrar</a></div>
 <div id="notAllowed" class="state" style="display:none;"><h2>Área do Conselho e das Importadoras</h2><p>Os certificados de inspeção são exclusivos do Conselho e das Importadoras Oficiais.</p><a class="btn" href="index.html">Voltar</a></div>
 <div id="loading" class="state">Carregando…</div>
@@ -98,6 +98,8 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
 var CONSELHO=false,MEU_IMP=null,USER=null,MEU_NOME="",ROWS=[],IMPS=[],FILTRO="todos",EDIT=null;
+var PQ=new URLSearchParams(location.search),DE_IMP=PQ.get("de")==="importador";
+function voltar(){try{if(document.referrer&&document.referrer.indexOf(location.host)>=0&&history.length>1){history.back();return false;}}catch(e){}return true;}
 var CAMPOS=["vinho","produtor","appellation","safra","cor","volume","numero","lote","data_emissao","data_validade","importadora_nome","obs"];
 function st(id){["needLogin","notAllowed","loading","panel"].forEach(function(x){document.getElementById(x).style.display=(x===id)?"block":"none";});}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
@@ -121,10 +123,13 @@ async function init(){
   if(!own.error&&own.data)MEU_IMP=own.data;
   if(!CONSELHO&&!MEU_IMP){st("notAllowed");return;}
   var me=await sb.from("membros").select("nome").eq("user_id",u.id).maybeSingle();MEU_NOME=(me.data&&me.data.nome)||"";
+  if(DE_IMP||!CONSELHO){
+    var volta=PQ.get("volta");var alvo="painel-importador.html"+(volta?("?sec="+encodeURIComponent(volta)):"");
+    ["lnkBack","lnkHome"].forEach(function(id){document.getElementById(id).href=alvo;});
+    if(MEU_IMP)document.getElementById("kicker").textContent="Importadora Oficial · "+MEU_IMP.nome;else document.getElementById("kicker").textContent="Painel do Importador";
+  }
   if(!CONSELHO){
-    document.getElementById("kicker").textContent="Importadora Oficial · "+MEU_IMP.nome;
     document.getElementById("subt").textContent="Baixe os certificados de inspeção do MAPA compartilhados pelo Conselho e pelas outras importadoras, e compartilhe os seus.";
-    ["lnkBack","lnkHome"].forEach(function(id){document.getElementById(id).href="painel-importador.html";});
   }
   var li=await sb.from("importadoras").select("id,nome").order("nome",{ascending:true});IMPS=li.data||[];
   var f=document.getElementById("fImp");IMPS.forEach(function(i){f.innerHTML+="<option value=\""+esc(i.id)+"\">"+esc(i.nome)+"</option>";});f.innerHTML+="<option value=\"__sem\">Sem importadora</option>";

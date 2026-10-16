@@ -78,7 +78,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
-var RK=[],ST={},APOIO={},MEU_NOME="",EDIT=null;
+var RK=[],ST={},APOIO={},MEU_NOME="",EDIT=null,MESTRES=[];
 function st(id){["needLogin","notAllowed","loading","panel"].forEach(function(x){document.getElementById(x).style.display=(x===id)?"block":"none";});}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function nrm(s){return (""+(s||"")).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
@@ -98,6 +98,7 @@ async function carregar(){
   if(r.error){document.getElementById("lista").innerHTML="<p style=\"color:#8f1d24;font-size:13px;\">(rode no Supabase o membro_do_ano.sql e depois o membro_do_ano_v2.sql) "+esc(r.error.message)+"</p>";return;}
   RK=r.data||[];
   var s=await sb.rpc("membro_ano_status",{p_ano:ano});ST=s.data||{};
+  try{var ms=await sb.rpc("membro_ano_mestres",{p_ano:ano});MESTRES=(ms&&!ms.error&&ms.data)||[];}catch(e){MESTRES=[];}
   var ap=await sb.from("membro_ano_apoio").select("*").eq("ano",ano).order("created_at",{ascending:true});
   APOIO={};(ap.data||[]).forEach(function(x){(APOIO[x.membro_id]=APOIO[x.membro_id]||[]).push(x);});
   situacao();render();
@@ -114,9 +115,24 @@ function situacao(){regra();
   else h+="<div style=\"margin-top:10px;font-size:12.5px;color:#8a8270;\">Só os Mestres e o Grão-Mestre votam. Você pode acompanhar e lançar pontos de apoio.</div>";
   if(!ST.votos)h+="<div style=\"margin-top:6px;font-size:12px;color:#8a8270;\">O resultado aparece quando a votação for encerrada.</div>";
   if(ST.justificativas&&ST.justificativas.length)h+="<div style=\"margin-top:10px;font-size:12.5px;color:#5b5446;\"><b>Justificativas:</b>"+ST.justificativas.map(function(j){return "<div style=\"margin-top:4px;\">“"+esc(j.texto)+"” — "+esc(j.por)+" → <b>"+esc(j.para)+"</b></div>";}).join("")+"</div>";
+  if(ab)h+=avisoHtml();
   if(ST.admin)h+="<div class=\"acts\" style=\"margin-top:12px;\">"+(ab?"<button class=\"bv\" style=\"background:#2f6b3a;\" onclick=\"encerrar(false)\">Encerrar votação e proclamar</button>":"<button class=\"bl\" onclick=\"encerrar(true)\">Reabrir votação</button>")+"</div>";
   el.innerHTML=h;
 }
+function waLink(x){var t=(""+(x.telefone||"")).replace(/\D/g,"");if(!t)return "";var d=(""+(x.ddi||"")).replace(/\D/g,"");if(d)t=d+t;else if(t.length<=11)t="55"+t;
+  var top=RK.filter(function(r){return !mesa(r)&&r.pontos>0;}).slice(0,3).map(function(r){return r.nome+" ("+r.pontos+" pts)";}).join(", ");
+  var msg="Olá, "+(x.nome||"").split(" ")[0]+"! A votação do *Membro do Ano "+anoSel()+"* da Commanderie está aberta e o seu voto é muito importante."+(top?(" Mais pontuados até agora: "+top+"."):"")+" Vote no Painel do Conselho → Membro do Ano: https://commanderiedebordeaux.com.br/painel-membro-ano.html";
+  return "https://wa.me/"+t+"?text="+encodeURIComponent(msg);}
+function avisoHtml(){var pend=MESTRES.filter(function(x){return !x.votou;});
+  var h="<div style=\"margin-top:14px;border-top:1px solid #ece0c2;padding-top:12px;\"><div style=\"font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:bold;margin-bottom:6px;\">Avisar os Mestres</div>"
+   +"<div class=\"acts\" style=\"margin-top:0;\"><button class=\"bv\" onclick=\"avisar(true)\">&#9993; E-mail para quem não votou ("+pend.length+")</button><button class=\"bl\" onclick=\"avisar(false)\">&#9993; E-mail para todos</button><span id=\"avMsg\" style=\"font-size:12.5px;\"></span></div>";
+  if(MESTRES.length)h+="<div style=\"margin-top:10px;font-size:12.5px;color:#5b5446;\">WhatsApp (abre a conversa com a mensagem pronta):</div>"+MESTRES.map(function(x){var l=waLink(x);return "<div style=\"display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0e9d6;font-size:13px;\"><span style=\"flex:1;\">"+esc(x.nome)+" <span style=\"color:#8a8270;font-size:11.5px;\">"+esc(x.grau||"")+"</span></span>"+(x.votou?"<span class=\"chip ok\" style=\"margin:0;\">✓ votou</span>":"")+(l?("<a href=\""+l+"\" target=\"_blank\" rel=\"noopener\" style=\"background:#25D366;color:#fff;text-decoration:none;border-radius:8px;padding:6px 11px;font-size:12.5px;\">WhatsApp</a>"):"<span style=\"font-size:11.5px;color:#9a937f;\">sem telefone</span>")+"</div>";}).join("");
+  return h+"</div>";}
+async function avisar(soPend){var m=document.getElementById("avMsg");if(!confirm(soPend?"Enviar e-mail aos Mestres que ainda não votaram?":"Enviar e-mail a todos os Mestres e ao Grão-Mestre?"))return;
+  if(m){m.style.color="#5b5446";m.textContent="Enviando…";}
+  var r=await sb.rpc("membro_ano_avisar",{p_ano:anoSel(),p_so_pendentes:!!soPend});
+  if(r.error){if(m){m.style.color="#8f1d24";m.textContent="Erro: "+(/membro_ano_avisar/.test(r.error.message)?"falta rodar o SQL membro_do_ano_aviso.sql":r.error.message);}return;}
+  if(m){m.style.color="#2f6b3a";m.textContent="✓ "+((r.data&&r.data.enviados)||0)+" e-mail(s) enviado(s)";}}
 function render(){
   var q=nrm(document.getElementById("busca").value),nu=document.getElementById("fNuc").value,ms=document.getElementById("fMesa").checked,ab=ST.status!=="encerrada",V=ST.votos||{};
   var L=RK.filter(function(x){return (ms||!mesa(x))&&(!nu||x.nucleo===nu)&&(!q||nrm(x.nome).indexOf(q)>=0);});

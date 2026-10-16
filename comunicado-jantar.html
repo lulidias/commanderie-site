@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Comunicado · Jantar de 1 Ano</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><meta name="theme-color" content="#141d38">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#141d38;font-family:Arial,Helvetica,sans-serif;display:flex;flex-direction:column;align-items:center;gap:18px;padding:24px 14px 40px;min-height:100vh;}
+img{width:min(92vw,460px);height:auto;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.acoes{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{padding:14px 24px;border:none;border-radius:10px;font-size:15px;cursor:pointer;color:#fff;background:#b08a3a}
+.wa{background:#25D366;font-weight:bold}
+.gh{background:none;border:1px solid rgba(197,163,90,.7);color:#e4cd97}
+.av{color:rgba(243,236,217,.7);font-size:12.5px;text-align:center;max-width:440px;line-height:1.6}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2E7D4F;color:#fff;padding:12px 22px;border-radius:8px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;text-align:center}
+.voltar{align-self:flex-start;color:#e4cd97;border:1px solid rgba(197,163,90,.6);border-radius:20px;padding:8px 14px;font-size:12px;text-decoration:none}
+</style></head><body>
+<a class="voltar" href="painel-conselho.html">&larr; Voltar</a>
+<img id="img" src="comunicado-jantar.png" alt="Comunicado · Jantar de 1 Ano">
+<div class="acoes">
+  <button class="btn wa" onclick="whatsapp()">Enviar pelo WhatsApp</button>
+  <button class="btn" onclick="copiar()">&#128203; Copiar imagem</button>
+  <a class="btn gh" href="comunicado-jantar.png" download="comunicado-jantar-de-1-ano.png" style="text-decoration:none;">Baixar</a>
+</div>
+<p class="av" id="av">No celular: toque em <b>Enviar pelo WhatsApp</b> e escolha o grupo — vai a foto. No computador: a imagem é copiada e o WhatsApp Web abre; escolha o grupo e cole (Cmd+V / Ctrl+V).</p>
+<div id="toast"></div>
+<script>
+var BLOB=null;fetch("comunicado-jantar.png").then(function(r){return r.blob();}).then(function(b){BLOB=b;}).catch(function(){});
+function avisa(t){var e=document.getElementById("toast");e.textContent=t;e.style.opacity=1;clearTimeout(e._t);e._t=setTimeout(function(){e.style.opacity=0;},4000);}
+function arq(){return new File([BLOB],"comunicado-jantar-de-1-ano.png",{type:"image/png"});}
+function copiar(cb){if(BLOB&&navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"image/png":BLOB})]).then(function(){avisa("✓ Imagem copiada! Cole (Cmd+V / Ctrl+V) na conversa.");if(cb)cb();}).catch(function(){if(cb)cb();});}else{avisa("Use o botão Baixar e envie a imagem.");if(cb)cb();}}
+function whatsapp(){if(!BLOB){avisa("Carregando a imagem… tente de novo em 1 segundo.");return;}
+  var mob=/iPhone|iPad|Android/i.test(navigator.userAgent);
+  if(mob&&navigator.canShare&&navigator.canShare({files:[arq()]})){navigator.share({files:[arq()]}).catch(function(){});return;}
+  var w=window.open("about:blank","_blank");copiar(function(){if(w)w.location="https://web.whatsapp.com/";});}
+</script>
+</body></html>

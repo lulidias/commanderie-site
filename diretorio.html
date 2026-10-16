@@ -66,12 +66,13 @@ function card(m){
   var extra;
   if(m.eleito){extra='<div class="meta" style="color:var(--gold);font-weight:bold;letter-spacing:.3px;">✦ Eleito'+(m.data_intronizacao?(" · entronização em "+fmtData(m.data_intronizacao)):"")+'</div>';}
   else{var d=DESDE[m.capitulo];var meta=(m.codigo||"")+(d?(" · Desde "+d):"");extra=meta?('<div class="meta">'+meta+'</div>'):"";}
-  return '<div class="card">'+avatar(m)+'<div class="info"><b>'+m.nome+'</b>'+nuc+extra+'</div></div>';
+  if(m._titulo)nuc='<div class="nuc" style="color:var(--gold);font-weight:bold;letter-spacing:.3px;">'+m._titulo+'</div>'+(m._sub?('<div class="nuc">'+m._sub+'</div>'):'');
+  return '<div class="card"'+(m._destaque?' style="border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;"':'')+'>'+avatar(m)+'<div class="info"><b>'+m.nome+'</b>'+nuc+extra+'</div></div>';
 }
 function grupo(titulo,itens){
   if(!itens.length)return "";
   var cards=itens.map(function(m){return card(m);}).join("");
-  return '<div class="sec-title" data-i18n="'+({"Mestres":"dir_g_mestres","Comendadores":"dir_g_comend","Membros de Honra":"dir_g_honra"}[titulo]||"")+'">'+titulo+'</div><div class="sec-rule"></div><div class="grid">'+cards+'</div>';
+  return '<div class="sec-title" data-i18n="'+({"Grão-Mestres":"dir_g_graos","Mestres":"dir_g_mestres","Enólogo da Commanderie":"dir_g_eno","Comendadores":"dir_g_comend","Membros de Honra":"dir_g_honra"}[titulo]||"")+'">'+titulo+'</div><div class="sec-rule"></div><div class="grid">'+cards+'</div>';
 }
 function rank(g){g=(""+g).toLowerCase();if(g.indexOf("grão")>=0||g.indexOf("grao")>=0)return 0;if(g.indexOf("mestre")>=0)return 1;return 2;}
 async function carregar(){
@@ -81,17 +82,23 @@ async function carregar(){
   document.getElementById("loading").style.display="none";
   if(q.error){document.getElementById("needLogin").style.display="block";document.getElementById("needLogin").querySelector("p").textContent="Não foi possível carregar ("+q.error.message+").";return;}
   var rows=q.data||[];
-  var mestres=[],comend=[],honra=[];
-  rows.forEach(function(m){var g=(""+(m.grau||"")).toLowerCase();if(g.indexOf("honra")>=0)honra.push(m);else if(g.indexOf("mestre")>=0)mestres.push(m);else comend.push(m);});
+  var graos=[],mestres=[],eno=[],comend=[],honra=[];
+  rows.forEach(function(m){var g=(""+(m.grau||"")).toLowerCase(),n=(""+(m.nome||"")).toLowerCase();
+    if(/jean.?marc/.test(n)){m._titulo="Grão-Mestre · International";m._destaque=1;graos.push(m);}
+    else if(rank(m.grau)===0){m._titulo="Grão-Mestre · Brasil";m._destaque=1;graos.push(m);}
+    else if(/giacometti/.test(n)){m._titulo="Enólogo da Commanderie";m._sub="Comendador"+(m.nucleo?(" · "+m.nucleo):"");eno.push(m);}
+    else if(g.indexOf("honra")>=0)honra.push(m);else if(g.indexOf("mestre")>=0)mestres.push(m);else comend.push(m);});
+  if(!graos.some(function(m){return m._titulo.indexOf("International")>=0;}))graos.unshift({nome:"Jean-Marc",_titulo:"Grão-Mestre · International",_sub:"Commanderies de Bordeaux",_destaque:1});
+  graos.sort(function(a,b){return (a._titulo.indexOf("International")>=0?0:1)-(b._titulo.indexOf("International")>=0?0:1);});
   mestres.sort(function(a,b){return rank(a.grau)-rank(b.grau)||(a.nome||"").localeCompare(b.nome||"","pt");});
   comend.sort(function(a,b){return (a.nome||"").localeCompare(b.nome||"","pt");});
   honra.sort(function(a,b){return (a.nome||"").localeCompare(b.nome||"","pt");});
-  document.getElementById("wrap").innerHTML=grupo("Mestres",mestres)+grupo("Comendadores",comend)+grupo("Membros de Honra",honra);
+  document.getElementById("wrap").innerHTML=grupo("Grão-Mestres",graos)+grupo("Mestres",mestres)+grupo("Enólogo da Commanderie",eno)+grupo("Comendadores",comend)+grupo("Membros de Honra",honra);
   document.getElementById("dir").style.display="block";try{setLang(localStorage.getItem("lang")||"pt");}catch(e){}
 }
 document.addEventListener("DOMContentLoaded",carregar);
 </script><script>
-var I18N={en:{dir_brand:"Member Directory",dir_back:"&#8592; Back to Panel",dir_nl_h:"Directory restricted to members",dir_nl_p:"Sign in to view the brotherhood’s directory.",dir_nl_btn:"Sign in",dir_loading:"Loading directory…",dir_k:"Brotherhood",dir_h1:"Member Directory",dir_g_mestres:"Masters",dir_g_comend:"Commanders",dir_g_honra:"Members of Honour"},fr:{dir_brand:"Annuaire des Membres",dir_back:"&#8592; Retour à l’Espace",dir_nl_h:"Annuaire réservé aux membres",dir_nl_p:"Connectez-vous pour voir l’annuaire de la confrérie.",dir_nl_btn:"Se connecter",dir_loading:"Chargement de l’annuaire…",dir_k:"Confrérie",dir_h1:"Annuaire des Membres",dir_g_mestres:"Maîtres",dir_g_comend:"Commandeurs",dir_g_honra:"Membres d’Honneur"}};
+var I18N={en:{dir_brand:"Member Directory",dir_back:"&#8592; Back to Panel",dir_nl_h:"Directory restricted to members",dir_nl_p:"Sign in to view the brotherhood’s directory.",dir_nl_btn:"Sign in",dir_loading:"Loading directory…",dir_k:"Brotherhood",dir_h1:"Member Directory",dir_g_graos:"Grand Masters",dir_g_eno:"Oenologist of the Commanderie",dir_g_mestres:"Masters",dir_g_comend:"Commanders",dir_g_honra:"Members of Honour"},fr:{dir_brand:"Annuaire des Membres",dir_back:"&#8592; Retour à l’Espace",dir_nl_h:"Annuaire réservé aux membres",dir_nl_p:"Connectez-vous pour voir l’annuaire de la confrérie.",dir_nl_btn:"Se connecter",dir_loading:"Chargement de l’annuaire…",dir_k:"Confrérie",dir_h1:"Annuaire des Membres",dir_g_graos:"Grands Maîtres",dir_g_eno:"Œnologue de la Commanderie",dir_g_mestres:"Maîtres",dir_g_comend:"Commandeurs",dir_g_honra:"Membres d’Honneur"}};
 var _orig={};
 function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
 document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});

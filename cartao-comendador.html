@@ -40,6 +40,7 @@ var NOME=(P.get('nome')||'Comendador').trim();
 var GRAU=(P.get('grau')||'Comendador').trim();
 var COD=(P.get('codigo')||'').trim();
 var ANO=(P.get('ano')||'2026').trim();
+var ESTRELAS=Math.max(0,Math.min(10,parseInt(P.get('estrelas')||'0',10)||0));
 var DEST=(P.get('destaque')||'').trim();if(DEST)GRAU='Membro do Ano '+DEST;
 var MESTRE=GRAU.toLowerCase().indexOf('mestre')>=0;
 var C=DEST?{a:'#7b1e2e',b:'#4a0e1a',fg:'#f6ecd9',ac:'#d9b96a'}:MESTRE?{a:'#243161',b:'#161f3f',fg:'#f3ecd9',ac:'#c9a85c'}:{a:'#faf5e8',b:'#efe6cf',fg:'#1e2a56',ac:'#b08a3a'};
@@ -54,7 +55,8 @@ function desenha(){
   rr(x,30,30,W-60,H-60,60);x.fillStyle=g;x.fill();x.strokeStyle=C.ac;x.lineWidth=7;x.stroke();
   x.textAlign='center';
   x.fillStyle=C.ac;x.font='600 62px "Playfair Display", Georgia, serif';ls(x,'8px');x.fillText(ANO,CX,150);ls(x,'0px');
-  var EC=340,RR=150;
+  if(ESTRELAS){x.fillStyle=C.ac;x.font='46px Georgia, serif';var sw=52,sx=CX-(ESTRELAS-1)*sw/2;for(var si=0;si<ESTRELAS;si++){x.fillText('\u2605',sx+si*sw,200);}}
+  var EC=ESTRELAS?372:340,RR=150;
   var rg=x.createRadialGradient(CX,EC,10,CX,EC,RR);rg.addColorStop(0,'#faf6ea');rg.addColorStop(.6,'#faf6ea');rg.addColorStop(1,'#f1ead6');
   x.save();x.shadowColor='rgba(0,0,0,.18)';x.shadowBlur=30;x.shadowOffsetY=8;x.beginPath();x.arc(CX,EC,RR,0,7);x.fillStyle=rg;x.fill();x.restore();
   if(BRAS.complete&&BRAS.naturalWidth){var iw=220,ih=iw*BRAS.naturalHeight/BRAS.naturalWidth;x.drawImage(BRAS,CX-iw/2,EC-ih/2,iw,ih);}

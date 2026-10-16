@@ -666,7 +666,16 @@ function cartaoEuVouLink(id,acomp){var a=_rsvpAchar(id),x=a.x;if(!x)return;var m
   if(acomp){nome=x.convidado_nome;grau="Convidado";}
   else if(x.user_id){nome=m.nome||"Comendador";var g=(""+(m.grau||"")).toLowerCase();grau=(!g||g.indexOf("command")===0)?"Comendador":m.grau;}
   else{nome=x.convidado_nome||"Convidado";grau=x.categoria==="produtor"?"Produtor":"Convidado";}
-  window.open("cartao.html?nome="+encodeURIComponent((nome||"").trim())+"&grau="+encodeURIComponent(grau),"_blank");}
+  window.open("cartao.html?nome="+encodeURIComponent((nome||"").trim())+"&grau="+encodeURIComponent(grau)+cartaoEvParams(a.ev),"_blank");}
+function cartaoEvParams(ev){if(!ev)return "";var tit=(ev.titulo||"");if(/1\s*ano/i.test(tit))return "";
+  var MES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  var t=(ev.tipo==="Capítulo"&&ev.numero)?("Capítulo "+ev.numero):(tit||ev.tipo||"Evento");
+  var s=(ev.tipo==="Capítulo")?"Jantar da Commanderie de Bordeaux":"da Commanderie de Bordeaux";
+  var q=[];if(ev.data){var p=(""+ev.data).split("-");q.push(parseInt(p[2],10)+" de "+MES[parseInt(p[1],10)-1]+" de "+p[0]);}
+  if(ev.hora)q.push((""+ev.hora).replace(/^(\d{1,2}):(\d{2}).*$/,function(_,h,m){return parseInt(h,10)+"h"+(m==="00"?"":m);}));if(ev.local)q.push(ev.local);
+  var o=/saint|grand/i.test((ev.descricao||"")+" "+tit)?"24 Grands Crus Classés de Saint-Émilion":"Bordeaux, toujours Bordeaux.";
+  if(ev.tipo==="Capítulo"&&/x$/i.test(""+ev.numero))o="24 Grands Crus Classés de Saint-Émilion";
+  return "&t="+encodeURIComponent(t)+"&s="+encodeURIComponent(s)+"&q="+encodeURIComponent(q.join(" · "))+"&o="+encodeURIComponent(o);}
 async function rsvpConvidadoPor(id){var a=_rsvpAchar(id);if(!a.x)return;var v=prompt("Nome do membro que convidou "+(a.x.convidado_nome||"")+":",a.x.convidado_por||"");if(v===null)return;var r=await sb.rpc("conselho_rsvp_convidado_por",{p_id:id,p_nome:v.trim()});if(r.error){alert("Erro: "+r.error.message);return;}carregarEventos();}
 async function lembretePagamento(id){var a=_rsvpAchar(id);var x=a.x||{};if(!confirm("Enviar e-mail para "+(x.convidado_nome||"")+" ("+(x.convidado_email||"")+") lembrando que falta o pagamento para finalizar a reserva?"))return;var el=document.getElementById("lp_"+id);if(el){el.style.color="#8a8270";el.textContent="enviando…";}var r=await sb.rpc("conselho_lembrete_pagamento",{p_rsvp:id});var d=(r&&r.data)||{};if(r.error||!d.ok){if(el){el.style.color="#8f1d24";el.textContent="Erro: "+((r.error&&r.error.message)||d.erro||"");}return;}if(el){el.style.color="#2f6b3a";el.textContent="✔ enviado para "+d.email;}}
 function abrirRecibo(o){var q=Object.keys(o).filter(function(k){return o[k]!=null&&o[k]!=="";}).map(function(k){return k+"="+encodeURIComponent(o[k]);}).join("&");window.open("recibo.html?"+q,"_blank");}

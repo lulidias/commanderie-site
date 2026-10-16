@@ -101,7 +101,8 @@ async function carregar(){
   try{var ms=await sb.rpc("membro_ano_mestres",{p_ano:ano});MESTRES=(ms&&!ms.error&&ms.data)||[];}catch(e){MESTRES=[];}
   var ap=await sb.from("membro_ano_apoio").select("*").eq("ano",ano).order("created_at",{ascending:true});
   APOIO={};(ap.data||[]).forEach(function(x){(APOIO[x.membro_id]=APOIO[x.membro_id]||[]).push(x);});
-  situacao();render();
+  situacao();render();IMG_BLOB=null;if(ST.status!=="encerrada")gerarImagem();
+  var pv=new URLSearchParams(location.search).get("votar");if(pv&&ST.pode_votar&&ST.status!=="encerrada"&&!window._pvFeito){window._pvFeito=1;setTimeout(function(){votar(pv);},300);}
 }
 function regra(){var a=anoSel();document.getElementById("regra").innerHTML=a<2027?("<b style=\"color:#8f1d24;\">Em "+a+" a participação é lançada pelo Conselho:</b> clique em <b>✎ alterar participação</b> (ou nos números) do membro e informe quantos capítulos, viagens e eventos ele foi. A contagem automática começa em 2027."):"Contagem automática: presença marcada no evento (ou reserva confirmada quando a presença não foi marcada). Eventos das importadoras não contam. Se algum número estiver errado, corrija em <b>✎ alterar participação</b>.";}
 function situacao(){regra();
@@ -121,12 +122,41 @@ function situacao(){regra();
 }
 function waLink(x){var t=(""+(x.telefone||"")).replace(/\D/g,"");if(!t)return "";var d=(""+(x.ddi||"")).replace(/\D/g,"");if(d)t=d+t;else if(t.length<=11)t="55"+t;
   var top=RK.filter(function(r){return !mesa(r)&&r.pontos>0;}).slice(0,3).map(function(r){return r.nome+" ("+r.pontos+" pts)";}).join(", ");
-  var msg="Olá, "+(x.nome||"").split(" ")[0]+"! A votação do *Membro do Ano "+anoSel()+"* da Commanderie está aberta e o seu voto é muito importante."+(top?(" Mais pontuados até agora: "+top+"."):"")+" Vote no Painel do Conselho → Membro do Ano: https://commanderiedebordeaux.com.br/painel-membro-ano.html";
+  var msg="Olá, "+(x.nome||"").split(" ")[0]+"! A votação do *Membro do Ano "+anoSel()+"* da Commanderie está aberta e o seu voto é muito importante."+(top?(" Mais pontuados até agora: "+top+"."):"")+" Veja o ranking na imagem e vote no Painel do Conselho → Membro do Ano.";
   return "https://wa.me/"+t+"?text="+encodeURIComponent(msg);}
+function waTexto(x){return decodeURIComponent((waLink(x).split("?text=")[1])||"");}
+var IMG_BLOB=null,IMG_URL="";
+function topRank(){return RK.filter(function(r){return !mesa(r)&&r.pontos>0;}).slice(0,10);}
+function gerarImagem(cb){var L=topRank();var W=1080,RH=104,H=430+Math.max(L.length,1)*RH+170;var c=document.createElement("canvas");c.width=W;c.height=H;var x=c.getContext("2d");
+  function rr(X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath();}
+  var g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,"#26335f");g.addColorStop(1,"#141c38");x.fillStyle="#0f152b";x.fillRect(0,0,W,H);rr(24,24,W-48,H-48,44);x.fillStyle=g;x.fill();x.strokeStyle="#c9a85c";x.lineWidth=5;x.stroke();
+  x.textAlign="center";
+  function fim(){x.textAlign="center";x.fillStyle="#e4cd97";x.font="500 26px Arial";try{x.letterSpacing="7px";}catch(e){}x.fillText("COMMANDERIE DE BORDEAUX",W/2,250);try{x.letterSpacing="0px";}catch(e){}
+    x.fillStyle="#ffffff";x.font="400 64px Georgia, serif";x.fillText("Membro do Ano "+anoSel(),W/2,325);
+    x.fillStyle="#c9d0e8";x.font="400 26px Arial";x.fillText("Votação aberta · os mais pontuados até agora",W/2,372);
+    var y=420;if(!L.length){x.fillStyle="#c9d0e8";x.font="italic 30px Georgia, serif";x.fillText("Pontuação ainda não lançada",W/2,y+60);}
+    L.forEach(function(r,i){var top=y+i*RH;rr(70,top,W-140,RH-14,20);x.fillStyle=i===0?"rgba(201,168,92,.22)":"rgba(255,255,255,.06)";x.fill();x.strokeStyle="rgba(201,168,92,.45)";x.lineWidth=1.5;x.stroke();
+      x.beginPath();x.arc(122,top+45,28,0,7);x.fillStyle=i===0?"#c9a85c":"#f6efdc";x.fill();x.fillStyle=i===0?"#3a2c08":"#8a6a1f";x.font="400 28px Georgia, serif";x.textAlign="center";x.fillText(String(i+1),122,top+55);
+      x.textAlign="left";x.fillStyle="#ffffff";x.font="400 32px Georgia, serif";var nm=r.nome||"";while(x.measureText(nm).width>600&&nm.length>4)nm=nm.slice(0,-2);if(nm!==r.nome)nm+="…";x.fillText(nm,172,top+40);
+      x.fillStyle="#c9d0e8";x.font="400 21px Arial";x.fillText([r.nucleo,"Cap "+r.capitulos,"Viag "+r.viagens,"Ev "+r.eventos,"Conv "+r.convidados,"Ind "+r.indicacoes].filter(Boolean).join("  ·  "),172,top+74);
+      x.textAlign="right";x.fillStyle="#e4cd97";x.font="400 44px Georgia, serif";x.fillText(String(r.pontos),W-150,top+56);x.font="400 16px Arial";x.fillStyle="#c9d0e8";x.fillText("PTS",W-100,top+56);});
+    var fy=y+Math.max(L.length,1)*RH+40;x.textAlign="center";x.fillStyle="#e4cd97";x.font="400 24px Arial";x.fillText("Capítulo 3 · Viagem 3 · Evento 1 · Convidado 1 · Indicação 2 · Apoio",W/2,fy);
+    x.fillStyle="#ffffff";x.font="italic 30px Georgia, serif";x.fillText("Vote no Painel do Conselho → Membro do Ano",W/2,fy+55);
+    c.toBlob(function(b){IMG_BLOB=b;try{if(IMG_URL)URL.revokeObjectURL(IMG_URL);}catch(e){}IMG_URL=b?URL.createObjectURL(b):"";if(cb)cb();},"image/png");}
+  var im=new Image();im.onload=function(){x.beginPath();x.arc(W/2,130,82,0,7);x.fillStyle="#faf6ea";x.fill();var iw=118,ih=iw*im.naturalHeight/im.naturalWidth;x.drawImage(im,W/2-iw/2,130-ih/2,iw,ih);fim();};im.onerror=fim;im.src="img/brasao-alta.png";}
+function ehMobile(){return /iPhone|iPad|Android/i.test(navigator.userAgent);}
+function arqImg(){return new File([IMG_BLOB],"membro-do-ano-"+anoSel()+".png",{type:"image/png"});}
+function waEnviar(i){var x=MESTRES[i];if(!x)return;var txt=waTexto(x),link=waLink(x);
+  if(IMG_BLOB&&ehMobile()&&navigator.canShare&&navigator.canShare({files:[arqImg()]})){navigator.share({files:[arqImg()],text:txt}).catch(function(){});return;}
+  var w=window.open("about:blank","_blank");
+  function abre(){if(w)w.location=link;else location.href=link;}
+  if(IMG_BLOB&&navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"image/png":IMG_BLOB})]).then(function(){aviso("✓ Imagem copiada — no WhatsApp, cole (Cmd+V / Ctrl+V) na conversa.");abre();}).catch(abre);}else abre();}
+function aviso(t){var m=document.getElementById("avMsg");if(m){m.style.color="#2f6b3a";m.textContent=t;}}
+function verImagem(){if(!IMG_URL){alert("A imagem ainda está sendo gerada, tente de novo em 1 segundo.");return;}var a=document.createElement("a");a.href=IMG_URL;a.download="membro-do-ano-"+anoSel()+".png";a.target="_blank";document.body.appendChild(a);a.click();a.remove();}
 function avisoHtml(){var pend=MESTRES.filter(function(x){return !x.votou;});
   var h="<div style=\"margin-top:14px;border-top:1px solid #ece0c2;padding-top:12px;\"><div style=\"font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:bold;margin-bottom:6px;\">Avisar os Mestres</div>"
    +"<div class=\"acts\" style=\"margin-top:0;\"><button class=\"bv\" onclick=\"avisar(true)\">&#9993; E-mail para quem não votou ("+pend.length+")</button><button class=\"bl\" onclick=\"avisar(false)\">&#9993; E-mail para todos</button><span id=\"avMsg\" style=\"font-size:12.5px;\"></span></div>";
-  if(MESTRES.length)h+="<div style=\"margin-top:10px;font-size:12.5px;color:#5b5446;\">WhatsApp (abre a conversa com a mensagem pronta):</div>"+MESTRES.map(function(x){var l=waLink(x);return "<div style=\"display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0e9d6;font-size:13px;\"><span style=\"flex:1;\">"+esc(x.nome)+" <span style=\"color:#8a8270;font-size:11.5px;\">"+esc(x.grau||"")+"</span></span>"+(x.votou?"<span class=\"chip ok\" style=\"margin:0;\">✓ votou</span>":"")+(l?("<a href=\""+l+"\" target=\"_blank\" rel=\"noopener\" style=\"background:#25D366;color:#fff;text-decoration:none;border-radius:8px;padding:6px 11px;font-size:12.5px;\">WhatsApp</a>"):"<span style=\"font-size:11.5px;color:#9a937f;\">sem telefone</span>")+"</div>";}).join("");
+  if(MESTRES.length)h+="<div style=\"margin-top:10px;font-size:12.5px;color:#5b5446;\">WhatsApp — vai a <b>imagem do ranking</b> com a mensagem (no computador a imagem é copiada: cole na conversa). <a onclick=\"verImagem()\" style=\"color:var(--navy);cursor:pointer;border-bottom:1px solid var(--gold);\">ver / baixar a imagem</a></div>"+MESTRES.map(function(x,i){var l=waLink(x);return "<div style=\"display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0e9d6;font-size:13px;\"><span style=\"flex:1;\">"+esc(x.nome)+" <span style=\"color:#8a8270;font-size:11.5px;\">"+esc(x.grau||"")+"</span></span>"+(x.votou?"<span class=\"chip ok\" style=\"margin:0;\">✓ votou</span>":"")+(l?("<button onclick=\"waEnviar("+i+")\" style=\"background:#25D366;color:#fff;border:none;border-radius:8px;padding:6px 11px;font-size:12.5px;cursor:pointer;\">WhatsApp</button>"):"<span style=\"font-size:11.5px;color:#9a937f;\">sem telefone</span>")+"</div>";}).join("");
   return h+"</div>";}
 async function avisar(soPend){var m=document.getElementById("avMsg");if(!confirm(soPend?"Enviar e-mail aos Mestres que ainda não votaram?":"Enviar e-mail a todos os Mestres e ao Grão-Mestre?"))return;
   if(m){m.style.color="#5b5446";m.textContent="Enviando…";}

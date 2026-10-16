@@ -40,8 +40,9 @@ var NOME=(P.get('nome')||'Comendador').trim();
 var GRAU=(P.get('grau')||'Comendador').trim();
 var COD=(P.get('codigo')||'').trim();
 var ANO=(P.get('ano')||'2026').trim();
+var DEST=(P.get('destaque')||'').trim();if(DEST)GRAU='Membro do Ano '+DEST;
 var MESTRE=GRAU.toLowerCase().indexOf('mestre')>=0;
-var C=MESTRE?{a:'#243161',b:'#161f3f',fg:'#f3ecd9',ac:'#c9a85c'}:{a:'#faf5e8',b:'#efe6cf',fg:'#1e2a56',ac:'#b08a3a'};
+var C=DEST?{a:'#7b1e2e',b:'#4a0e1a',fg:'#f6ecd9',ac:'#d9b96a'}:MESTRE?{a:'#243161',b:'#161f3f',fg:'#f3ecd9',ac:'#c9a85c'}:{a:'#faf5e8',b:'#efe6cf',fg:'#1e2a56',ac:'#b08a3a'};
 var BRAS=new Image();BRAS.crossOrigin='anonymous';
 var QR=null;
 function rr(x,X,Y,W,H,R){x.beginPath();x.moveTo(X+R,Y);x.arcTo(X+W,Y,X+W,Y+H,R);x.arcTo(X+W,Y+H,X,Y+H,R);x.arcTo(X,Y+H,X,Y,R);x.arcTo(X,Y,X+W,Y,R);x.closePath();}

@@ -65,7 +65,7 @@ function card(m){
   var nuc=m.nucleo?('<div class="nuc">'+m.nucleo+'</div>'):"";
   var extra;
   if(m.eleito){extra='<div class="meta" style="color:var(--gold);font-weight:bold;letter-spacing:.3px;">✦ Eleito'+(m.data_intronizacao?(" · entronização em "+fmtData(m.data_intronizacao)):"")+'</div>';}
-  else{var d=DESDE[m.capitulo];var meta=(m.codigo||"")+(d?(" · Desde "+d):"");extra=meta?('<div class="meta">'+meta+'</div>'):"";}
+  else{var d=DESDE[m.capitulo];var meta=(m.codigo||"")+(d?((m.codigo?" · ":"")+"Desde "+d):"");extra=meta?('<div class="meta">'+meta+'</div>'):"";}
   if(m._titulo)nuc='<div class="nuc" style="color:var(--gold);font-weight:bold;letter-spacing:.3px;">'+m._titulo+'</div>'+(m._sub?('<div class="nuc">'+m._sub+'</div>'):'');
   return '<div class="card"'+(m._destaque?' style="border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;"':'')+'>'+avatar(m)+'<div class="info"><b>'+m.nome+'</b>'+nuc+extra+'</div></div>';
 }
@@ -87,7 +87,7 @@ async function carregar(){
     if(/jean.?marc/.test(n)){m._titulo="Grão-Mestre · International";m._destaque=1;graos.push(m);}
     else if(rank(m.grau)===0){m._titulo="Grão-Mestre · Brasil";m._destaque=1;graos.push(m);}
     else if(/giacometti/.test(n)){m._titulo="Enólogo da Commanderie";m._sub="Comendador"+(m.nucleo?(" · "+m.nucleo):"");eno.push(m);}
-    else if(g.indexOf("honra")>=0)honra.push(m);else if(g.indexOf("mestre")>=0)mestres.push(m);else comend.push(m);});
+    else if(g.indexOf("honra")>=0)honra.push(m);else if(g.indexOf("mestre")>=0){m._titulo="Mestre"+(m.nucleo?(" · "+m.nucleo):"");mestres.push(m);}else comend.push(m);});
   if(!graos.some(function(m){return m._titulo.indexOf("International")>=0;}))graos.unshift({nome:"Jean-Marc",_titulo:"Grão-Mestre · International",_sub:"Commanderies de Bordeaux",_destaque:1});
   graos.sort(function(a,b){return (a._titulo.indexOf("International")>=0?0:1)-(b._titulo.indexOf("International")>=0?0:1);});
   mestres.sort(function(a,b){return rank(a.grau)-rank(b.grau)||(a.nome||"").localeCompare(b.nome||"","pt");});

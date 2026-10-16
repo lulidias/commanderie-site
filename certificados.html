@@ -63,8 +63,9 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
   <div class="wrap">
     <div class="tabs" id="tabs"></div>
     <div id="tabInfo" style="font-size:13px;color:#5b5446;text-align:center;max-width:640px;margin:4px auto 0;line-height:1.5;"></div>
+    <div id="isentosBox" style="display:none;"></div>
     <div class="stats" id="stats"></div>
-    <div class="tools">
+    <div class="tools" id="toolsBox">
       <input class="inp" id="busca" placeholder="Buscar…" oninput="render()" style="flex:1;min-width:200px;">
       <select class="inp" id="fImp" onchange="render()"><option value="">Todas as importadoras</option></select>
       <button class="bn" id="bNovo" onclick="novo()">+ Enviar certificado</button>
@@ -116,8 +117,8 @@ function ISE(){return TIPO==="isento";}
 function tipoDe(x){return x.tipo||"certificado";}
 function setTipo(t){TIPO=t;FILTRO="todos";render();}
 function tabsHtml(){var n1=ROWS.filter(function(x){return tipoDe(x)==="certificado";}).length,n2=ROWS.filter(function(x){return tipoDe(x)==="isento";}).length;
-  document.getElementById("tabs").innerHTML="<span class=\"tab"+(ISE()?"":" on")+"\" onclick=\"setTipo('certificado')\">&#128196; Certificados de inspeção ("+n1+")</span><span class=\"tab"+(ISE()?" on":"")+"\" onclick=\"setTipo('isento')\">&#9989; Vinhos isentos de coleta ("+n2+")</span>";
-  document.getElementById("tabInfo").innerHTML=ISE()?("<b>Lista de Vinhos de Excepcional Qualidade</b> do MAPA (CGVB): vinhos <b>isentos de coleta de amostra</b> — consulte antes de pedir a inspeção.<div style=\"display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;\"><a href=\"docs/lista-vinhos-excepcional-qualidade-commanderie.pdf\" target=\"_blank\" rel=\"noopener\" style=\"background:var(--navy);color:#fff;text-decoration:none;border-radius:10px;padding:9px 14px;font-size:13px;\">&#128196; Lista Commanderie (PDF)</a><a href=\"docs/lista-vinhos-excepcional-qualidade-mapa-oficial.pdf\" target=\"_blank\" rel=\"noopener\" style=\"background:#fffdf7;color:var(--navy);text-decoration:none;border:1px solid var(--gold);border-radius:10px;padding:9px 14px;font-size:13px;\">&#128462; Documento oficial MAPA (PDF)</a></div>"):"";
+  document.getElementById("tabs").innerHTML="<span class=\"tab"+(ISE()?"":" on")+"\" onclick=\"setTipo('certificado')\">&#128196; Certificados de inspeção ("+n1+")</span><span class=\"tab"+(ISE()?" on":"")+"\" onclick=\"setTipo('isento')\">&#9989; Vinhos isentos de coleta</span>";
+  document.getElementById("tabInfo").innerHTML=ISE()?("<b>Lista de Vinhos de Excepcional Qualidade</b> do MAPA (CGVB): vinhos <b>isentos de coleta de amostra</b> — consulte antes de pedir a inspeção.<div style=\"display:none\" style=\"display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;\"><a href=\"docs/lista-vinhos-excepcional-qualidade-commanderie.pdf\" target=\"_blank\" rel=\"noopener\" style=\"background:var(--navy);color:#fff;text-decoration:none;border-radius:10px;padding:9px 14px;font-size:13px;\">&#128196; Lista Commanderie (PDF)</a><a href=\"docs/lista-vinhos-excepcional-qualidade-mapa-oficial.pdf\" target=\"_blank\" rel=\"noopener\" style=\"background:#fffdf7;color:var(--navy);text-decoration:none;border:1px solid var(--gold);border-radius:10px;padding:9px 14px;font-size:13px;\">&#128462; Documento oficial MAPA (PDF)</a></div>"):"";
   document.getElementById("bNovo").textContent=ISE()?"+ Incluir vinhos":"+ Enviar certificado";
   document.getElementById("bColar").style.display="none";
   document.getElementById("fImp").style.display=ISE()?"none":"";}
@@ -167,7 +168,14 @@ async function carregar(){
   ROWS=q.data||[];render();
 }
 function setF(v){FILTRO=v;render();}
-function render(){tabsHtml();var BASE=ROWS.filter(function(x){return tipoDe(x)===TIPO;});
+function isentosHtml(){
+  function bloco(tit,sub,pdf,imgs){return "<div style=\"background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:16px;margin:16px 0;\"><div style=\"display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;\"><div><div style=\"font-family:Georgia,serif;color:var(--navy);font-size:19px;\">"+tit+"</div><div style=\"font-size:12.5px;color:#8a8270;\">"+sub+"</div></div><a href=\""+pdf+"\" target=\"_blank\" rel=\"noopener\" download style=\"background:var(--navy);color:#fff;text-decoration:none;border-radius:10px;padding:9px 14px;font-size:13px;white-space:nowrap;\">&#11015; Baixar PDF</a></div>"
+    +imgs.map(function(src,i){return "<a href=\""+pdf+"\" target=\"_blank\" rel=\"noopener\"><img src=\""+src+"\" loading=\"lazy\" alt=\""+tit+" — página "+(i+1)+"\" style=\"display:block;width:100%;height:auto;border:1px solid #eadfbf;border-radius:6px;margin-top:"+(i?"10px":"0")+";background:#fff;\"></a>";}).join("")+"</div>";}
+  return bloco("Lista Commanderie","Lista de Vinhos de Excepcional Qualidade · versão da Commanderie (85 vinhos)","docs/lista-vinhos-excepcional-qualidade-commanderie.pdf",["img/isentos/commanderie-1.jpg","img/isentos/commanderie-2.jpg","img/isentos/commanderie-3.jpg"])
+    +bloco("Documento oficial do MAPA","Lista de Vinhos de Excepcional Qualidade · MAPA / CGVB (recebido em 12/06/2013)","docs/lista-vinhos-excepcional-qualidade-mapa-oficial.pdf",["img/isentos/mapa-1.jpg","img/isentos/mapa-2.jpg"]);}
+function render(){tabsHtml();
+  var _ib=document.getElementById("isentosBox");["stats","toolsBox","lista"].forEach(function(id){document.getElementById(id).style.display=ISE()?"none":"";});
+  if(ISE()){_ib.style.display="block";if(!_ib.innerHTML)_ib.innerHTML=isentosHtml();return;}_ib.style.display="none";var BASE=ROWS.filter(function(x){return tipoDe(x)===TIPO;});
   var cnt={todos:BASE.length,ok:0,av:0,x:0};BASE.forEach(function(x){var s=situ(x);if(cnt[s]!=null)cnt[s]++;});
   document.getElementById("stats").innerHTML=(ISE()?[["todos","Vinhos isentos de coleta"]]:[["todos","Certificados"],["ok","Válidos"],["av","Vencem em 30 dias"],["x","Vencidos"]]).map(function(t){return "<div class=\"stat"+(FILTRO===t[0]?" on":"")+"\" onclick=\"setF('"+t[0]+"')\"><b>"+cnt[t[0]]+"</b><span>"+t[1]+"</span></div>";}).join("");
   var q=nrm(document.getElementById("busca").value),fi=document.getElementById("fImp").value;

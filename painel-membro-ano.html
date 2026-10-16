@@ -103,7 +103,7 @@ async function carregar(){
   APOIO={};(ap.data||[]).forEach(function(x){(APOIO[x.membro_id]=APOIO[x.membro_id]||[]).push(x);});
   situacao();render();
 }
-function regra(){var a=anoSel();document.getElementById("regra").innerHTML=a<2027?("<b style=\"color:#8f1d24;\">Em "+a+" a participação é lançada pelo Conselho:</b> clique em <b>✎ participação</b> no membro e informe quantos capítulos, viagens e eventos ele foi. A contagem automática começa em 2027."):"Contagem automática: presença marcada no evento (ou reserva confirmada quando a presença não foi marcada). Eventos das importadoras não contam. Se algum número estiver errado, corrija em <b>✎ participação</b>.";}
+function regra(){var a=anoSel();document.getElementById("regra").innerHTML=a<2027?("<b style=\"color:#8f1d24;\">Em "+a+" a participação é lançada pelo Conselho:</b> clique em <b>✎ alterar participação</b> (ou nos números) do membro e informe quantos capítulos, viagens e eventos ele foi. A contagem automática começa em 2027."):"Contagem automática: presença marcada no evento (ou reserva confirmada quando a presença não foi marcada). Eventos das importadoras não contam. Se algum número estiver errado, corrija em <b>✎ alterar participação</b>.";}
 function situacao(){regra();
   var el=document.getElementById("situacao"),ab=ST.status!=="encerrada";
   var el2=document.getElementById("vencedor");
@@ -143,8 +143,8 @@ function render(){
     var acts="";
     if(ST.pode_votar&&ab&&x.nome!==MEU_NOME)acts+=meu?"<span class=\"vt\">✓ seu voto</span>":"<button class=\"bv\" onclick=\"votar('"+x.id+"')\">Votar</button>";
     else if(meu)acts+="<span class=\"vt\">✓ seu voto</span>";
-    acts+="<button class=\"bl\" onclick=\"apoio('"+x.id+"')\">+ apoio</button><button class=\"bl\" onclick=\"editar('"+x.id+"')\">&#9998; participação</button>";
-    return "<div class=\"row"+(meu?" meu":"")+"\"><div class=\"pos"+(i===0&&x.pontos>0?" p1":"")+"\">"+(i+1)+"</div><div class=\"tx\"><div class=\"nm\">"+esc(x.nome)+"</div><div class=\"mt\">"+esc([x.nucleo,x.grau].filter(Boolean).join(" · "))+"</div><div class=\"ct\">"+c+"</div>"
+    acts+="<button class=\"bl\" onclick=\"apoio('"+x.id+"')\">+ apoio</button><button class=\"bl\" onclick=\"editar('"+x.id+"')\">&#9998; alterar participação</button>";
+    return "<div class=\"row"+(meu?" meu":"")+"\"><div class=\"pos"+(i===0&&x.pontos>0?" p1":"")+"\">"+(i+1)+"</div><div class=\"tx\"><div class=\"nm\">"+esc(x.nome)+"</div><div class=\"mt\">"+esc([x.nucleo,x.grau].filter(Boolean).join(" · "))+"</div><div class=\"ct\" onclick=\"editar('"+x.id+"')\" title=\"Clique para alterar\" style=\"cursor:pointer;\">"+c+"</div>"
       +(aps.length?("<div class=\"apo\">"+aps.map(function(a){return "+"+a.pontos+" "+esc(a.motivo||"apoio")+(a.por_nome?(" <span style=\"color:#9a937f;\">("+esc(a.por_nome)+")</span>"):"")+"<a onclick=\"delApoio('"+a.id+"')\">remover</a>";}).join("<br>")+"</div>"):"")
       +(x.ajustado?("<div class=\"apo\" style=\"color:#8a6a1f;\">&#9998; corrigido pelo Conselho"+(x.ajuste_por?(" ("+esc(x.ajuste_por)+")"):"")+(x.ajuste_obs?(": "+esc(x.ajuste_obs)):"")+"</div>"):"")
       +"<div class=\"acts\">"+acts+"</div>"+(EDIT===x.id?formEd(x):"")+"</div><div class=\"pts\"><b>"+x.pontos+"</b><small>pontos</small>"+(ST.votos?("<div class=\"vt\" style=\"color:var(--navy);\">"+v+" voto"+(v===1?"":"s")+"</div>"):"")+"</div></div>";}).join("");

@@ -53,6 +53,7 @@ tfoot td{background:#f6efdc;font-weight:bold;}
 .g2 input,.g2 select{width:100%;}
 .qtd{width:64px;text-align:center;}
 .sc{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;}.pv{display:block;width:300px;max-width:100%;border:1px solid var(--line);border-radius:8px;overflow:hidden;cursor:pointer;box-shadow:0 2px 8px rgba(30,42,86,.12);background:#f7f1e6;}.pv img{display:block;width:100%;}.pvf{width:300px;height:212px;overflow:hidden;position:relative;}.pvf iframe{width:1123px;height:794px;border:0;transform:scale(.2671);transform-origin:0 0;pointer-events:none;}.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}.dg .card{margin:0;}.dimg{display:block;width:100%;border:1px solid var(--line);border-radius:6px;margin-bottom:8px;}
+.ct2{border-bottom:2px solid var(--gold);padding-bottom:0;gap:4px;margin:4px 0 12px;}.ct2 .tab{border-radius:10px 10px 0 0;border-bottom:none;padding:9px 18px;font-size:14px;font-family:Georgia,serif;}.ct2 .tab small{font-family:Arial;font-size:11px;opacity:.75;margin-left:6px;}
 .cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin:0 0 14px;}.cp{background:#fffdf7;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:14px 16px;cursor:pointer;}.cp.on{border-color:var(--navy);box-shadow:0 0 0 2px rgba(30,42,86,.15);}.cp h4{margin:0;font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:18px;}.cp .dt{font-size:12px;color:#8a8270;margin:2px 0 10px;}.cp .gr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}.cp .gr div span{display:block;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;}.cp .gr div b{font-family:Georgia,serif;font-weight:normal;font-size:17px;color:var(--navy);}.cp .gr div i{display:block;font-style:normal;font-size:11px;color:#8a8270;}
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
 .nota{font-size:11.5px;color:#9a937f;margin:6px 2px;}
@@ -67,9 +68,10 @@ tfoot td{background:#f6efdc;font-weight:bold;}
     <button class="btn v" onclick="abrirSaida()">&#127863; Nova saída para evento</button>
     <button class="btn g" onclick="abrirVinho()">+ Adicionar vinho / compra</button>
     <button class="btn g" onclick="imprimirEstoque()">&#128424; Imprimir estoque</button>
-    <select class="inp" id="lote" onchange="render()"></select>
+    <select class="inp" id="lote" onchange="render()" style="display:none;"></select>
     <input class="inp" id="busca" placeholder="Buscar vinho, safra, região…" oninput="render()" style="flex:1;min-width:170px;">
   </div>
+  <div class="tabs ct2" id="ctabs"></div>
   <div class="cg" id="compras"></div>
   <div class="tabs"><span class="tab on" id="t1" onclick="aba(1)">Estoque</span><span class="tab" id="t2" onclick="aba(2)">Saídas por evento</span><span class="tab" id="t3" onclick="aba(3)">Documentos</span></div>
   <div id="v1"></div><div id="v2" style="display:none;"></div><div id="v3" style="display:none;"></div>
@@ -137,13 +139,14 @@ async function carregar(){
 }
 function aba(n){ABA=n;[1,2,3].forEach(function(i){document.getElementById("t"+i).className="tab"+(i===n?" on":"");document.getElementById("v"+i).style.display=i===n?"block":"none";});}
 function render(){
-  var tA=0,tS=0;VIN.forEach(function(v){tA+=Number(v.adquirido)||0;tS+=saidasDe(v.id);});var tE=tA-tS;
-  var vAd=0,vEs=0,semV=0;VIN.forEach(function(v){if(v.valor_unit==null){semV++;return;}vAd+=v.valor_unit*(Number(v.adquirido)||0);vEs+=v.valor_unit*estoque(v);});
-  var zer=VIN.filter(function(v){return estoque(v)<=0;}).length;
-  document.getElementById("kp").innerHTML="<div><span>Vinhos</span><b>"+VIN.length+"</b></div><div><span>Garrafas adquiridas</span><b>"+tA+"</b></div><div><span>Saídas</span><b>"+tS+"</b></div><div style='border-color:#cfe6d3;background:#eef6ef;'><span style='color:#2f6b3a;'>Em estoque</span><b style='color:#2f6b3a;'>"+tE+"</b></div><div><span>Esgotados</span><b style='color:#8f1d24;'>"+zer+"</b></div>"+(semV<VIN.length?("<div><span>Valor adquirido</span><b style='font-size:19px;'>"+brl(vAd)+"</b>"+(semV?"<span style='text-transform:none;'>só vinhos com valor</span>":"")+"</div><div><span>Valor em estoque</span><b style='font-size:19px;'>"+brl(vEs)+"</b>"+(semV?"<span style='text-transform:none;'>"+semV+" itens sem valor</span>":"")+"</div>"):"");
+  var LV=document.getElementById("lote").value;var VK=VIN.filter(function(v){return !LV||v.lote===LV;});
+  var tA=0,tS=0;VK.forEach(function(v){tA+=Number(v.adquirido)||0;tS+=saidasDe(v.id);});var tE=tA-tS;
+  var vAd=0,vEs=0,semV=0;VK.forEach(function(v){if(v.valor_unit==null){semV++;return;}vAd+=v.valor_unit*(Number(v.adquirido)||0);vEs+=v.valor_unit*estoque(v);});
+  var zer=VK.filter(function(v){return estoque(v)<=0;}).length;
+  document.getElementById("kp").innerHTML="<div><span>Vinhos</span><b>"+VK.length+"</b></div><div><span>Garrafas adquiridas</span><b>"+tA+"</b></div><div><span>Saídas</span><b>"+tS+"</b></div><div style='border-color:#cfe6d3;background:#eef6ef;'><span style='color:#2f6b3a;'>Em estoque</span><b style='color:#2f6b3a;'>"+tE+"</b></div><div><span>Esgotados</span><b style='color:#8f1d24;'>"+zer+"</b></div>"+(semV<VK.length?("<div><span>Valor adquirido</span><b style='font-size:19px;'>"+brl(vAd)+"</b>"+(semV?"<span style='text-transform:none;'>só vinhos com valor</span>":"")+"</div><div><span>Valor em estoque</span><b style='font-size:19px;'>"+brl(vEs)+"</b>"+(semV?"<span style='text-transform:none;'>"+semV+" itens sem valor</span>":"")+"</div>"):"");
   var ls=document.getElementById("lote"),lv=ls.value,lotes=[];VIN.forEach(function(v){if(v.lote&&lotes.indexOf(v.lote)<0)lotes.push(v.lote);});ls.innerHTML="<option value=''>Todas as compras</option>"+lotes.map(function(l){var n=VIN.filter(function(v){return v.lote===l;}).reduce(function(t,v){return t+(Number(v.adquirido)||0);},0);return "<option value='"+esc(l)+"'>Compra "+esc(l)+" · "+n+" gf</option>";}).join("");ls.value=lv;
   var q=nrm(document.getElementById("busca").value);var L=VIN.filter(function(v){return (!lv||v.lote===lv)&&(!q||nrm(nomeF(v)+" "+(v.safra||"")+" "+(v.denominacao||"")+" "+(v.lote||"")).indexOf(q)>=0);});
-  var S=saidasOrd();
+  var S=saidasOrd();if(lv)S=S.filter(function(s){return ITE.some(function(i){return i.saida_id===s.id&&L.some(function(v){return v.id===i.vinho_id;});});});
   var h="<div class='scroll'><table><thead><tr><th>Nº</th><th>Vinho</th><th class='n'>Safra</th><th class='n'>Adquirido</th>"+S.map(function(s){return "<th class='n' title='"+esc(s.titulo)+(s.data?(" · "+fdat(s.data)):"")+"'>"+esc(curto(s.titulo))+"</th>";}).join("")+"<th class='n'>Saídas</th><th class='n'>Estoque</th><th></th></tr></thead><tbody>";
   L.forEach(function(v,i){var ad=Number(v.adquirido)||0,sd=saidasDe(v.id),es=ad-sd,cl=es<=0?"zero":(es<=3?"low":"ok");
     h+="<tr><td style='color:#9a937f;'>"+(i+1)+"</td><td><div class='vn'>"+esc(v.nome)+(fmt(v)?" <span style='font-family:Arial;font-size:10.5px;background:#283657;color:#f3e3bd;border-radius:8px;padding:1px 7px;vertical-align:2px;'>"+fmt(v)+"</span>":"")+"</div><div class='vd'>"+esc([v.denominacao,v.cor].filter(Boolean).join(" · "))+(v.lote?(" · lote "+esc(v.lote)):"")+(v.valor_unit!=null?(" · "+brl(v.valor_unit)+"/gf"):"")+"</div></td><td class='n'>"+esc(v.safra||"—")+"</td><td class='n'>"+ad+"</td>"
@@ -170,6 +173,9 @@ function renderCompras(){var lv=document.getElementById("lote").value;var lotes=
   var L=lotes.map(function(l){var c=COMP.find(function(x){return x.lote===l;})||{lote:l};var vs=VIN.filter(function(v){return v.lote===l;});var g750=0,gM=0,ad=0,es=0,sd=0,vAd=0,vEs=0,sv=0,nomes=[];
     vs.forEach(function(v){var a=Number(v.adquirido)||0,e=estoque(v);ad+=a;es+=e;sd+=a-e;if(fmt(v))gM+=a;else g750+=a;if(nomes.indexOf(v.nome.toLowerCase())<0)nomes.push(v.nome.toLowerCase());if(v.valor_unit==null)sv++;else{vAd+=v.valor_unit*a;vEs+=v.valor_unit*e;}});
     return {c:c,l:l,n:nomes.length,ad:ad,g750:g750,gM:gM,es:es,sd:sd,vAd:vAd,vEs:vEs,sv:sv,tem:vs.length&&sv<vs.length};}).sort(function(a,b){return (""+(a.c.data||"")).localeCompare(""+(b.c.data||""));});
+  var tot=VIN.reduce(function(t,v){return t+(Number(v.adquirido)||0);},0);
+  document.getElementById("ctabs").innerHTML="<span class='tab"+(lv?"":" on")+"' onclick=\"filtraLote('')\">Todas as compras<small>"+tot+" gf</small></span>"+L.map(function(x){return "<span class='tab"+(lv===x.l?" on":"")+"' onclick=\"filtraLote('"+esc(x.l)+"')\">&#128230; "+esc(x.c.titulo||("Compra "+x.l))+"<small>"+x.ad+" gf</small></span>";}).join("");
+  if(lv)L=L.filter(function(x){return x.l===lv;});
   document.getElementById("compras").innerHTML=L.map(function(x){var c=x.c;var dt=c.data?new Date(c.data+"T12:00:00").toLocaleDateString("pt-BR",/-01$/.test(c.data)?{month:"long",year:"numeric"}:{day:"numeric",month:"long",year:"numeric"}):"sem data";
     return "<div class='cp"+(lv===x.l?" on":"")+"' onclick=\"filtraLote('"+esc(x.l)+"')\"><div style='display:flex;justify-content:space-between;gap:8px;'><h4>&#128230; "+esc(c.titulo||("Compra "+x.l))+"</h4><a class='lk' style='margin:0;' onclick=\"event.stopPropagation();editCompra('"+esc(x.l)+"')\">editar</a></div>"
       +"<div class='dt'>"+esc(dt)+(c.nota_fiscal?(" · "+esc(c.nota_fiscal)):"")+" · lote "+esc(x.l)+"</div><div class='gr'>"
@@ -180,7 +186,7 @@ function renderCompras(){var lv=document.getElementById("lote").value;var lotes=
       +"<div><span>Total da nota</span><b>"+(c.valor_nota!=null?brl(c.valor_nota):"—")+"</b></div>"
       +"<div><span>Valor em estoque</span><b style='color:#2f6b3a;'>"+(x.tem?brl(x.vEs):"—")+"</b></div>"
       +"</div>"+(c.obs?("<div class='vd' style='margin-top:8px;'>"+esc(c.obs)+"</div>"):"")+"</div>";}).join("");}
-function filtraLote(l){var s=document.getElementById("lote");s.value=s.value===l?"":l;aba(1);render();}
+function filtraLote(l){document.getElementById("lote").value=l;render();}
 async function editCompra(l){var c=COMP.find(function(x){return x.lote===l;})||{lote:l};
   var d=prompt("Data da compra (dd/mm/aaaa):",c.data?c.data.split("-").reverse().join("/"):"");if(d===null)return;
   var nf=prompt("Nota fiscal (ex.: NF-e 9.548):",c.nota_fiscal||"");if(nf===null)return;

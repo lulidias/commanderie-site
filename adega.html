@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Adega — Commanderie de Bordeaux</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><meta name="theme-color" content="#1e2a56">
+<style>
+:root{--navy:#1e2a56;--gold:#b08a3a;--cream:#f8f3e6;--line:#ddd0ad;--ink:#2a2620;--red:#8f1d24;--green:#2f6b3a;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 20px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.back{margin-left:auto;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);border:1px solid var(--gold);border-radius:20px;padding:7px 14px;text-decoration:none;}
+.wrap{max-width:1180px;margin:0 auto;padding:16px 18px 60px;}
+h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:28px;margin:10px 0 2px;text-align:center;}
+.sub{text-align:center;color:#8a8270;font-size:13px;margin-bottom:14px;}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:8px 0 14px;}
+.kp div{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:10px 14px;}
+.kp span{display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;}
+.kp b{font-family:Georgia,serif;font-size:24px;font-weight:normal;color:var(--navy);}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:4px 0 12px;}
+.btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-size:13.5px;cursor:pointer;}
+.btn.g{background:transparent;color:var(--navy);border:1.5px solid var(--gold);}
+.btn.v{background:var(--green);}
+.inp{padding:8px 11px;border:1px solid var(--line);border-radius:9px;font-size:13.5px;font-family:inherit;background:#fff;}
+.tabs{display:flex;gap:6px;margin:6px 0 12px;flex-wrap:wrap;}
+.tab{cursor:pointer;border:1.5px solid var(--gold);background:#fffdf7;color:var(--navy);border-radius:20px;padding:7px 15px;font-size:13px;}
+.tab.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+.scroll{overflow-x:auto;background:#fffdf7;border:1px solid var(--line);border-radius:12px;}
+table{border-collapse:collapse;width:100%;font-size:13px;}
+th,td{padding:7px 8px;border-bottom:1px solid #ece0c2;text-align:left;vertical-align:middle;}
+th{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;font-weight:normal;background:#faf5e8;white-space:nowrap;}
+td.n,th.n{text-align:center;white-space:nowrap;}
+td.est{font-weight:bold;font-size:15px;text-align:center;}
+.vn{font-family:Georgia,serif;color:var(--navy);font-size:14.5px;}
+.vd{font-size:11.5px;color:#8a8270;}
+.dot{color:#c9bfa3;}
+.zero{color:var(--red);}
+.low{color:#b06a1f;}
+.ok{color:var(--green);}
+.mini{height:5px;background:#efe6cf;border-radius:4px;margin-top:4px;overflow:hidden;}
+.mini i{display:block;height:100%;background:var(--gold);}
+tfoot td{background:#f6efdc;font-weight:bold;}
+.card{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.ct{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;}
+.ct b{font-family:Georgia,serif;color:var(--navy);font-size:17px;font-weight:normal;}
+.lk{color:var(--navy);cursor:pointer;font-size:12.5px;margin-left:12px;text-decoration:none;}
+.lk.r{color:var(--red);}
+.modal{position:fixed;inset:0;background:rgba(20,29,56,.55);z-index:50;display:none;align-items:flex-start;justify-content:center;padding:20px 12px;overflow:auto;}
+.box{background:#fffdf7;border-radius:14px;max-width:760px;width:100%;padding:18px 20px;}
+.box h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;margin:0 0 10px;font-size:20px;}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-bottom:10px;}
+.g2 label span{display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;}
+.g2 input,.g2 select{width:100%;}
+.qtd{width:64px;text-align:center;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
+.nota{font-size:11.5px;color:#9a937f;margin:6px 2px;}
+</style></head><body>
+<div class="dtop"><a href="painel-estoque.html"><img src="img/brasao.png" alt=""></a><b>Adega da Commanderie</b><a class="back" href="painel-estoque.html">&#8592; Patrimônio e Estoque</a></div>
+<div id="st" class="state">Carregando…</div>
+<div id="app" class="wrap" style="display:none;">
+  <h1>Vinhos da Commanderie</h1>
+  <div class="sub">Vinhos adquiridos, saídas por evento e estoque na hora</div>
+  <div class="kp" id="kp"></div>
+  <div class="bar">
+    <button class="btn v" onclick="abrirSaida()">&#127863; Nova saída para evento</button>
+    <button class="btn g" onclick="abrirVinho()">+ Adicionar vinho / compra</button>
+    <button class="btn g" onclick="imprimirEstoque()">&#128424; Imprimir estoque</button>
+    <input class="inp" id="busca" placeholder="Buscar vinho, safra, região…" oninput="render()" style="flex:1;min-width:170px;">
+  </div>
+  <div class="tabs"><span class="tab on" id="t1" onclick="aba(1)">Estoque</span><span class="tab" id="t2" onclick="aba(2)">Saídas por evento</span><span class="tab" id="t3" onclick="aba(3)">Documentos</span></div>
+  <div id="v1"></div><div id="v2" style="display:none;"></div><div id="v3" style="display:none;"></div>
+</div>
+
+<div class="modal" id="mS"><div class="box">
+  <h3>&#127863; Nova saída para evento</h3>
+  <div class="g2">
+    <label><span>Evento</span><select class="inp" id="sEv" onchange="evEscolhido()"></select></label>
+    <label><span>Título na lista</span><input class="inp" id="sTit" placeholder="Ex.: Capítulo XI"></label>
+    <label><span>Data</span><input class="inp" id="sData" type="date"></label>
+    <label><span>Observação</span><input class="inp" id="sObs"></label>
+  </div>
+  <input class="inp" id="sBusca" placeholder="Filtrar vinhos…" oninput="renderSaida()" style="width:100%;margin-bottom:8px;">
+  <div class="scroll" style="max-height:52vh;overflow:auto;"><table><thead><tr><th>Vinho</th><th class="n">Safra</th><th class="n">Em estoque</th><th class="n">Sai</th></tr></thead><tbody id="sLista"></tbody></table></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;">
+    <b id="sTot" style="color:var(--navy);">0 garrafas</b>
+    <span><span id="sMsg" style="font-size:12.5px;margin-right:10px;"></span><button class="btn g" onclick="fechar('mS')">Cancelar</button> <button class="btn v" onclick="salvarSaida()">Registrar saída e imprimir</button></span>
+  </div>
+</div></div>
+
+<div class="modal" id="mV"><div class="box" style="max-width:520px;">
+  <h3 id="vTit">Adicionar vinho / compra</h3>
+  <div class="g2">
+    <label style="grid-column:1/-1;"><span>Vinho *</span><input class="inp" id="vNome" placeholder="Ex.: Château Figeac"></label>
+    <label><span>Safra</span><input class="inp" id="vSafra" placeholder="Ex.: 2018"></label>
+    <label><span>Cor</span><select class="inp" id="vCor"><option>Tinto</option><option>Branco</option><option>Rosé</option><option>Espumante</option><option>Doce</option></select></label>
+    <label style="grid-column:1/-1;"><span>Denominação</span><input class="inp" id="vDen" placeholder="Ex.: Saint-Émilion Grand Cru Classé"></label>
+    <label><span>Garrafas adquiridas</span><input class="inp" id="vQtd" type="number" min="0"></label>
+    <label><span>Lote / compra</span><input class="inp" id="vLote" placeholder="Ex.: Nov/2025"></label>
+    <label style="grid-column:1/-1;"><span>Valor de aquisição por garrafa (R$) · da nota fiscal</span><input class="inp" id="vVal" type="number" min="0" step="0.01" placeholder="Pode deixar em branco até ter a nota"></label>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+    <a class="lk r" id="vDel" onclick="delVinho()" style="margin:0;display:none;">remover vinho</a>
+    <span style="margin-left:auto;"><span id="vMsg" style="font-size:12.5px;margin-right:10px;"></span><button class="btn g" onclick="fechar('mV')">Cancelar</button> <button class="btn" onclick="salvarVinho()">Salvar</button></span>
+  </div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+var VIN=[],SAI=[],ITE=[],EVS=[],EDV=null,ABA=1;
+function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function nrm(s){return (""+(s||"")).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
+function fdat(d,longo){if(!d)return "";var x=new Date(d+"T12:00:00");return longo?x.toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"}):x.toLocaleDateString("pt-BR");}
+function brl(n){return "R$ "+(Number(n)||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function saidasDe(vid){var t=0;ITE.forEach(function(i){if(i.vinho_id===vid)t+=i.qtd;});return t;}
+function estoque(v){return (Number(v.adquirido)||0)-saidasDe(v.id);}
+function curto(t){var m=(t||"").match(/cap[ií]tulo\s+([ivxlc]+)/i);return m?m[1].toUpperCase():(t||"").slice(0,10);}
+function saidasOrd(){return SAI.slice().sort(function(a,b){return (""+(a.data||"0")).localeCompare(""+(b.data||"0"))||(""+a.created_at).localeCompare(""+b.created_at);});}
+async function init(){
+  var u=(await sb.auth.getUser()).data.user;if(!u){document.getElementById("st").innerHTML="Entre na sua conta do Conselho. <a href='index.html?login=1'>Entrar</a>";return;}
+  await carregar();
+}
+async function carregar(){
+  var a=await sb.from("adega_vinhos").select("*").order("ordem",{ascending:true}).order("nome",{ascending:true});
+  if(a.error){document.getElementById("st").innerHTML="Rode o SQL <b>adega_vinhos.sql</b> no Supabase. ("+esc(a.error.message)+")";return;}
+  var b=await sb.from("adega_saidas").select("*");var c=await sb.from("adega_saida_itens").select("*");
+  var e=await sb.from("eventos").select("id,tipo,numero,titulo,data").order("data",{ascending:false}).limit(60);
+  VIN=a.data||[];SAI=b.data||[];ITE=c.data||[];EVS=e.data||[];
+  document.getElementById("st").style.display="none";document.getElementById("app").style.display="block";render();
+}
+function aba(n){ABA=n;[1,2,3].forEach(function(i){document.getElementById("t"+i).className="tab"+(i===n?" on":"");document.getElementById("v"+i).style.display=i===n?"block":"none";});}
+function render(){
+  var tA=0,tS=0;VIN.forEach(function(v){tA+=Number(v.adquirido)||0;tS+=saidasDe(v.id);});var tE=tA-tS;
+  var vAd=0,vEs=0,semV=0;VIN.forEach(function(v){if(v.valor_unit==null){semV++;return;}vAd+=v.valor_unit*(Number(v.adquirido)||0);vEs+=v.valor_unit*estoque(v);});
+  var zer=VIN.filter(function(v){return estoque(v)<=0;}).length;
+  document.getElementById("kp").innerHTML="<div><span>Vinhos</span><b>"+VIN.length+"</b></div><div><span>Garrafas adquiridas</span><b>"+tA+"</b></div><div><span>Saídas</span><b>"+tS+"</b></div><div style='border-color:#cfe6d3;background:#eef6ef;'><span style='color:#2f6b3a;'>Em estoque</span><b style='color:#2f6b3a;'>"+tE+"</b></div><div><span>Esgotados</span><b style='color:#8f1d24;'>"+zer+"</b></div>"+(semV<VIN.length?("<div><span>Valor em estoque</span><b>"+brl(vEs)+"</b>"+(semV?"<span style='text-transform:none;'>"+semV+" vinhos sem valor</span>":"")+"</div>"):"<div><span>Valor de aquisição</span><b style='font-size:14px;color:#8a8270;'>aguardando nota fiscal</b></div>");
+  var q=nrm(document.getElementById("busca").value);var L=VIN.filter(function(v){return !q||nrm(v.nome+" "+(v.safra||"")+" "+(v.denominacao||"")).indexOf(q)>=0;});
+  var S=saidasOrd();
+  var h="<div class='scroll'><table><thead><tr><th>Nº</th><th>Vinho</th><th class='n'>Safra</th><th class='n'>Adquirido</th>"+S.map(function(s){return "<th class='n' title='"+esc(s.titulo)+(s.data?(" · "+fdat(s.data)):"")+"'>"+esc(curto(s.titulo))+"</th>";}).join("")+"<th class='n'>Saídas</th><th class='n'>Estoque</th><th></th></tr></thead><tbody>";
+  L.forEach(function(v,i){var ad=Number(v.adquirido)||0,sd=saidasDe(v.id),es=ad-sd,cl=es<=0?"zero":(es<=3?"low":"ok");
+    h+="<tr><td style='color:#9a937f;'>"+(v.ordem||i+1)+"</td><td><div class='vn'>"+esc(v.nome)+"</div><div class='vd'>"+esc([v.denominacao,v.cor].filter(Boolean).join(" · "))+(v.lote?(" · lote "+esc(v.lote)):"")+(v.valor_unit!=null?(" · "+brl(v.valor_unit)+"/gf"):"")+"</div></td><td class='n'>"+esc(v.safra||"—")+"</td><td class='n'>"+ad+"</td>"
+      +S.map(function(s){var it=ITE.find(function(x){return x.saida_id===s.id&&x.vinho_id===v.id;});return "<td class='n'>"+(it?it.qtd:"<span class='dot'>·</span>")+"</td>";}).join("")
+      +"<td class='n'>"+(sd||"<span class='dot'>·</span>")+"</td><td class='est "+cl+"'>"+es+"<div class='mini'><i style='width:"+(ad?Math.max(0,Math.round(es/ad*100)):0)+"%'></i></div></td><td><a class='lk' onclick='abrirVinho("+v.id+")'>editar</a></td></tr>";});
+  h+="</tbody><tfoot><tr><td></td><td>TOTAL · "+L.length+" vinhos</td><td></td><td class='n'>"+L.reduce(function(t,v){return t+(Number(v.adquirido)||0);},0)+"</td>"+S.map(function(s){var t=0;ITE.forEach(function(i){if(i.saida_id===s.id&&L.some(function(v){return v.id===i.vinho_id;}))t+=i.qtd;});return "<td class='n'>"+t+"</td>";}).join("")+"<td class='n'>"+L.reduce(function(t,v){return t+saidasDe(v.id);},0)+"</td><td class='n'>"+L.reduce(function(t,v){return t+estoque(v);},0)+"</td><td></td></tr></tfoot></table></div><div class='nota'>Estoque = adquirido − saídas. “·” = sem saída. Passe o mouse no título da coluna para ver o evento. <span class='zero'>Vermelho</span> = esgotado · <span class='low'>laranja</span> = 3 ou menos.</div>";
+  document.getElementById("v1").innerHTML=h;
+  // saídas
+  var h2=S.slice().reverse().map(function(s){var its=ITE.filter(function(i){return i.saida_id===s.id;});var tot=its.reduce(function(t,i){return t+i.qtd;},0);
+    return "<div class='card'><div class='ct'><b>"+esc(s.titulo)+"</b><span style='font-size:12.5px;color:#8a8270;'>"+(s.data?fdat(s.data,true)+" · ":"")+its.length+" vinhos · <b style='font-family:Arial;font-size:13px;color:var(--navy);'>"+tot+" garrafas</b></span></div>"
+      +"<div style='font-size:13px;color:#5b5446;margin:8px 0;line-height:1.7;'>"+its.map(function(i){var v=VIN.find(function(x){return x.id===i.vinho_id;})||{};return esc(v.nome||"?")+(v.safra?(" "+esc(v.safra)):"")+" <b>×"+i.qtd+"</b>";}).join(" · ")+"</div>"
+      +(s.obs?("<div class='vd'>"+esc(s.obs)+"</div>"):"")
+      +"<div><a class='lk' style='margin:0;' onclick=\"imprimirSelecao('"+s.id+"')\">&#128424; Imprimir seleção</a>"+(s.documento_url?("<a class='lk' href='"+esc(s.documento_url)+"' target='_blank' rel='noopener'>&#128196; PDF original</a>"):"")+"<a class='lk r' onclick=\"delSaida('"+s.id+"')\">desfazer saída</a></div></div>";}).join("");
+  document.getElementById("v2").innerHTML=h2||"<div class='card'>Nenhuma saída registrada.</div>";
+  // documentos
+  var docs=S.filter(function(s){return s.documento_url;}).map(function(s){return "<a class='card' style='display:block;text-decoration:none;' href='"+esc(s.documento_url)+"' target='_blank' rel='noopener'><b style='font-family:Georgia,serif;color:var(--navy);font-weight:normal;'>&#128196; "+esc(s.titulo)+" · Seleção de vinhos</b><div class='vd'>"+(s.data?fdat(s.data,true):"")+"</div></a>";}).join("");
+  document.getElementById("v3").innerHTML="<a class='card' style='display:block;text-decoration:none;' href='adega-vinhos-adquiridos-nov2025.pdf' target='_blank' rel='noopener'><b style='font-family:Georgia,serif;color:var(--navy);font-weight:normal;'>&#128230; Vinhos adquiridos em novembro de 2025 · packing list</b><div class='vd'>30 vinhos · 55 caixas · 396 garrafas</div></a><a class='card' style='display:block;text-decoration:none;' href='adega-estoque-vinhos.pdf' target='_blank' rel='noopener'><b style='font-family:Georgia,serif;color:var(--navy);font-weight:normal;'>&#128202; Estoque de vinhos (documento anterior)</b><div class='vd'>Após os Capítulos I a X · hoje o estoque é calculado na hora na aba Estoque</div></a>"+docs;
+}
+function fechar(id){document.getElementById(id).style.display="none";}
+// ---------- saída ----------
+function abrirSaida(){var sel=document.getElementById("sEv");sel.innerHTML="<option value=''>— Evento (opcional) —</option>"+EVS.map(function(e){return "<option value='"+e.id+"'>"+esc((e.tipo||"")+(e.numero?(" "+e.numero):"")+" · "+(e.titulo||"")+(e.data?(" · "+fdat(e.data)):""))+"</option>";}).join("");
+  document.getElementById("sTit").value="";document.getElementById("sData").value=new Date().toISOString().slice(0,10);document.getElementById("sObs").value="";document.getElementById("sBusca").value="";document.getElementById("sMsg").textContent="";window.QS={};renderSaida();document.getElementById("mS").style.display="flex";}
+function evEscolhido(){var e=EVS.find(function(x){return x.id===document.getElementById("sEv").value;});if(!e)return;var t=(e.tipo||"")+(e.numero?(" "+e.numero):"");if(!e.numero)t=e.titulo||t;document.getElementById("sTit").value=t.trim();if(e.data)document.getElementById("sData").value=e.data;}
+function renderSaida(){var q=nrm(document.getElementById("sBusca").value);var QS=window.QS||{};
+  document.getElementById("sLista").innerHTML=VIN.filter(function(v){return estoque(v)>0&&(!q||nrm(v.nome+" "+(v.safra||"")).indexOf(q)>=0);}).map(function(v){var es=estoque(v);return "<tr><td><div class='vn' style='font-size:13.5px;'>"+esc(v.nome)+"</div><div class='vd'>"+esc(v.denominacao||"")+"</div></td><td class='n'>"+esc(v.safra||"—")+"</td><td class='n'>"+es+"</td><td class='n'><input class='inp qtd' type='number' min='0' max='"+es+"' value='"+(QS[v.id]||"")+"' oninput='qtdS("+v.id+",this,"+es+")'></td></tr>";}).join("");totS();}
+function qtdS(id,el,max){var n=parseInt(el.value,10)||0;if(n>max){n=max;el.value=max;}if(n<0){n=0;el.value="";}window.QS[id]=n;totS();}
+function totS(){var t=0,k=0;Object.keys(window.QS||{}).forEach(function(i){if(window.QS[i]>0){t+=window.QS[i];k++;}});document.getElementById("sTot").textContent=t+" garrafas · "+k+" vinhos";}
+async function salvarSaida(){var m=document.getElementById("sMsg");var tit=document.getElementById("sTit").value.trim();var its=Object.keys(window.QS||{}).filter(function(i){return window.QS[i]>0;});
+  if(!tit){m.style.color="#8f1d24";m.textContent="Informe o título (ex.: Capítulo XI).";return;}if(!its.length){m.style.color="#8f1d24";m.textContent="Coloque a quantidade de pelo menos um vinho.";return;}
+  m.style.color="#5b5446";m.textContent="Salvando…";
+  var r=await sb.from("adega_saidas").insert({titulo:tit,evento_id:document.getElementById("sEv").value||null,data:document.getElementById("sData").value||null,obs:document.getElementById("sObs").value.trim()||null}).select("id").single();
+  if(r.error){m.style.color="#8f1d24";m.textContent=/duplicate|unique/i.test(r.error.message)?"Já existe uma saída com esse título. Use outro (ex.: Capítulo XI · jantar).":("Erro: "+r.error.message);return;}
+  var ins=await sb.from("adega_saida_itens").insert(its.map(function(i){return {saida_id:r.data.id,vinho_id:Number(i),qtd:window.QS[i]};}));
+  if(ins.error){await sb.from("adega_saidas").delete().eq("id",r.data.id);m.style.color="#8f1d24";m.textContent="Erro: "+ins.error.message;return;}
+  fechar("mS");await carregar();aba(2);imprimirSelecao(r.data.id);}
+async function delSaida(id){var s=SAI.find(function(x){return x.id===id;});if(!confirm("Desfazer a saída \""+(s?s.titulo:"")+"\"? As garrafas voltam para o estoque."))return;var r=await sb.from("adega_saidas").delete().eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}carregar();}
+// ---------- vinho ----------
+function abrirVinho(id){EDV=id?VIN.find(function(v){return v.id===id;}):null;var v=EDV||{cor:"Tinto",lote:""};document.getElementById("vTit").textContent=EDV?("Editar · "+EDV.nome):"Adicionar vinho / compra";
+  document.getElementById("vNome").value=v.nome||"";document.getElementById("vSafra").value=v.safra||"";document.getElementById("vCor").value=v.cor||"Tinto";document.getElementById("vDen").value=v.denominacao||"";document.getElementById("vQtd").value=v.adquirido==null?"":v.adquirido;document.getElementById("vLote").value=v.lote||"";document.getElementById("vVal").value=v.valor_unit==null?"":v.valor_unit;
+  document.getElementById("vDel").style.display=EDV?"inline":"none";document.getElementById("vMsg").textContent="";document.getElementById("mV").style.display="flex";}
+async function salvarVinho(){var m=document.getElementById("vMsg");var rec={nome:document.getElementById("vNome").value.trim(),safra:document.getElementById("vSafra").value.trim()||null,cor:document.getElementById("vCor").value,denominacao:document.getElementById("vDen").value.trim()||null,adquirido:parseInt(document.getElementById("vQtd").value,10)||0,lote:document.getElementById("vLote").value.trim()||null,valor_unit:document.getElementById("vVal").value===""?null:Number(document.getElementById("vVal").value)};
+  if(!rec.nome){m.style.color="#8f1d24";m.textContent="Informe o vinho.";return;}
+  if(EDV&&rec.adquirido<saidasDe(EDV.id)){m.style.color="#8f1d24";m.textContent="Já saíram "+saidasDe(EDV.id)+" garrafas; o adquirido não pode ser menor.";return;}
+  var r=EDV?await sb.from("adega_vinhos").update(rec).eq("id",EDV.id):await sb.from("adega_vinhos").insert(Object.assign({ordem:(VIN.reduce(function(t,v){return Math.max(t,v.ordem||0);},0)+1)},rec));
+  if(r.error){m.style.color="#8f1d24";m.textContent="Erro: "+r.error.message;return;}fechar("mV");carregar();}
+async function delVinho(){if(!EDV)return;if(saidasDe(EDV.id)>0){alert("Este vinho já tem saídas registradas. Para tirar do estoque, ajuste o adquirido.");return;}if(!confirm("Remover "+EDV.nome+" da adega?"))return;var r=await sb.from("adega_vinhos").delete().eq("id",EDV.id);if(r.error){alert("Erro: "+r.error.message);return;}fechar("mV");carregar();}
+// ---------- impressão ----------
+var CSSP="@page{size:A4 landscape;margin:8mm;}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact;}body{margin:0;background:#f7f1e6;font-family:Georgia,'Times New Roman',serif;color:#1e2a56;}.pg{border:1.5px solid #c9a35e;margin:10px;padding:5px;min-height:calc(100vh - 20px);display:flex;flex-direction:column;}.pg2{border:1px solid #c9a35e;flex:1;display:flex;flex-direction:column;}.hd{background:#283657;color:#fff;text-align:center;padding:16px 10px 10px;}.hd h1{margin:0;font-size:24px;letter-spacing:5px;font-weight:bold;}.orn{display:flex;align-items:center;justify-content:center;gap:10px;color:#c9a35e;font-size:9px;margin:6px 0 4px;}.orn i{display:block;width:120px;height:1px;background:#c9a35e;}.hd small{letter-spacing:4px;font-size:10px;color:#ddd0ad;}.ct{text-align:center;margin-top:16px;}.cap{color:#c9a35e;letter-spacing:3px;font-size:12px;font-weight:bold;}h2{margin:4px 0 2px;font-size:24px;}.p{font-style:italic;font-size:11px;color:#6a6a7a;}.tb{width:72%;margin:16px auto 0;border-collapse:collapse;font-size:12px;}.tb th{background:#283657;color:#f3e3bd;font-size:8.5px;letter-spacing:1px;padding:9px 12px;text-align:left;}.tb td{padding:7px 12px;border-bottom:1px solid #e6dcc6;background:#efe6d6;}.tb tr:nth-child(even) td{background:#f7f1e6;}.tb .q{text-align:center;font-weight:bold;width:80px;}.tb .s{text-align:center;width:70px;}.vn{font-weight:bold;font-size:12.5px;}.vd{font-style:italic;font-size:9.5px;color:#b08a3a;}.tb tr.tot td{background:#283657;color:#fff;font-weight:bold;border-top:2px solid #c9a35e;}.tb tr.tot .vd{color:#f3e3bd;}.ft{margin-top:auto;display:flex;justify-content:space-around;align-items:flex-end;padding:20px 40px 16px;}.as{text-align:center;width:300px;}.as img{height:58px;display:block;margin:0 auto -6px;}.as .l{border-top:1px solid #283657;padding-top:4px;font-weight:bold;font-size:12px;}.as .r{font-style:italic;font-size:9.5px;color:#6a6a7a;}.ca img{width:96px;transform:rotate(-8deg);opacity:.92;}.tb.mi{width:96%;font-size:10px;}.tb.mi td,.tb.mi th{padding:5px 6px;}.tb.mi .q{width:auto;}@media screen{body{max-width:1120px;margin:0 auto;}}";
+function abrirImp(html,tit){var w=window.open("","_blank");if(!w){alert("Permita janelas pop-up para imprimir.");return;}w.document.write("<!doctype html><html><head><meta charset='utf-8'><title>"+esc(tit)+"</title><base href='"+location.href.replace(/[^\/]*$/,"")+"'><style>"+CSSP+"</style></head><body><div class='pg'><div class='pg2'>"+html+"</div></div><script>window.onload=function(){setTimeout(function(){window.print();},500);};<\/script></body></html>");w.document.close();}
+function cab(){return "<div class='hd'><h1>COMMANDERIE DE BORDEAUX</h1><div class='orn'><i></i>&#9670;&#160;&#160;&#160;&#160;&#9670;&#160;&#160;&#160;&#160;&#9670;<i></i></div><small>AU BRÉSIL</small></div>";}
+function ass(){return "<div class='ft'><div class='as'><img src='adega-assinatura.png' alt=''><div class='l'>Manu Brandão</div><div class='r'>Grand Maître de la Commanderie de Bordeaux au Brésil</div></div><div class='ca'><img src='adega-carimbo.png' alt=''></div></div>";}
+function imprimirSelecao(id){var s=SAI.find(function(x){return x.id===id;});if(!s)return;var its=ITE.filter(function(i){return i.saida_id===id;}).map(function(i){return {v:VIN.find(function(x){return x.id===i.vinho_id;})||{},q:i.qtd};}).sort(function(a,b){return (a.v.ordem||0)-(b.v.ordem||0);});var tot=its.reduce(function(t,x){return t+x.q;},0);
+  abrirImp(cab()+"<div class='ct'><div class='cap'>"+esc(s.titulo.toUpperCase())+(s.data?(" &#160;·&#160; "+esc(fdat(s.data,true).toUpperCase())):"")+"</div><h2>Seleção de Vinhos de Bordeaux</h2><div class='p'>Preparada para a Commanderie de Bordeaux au Brésil</div></div><table class='tb'><thead><tr><th class='s'>SAFRA</th><th>VINHO</th><th class='q'>QTD.</th></tr></thead><tbody>"+its.map(function(x){return "<tr><td class='s'>"+esc(x.v.safra||"—")+"</td><td><div class='vn'>"+esc(x.v.nome||"")+"</div><div class='vd'>"+esc([x.v.denominacao,x.v.cor].filter(Boolean).join(" · "))+"</div></td><td class='q'>"+x.q+"</td></tr>";}).join("")+"<tr class='tot'><td class='s'>TOTAL</td><td><span class='vd'>"+its.length+(its.length>1?" vinhos":" vinho")+"</span></td><td class='q' style='white-space:nowrap;'>"+tot+" garrafas</td></tr></tbody></table>"+ass(),"Seleção · "+s.titulo);}
+function imprimirEstoque(){var S=saidasOrd();var tA=0,tS=0;
+  var rows=VIN.map(function(v,i){var ad=Number(v.adquirido)||0,sd=saidasDe(v.id);tA+=ad;tS+=sd;return "<tr><td>"+(v.ordem||i+1)+"</td><td style='font-family:Georgia,serif;color:#1e2a56;'>"+esc(v.nome)+"</td><td class='q'>"+esc(v.safra||"—")+"</td><td class='q'>"+ad+"</td>"+S.map(function(s){var it=ITE.find(function(x){return x.saida_id===s.id&&x.vinho_id===v.id;});return "<td class='q'>"+(it?it.qtd:"·")+"</td>";}).join("")+"<td class='q'>"+(sd||"·")+"</td><td class='q'><b>"+(ad-sd)+"</b></td></tr>";}).join("");
+  abrirImp(cab()+"<div class='ct'><h2>Estoque de Vinhos</h2><div class='p'>Posição em "+new Date().toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"})+" · saídas: "+S.map(function(s){return esc(curto(s.titulo));}).join(", ")+"</div></div><table class='tb mi'><thead><tr><th>Nº</th><th>VINHO</th><th>SAFRA</th><th>ADQ.</th>"+S.map(function(s){return "<th class='q'>"+esc(curto(s.titulo))+"</th>";}).join("")+"<th class='q'>SAÍDAS</th><th class='q'>ESTOQUE</th></tr></thead><tbody>"+rows+"<tr class='tot'><td></td><td>TOTAL · "+VIN.length+" vinhos</td><td></td><td class='q'>"+tA+"</td>"+S.map(function(s){var t=0;ITE.forEach(function(i){if(i.saida_id===s.id)t+=i.qtd;});return "<td class='q'>"+t+"</td>";}).join("")+"<td class='q'>"+tS+"</td><td class='q'>"+(tA-tS)+"</td></tr></tbody></table>"+ass(),"Estoque de Vinhos");}
+document.addEventListener("DOMContentLoaded",init);
+</script></body></html>

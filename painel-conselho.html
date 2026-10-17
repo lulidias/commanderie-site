@@ -513,6 +513,7 @@ function comprovanteDe(x){
 async function addReceita(){
   var msg=document.getElementById("rcMsg");
   var cat=document.getElementById("rcCat").value;var ano=parseInt(document.getElementById("rcAno").value,10);
+  if(/^anuidade/i.test(cat)&&ano===ANO_ANUIDADE&&!confirm("A anuidade "+ANO_ANUIDADE+" dos membros já é controlada no cadastro (Financeiro → Anuidades dos membros → marcar pago).\n\nLançar aqui também faz contar em dobro. Use só para anuidade de quem NÃO está no cadastro.\n\nLançar mesmo assim?"))return;
   var nucleo=document.getElementById("rcNucleo").value||null;var desc=document.getElementById("rcDesc").value.trim()||null;
   var valor=parseFloat(document.getElementById("rcValor").value);var pago=document.getElementById("rcPago").checked;
   if(!ano||isNaN(valor)){msg.style.color="#8f1d24";msg.textContent="Informe ano e valor.";return;}

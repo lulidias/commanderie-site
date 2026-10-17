@@ -53,6 +53,7 @@ tfoot td{background:#f6efdc;font-weight:bold;}
 .g2 input,.g2 select{width:100%;}
 .qtd{width:64px;text-align:center;}
 .sc{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;}.pv{display:block;width:300px;max-width:100%;border:1px solid var(--line);border-radius:8px;overflow:hidden;cursor:pointer;box-shadow:0 2px 8px rgba(30,42,86,.12);background:#f7f1e6;}.pv img{display:block;width:100%;}.pvf{width:300px;height:212px;overflow:hidden;position:relative;}.pvf iframe{width:1123px;height:794px;border:0;transform:scale(.2671);transform-origin:0 0;pointer-events:none;}.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}.dg .card{margin:0;}.dimg{display:block;width:100%;border:1px solid var(--line);border-radius:6px;margin-bottom:8px;}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin:0 0 14px;}.cp{background:#fffdf7;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:14px 16px;cursor:pointer;}.cp.on{border-color:var(--navy);box-shadow:0 0 0 2px rgba(30,42,86,.15);}.cp h4{margin:0;font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:18px;}.cp .dt{font-size:12px;color:#8a8270;margin:2px 0 10px;}.cp .gr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}.cp .gr div span{display:block;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;}.cp .gr div b{font-family:Georgia,serif;font-weight:normal;font-size:17px;color:var(--navy);}.cp .gr div i{display:block;font-style:normal;font-size:11px;color:#8a8270;}
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
 .nota{font-size:11.5px;color:#9a937f;margin:6px 2px;}
 </style></head><body>
@@ -69,6 +70,7 @@ tfoot td{background:#f6efdc;font-weight:bold;}
     <select class="inp" id="lote" onchange="render()"></select>
     <input class="inp" id="busca" placeholder="Buscar vinho, safra, região…" oninput="render()" style="flex:1;min-width:170px;">
   </div>
+  <div class="cg" id="compras"></div>
   <div class="tabs"><span class="tab on" id="t1" onclick="aba(1)">Estoque</span><span class="tab" id="t2" onclick="aba(2)">Saídas por evento</span><span class="tab" id="t3" onclick="aba(3)">Documentos</span></div>
   <div id="v1"></div><div id="v2" style="display:none;"></div><div id="v3" style="display:none;"></div>
 </div>
@@ -110,7 +112,7 @@ tfoot td{background:#f6efdc;font-weight:bold;}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
-var VIN=[],SAI=[],ITE=[],EVS=[],EDV=null,ABA=1;
+var COMP=[],VIN=[],SAI=[],ITE=[],EVS=[],EDV=null,ABA=1;
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function nrm(s){return (""+(s||"")).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
 function fdat(d,longo){if(!d)return "";var x=new Date(d+"T12:00:00");return longo?x.toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"}):x.toLocaleDateString("pt-BR");}
@@ -130,7 +132,7 @@ async function carregar(){
   if(a.error){document.getElementById("st").innerHTML="Rode o SQL <b>adega_vinhos.sql</b> no Supabase. ("+esc(a.error.message)+")";return;}
   var b=await sb.from("adega_saidas").select("*");var c=await sb.from("adega_saida_itens").select("*");
   var e=await sb.from("eventos").select("id,tipo,numero,titulo,data").order("data",{ascending:false}).limit(60);
-  VIN=a.data||[];SAI=b.data||[];ITE=c.data||[];EVS=e.data||[];
+  var cp=await sb.from("adega_compras").select("*");COMP=cp.error?[]:(cp.data||[]);VIN=a.data||[];SAI=b.data||[];ITE=c.data||[];EVS=e.data||[];
   document.getElementById("st").style.display="none";document.getElementById("app").style.display="block";render();
 }
 function aba(n){ABA=n;[1,2,3].forEach(function(i){document.getElementById("t"+i).className="tab"+(i===n?" on":"");document.getElementById("v"+i).style.display=i===n?"block":"none";});}
@@ -138,7 +140,7 @@ function render(){
   var tA=0,tS=0;VIN.forEach(function(v){tA+=Number(v.adquirido)||0;tS+=saidasDe(v.id);});var tE=tA-tS;
   var vAd=0,vEs=0,semV=0;VIN.forEach(function(v){if(v.valor_unit==null){semV++;return;}vAd+=v.valor_unit*(Number(v.adquirido)||0);vEs+=v.valor_unit*estoque(v);});
   var zer=VIN.filter(function(v){return estoque(v)<=0;}).length;
-  document.getElementById("kp").innerHTML="<div><span>Vinhos</span><b>"+VIN.length+"</b></div><div><span>Garrafas adquiridas</span><b>"+tA+"</b></div><div><span>Saídas</span><b>"+tS+"</b></div><div style='border-color:#cfe6d3;background:#eef6ef;'><span style='color:#2f6b3a;'>Em estoque</span><b style='color:#2f6b3a;'>"+tE+"</b></div><div><span>Esgotados</span><b style='color:#8f1d24;'>"+zer+"</b></div>"+(semV<VIN.length?("<div><span>Valor adquirido</span><b>"+brl(vAd)+"</b>"+(semV?"<span style='text-transform:none;'>só vinhos com valor</span>":"")+"</div><div><span>Valor em estoque</span><b>"+brl(vEs)+"</b>"+(semV?"<span style='text-transform:none;'>"+semV+" itens sem valor</span>":"")+"</div>"):"");
+  document.getElementById("kp").innerHTML="<div><span>Vinhos</span><b>"+VIN.length+"</b></div><div><span>Garrafas adquiridas</span><b>"+tA+"</b></div><div><span>Saídas</span><b>"+tS+"</b></div><div style='border-color:#cfe6d3;background:#eef6ef;'><span style='color:#2f6b3a;'>Em estoque</span><b style='color:#2f6b3a;'>"+tE+"</b></div><div><span>Esgotados</span><b style='color:#8f1d24;'>"+zer+"</b></div>"+(semV<VIN.length?("<div><span>Valor adquirido</span><b style='font-size:19px;'>"+brl(vAd)+"</b>"+(semV?"<span style='text-transform:none;'>só vinhos com valor</span>":"")+"</div><div><span>Valor em estoque</span><b style='font-size:19px;'>"+brl(vEs)+"</b>"+(semV?"<span style='text-transform:none;'>"+semV+" itens sem valor</span>":"")+"</div>"):"");
   var ls=document.getElementById("lote"),lv=ls.value,lotes=[];VIN.forEach(function(v){if(v.lote&&lotes.indexOf(v.lote)<0)lotes.push(v.lote);});ls.innerHTML="<option value=''>Todas as compras</option>"+lotes.map(function(l){var n=VIN.filter(function(v){return v.lote===l;}).reduce(function(t,v){return t+(Number(v.adquirido)||0);},0);return "<option value='"+esc(l)+"'>Compra "+esc(l)+" · "+n+" gf</option>";}).join("");ls.value=lv;
   var q=nrm(document.getElementById("busca").value);var L=VIN.filter(function(v){return (!lv||v.lote===lv)&&(!q||nrm(nomeF(v)+" "+(v.safra||"")+" "+(v.denominacao||"")+" "+(v.lote||"")).indexOf(q)>=0);});
   var S=saidasOrd();
@@ -148,7 +150,7 @@ function render(){
       +S.map(function(s){var it=ITE.find(function(x){return x.saida_id===s.id&&x.vinho_id===v.id;});return "<td class='n'>"+(it?it.qtd:"<span class='dot'>·</span>")+"</td>";}).join("")
       +"<td class='n'>"+(sd||"<span class='dot'>·</span>")+"</td><td class='est "+cl+"'>"+es+"<div class='mini'><i style='width:"+(ad?Math.max(0,Math.round(es/ad*100)):0)+"%'></i></div></td><td><a class='lk' onclick='abrirVinho("+v.id+")'>editar</a></td></tr>";});
   h+="</tbody><tfoot><tr><td></td><td>TOTAL · "+L.length+" vinhos</td><td></td><td class='n'>"+L.reduce(function(t,v){return t+(Number(v.adquirido)||0);},0)+"</td>"+S.map(function(s){var t=0;ITE.forEach(function(i){if(i.saida_id===s.id&&L.some(function(v){return v.id===i.vinho_id;}))t+=i.qtd;});return "<td class='n'>"+t+"</td>";}).join("")+"<td class='n'>"+L.reduce(function(t,v){return t+saidasDe(v.id);},0)+"</td><td class='n'>"+L.reduce(function(t,v){return t+estoque(v);},0)+"</td><td></td></tr></tfoot></table></div><div class='nota'>Estoque = adquirido − saídas. “·” = sem saída. Passe o mouse no título da coluna para ver o evento. <span class='zero'>Vermelho</span> = esgotado · <span class='low'>laranja</span> = 3 ou menos.</div>";
-  document.getElementById("v1").innerHTML=h;
+  document.getElementById("v1").innerHTML=h;renderCompras();
   // saídas
   var h2=S.slice().reverse().map(function(s){var its=ITE.filter(function(i){return i.saida_id===s.id;});var tot=its.reduce(function(t,i){return t+i.qtd;},0);
     return "<div class='card sc'>"+prevSel(s.id)+"<div style='flex:1;min-width:240px;'><div class='ct'><b>"+esc(s.titulo)+"</b><span style='font-size:12.5px;color:#8a8270;'>"+(s.data?fdat(s.data,true)+" · ":"")+its.length+" vinhos · <b style='font-family:Arial;font-size:13px;color:var(--navy);'>"+tot+" garrafas</b></span></div>"
@@ -164,6 +166,27 @@ function prevSel(id){var s=SAI.find(function(x){return x.id===id;});var base=loc
   if(s&&s.documento_url){var img=s.documento_url.split("/").pop().replace(/\.pdf$/i,".jpg");return "<a class='pv' href='"+esc(s.documento_url)+"' target='_blank' rel='noopener'><img src='"+esc(img)+"' alt='' loading='lazy' onerror=\"this.parentNode.style.display='none'\"></a>";}
   var doc="<!doctype html><html><head><meta charset='utf-8'><base href='"+base+"'><style>"+CSSP+"body{width:1123px;height:794px;overflow:hidden;}.pg{min-height:774px;}</style></head><body><div class='pg'><div class='pg2'>"+selHTML(id)+"</div></div></body></html>";
   return "<a class='pv' onclick=\"imprimirSelecao('"+id+"')\"><div class='pvf'><iframe tabindex='-1' srcdoc=\""+esc(doc)+"\"></iframe></div></a>";}
+function renderCompras(){var lv=document.getElementById("lote").value;var lotes=[];VIN.forEach(function(v){if(v.lote&&lotes.indexOf(v.lote)<0)lotes.push(v.lote);});COMP.forEach(function(c){if(lotes.indexOf(c.lote)<0)lotes.push(c.lote);});
+  var L=lotes.map(function(l){var c=COMP.find(function(x){return x.lote===l;})||{lote:l};var vs=VIN.filter(function(v){return v.lote===l;});var g750=0,gM=0,ad=0,es=0,sd=0,vAd=0,vEs=0,sv=0,nomes=[];
+    vs.forEach(function(v){var a=Number(v.adquirido)||0,e=estoque(v);ad+=a;es+=e;sd+=a-e;if(fmt(v))gM+=a;else g750+=a;if(nomes.indexOf(v.nome.toLowerCase())<0)nomes.push(v.nome.toLowerCase());if(v.valor_unit==null)sv++;else{vAd+=v.valor_unit*a;vEs+=v.valor_unit*e;}});
+    return {c:c,l:l,n:nomes.length,ad:ad,g750:g750,gM:gM,es:es,sd:sd,vAd:vAd,vEs:vEs,sv:sv,tem:vs.length&&sv<vs.length};}).sort(function(a,b){return (""+(a.c.data||"")).localeCompare(""+(b.c.data||""));});
+  document.getElementById("compras").innerHTML=L.map(function(x){var c=x.c;var dt=c.data?new Date(c.data+"T12:00:00").toLocaleDateString("pt-BR",/-01$/.test(c.data)?{month:"long",year:"numeric"}:{day:"numeric",month:"long",year:"numeric"}):"sem data";
+    return "<div class='cp"+(lv===x.l?" on":"")+"' onclick=\"filtraLote('"+esc(x.l)+"')\"><div style='display:flex;justify-content:space-between;gap:8px;'><h4>&#128230; "+esc(c.titulo||("Compra "+x.l))+"</h4><a class='lk' style='margin:0;' onclick=\"event.stopPropagation();editCompra('"+esc(x.l)+"')\">editar</a></div>"
+      +"<div class='dt'>"+esc(dt)+(c.nota_fiscal?(" · "+esc(c.nota_fiscal)):"")+" · lote "+esc(x.l)+"</div><div class='gr'>"
+      +"<div><span>Garrafas</span><b>"+x.ad+"</b><i>"+x.n+" vinhos"+(x.gM?(" · "+x.g750+" × 750 mL + "+x.gM+" × 1,5 L"):"")+"</i></div>"
+      +"<div><span>Saídas</span><b>"+x.sd+"</b></div>"
+      +"<div><span>Em estoque</span><b style='color:#2f6b3a;'>"+x.es+"</b></div>"
+      +"<div><span>Valor dos vinhos</span><b>"+(x.tem?brl(x.vAd):"—")+"</b>"+(x.tem&&x.sv?("<i>"+x.sv+" itens sem valor</i>"):"")+"</div>"
+      +"<div><span>Total da nota</span><b>"+(c.valor_nota!=null?brl(c.valor_nota):"—")+"</b></div>"
+      +"<div><span>Valor em estoque</span><b style='color:#2f6b3a;'>"+(x.tem?brl(x.vEs):"—")+"</b></div>"
+      +"</div>"+(c.obs?("<div class='vd' style='margin-top:8px;'>"+esc(c.obs)+"</div>"):"")+"</div>";}).join("");}
+function filtraLote(l){var s=document.getElementById("lote");s.value=s.value===l?"":l;aba(1);render();}
+async function editCompra(l){var c=COMP.find(function(x){return x.lote===l;})||{lote:l};
+  var d=prompt("Data da compra (dd/mm/aaaa):",c.data?c.data.split("-").reverse().join("/"):"");if(d===null)return;
+  var nf=prompt("Nota fiscal (ex.: NF-e 9.548):",c.nota_fiscal||"");if(nf===null)return;
+  var vn=prompt("Total da nota em R$ (ex.: 19075,49):",c.valor_nota!=null?(""+c.valor_nota).replace(".",","):"");if(vn===null)return;
+  var m=d.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);var rec={lote:l,titulo:c.titulo||null,data:m?(m[3]+"-"+("0"+m[2]).slice(-2)+"-"+("0"+m[1]).slice(-2)):null,nota_fiscal:nf.trim()||null,valor_nota:vn.trim()?Number(vn.replace(/\./g,"").replace(",",".")):null};
+  var r=await sb.from("adega_compras").upsert(rec);if(r.error){alert("Erro: "+r.error.message+"\n(rode o SQL adega_compras.sql)");return;}carregar();}
 function fechar(id){document.getElementById(id).style.display="none";}
 // ---------- saída ----------
 function abrirSaida(){var sel=document.getElementById("sEv");sel.innerHTML="<option value=''>— Evento (opcional) —</option>"+EVS.map(function(e){return "<option value='"+e.id+"'>"+esc((e.tipo||"")+(e.numero?(" "+e.numero):"")+" · "+(e.titulo||"")+(e.data?(" · "+fdat(e.data)):""))+"</option>";}).join("");

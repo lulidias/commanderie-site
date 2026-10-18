@@ -23,7 +23,7 @@ h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:28px
 @media(max-width:900px){.grid{grid-template-columns:1fr;}.side{position:static!important;}}
 .sec{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
 .sec h2{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:19px;margin:0 0 2px;display:flex;align-items:center;gap:8px;}
-.sec h2 i{font-style:normal;display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#f3e3bd;font-size:13px;align-items:center;justify-content:center;font-family:Arial;}
+.sec h2 i{font-style:normal;display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#f3e3bd;font-size:13px;align-items:center;justify-content:center;font-family:Arial;flex:none;}
 .sec .d{font-size:12.5px;color:#8a8270;margin:0 0 10px 34px;}
 .f2{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;}
 label.l span{display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;}
@@ -38,6 +38,7 @@ label.l .inp{width:100%;}
 .st button:active{background:#eadfbf;}
 .st input{width:62px;border:none;text-align:center;font-size:16px;height:36px;font-family:inherit;color:var(--ink);}
 .st.sm button{width:28px;height:30px;font-size:16px;}.st.sm input{width:46px;height:30px;font-size:14px;}
+.arx{margin-top:8px;font-size:12px;color:#b06a1f;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 table{border-collapse:collapse;width:100%;font-size:13.5px;}
 th,td{padding:6px 6px;border-bottom:1px solid #ece0c2;text-align:left;vertical-align:middle;}
 th{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;font-weight:normal;}
@@ -47,13 +48,13 @@ td.n,th.n{text-align:right;white-space:nowrap;}
 .money input{padding-left:30px;width:130px;text-align:right;}
 .x{color:#b0402f;cursor:pointer;font-size:18px;padding:0 4px;border:none;background:none;}
 .add{color:var(--navy);cursor:pointer;font-size:13px;border:1.5px dashed var(--gold);border-radius:9px;padding:7px 12px;background:transparent;font-family:inherit;}
-.sub2{display:flex;justify-content:space-between;font-size:13.5px;color:#5b5446;padding-top:8px;}
+.sub2{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;color:#5b5446;padding-top:8px;}
 .sub2 b{color:var(--navy);}
 .side{position:sticky;top:72px;}
 .res{background:var(--navy);color:#fff;border-radius:14px;padding:16px 18px;margin-bottom:12px;}
 .res h3{margin:0 0 8px;font-family:Georgia,serif;font-weight:normal;font-size:18px;color:#f3e3bd;}
-.res .row{display:flex;justify-content:space-between;font-size:13.5px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.1);}
-.res .row b{font-weight:normal;}
+.res .row{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.1);}
+.res .row b{font-weight:normal;white-space:nowrap;}
 .res .tot{font-size:16px;border-bottom:none;padding-top:8px;}
 .res .tot b{font-family:Georgia,serif;font-size:22px;color:#fff;}
 .big{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
@@ -69,15 +70,22 @@ td.n,th.n{text-align:right;white-space:nowrap;}
 .c-mp{background:#eef6ef;color:#2f6b3a;}.c-cp{background:#e8edf8;color:#1e2a56;}.c-mc{background:#f6efdc;color:#8a6a1f;}.c-cc{background:#f3e8e8;color:#8f1d24;}
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
 .tag{font-size:10.5px;color:#9a937f;}
+.seg{display:inline-flex;border:1.5px solid var(--gold);border-radius:10px;overflow:hidden;}
+.seg button{border:none;background:#fffdf7;color:var(--navy);padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;}
+.seg button.on{background:var(--navy);color:#fff;}
+.cons td,.cons th{font-size:13px;}
+.cons tr.t td{font-weight:bold;border-top:1.5px solid var(--navy);}
+.cons tr.f td{background:var(--navy);color:#fff;font-family:Georgia,serif;font-size:16px;}
 </style></head><body>
 <div class="dtop"><a href="painel-conselho.html?sec=eventos"><img src="img/brasao.png" alt=""></a><b>Simular custo de evento</b><a class="back" href="painel-conselho.html?sec=eventos">&#8592; Eventos</a></div>
 <div id="st" class="state">Carregando…</div>
 <div id="app" class="wrap" style="display:none;">
-  <h1>Simulação de custo do evento</h1>
-  <div class="sub">Preencha os custos e as pessoas — o sistema calcula o rateio necessário para cobrir todas as despesas.</div>
+  <h1 id="h1">Simulação de custo do evento</h1>
+  <div class="sub" id="h1s">Preencha os custos e as pessoas — o sistema calcula o rateio necessário para cobrir todas as despesas.</div>
   <div class="bar">
-    <select class="inp" id="selSim" onchange="abrirSim(this.value)" style="flex:1;min-width:200px;"></select>
-    <button class="btn g" onclick="novaSim()">+ Nova</button>
+    <select class="inp" id="selSim" onchange="abrirSim(this.value)" style="flex:1;min-width:220px;"></select>
+    <button class="btn g" onclick="novaSim()">+ Nova simulação</button>
+    <button class="btn g" onclick="novoCons()">+ Relatório de vários eventos</button>
     <button class="btn v" onclick="salvarSim()">&#128190; Salvar</button>
     <button class="btn g" onclick="duplicarSim()">Duplicar</button>
     <button class="btn g" onclick="imprimir()">&#128424; Imprimir</button>
@@ -96,31 +104,47 @@ var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","
 var SIMS=[],ADEGA=[],MEMB=[],CUR=null,S=null,SUJO=false;
 var CATS={mp:"Membro (paga)",cp:"Convidado (paga)",mc:"Membro / Conselho (não paga)",cc:"Convidado de cortesia (não paga)"};
 var CUSTOS_PADRAO=[["Gráfica (convites, menus, cartões)","fixo"],["Material de comunicação","fixo"],["Locação de material (taças, mesas, toalhas)","fixo"],["Flores e decoração","fixo"],["Músico","fixo"],["Fotógrafo","fixo"],["Transporte / frete dos vinhos","fixo"],["Taxa de rolha / serviço de sommelier","fixo"],["Brindes, medalhas e diplomas","fixo"]];
-function novoS(){return {titulo:"",data:"",local:"",tipo:"Jantar",preco_pessoa:0,servico_pct:10,p:{mp:20,cp:5,mc:4,cc:2},vinhos:[],custos:CUSTOS_PADRAO.map(function(c){return {nome:c[0],valor:0,modo:c[1]};}),imprevistos_pct:5,valor_membro:0,valor_convidado:0,arred:10,lista:[],obs:""};}
+function novoS(){return {kind:"evento",status:"simulacao",titulo:"",data:"",local:"",tipo:"Jantar",rest_modo:"pessoa",preco_pessoa:0,rest_total:0,servico_pct:10,p:{mp:20,cp:5,mc:4,cc:2},ar:{mp:0,cp:0},vinhos:[],custos:CUSTOS_PADRAO.map(function(c){return {nome:c[0],valor:0,modo:c[1]};}),imprevistos_pct:5,valor_membro:0,valor_convidado:0,arred:10,receitas:[],lista:[],obs:""};}
+function novoC(){return {kind:"consolidado",titulo:"",subtitulo:"",data:"",ids:[],ajustes:[],obs:""};}
+function isCons(){return S&&S.kind==="consolidado";}
 function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
-function num(v){if(typeof v==="number")return v;v=(""+(v||"")).trim();if(!v)return 0;if(v.indexOf(",")>=0)v=v.replace(/\./g,"").replace(",",".");return Number(v)||0;}
+function num(v){if(typeof v==="number")return v;v=(""+(v||"")).trim();if(!v)return 0;var neg=/^[-−]/.test(v);v=v.replace(/^[-−+]\s*/,"");if(v.indexOf(",")>=0)v=v.replace(/\./g,"").replace(",",".");var n=Number(v)||0;return neg?-n:n;}
 function brl(n){return "R$ "+(Number(n)||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function v2(n){return (Number(n)||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function sbrl(n){n=Number(n)||0;return (n<0?"− ":(n>0?"+ ":""))+brl(Math.abs(n));}
 function brl0(n){return "R$ "+Math.round(Number(n)||0).toLocaleString("pt-BR");}
 function fv(n){n=Number(n)||0;return n?n.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}):"";}
 function fdat(d){return d?new Date(d+"T12:00:00").toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}):"";}
+function cap1(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+function arred(v,a){a=a||10;return Math.ceil((v-0.0001)/a)*a;}
 // ---------- cálculo ----------
-function calc(X){X=X||S;var p=X.p,P=(p.mp||0)+(p.cp||0)+(p.mc||0)+(p.cc||0),pag=(p.mp||0)+(p.cp||0);
-  var porPessoaRest=num(X.preco_pessoa)*(1+num(X.servico_pct)/100);
-  var rest=porPessoaRest*P;
-  var vin=0,garr=0;X.vinhos.forEach(function(v){garr+=v.qtd||0;if(!v.pago)vin+=(v.qtd||0)*num(v.preco);});
-  var fixos=0,porPes=0;X.custos.forEach(function(c){if(c.modo==="pessoa")porPes+=num(c.valor);else fixos+=num(c.valor);});
+function calc(X){X=X||S;var p=X.p,ar=X.ar||{mp:0,cp:0};var mp=p.mp||0,cp=p.cp||0,P=mp+cp+(p.mc||0)+(p.cc||0),pag=mp+cp;
+  var fech=X.rest_modo==="fechado";var porPessoaRest=fech?0:num(X.preco_pessoa)*(1+num(X.servico_pct)/100);
+  var rest=fech?num(X.rest_total):porPessoaRest*P;
+  var vin=0,garr=0;(X.vinhos||[]).forEach(function(v){garr+=v.qtd||0;if(!v.pago)vin+=(v.qtd||0)*num(v.preco);});
+  var fixos=0,porPes=0;(X.custos||[]).forEach(function(c){if(c.modo==="pessoa")porPes+=num(c.valor);else fixos+=num(c.valor);});
   var outros=fixos+porPes*P;
   var sub=rest+vin+outros;var impr=sub*num(X.imprevistos_pct)/100;var total=sub+impr;
-  var f=1+num(X.imprevistos_pct)/100;
-  var custoVar=(porPessoaRest+porPes)*f; // custo de cada pessoa a mais
-  var custoFixo=(vin+fixos)*f;
-  var vc=num(X.valor_convidado),vm=num(X.valor_membro),ar=num(X.arred)||1;
-  var igual=pag?total/pag:0;
-  var nec=(p.mp||0)?(total-(p.cp||0)*vc)/(p.mp||0):0;
-  var arrec=(p.mp||0)*vm+(p.cp||0)*vc;var resultado=arrec-total;
-  var minM=null;if(vm>custoVar){minM=Math.max(0,Math.ceil((custoFixo+custoVar*((p.cp||0)+(p.mc||0)+(p.cc||0))-(p.cp||0)*vc)/(vm-custoVar)));}
-  return {P:P,pag:pag,rest:rest,porPessoaRest:porPessoaRest,vin:vin,garr:garr,fixos:fixos,porPes:porPes,outros:outros,sub:sub,impr:impr,total:total,porPessoa:P?total/P:0,igual:igual,nec:nec,arrec:arrec,resultado:resultado,minM:minM,custoVar:custoVar,custoFixo:custoFixo,ar:ar};}
-function arred(v,a){a=a||10;return Math.ceil((v-0.0001)/a)*a;}
+  var f=1+num(X.imprevistos_pct)/100;var custoVar=(porPessoaRest+porPes)*f;var custoFixo=((fech?rest:0)+vin+fixos)*f;
+  var Ro=0,Ror=0;(X.receitas||[]).forEach(function(r){Ro+=num(r.valor);if(r.recebido)Ror+=num(r.valor);});
+  var vc=num(X.valor_convidado),vm=num(X.valor_membro),a=num(X.arred)||1;
+  var arm=Math.min(ar.mp||0,mp),arc=Math.min(ar.cp||0,cp);
+  var arrec=mp*vm+cp*vc+Ro;var arrecReal=(mp-arm)*vm+(cp-arc)*vc+Ror;
+  var igual=pag?(total-Ro)/pag:0;var nec=mp?(total-cp*vc-Ro)/mp:0;
+  var minM=null;if(vm>custoVar){minM=Math.max(0,Math.ceil((custoFixo+custoVar*(cp+(p.mc||0)+(p.cc||0))-cp*vc-Ro)/(vm-custoVar)));}
+  return {P:P,pag:pag,mp:mp,cp:cp,arm:arm,arc:arc,fech:fech,rest:rest,porPessoaRest:porPessoaRest,vin:vin,garr:garr,fixos:fixos,porPes:porPes,outros:outros,sub:sub,impr:impr,total:total,porPessoa:P?total/P:0,igual:igual,nec:nec,Ro:Ro,Ror:Ror,arrec:arrec,arrecReal:arrecReal,resultado:arrec-total,resultadoReal:arrecReal-total,minM:minM,custoVar:custoVar,ar:a,vm:vm,vc:vc,real:X.status==="realizado"};}
+// linhas de despesas / recebimentos (usadas na tela e na impressão)
+function linhasEvento(X){var C=calc(X),D=[],R=[],AR=[];
+  D.push([esc(X.tipo||"Restaurante")+(C.fech?"":(" ("+C.P+" × "+brl(C.porPessoaRest).replace("R$ ","R$ ")+")")),C.rest]);
+  var vs=(X.vinhos||[]).filter(function(v){return v.qtd&&!v.pago;});if(vs.length===1)D.push(["Vinhos · "+esc(vs[0].nome||"")+" ("+vs[0].qtd+" gf)",C.vin]);else if(vs.length)D.push(["Vinhos ("+vs.reduce(function(t,v){return t+v.qtd;},0)+" garrafas)",C.vin]);
+  (X.custos||[]).forEach(function(c){if(num(c.valor))D.push([esc(c.nome)+(c.modo==="pessoa"?(" ("+C.P+" × "+brl(num(c.valor))+")"):""),c.modo==="pessoa"?num(c.valor)*C.P:num(c.valor)]);});
+  if(C.impr)D.push(["Reserva para imprevistos ("+num(X.imprevistos_pct)+"%)",C.impr]);
+  if(C.real){if(C.mp-C.arm)R.push([esc(X.rot_m||"Membros")+" ("+(C.mp-C.arm)+" × "+brl(C.vm)+")",(C.mp-C.arm)*C.vm]);if(C.cp-C.arc)R.push(["Convidados ("+(C.cp-C.arc)+" × "+brl(C.vc)+")",(C.cp-C.arc)*C.vc]);
+    (X.receitas||[]).forEach(function(r){if(num(r.valor)&&r.recebido)R.push([esc(r.nome),num(r.valor)]);});
+    if(C.arm)AR.push(["A receber ("+esc((X.rot_m||"membro").toLowerCase().replace(/s$/,""))+""+(C.arm>1?(" · "+C.arm+" × "+brl(C.vm)):"")+")",C.arm*C.vm]);if(C.arc)AR.push(["A receber (convidado"+(C.arc>1?(" · "+C.arc+" × "+brl(C.vc)):"")+")",C.arc*C.vc]);
+    (X.receitas||[]).forEach(function(r){if(num(r.valor)&&!r.recebido)AR.push([esc(r.nome),num(r.valor)]);});}
+  else{if(C.mp)R.push([esc(X.rot_m||"Membros")+" ("+C.mp+" × "+brl(C.vm)+")",C.mp*C.vm]);if(C.cp)R.push(["Convidados ("+C.cp+" × "+brl(C.vc)+")",C.cp*C.vc]);(X.receitas||[]).forEach(function(r){if(num(r.valor))R.push([esc(r.nome),num(r.valor)]);});}
+  return {C:C,D:D,R:R,AR:AR};}
 // ---------- carregar ----------
 async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){document.getElementById("st").innerHTML="Entre na sua conta do Conselho. <a href='index.html?login=1'>Entrar</a>";return;}
   var q=await sb.from("evento_simulacoes").select("*").order("updated_at",{ascending:false});
@@ -133,109 +157,178 @@ async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){document.
   document.getElementById("st").style.display="none";document.getElementById("app").style.display="block";
   var id=new URLSearchParams(location.search).get("id");
   if(id&&SIMS.some(function(x){return x.id===id;}))abrirSim(id);else if(SIMS.length)abrirSim(SIMS[0].id);else novaSim(true);}
-function listaSel(){document.getElementById("selSim").innerHTML=(CUR?"":"<option value=''>— Nova simulação (ainda não salva) —</option>")+SIMS.map(function(x){return "<option value='"+x.id+"'"+(CUR===x.id?" selected":"")+">"+esc(x.titulo||"Sem título")+(x.data?(" · "+new Date(x.data+"T12:00:00").toLocaleDateString("pt-BR")):"")+"</option>";}).join("");}
-function abrirSim(id){if(!id)return;if(SUJO&&!confirm("Há alterações não salvas. Abrir outra simulação mesmo assim?")){listaSel();return;}var x=SIMS.find(function(s){return s.id===id;});if(!x)return;CUR=id;S=Object.assign(novoS(),JSON.parse(JSON.stringify(x.dados||{})));S.titulo=x.titulo;S.data=x.data||"";SUJO=false;listaSel();render();}
+function rotulo(x){var d=x.dados||{};var k=d.kind==="consolidado"?"📑 ":(d.status==="realizado"?"✔ ":"🧮 ");return k+(x.titulo||"Sem título")+(x.data?(" · "+new Date(x.data+"T12:00:00").toLocaleDateString("pt-BR")):"");}
+function listaSel(){var g=function(f,t){var L=SIMS.filter(f);return L.length?("<optgroup label='"+t+"'>"+L.map(function(x){return "<option value='"+x.id+"'"+(CUR===x.id?" selected":"")+">"+esc(rotulo(x))+"</option>";}).join("")+"</optgroup>"):"";};
+  document.getElementById("selSim").innerHTML=(CUR?"":"<option value=''>— "+(isCons()?"Novo relatório":"Nova simulação")+" (ainda não salvo) —</option>")
+   +g(function(x){return (x.dados||{}).kind!=="consolidado"&&(x.dados||{}).status!=="realizado";},"Simulações de eventos futuros")
+   +g(function(x){return (x.dados||{}).kind!=="consolidado"&&(x.dados||{}).status==="realizado";},"Eventos realizados (prestação de contas)")
+   +g(function(x){return (x.dados||{}).kind==="consolidado";},"Relatórios de vários eventos");}
+function abrirSim(id){if(!id)return;if(SUJO&&!confirm("Há alterações não salvas. Abrir outra mesmo assim?")){listaSel();return;}var x=SIMS.find(function(s){return s.id===id;});if(!x)return;CUR=id;var d=JSON.parse(JSON.stringify(x.dados||{}));S=Object.assign(d.kind==="consolidado"?novoC():novoS(),d);S.titulo=x.titulo;S.data=x.data||"";if(!S.ar)S.ar={mp:0,cp:0};SUJO=false;listaSel();render();}
 function novaSim(silent){if(!silent&&SUJO&&!confirm("Há alterações não salvas. Começar uma nova mesmo assim?"))return;CUR=null;S=novoS();SUJO=false;listaSel();render();}
+function novoCons(){if(SUJO&&!confirm("Há alterações não salvas. Começar um novo relatório mesmo assim?"))return;CUR=null;S=novoC();SUJO=false;listaSel();render();}
 function duplicarSim(){S=JSON.parse(JSON.stringify(S));S.titulo=(S.titulo||"Simulação")+" (cópia)";CUR=null;SUJO=true;listaSel();render();msg("Cópia criada — ajuste e clique em Salvar.","#5b5446");}
-async function salvarSim(){if(!S.titulo.trim()){msg("Dê um nome ao evento (item 1).","#8f1d24");var t=document.getElementById("f_titulo");if(t)t.focus();return;}
+async function salvarSim(){if(!(S.titulo||"").trim()){msg("Dê um nome (item 1).","#8f1d24");var t=document.getElementById("f_titulo");if(t)t.focus();return;}
   var d=JSON.parse(JSON.stringify(S));var rec={titulo:S.titulo.trim(),data:S.data||null,dados:d,updated_at:new Date().toISOString()};
   var r=CUR?await sb.from("evento_simulacoes").update(rec).eq("id",CUR).select("*").single():await sb.from("evento_simulacoes").insert(rec).select("*").single();
   if(r.error){msg("Erro: "+r.error.message,"#8f1d24");return;}
   var x=r.data;SIMS=SIMS.filter(function(s){return s.id!==x.id;});SIMS.unshift(x);CUR=x.id;SUJO=false;listaSel();side();msg("✔ Salvo","#2f6b3a");}
-async function excluirSim(){if(!CUR){novaSim(true);return;}if(!confirm("Excluir a simulação \""+S.titulo+"\"?"))return;var r=await sb.from("evento_simulacoes").delete().eq("id",CUR);if(r.error){msg("Erro: "+r.error.message,"#8f1d24");return;}SIMS=SIMS.filter(function(s){return s.id!==CUR;});SUJO=false;if(SIMS.length)abrirSim(SIMS[0].id);else novaSim(true);msg("Excluída.","#5b5446");}
+async function excluirSim(){if(!CUR){novaSim(true);return;}if(!confirm("Excluir \""+S.titulo+"\"?"))return;var r=await sb.from("evento_simulacoes").delete().eq("id",CUR);if(r.error){msg("Erro: "+r.error.message,"#8f1d24");return;}SIMS=SIMS.filter(function(s){return s.id!==CUR;});SUJO=false;if(SIMS.length)abrirSim(SIMS[0].id);else novaSim(true);msg("Excluído.","#5b5446");}
 function msg(t,c){var m=document.getElementById("msg");m.style.color=c||"#5b5446";m.textContent=t;clearTimeout(window._mt);window._mt=setTimeout(function(){m.textContent="";},4000);}
 // ---------- edição ----------
 function set(path,v,re){var o=S,k=path.split(".");for(var i=0;i<k.length-1;i++)o=o[k[i]];o[k[k.length-1]]=v;SUJO=true;if(re)render();else side();}
 function stepper(path,val,sm){return "<span class='st"+(sm?" sm":"")+"'><button type='button' onclick=\"stp('"+path+"',-1)\">−</button><input inputmode='numeric' value='"+(val||0)+"' oninput=\"set('"+path+"',Math.max(0,parseInt(this.value,10)||0))\" onblur='render()'><button type='button' onclick=\"stp('"+path+"',1)\">+</button></span>";}
 function stp(path,d){var o=S,k=path.split(".");for(var i=0;i<k.length-1;i++)o=o[k[i]];var n=Math.max(0,(parseInt(o[k[k.length-1]],10)||0)+d);o[k[k.length-1]]=n;SUJO=true;render();}
 function money(path,val,w){return "<span class='money'><input class='inp' inputmode='decimal' value='"+fv(val)+"' placeholder='0,00' style='"+(w?("width:"+w+"px;"):"")+"' oninput=\"set('"+path+"',num(this.value))\" onblur='render()'></span>";}
-function render(){var C=calc();var p=S.p;var h="";
-  h+="<div class='sec'><h2><i>1</i>Evento</h2><div class='d'>Nome, data e tipo do evento.</div><div class='f2'>"
+function seg(path,val,opts){return "<span class='seg'>"+opts.map(function(o){return "<button type='button' class='"+(val===o[0]?"on":"")+"' onclick=\"set('"+path+"','"+o[0]+"',1)\">"+o[1]+"</button>";}).join("")+"</span>";}
+function render(){if(isCons()){renderCons();return;}
+  var C=calc();var p=S.p,real=S.status==="realizado";var h="";var n=0;function I(){n++;return "<i>"+n+"</i>";}
+  document.getElementById("h1").textContent=real?"Prestação de contas do evento":"Simulação de custo do evento";
+  document.getElementById("h1s").textContent=real?"Despesas e recebimentos do evento realizado. Mude qualquer número para ver como ficaria.":"Preencha os custos e as pessoas — o sistema calcula o rateio necessário para cobrir todas as despesas.";
+  h+="<div class='sec'><h2>"+I()+"Evento</h2><div class='d'>Nome, data e tipo do evento.</div><div style='margin:0 0 10px;'>"+seg("status",S.status,[["simulacao","🧮 Simulação (evento futuro)"],["realizado","✔ Evento realizado"]])+"</div><div class='f2'>"
     +"<label class='l' style='grid-column:1/-1;'><span>Nome do evento *</span><input class='inp' id='f_titulo' value='"+esc(S.titulo)+"' placeholder='Ex.: Capítulo XI · Jantar de entronização' oninput=\"set('titulo',this.value)\"></label>"
     +"<label class='l'><span>Data</span><input class='inp' type='date' value='"+esc(S.data)+"' oninput=\"set('data',this.value)\"></label>"
-    +"<label class='l'><span>Tipo</span><select class='inp' onchange=\"set('tipo',this.value)\">"+["Jantar","Almoço","Degustação","Coquetel"].map(function(t){return "<option"+(S.tipo===t?" selected":"")+">"+t+"</option>";}).join("")+"</select></label>"
+    +"<label class='l'><span>Tipo</span><select class='inp' onchange=\"set('tipo',this.value,1)\">"+["Jantar","Almoço","Degustação","Coquetel"].map(function(t){return "<option"+(S.tipo===t?" selected":"")+">"+t+"</option>";}).join("")+"</select></label>"
     +"<label class='l' style='grid-column:span 2;'><span>Local / restaurante</span><input class='inp' value='"+esc(S.local)+"' placeholder='Ex.: Piselli Boa Vista' oninput=\"set('local',this.value)\"></label></div></div>";
-  h+="<div class='sec'><h2><i>2</i>Pessoas</h2><div class='d'>Quantas pessoas devem vir. Use − e + para simular mais ou menos gente.</div><div class='pp'>"
-    +"<div class='pc pg'><b>Membros que pagam</b><small>pagam o valor de membro</small>"+stepper("p.mp",p.mp)+"</div>"
-    +"<div class='pc pg'><b>Convidados que pagam</b><small>pagam o valor de convidado</small>"+stepper("p.cp",p.cp)+"</div>"
+  function arBox(k){return real?("<div class='arx'>ainda não pagaram "+stepper("ar."+k,(S.ar||{})[k],1)+"</div>"):"";}
+  h+="<div class='sec'><h2>"+I()+"Pessoas</h2><div class='d'>"+(real?"Quem veio. Use − e + para ver como ficaria com um membro ou convidado a mais ou a menos.":"Quantas pessoas devem vir. Use − e + para simular mais ou menos gente.")+"</div><div class='pp'>"
+    +"<div class='pc pg'><b>Membros que pagam</b><small>pagam o valor de membro</small>"+stepper("p.mp",p.mp)+arBox("mp")+"</div>"
+    +"<div class='pc pg'><b>Convidados que pagam</b><small>pagam o valor de convidado</small>"+stepper("p.cp",p.cp)+arBox("cp")+"</div>"
     +"<div class='pc co'><b>Membros / Conselho que não pagam</b><small>Grão-Mestre, Mestres, anfitrião…</small>"+stepper("p.mc",p.mc)+"</div>"
     +"<div class='pc co'><b>Convidados que não pagam</b><small>cortesia: palestrante, imprensa, produtor…</small>"+stepper("p.cc",p.cc)+"</div>"
     +"</div><div class='sub2'><span>Total de pessoas no evento</span><b>"+C.P+" pessoas · "+C.pag+" pagantes · "+(C.P-C.pag)+" cortesias</b></div></div>";
-  h+="<div class='sec'><h2><i>3</i>"+esc(S.tipo)+" (restaurante)</h2><div class='d'>Preço por pessoa cobrado pelo restaurante. Conta todas as pessoas, inclusive as cortesias.</div><div class='f2'>"
-    +"<label class='l'><span>Preço por pessoa</span>"+money("preco_pessoa",S.preco_pessoa,150)+"</label>"
-    +"<label class='l'><span>Taxa de serviço (%)</span><input class='inp' inputmode='decimal' value='"+num(S.servico_pct)+"' oninput=\"set('servico_pct',num(this.value))\" onblur='render()' style='width:90px;'></label></div>"
-    +"<div class='sub2'><span>"+brl(C.porPessoaRest)+" × "+C.P+" pessoas</span><b>"+brl(C.rest)+"</b></div></div>";
-  // vinhos
-  h+="<div class='sec'><h2><i>4</i>Vinhos</h2><div class='d'>Acrescente os vinhos. Pode puxar da Adega da Commanderie (já vem com o valor de aquisição) ou digitar outro.</div>";
+  h+="<div class='sec'><h2>"+I()+esc(S.tipo)+" (restaurante)</h2><div class='d'>Preço por pessoa (conta todas as pessoas, inclusive cortesias) ou valor fechado da conta.</div><div style='margin-bottom:10px;'>"+seg("rest_modo",S.rest_modo,[["pessoa","Preço por pessoa"],["fechado","Valor fechado"]])+"</div><div class='f2'>"
+    +(C.fech?("<label class='l'><span>Valor total da conta</span>"+money("rest_total",S.rest_total,170)+"</label>"):("<label class='l'><span>Preço por pessoa</span>"+money("preco_pessoa",S.preco_pessoa,150)+"</label><label class='l'><span>Taxa de serviço (%)</span><input class='inp' inputmode='decimal' value='"+num(S.servico_pct)+"' oninput=\"set('servico_pct',num(this.value))\" onblur='render()' style='width:90px;'></label>"))
+    +"</div><div class='sub2'><span>"+(C.fech?"Valor fechado":(brl(C.porPessoaRest)+" × "+C.P+" pessoas"))+"</span><b>"+brl(C.rest)+"</b></div></div>";
+  h+="<div class='sec'><h2>"+I()+"Vinhos</h2><div class='d'>Acrescente os vinhos. Pode puxar da Adega da Commanderie (já vem com o valor de aquisição) ou digitar outro.</div>";
   h+=S.vinhos.length?("<table><thead><tr><th>Vinho</th><th>Garrafas</th><th>Preço/gf</th><th class='n'>Total</th><th></th></tr></thead><tbody>"+S.vinhos.map(function(v,i){return "<tr><td><input class='inp' value='"+esc(v.nome)+"' placeholder='Nome do vinho' oninput=\"set('vinhos."+i+".nome',this.value)\" style='width:100%;min-width:150px;'>"+(v.adega?("<div class='tag'>da Adega · "+v.est+" em estoque"+(v.qtd>v.est?" <b style='color:#8f1d24;'>· mais do que tem!</b>":"")+"</div>"):"")+"<label class='tag' style='display:inline-flex;gap:4px;align-items:center;cursor:pointer;margin-top:3px;'><input type='checkbox' "+(v.pago?"checked":"")+" onchange=\"set('vinhos."+i+".pago',this.checked,1)\" style='width:auto;'> já pago (não entra no custo)</label></td><td>"+stepper("vinhos."+i+".qtd",v.qtd,1)+"</td><td>"+money("vinhos."+i+".preco",v.preco,110)+"</td><td class='n'>"+(v.pago?"<span class='tag'>já pago</span>":brl((v.qtd||0)*num(v.preco)))+"</td><td><button class='x' title='Tirar' onclick='S.vinhos.splice("+i+",1);SUJO=true;render()'>×</button></td></tr>";}).join("")+"</tbody></table>"):"";
   h+="<div style='display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;'><button class='add' onclick=\"S.vinhos.push({nome:'',qtd:6,preco:0});SUJO=true;render()\">+ Vinho</button>"
     +(ADEGA.length?("<select class='inp' onchange='daAdega(this.value);this.value=\"\"' style='max-width:320px;'><option value=''>+ Vinho da Adega…</option>"+ADEGA.map(function(v){return "<option value='"+v.id+"'>"+esc(v.nome+(v.formato&&v.formato!=="750 mL"?(" "+v.formato):"")+(v.safra?(" "+v.safra):""))+" · "+v.est+" gf"+(v.valor_unit!=null?(" · "+brl(v.valor_unit)):"")+"</option>";}).join("")+"</select>"):"")+"</div>";
-  h+="<div class='sub2'><span>"+C.garr+" garrafas"+(C.P?(" · "+(C.garr/C.P).toLocaleString("pt-BR",{maximumFractionDigits:2})+" garrafa por pessoa"):"")+"</span><b>"+brl(C.vin)+"</b></div></div>";
-  // outros
-  h+="<div class='sec'><h2><i>5</i>Outros custos</h2><div class='d'>Deixe em branco o que não tiver. Escolha se o valor é fixo ou por pessoa. Pode acrescentar outros.</div><table><tbody>"+S.custos.map(function(c,i){return "<tr><td><input class='inp' value='"+esc(c.nome)+"' oninput=\"set('custos."+i+".nome',this.value)\" style='width:100%;min-width:160px;'></td><td>"+money("custos."+i+".valor",c.valor,120)+"</td><td><select class='inp' onchange=\"set('custos."+i+".modo',this.value,1)\" style='font-size:12.5px;'><option value='fixo'"+(c.modo!=="pessoa"?" selected":"")+">valor fixo</option><option value='pessoa'"+(c.modo==="pessoa"?" selected":"")+">por pessoa</option></select></td><td class='n'>"+(num(c.valor)?brl(c.modo==="pessoa"?num(c.valor)*C.P:num(c.valor)):"<span class='tag'>—</span>")+"</td><td><button class='x' title='Tirar' onclick='S.custos.splice("+i+",1);SUJO=true;render()'>×</button></td></tr>";}).join("")+"</tbody></table>"
-    +"<div style='display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;'><button class='add' onclick=\"S.custos.push({nome:'',valor:0,modo:'fixo'});SUJO=true;render();setTimeout(function(){var t=document.querySelectorAll('.sec')[4].querySelectorAll('tr');t=t[t.length-1];if(t)t.querySelector('input').focus();},30)\">+ Outro custo</button>"
-    +"<label class='l' style='display:flex;align-items:center;gap:6px;font-size:13px;color:#5b5446;'>Reserva para imprevistos <input class='inp' inputmode='decimal' value='"+num(S.imprevistos_pct)+"' oninput=\"set('imprevistos_pct',num(this.value))\" onblur='render()' style='width:60px;'> %</label></div>"
-    +"<div class='sub2'><span>Outros custos</span><b>"+brl(C.outros)+"</b></div></div>";
-  // rateio
+  h+="<div class='sub2'><span>"+C.garr+" garrafas"+(C.P&&C.garr?(" · "+(C.garr/C.P).toLocaleString("pt-BR",{maximumFractionDigits:2})+" garrafa por pessoa"):"")+"</span><b>"+brl(C.vin)+"</b></div></div>";
+  h+="<div class='sec'><h2>"+I()+"Outros custos</h2><div class='d'>Deixe em branco o que não tiver. Escolha se o valor é fixo ou por pessoa. Pode acrescentar outros.</div><table><tbody>"+S.custos.map(function(c,i){return "<tr><td><input class='inp' value='"+esc(c.nome)+"' oninput=\"set('custos."+i+".nome',this.value)\" style='width:100%;min-width:160px;'></td><td>"+money("custos."+i+".valor",c.valor,120)+"</td><td><select class='inp' onchange=\"set('custos."+i+".modo',this.value,1)\" style='font-size:12.5px;'><option value='fixo'"+(c.modo!=="pessoa"?" selected":"")+">valor fixo</option><option value='pessoa'"+(c.modo==="pessoa"?" selected":"")+">por pessoa</option></select></td><td class='n'>"+(num(c.valor)?brl(c.modo==="pessoa"?num(c.valor)*C.P:num(c.valor)):"<span class='tag'>—</span>")+"</td><td><button class='x' title='Tirar' onclick='S.custos.splice("+i+",1);SUJO=true;render()'>×</button></td></tr>";}).join("")+"</tbody></table>"
+    +"<div style='display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;'><button class='add' onclick=\"S.custos.push({nome:'',valor:0,modo:'fixo'});SUJO=true;render()\">+ Outro custo</button>"
+    +"<label style='display:flex;align-items:center;gap:6px;font-size:13px;color:#5b5446;'>Reserva para imprevistos <input class='inp' inputmode='decimal' value='"+num(S.imprevistos_pct)+"' oninput=\"set('imprevistos_pct',num(this.value))\" onblur='render()' style='width:60px;'> %</label></div>"
+    +"<div class='sub2'><span>Outros custos</span><b>"+brl(C.outros+C.impr)+"</b></div></div>";
+  h+="<div class='sec'><h2>"+I()+"Outras receitas <span class='tag' style='font-family:Arial;'>(opcional)</span></h2><div class='d'>Patrocínio, participação dos produtores, anuidades recebidas no evento, venda de vinhos…</div>"
+    +(S.receitas.length?("<table><tbody>"+S.receitas.map(function(r,i){return "<tr><td><input class='inp' value='"+esc(r.nome)+"' placeholder='Descrição' oninput=\"set('receitas."+i+".nome',this.value)\" style='width:100%;min-width:160px;'></td><td>"+money("receitas."+i+".valor",r.valor,120)+"</td><td>"+(real?("<label class='tag' style='display:inline-flex;gap:4px;align-items:center;cursor:pointer;'><input type='checkbox' "+(r.recebido?"checked":"")+" onchange=\"set('receitas."+i+".recebido',this.checked,1)\" style='width:auto;'> já recebido</label>"):"")+"</td><td><button class='x' onclick='S.receitas.splice("+i+",1);SUJO=true;render()'>×</button></td></tr>";}).join("")+"</tbody></table>"):"")
+    +"<div style='margin-top:8px;'><button class='add' onclick=\"S.receitas.push({nome:'',valor:0,recebido:"+(real?"true":"false")+"});SUJO=true;render()\">+ Receita</button></div>"+(C.Ro?("<div class='sub2'><span>Outras receitas</span><b>"+brl(C.Ro)+"</b></div>"):"")+"</div>";
   var sugM=arred(C.nec,C.ar),sugI=arred(C.igual,C.ar);
-  h+="<div class='sec'><h2><i>6</i>Rateio (quanto cobrar)</h2><div class='d'>Coloque o valor do convidado; o sistema mostra quanto o membro precisa pagar para cobrir tudo.</div><div class='f2'>"
-    +"<label class='l'><span>Valor por convidado</span>"+money("valor_convidado",S.valor_convidado,150)+"</label>"
+  h+="<div class='sec'><h2>"+I()+(real?"Valores cobrados":"Rateio (quanto cobrar)")+"</h2><div class='d'>"+(real?"Quanto pagou cada membro e cada convidado.":"Coloque o valor do convidado; o sistema mostra quanto o membro precisa pagar para cobrir tudo.")+"</div><div class='f2'>"
     +"<label class='l'><span>Valor por membro</span>"+money("valor_membro",S.valor_membro,150)+"</label>"
-    +"<label class='l'><span>Arredondar para cima de</span><select class='inp' onchange=\"set('arred',Number(this.value),1)\">"+[1,10,50,100].map(function(a){return "<option value='"+a+"'"+(num(S.arred)===a?" selected":"")+">R$ "+a+"</option>";}).join("")+"</select></label></div>"
+    +"<label class='l'><span>Valor por convidado</span>"+money("valor_convidado",S.valor_convidado,150)+"</label>"
+    +"<label class='l'><span>Nome na prestação de contas</span><input class='inp' value='"+esc(S.rot_m||"")+"' placeholder='Membros (ex.: Mestres)' oninput=\"set('rot_m',this.value)\"></label><label class='l'><span>Arredondar para cima de</span><select class='inp' onchange=\"set('arred',Number(this.value),1)\">"+[1,10,50,100].map(function(a){return "<option value='"+a+"'"+(num(S.arred)===a?" selected":"")+">R$ "+a+"</option>";}).join("")+"</select></label></div>"
     +"<div style='margin-top:12px;display:grid;gap:8px;'>"
-    +"<div class='pc pg' style='display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;'><span><b>Membro precisa pagar</b><small style='margin:0;'>com convidado a "+brl0(num(S.valor_convidado))+"</small></span><span><b style='font-family:Georgia,serif;font-size:22px;display:inline;'>"+(p.mp?brl0(sugM):"—")+"</b> "+(p.mp?"<button class='btn v' style='padding:6px 12px;font-size:12.5px;margin-left:6px;' onclick='usar("+sugM+",null)'>usar</button>":"")+"</span></div>"
+    +"<div class='pc pg' style='display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;'><span><b>Para cobrir tudo, o membro precisaria pagar</b><small style='margin:0;'>com convidado a "+brl0(C.vc)+(C.Ro?(" e "+brl0(C.Ro)+" de outras receitas"):"")+"</small></span><span><b style='font-family:Georgia,serif;font-size:22px;display:inline;'>"+(p.mp?brl0(sugM):"—")+"</b> "+(p.mp?"<button class='btn v' style='padding:6px 12px;font-size:12.5px;margin-left:6px;' onclick='usar("+sugM+",null)'>usar</button>":"")+"</span></div>"
     +"<div class='pc' style='display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;'><span><b>Ou mesmo valor para todos que pagam</b><small style='margin:0;'>membro e convidado iguais</small></span><span><b style='font-family:Georgia,serif;font-size:22px;display:inline;'>"+(C.pag?brl0(sugI):"—")+"</b> "+(C.pag?"<button class='btn g' style='padding:6px 12px;font-size:12.5px;margin-left:6px;' onclick='usar("+sugI+","+sugI+")'>usar</button>":"")+"</span></div></div>";
-  // sensibilidade
   var lin=[],base=p.mp||0,ini=Math.max(1,base-8);for(var m=ini;m<=base+8;m+=2)lin.push(m);if(lin.indexOf(base)<0&&base>0){lin.push(base);lin.sort(function(a,b){return a-b;});}
-  h+="<div style='margin-top:14px;'><b style='font-size:13px;color:var(--navy);'>E se vierem mais ou menos membros?</b><div class='hint'>Mantendo os convidados e as cortesias. A linha destacada é a simulação atual.</div><table class='sens' style='margin-top:6px;'><thead><tr><th>Membros que pagam</th><th class='n'>Pessoas</th><th class='n'>Custo total</th><th class='n'>Membro precisa pagar</th><th class='n'>Resultado com "+brl0(num(S.valor_membro))+"</th></tr></thead><tbody>"
-    +lin.map(function(mm){var X=JSON.parse(JSON.stringify(S));X.p.mp=mm;var c=calc(X);return "<tr"+(mm===base?" class='me'":"")+"><td>"+mm+"</td><td class='n'>"+c.P+"</td><td class='n'>"+brl0(c.total)+"</td><td class='n'>"+brl0(arred(c.nec,c.ar))+"</td><td class='n "+(c.resultado>=0?"ok":"bad")+"'>"+(c.resultado>=0?"+ ":"− ")+brl0(Math.abs(c.resultado))+"</td></tr>";}).join("")+"</tbody></table></div></div>";
-  // lista
+  h+="<div style='margin-top:14px;'><b style='font-size:13px;color:var(--navy);'>E se vierem mais ou menos membros?</b><div class='hint'>Mantendo os convidados e as cortesias. A linha destacada é a situação atual.</div><table class='sens' style='margin-top:6px;'><thead><tr><th>Membros que pagam</th><th class='n'>Pessoas</th><th class='n'>Custo total</th><th class='n'>Membro precisaria pagar</th><th class='n'>Resultado com "+brl0(C.vm)+"</th></tr></thead><tbody>"
+    +lin.map(function(mm){var X=JSON.parse(JSON.stringify(S));X.p.mp=mm;X.status="simulacao";var c=calc(X);return "<tr"+(mm===base?" class='me'":"")+"><td>"+mm+"</td><td class='n'>"+c.P+"</td><td class='n'>"+brl0(c.total)+"</td><td class='n'>"+brl0(arred(c.nec,c.ar))+"</td><td class='n "+(c.resultado>=0?"ok":"bad")+"'>"+(c.resultado>=0?"+ ":"− ")+brl0(Math.abs(c.resultado))+"</td></tr>";}).join("")+"</tbody></table></div></div>";
   var cnt={mp:0,cp:0,mc:0,cc:0};S.lista.forEach(function(x){cnt[x.cat]=(cnt[x.cat]||0)+1;});
-  h+="<div class='sec'><h2><i>7</i>Lista de presença <span class='tag' style='font-family:Arial;'>(opcional)</span></h2><div class='d'>Coloque os nomes. Ao digitar, os membros aparecem na lista. Sai impressa junto com a simulação.</div>"
+  h+="<div class='sec'><h2>"+I()+"Lista de presença <span class='tag' style='font-family:Arial;'>(opcional)</span></h2><div class='d'>Coloque os nomes. Ao digitar, os membros aparecem na lista. Sai impressa junto.</div>"
     +(S.lista.length?("<table><tbody>"+S.lista.map(function(x,i){return "<tr><td style='width:28px;color:#9a937f;'>"+(i+1)+"</td><td><input class='inp' list='dlMemb' value='"+esc(x.nome)+"' oninput=\"set('lista."+i+".nome',this.value)\" style='width:100%;min-width:160px;'></td><td><select class='inp' onchange=\"set('lista."+i+".cat',this.value,1)\" style='font-size:12.5px;'>"+Object.keys(CATS).map(function(k){return "<option value='"+k+"'"+(x.cat===k?" selected":"")+">"+CATS[k]+"</option>";}).join("")+"</select></td><td><input class='inp' value='"+esc(x.obs||"")+"' placeholder='obs. / restrição' oninput=\"set('lista."+i+".obs',this.value)\" style='width:100%;min-width:110px;'></td><td><button class='x' onclick='S.lista.splice("+i+",1);SUJO=true;render()'>×</button></td></tr>";}).join("")+"</tbody></table>"):"")
     +"<div style='display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;'><input class='inp' id='lNome' list='dlMemb' placeholder='Nome' style='flex:1;min-width:170px;' onkeydown=\"if(event.key==='Enter')addLista()\"><select class='inp' id='lCat'>"+Object.keys(CATS).map(function(k){return "<option value='"+k+"'>"+CATS[k]+"</option>";}).join("")+"</select><button class='add' onclick='addLista()'>+ Acrescentar</button></div>"
-    +(S.lista.length?("<div class='sub2' style='flex-wrap:wrap;gap:8px;'><span>"+Object.keys(CATS).map(function(k){return "<span class='cat c-"+k+"'>"+CATS[k].replace(/ \(.*/,"")+(k==="mc"||k==="cc"?" cortesia":"")+": "+cnt[k]+"</span>";}).join(" ")+"</span><button class='btn g' style='padding:6px 12px;font-size:12.5px;' onclick='usarLista()'>Usar estas quantidades no item 2</button></div>"):"")+"</div>";
-  h+="<div class='sec'><h2><i>8</i>Observações</h2><textarea class='inp' rows='3' style='width:100%;' placeholder='Ex.: menu, horário, combinado com o restaurante…' oninput=\"set('obs',this.value)\">"+esc(S.obs||"")+"</textarea></div>";
+    +(S.lista.length?("<div class='sub2' style='flex-wrap:wrap;'><span>"+Object.keys(CATS).map(function(k){return "<span class='cat c-"+k+"'>"+CATS[k].replace(/ \(.*/,"")+(k==="mc"||k==="cc"?" cortesia":"")+": "+cnt[k]+"</span>";}).join(" ")+"</span><button class='btn g' style='padding:6px 12px;font-size:12.5px;' onclick='usarLista()'>Usar estas quantidades em Pessoas</button></div>"):"")+"</div>";
+  h+="<div class='sec'><h2>"+I()+"Observações</h2><textarea class='inp' rows='3' style='width:100%;' placeholder='Ex.: menu, horário, combinado com o restaurante…' oninput=\"set('obs',this.value)\">"+esc(S.obs||"")+"</textarea></div>";
   document.getElementById("form").innerHTML=h;side();}
-function side(){var C=calc(),p=S.p;var vm=num(S.valor_membro),vc=num(S.valor_convidado);
+function side(){if(isCons()){sideCons();return;}var C=calc(),p=S.p;
   var h="<div class='res'><h3>Custo do evento</h3>"
     +"<div class='row'><span>"+esc(S.tipo)+" ("+C.P+" pessoas)</span><b>"+brl(C.rest)+"</b></div>"
-    +"<div class='row'><span>Vinhos ("+C.garr+" gf)</span><b>"+brl(C.vin)+"</b></div>"
+    +(C.vin||C.garr?("<div class='row'><span>Vinhos"+(C.garr?(" ("+C.garr+" gf)"):"")+"</span><b>"+brl(C.vin)+"</b></div>"):"")
     +"<div class='row'><span>Outros custos</span><b>"+brl(C.outros)+"</b></div>"
     +(C.impr?("<div class='row'><span>Imprevistos ("+num(S.imprevistos_pct)+"%)</span><b>"+brl(C.impr)+"</b></div>"):"")
     +"<div class='row tot'><span>Total</span><b>"+brl(C.total)+"</b></div>"
     +"<div style='font-size:12px;color:#c9c3d8;margin-top:4px;'>"+brl(C.porPessoa)+" por pessoa presente</div></div>";
-  h+="<div class='big'><div class='k'>Membro precisa pagar</div><div class='v'>"+(p.mp?brl0(arred(C.nec,C.ar)):"—")+"</div><div class='hint'>com "+(p.cp||0)+" convidado(s) a "+brl0(vc)+" e "+((p.mc||0)+(p.cc||0))+" cortesia(s)</div></div>";
-  h+="<div class='big'><div class='k'>Com os valores escolhidos</div><div class='hint' style='margin:4px 0 6px;'>"+(p.mp||0)+" membros × "+brl0(vm)+" + "+(p.cp||0)+" convidados × "+brl0(vc)+"</div>"
+  if(C.real){h+="<div class='big'><div class='k'>Recebimentos</div><div style='display:flex;justify-content:space-between;font-size:14px;margin-top:6px;'><span>Recebido</span><b>"+brl(C.arrecReal)+"</b></div><div style='display:flex;justify-content:space-between;font-size:14px;'><span>Com valores a receber</span><b>"+brl(C.arrec)+"</b></div>"
+      +"<div style='margin-top:10px;' class='k'>Saldo realizado</div><div class='v "+(C.resultadoReal>=0?"ok":"bad")+"'>"+sbrl(C.resultadoReal)+"</div><div class='k' style='margin-top:6px;'>Com valores a receber</div><div class='v "+(C.resultado>=0?"ok":"bad")+"' style='font-size:22px;'>"+sbrl(C.resultado)+"</div></div>";}
+  else{h+="<div class='big'><div class='k'>Membro precisa pagar</div><div class='v'>"+(p.mp?brl0(arred(C.nec,C.ar)):"—")+"</div><div class='hint'>com "+(p.cp||0)+" convidado(s) a "+brl0(C.vc)+" e "+((p.mc||0)+(p.cc||0))+" cortesia(s)</div></div>";
+    h+="<div class='big'><div class='k'>Com os valores escolhidos</div><div class='hint' style='margin:4px 0 6px;'>"+(p.mp||0)+" membros × "+brl0(C.vm)+" + "+(p.cp||0)+" convidados × "+brl0(C.vc)+(C.Ro?(" + "+brl0(C.Ro)+" outras receitas"):"")+"</div>"
     +"<div style='display:flex;justify-content:space-between;font-size:14px;'><span>Arrecadação</span><b>"+brl(C.arrec)+"</b></div><div style='display:flex;justify-content:space-between;font-size:14px;'><span>Custo total</span><b>"+brl(C.total)+"</b></div>"
-    +"<div style='margin-top:8px;'>"+(vm||vc?("<span class='pill "+(C.resultado>=0?"ok":"bad")+"'>"+(C.resultado>=0?"✔ Cobre tudo · sobra ":"✖ Falta ")+brl(Math.abs(C.resultado))+"</span>"):"<span class='hint'>Coloque o valor do membro e do convidado no item 6.</span>")+"</div>"
-    +(C.minM!=null&&vm?("<div class='hint' style='margin-top:8px;'>Para fechar a conta a "+brl0(vm)+", precisa de no mínimo <b style='color:var(--navy);'>"+C.minM+" membros pagantes</b>"+(p.mp>=C.minM?" ✔":" (hoje: "+(p.mp||0)+")")+".</div>"):(vm&&vm<=C.custoVar?"<div class='hint bad' style='margin-top:8px;'>O valor do membro é menor que o custo de cada pessoa ("+brl0(C.custoVar)+"): quanto mais gente, maior o prejuízo.</div>":""))+"</div>";
-  h+="<button class='btn v' style='width:100%;' onclick='salvarSim()'>&#128190; Salvar simulação</button>"+(SUJO?"<div class='hint' style='text-align:center;margin-top:6px;color:#b06a1f;'>alterações ainda não salvas</div>":"");
+    +"<div style='margin-top:8px;'>"+(C.vm||C.vc?("<span class='pill "+(C.resultado>=0?"ok":"bad")+"'>"+(C.resultado>=0?"✔ Cobre tudo · sobra ":"✖ Falta ")+brl(Math.abs(C.resultado))+"</span>"):"<span class='hint'>Coloque o valor do membro e do convidado.</span>")+"</div>"
+    +(C.minM&&C.vm?("<div class='hint' style='margin-top:8px;'>Para fechar a conta a "+brl0(C.vm)+", precisa de no mínimo <b style='color:var(--navy);'>"+C.minM+" membros pagantes</b>"+(p.mp>=C.minM?" ✔":" (hoje: "+(p.mp||0)+")")+".</div>"):(C.vm&&C.vm<=C.custoVar?"<div class='hint bad' style='margin-top:8px;'>O valor do membro é menor que o custo de cada pessoa ("+brl0(C.custoVar)+"): quanto mais gente, maior o prejuízo.</div>":""))+"</div>";}
+  h+="<button class='btn v' style='width:100%;' onclick='salvarSim()'>&#128190; Salvar</button>"+(SUJO?"<div class='hint' style='text-align:center;margin-top:6px;color:#b06a1f;'>alterações ainda não salvas</div>":"");
   document.getElementById("side").innerHTML=h;}
 function usar(m,c){S.valor_membro=m;if(c!=null)S.valor_convidado=c;SUJO=true;render();}
 function daAdega(id){var v=ADEGA.find(function(x){return ""+x.id===""+id;});if(!v)return;S.vinhos.push({nome:v.nome+(v.formato&&v.formato!=="750 mL"?(" "+v.formato):"")+(v.safra?(" "+v.safra):""),qtd:Math.min(6,v.est),preco:v.valor_unit!=null?Number(v.valor_unit):0,adega:v.id,est:v.est});SUJO=true;render();}
 function addLista(){var n=document.getElementById("lNome").value.trim();if(!n)return;var c=document.getElementById("lCat").value;S.lista.push({nome:n,cat:c});SUJO=true;render();var i=document.getElementById("lNome");i.focus();document.getElementById("lCat").value=c;}
 function usarLista(){var c={mp:0,cp:0,mc:0,cc:0};S.lista.forEach(function(x){c[x.cat]=(c[x.cat]||0)+1;});S.p=c;SUJO=true;render();msg("Quantidades atualizadas pela lista.","#2f6b3a");}
 window.addEventListener("beforeunload",function(e){if(SUJO){e.preventDefault();e.returnValue="";}});
-// ---------- impressão ----------
-var CSSP="@page{size:A4 portrait;margin:10mm;}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact;}body{margin:0;background:#f7f1e6;font-family:Georgia,'Times New Roman',serif;color:#1e2a56;}.pg{border:1.5px solid #c9a35e;padding:5px;margin-bottom:10px;page-break-after:always;}.pg:last-child{page-break-after:auto;}.pg2{border:1px solid #c9a35e;padding-bottom:16px;}.hd{background:#283657;color:#fff;text-align:center;padding:16px 10px 10px;}.hd h1{margin:0;font-size:22px;letter-spacing:5px;}.orn{display:flex;align-items:center;justify-content:center;gap:10px;color:#c9a35e;font-size:9px;margin:6px 0 4px;}.orn i{display:block;width:100px;height:1px;background:#c9a35e;}.hd small{letter-spacing:4px;font-size:10px;color:#ddd0ad;}.ct{text-align:center;margin:14px 0 6px;}.cap{color:#c9a35e;letter-spacing:3px;font-size:11px;font-weight:bold;}h2{margin:4px 0 2px;font-size:22px;font-weight:normal;}.p{font-style:italic;font-size:11px;color:#6a6a7a;}.bx{width:88%;margin:10px auto 0;}.tb{width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:11.5px;color:#2a2620;}.tb th{background:#283657;color:#f3e3bd;font-size:8.5px;letter-spacing:1px;padding:7px 10px;text-align:left;font-weight:normal;}.tb td{padding:6px 10px;border-bottom:1px solid #e6dcc6;background:#efe6d6;}.tb tr:nth-child(even) td{background:#f7f1e6;}.tb .n{text-align:right;white-space:nowrap;}.tb tr.tot td{background:#283657;color:#fff;font-weight:bold;border-top:2px solid #c9a35e;}.sec{font-size:9px;letter-spacing:2px;color:#b08a3a;font-weight:bold;margin:14px 0 4px;font-family:Arial,sans-serif;}.kp{display:flex;gap:8px;}.kp div{flex:1;border:1px solid #c9a35e;border-radius:6px;padding:8px 10px;text-align:center;background:#fffdf7;}.kp span{display:block;font-family:Arial;font-size:8px;letter-spacing:1px;color:#8a8270;text-transform:uppercase;}.kp b{font-size:17px;font-weight:normal;}.ok{color:#2f6b3a;}.bad{color:#8f1d24;}.chk{display:inline-block;width:12px;height:12px;border:1px solid #1e2a56;}.ft{text-align:center;font-style:italic;font-size:10px;color:#8a8270;margin-top:14px;}";
-function imprimir(){var C=calc(),p=S.p,vm=num(S.valor_membro),vc=num(S.valor_convidado);
-  var cab="<div class='hd'><h1>COMMANDERIE DE BORDEAUX</h1><div class='orn'><i></i>&#9670;&#160;&#160;&#160;&#9670;&#160;&#160;&#160;&#9670;<i></i></div><small>AU BRÉSIL</small></div>";
-  var tit="<div class='ct'><div class='cap'>"+esc((S.tipo||"").toUpperCase())+(S.data?(" &#160;·&#160; "+esc(fdat(S.data).toUpperCase())):"")+"</div><h2>"+esc(S.titulo||"Evento")+"</h2><div class='p'>"+esc(S.local||"")+"</div></div>";
-  var linhas=[[esc(S.tipo)+" · "+brl(C.porPessoaRest)+" por pessoa (com "+num(S.servico_pct)+"% de serviço) × "+C.P,C.rest]];
-  S.vinhos.forEach(function(v){if(v.qtd)linhas.push(["Vinho · "+esc(v.nome||"")+" · "+v.qtd+" gf"+(v.pago?" (já pago)":(" × "+brl(num(v.preco)))),v.pago?0:v.qtd*num(v.preco)]);});
-  S.custos.forEach(function(c){if(num(c.valor))linhas.push([esc(c.nome)+(c.modo==="pessoa"?(" · "+brl(num(c.valor))+" × "+C.P+" pessoas"):""),c.modo==="pessoa"?num(c.valor)*C.P:num(c.valor)]);});
-  if(C.impr)linhas.push(["Reserva para imprevistos ("+num(S.imprevistos_pct)+"%)",C.impr]);
-  var pg1="<div class='pg'><div class='pg2'>"+cab+tit+"<div class='bx'><div class='sec'>PESSOAS</div><div class='kp'><div><span>Membros que pagam</span><b>"+(p.mp||0)+"</b></div><div><span>Convidados que pagam</span><b>"+(p.cp||0)+"</b></div><div><span>Membros cortesia</span><b>"+(p.mc||0)+"</b></div><div><span>Convidados cortesia</span><b>"+(p.cc||0)+"</b></div><div><span>Total</span><b>"+C.P+"</b></div></div>"
-    +"<div class='sec'>CUSTOS</div><table class='tb'><thead><tr><th>DESCRIÇÃO</th><th class='n'>VALOR</th></tr></thead><tbody>"+linhas.map(function(l){return "<tr><td>"+l[0]+"</td><td class='n'>"+brl(l[1])+"</td></tr>";}).join("")+"<tr class='tot'><td>CUSTO TOTAL · "+brl(C.porPessoa)+" por pessoa presente</td><td class='n'>"+brl(C.total)+"</td></tr></tbody></table>"
-    +"<div class='sec'>RATEIO</div><div class='kp'><div><span>Valor por membro</span><b>"+brl0(vm)+"</b></div><div><span>Valor por convidado</span><b>"+brl0(vc)+"</b></div><div><span>Arrecadação</span><b>"+brl0(C.arrec)+"</b></div><div><span>Resultado</span><b class='"+(C.resultado>=0?"ok":"bad")+"'>"+(C.resultado>=0?"+ ":"− ")+brl0(Math.abs(C.resultado))+"</b></div></div>"
-    +"<p style='font-family:Arial;font-size:11px;color:#5b5446;line-height:1.6;margin:10px 0 0;'>Para cobrir todas as despesas, com convidado a "+brl0(vc)+", o membro precisa pagar <b>"+(p.mp?brl0(arred(C.nec,C.ar)):"—")+"</b>. Valor igual para todos os pagantes: <b>"+(C.pag?brl0(arred(C.igual,C.ar)):"—")+"</b>."+(C.minM!=null&&vm?(" A "+brl0(vm)+" por membro, o evento fecha a conta com no mínimo <b>"+C.minM+" membros pagantes</b>."):"")+"</p>"
-    +(S.obs?("<div class='sec'>OBSERVAÇÕES</div><p style='font-family:Arial;font-size:11px;color:#5b5446;white-space:pre-wrap;margin:0;'>"+esc(S.obs)+"</p>"):"")
-    +"<div class='ft'>Simulação de custo · gerada em "+new Date().toLocaleDateString("pt-BR")+" · Bordeaux, toujours Bordeaux</div></div></div></div>";
-  var pg2="";if(S.lista.length){var ord=["mp","cp","mc","cc"];var L=S.lista.slice().sort(function(a,b){return ord.indexOf(a.cat)-ord.indexOf(b.cat)||a.nome.localeCompare(b.nome);});
-    pg2="<div class='pg'><div class='pg2'>"+cab+"<div class='ct'><div class='cap'>"+esc(S.titulo.toUpperCase())+(S.data?(" &#160;·&#160; "+esc(new Date(S.data+"T12:00:00").toLocaleDateString("pt-BR"))):"")+"</div><h2>Lista de presença</h2><div class='p'>"+L.length+" pessoas</div></div><div class='bx'><table class='tb'><thead><tr><th>Nº</th><th>NOME</th><th>TIPO</th><th>SITUAÇÃO</th><th>OBS.</th><th>PRESENTE</th></tr></thead><tbody>"
-    +L.map(function(x,i){var pg=x.cat==="mp"||x.cat==="cp";return "<tr><td>"+(i+1)+"</td><td style='font-family:Georgia,serif;color:#1e2a56;font-size:12.5px;'>"+esc(x.nome)+"</td><td>"+(x.cat==="mp"||x.cat==="mc"?"Membro":"Convidado")+"</td><td>"+(pg?("Paga "+brl0(x.cat==="mp"?vm:vc)):"Cortesia")+"</td><td>"+esc(x.obs||"")+"</td><td style='text-align:center;'><span class='chk'></span></td></tr>";}).join("")+"</tbody></table><div class='ft'>Assinale a coluna Presente na chegada.</div></div></div></div>";}
+// ---------- relatório de vários eventos ----------
+function evsCons(){return (S.ids||[]).map(function(id){var x=SIMS.find(function(s){return s.id===id;});if(!x)return null;var d=Object.assign(novoS(),JSON.parse(JSON.stringify(x.dados||{})));d.titulo=x.titulo;d.data=x.data||"";if(!d.ar)d.ar={mp:0,cp:0};return d;}).filter(Boolean).sort(function(a,b){return (""+a.data).localeCompare(""+b.data);});}
+function calcCons(){var E=evsCons().map(function(d){return {d:d,C:calc(d)};});var tD=0,tR=0,tA=0;E.forEach(function(e){tD+=e.C.total;tR+=(e.C.real?e.C.arrecReal:e.C.arrec);tA+=e.C.arrec;});var aj=0,ajR=0;(S.ajustes||[]).forEach(function(a){aj+=num(a.valor);if(a.recebido!==false)ajR+=num(a.valor);});
+  return {E:E,tD:tD,tR:tR,tA:tA,s:tR-tD,sA:tA-tD,aj:aj,ajR:ajR,f:tR-tD+ajR,fA:tA-tD+aj};}
+function renderCons(){var K=calcCons();document.getElementById("h1").textContent="Relatório de despesas e recebimentos";document.getElementById("h1s").textContent="Junta vários eventos (simulados ou realizados) num relatório só, com o visual da Commanderie.";
+  var evs=SIMS.filter(function(x){return (x.dados||{}).kind!=="consolidado";});
+  var h="<div class='sec'><h2><i>1</i>Relatório</h2><div class='d'>Nome e período do relatório.</div><div class='f2'><label class='l' style='grid-column:1/-1;'><span>Título *</span><input class='inp' id='f_titulo' value='"+esc(S.titulo)+"' placeholder='Ex.: Jantares de 21 e 22 de outubro de 2026' oninput=\"set('titulo',this.value)\"></label><label class='l' style='grid-column:1/-1;'><span>Subtítulo (opcional)</span><input class='inp' value='"+esc(S.subtitulo||"")+"' oninput=\"set('subtitulo',this.value)\"></label><label class='l'><span>Data</span><input class='inp' type='date' value='"+esc(S.data||"")+"' oninput=\"set('data',this.value)\"></label></div></div>";
+  h+="<div class='sec'><h2><i>2</i>Eventos do relatório</h2><div class='d'>Marque os eventos. Para mudar algo de um evento (um membro ou convidado a mais), abra o evento, altere e salve — o relatório atualiza sozinho.</div>"+(evs.length?evs.map(function(x){var on=(S.ids||[]).indexOf(x.id)>=0;var d=Object.assign(novoS(),x.dados||{});var c=calc(d);return "<label style='display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #ece0c2;cursor:pointer;'><input type='checkbox' "+(on?"checked":"")+" onchange='togEv(\""+x.id+"\",this.checked)' style='width:18px;height:18px;'><span style='flex:1;'><b style='font-weight:normal;color:var(--navy);font-family:Georgia,serif;font-size:15px;'>"+esc(rotulo(x))+"</b><div class='tag'>despesas "+brl(c.total)+" · saldo "+sbrl(c.real?c.resultadoReal:c.resultado)+"</div></span><a class='tag' style='color:var(--navy);cursor:pointer;' onclick='event.preventDefault();abrirSim(\""+x.id+"\")'>abrir ›</a></label>";}).join(""):"<div class='hint'>Nenhum evento salvo ainda.</div>")+"</div>";
+  h+="<div class='sec'><h2><i>3</i>Ajustes do relatório</h2><div class='d'>Valores que não são de um evento só — ex.: participação dos produtores (+) ou uma despesa comum (−).</div>"+((S.ajustes||[]).length?("<table><tbody>"+S.ajustes.map(function(a,i){return "<tr><td><input class='inp' value='"+esc(a.nome)+"' oninput=\"set('ajustes."+i+".nome',this.value)\" style='width:100%;min-width:160px;'></td><td><span class='money'><input class='inp' inputmode='decimal' value='"+(num(a.valor)?((num(a.valor)<0?"-":"")+fv(Math.abs(num(a.valor)))):"")+"' oninput=\"set('ajustes."+i+".valor',num(this.value))\" onblur='render()'></span></td><td><label class='tag' style='display:inline-flex;gap:4px;align-items:center;cursor:pointer;'><input type='checkbox' "+(a.recebido!==false?"checked":"")+" onchange=\"set('ajustes."+i+".recebido',this.checked,1)\" style='width:auto;'> já realizado</label></td><td><button class='x' onclick='S.ajustes.splice("+i+",1);SUJO=true;render()'>×</button></td></tr>";}).join("")+"</tbody></table><div class='hint'>Use − na frente para valor negativo (ex.: -500,00).</div>"):"")+"<div style='margin-top:8px;'><button class='add' onclick=\"S.ajustes.push({nome:'Participação dos produtores',valor:0,recebido:true});SUJO=true;render()\">+ Ajuste</button></div></div>";
+  h+="<div class='sec'><h2><i>4</i>Consolidado</h2><table class='cons'><thead><tr><th>Descrição</th><th class='n'>Realizado</th><th class='n'>Com valores a receber</th></tr></thead><tbody>"
+    +K.E.map(function(e){return "<tr><td>Despesas · "+esc(dCurta(e.d))+"</td><td class='n'>"+v2(e.C.total)+"</td><td class='n'>"+v2(e.C.total)+"</td></tr>";}).join("")+"<tr class='t'><td>Total de despesas</td><td class='n'>"+v2(K.tD)+"</td><td class='n'>"+v2(K.tD)+"</td></tr>"
+    +K.E.map(function(e){return "<tr><td>Recebimentos · "+esc(dCurta(e.d,1))+"</td><td class='n'>"+v2(e.C.real?e.C.arrecReal:e.C.arrec)+"</td><td class='n'>"+v2(e.C.arrec)+"</td></tr>";}).join("")+"<tr class='t'><td>Total de recebimentos</td><td class='n'>"+v2(K.tR)+"</td><td class='n'>"+v2(K.tA)+"</td></tr>"
+    +"<tr class='t'><td>Saldo dos eventos</td><td class='n "+(K.s<0?"bad":"ok")+"'>"+sbrl(K.s).replace("R$ ","")+"</td><td class='n "+(K.sA<0?"bad":"ok")+"'>"+sbrl(K.sA).replace("R$ ","")+"</td></tr>"
+    +(S.ajustes||[]).filter(function(a){return num(a.valor);}).map(function(a){return "<tr><td>"+esc(a.nome)+"</td><td class='n "+(num(a.valor)<0?"bad":"ok")+"'>"+(a.recebido!==false?sbrl(num(a.valor)).replace("R$ ",""):"—")+"</td><td class='n "+(num(a.valor)<0?"bad":"ok")+"'>"+sbrl(num(a.valor)).replace("R$ ","")+"</td></tr>";}).join("")
+    +"<tr class='f'><td>Saldo final</td><td class='n'>"+sbrl(K.f)+"</td><td class='n'>"+sbrl(K.fA)+"</td></tr></tbody></table></div>";
+  h+="<div class='sec'><h2><i>5</i>Observações</h2><textarea class='inp' rows='3' style='width:100%;' placeholder='Aparece no rodapé do relatório' oninput=\"set('obs',this.value)\">"+esc(S.obs||"")+"</textarea></div>";
+  document.getElementById("form").innerHTML=h;side();}
+function sideCons(){var K=calcCons();document.getElementById("side").innerHTML="<div class='res'><h3>Saldo final</h3><div class='row'><span>Despesas ("+K.E.length+" eventos)</span><b>"+brl(K.tD)+"</b></div><div class='row'><span>Recebido</span><b>"+brl(K.tR)+"</b></div>"+(K.aj?("<div class='row'><span>Ajustes</span><b>"+sbrl(K.ajR)+"</b></div>"):"")+"<div class='row tot'><span>Realizado</span><b>"+sbrl(K.f)+"</b></div><div class='row' style='border:none;'><span>Com valores a receber</span><b>"+sbrl(K.fA)+"</b></div></div><button class='btn v' style='width:100%;' onclick='salvarSim()'>&#128190; Salvar</button>"+(SUJO?"<div class='hint' style='text-align:center;margin-top:6px;color:#b06a1f;'>alterações ainda não salvas</div>":"");}
+function togEv(id,on){S.ids=(S.ids||[]).filter(function(x){return x!==id;});if(on)S.ids.push(id);SUJO=true;render();}
+function dCurta(d,soData){var dt=d.data?new Date(d.data+"T12:00:00").toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"}):"";return soData?(dt||d.titulo):((dt?dt+" ":"")+(d.local||d.titulo||""));}
+// ---------- impressão (visual Commanderie) ----------
+var FONTS="<link href='https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Mulish:ital,wght@0,400;0,600;0,700;1,400&display=swap' rel='stylesheet'>";
+var CSSP="@page{size:A4 portrait;margin:0;}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact;}body{margin:0;background:#e9e4d8;font-family:Mulish,Arial,sans-serif;color:#1e2a56;}"
+ +".pg{width:210mm;min-height:297mm;margin:0 auto 10px;background:#f3ede1;padding:9mm;page-break-after:always;position:relative;}.pg:last-child{page-break-after:auto;}"
+ +".fr{border:1.4px solid #1e2a56;outline:1px solid #b08a3a;outline-offset:-5px;min-height:279mm;padding:13mm 13mm 18mm;position:relative;}"
+ +".top{text-align:center;font-size:9.5px;letter-spacing:4px;font-weight:700;}.top i{display:block;width:40px;height:1px;background:#b08a3a;margin:8px auto 0;}"
+ +"h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:36px;line-height:1.08;text-align:center;margin:22px 0 6px;}.subt{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:16px;text-align:center;margin-bottom:20px;}"
+ +".kp{display:flex;background:#1e2a56;color:#fff;}.kp div{flex:1;text-align:center;padding:14px 8px 12px;}.kp div+div{border-left:1px solid rgba(255,255,255,.25);}.kp span{display:block;font-size:8.5px;letter-spacing:2.5px;}.kp b{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:32px;margin:4px 0 2px;}.kp small{font-size:8.5px;font-style:italic;color:#d9d3c3;}"
+ +".sh{text-align:center;font-size:9px;letter-spacing:3px;color:#b08a3a;font-weight:700;margin:22px 0 10px;}.cols{display:flex;gap:18px;}.cols>div{flex:1;min-width:0;}.ev{border-top:1px solid #1e2a56;padding-top:8px;margin-bottom:12px;}.ev .dd{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:12px;}.ev h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:20px;margin:0 0 8px;}"
+ +".lb{font-size:8px;letter-spacing:2.5px;color:#b08a3a;font-weight:700;margin:10px 0 3px;}.t{width:100%;border-collapse:collapse;font-size:10px;}.t td{padding:5px 0;border-bottom:1px solid #d9cfb6;}.t td.n{text-align:right;white-space:nowrap;padding-left:6px;}.t tr.s td{font-weight:700;border-top:1px solid #1e2a56;}.t tr.i td{font-style:italic;color:#6a6458;}"
+ +".sd{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;margin-top:8px;}.sd b{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:19px;}"
+ +".neg{color:#8f1d24;}.pos{color:#2f6b3a;}.ft{position:absolute;left:13mm;right:13mm;bottom:9mm;display:flex;justify-content:space-between;font-size:8.5px;letter-spacing:1px;color:#6a6458;}"
+ +".hd2{display:flex;justify-content:space-between;font-size:8.5px;letter-spacing:2.5px;font-weight:700;border-bottom:1px solid #1e2a56;padding-bottom:8px;}.hd2 span+span{font-weight:400;color:#6a6458;}"
+ +"h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:30px;margin:26px 0 0;}.it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:14px;margin-bottom:16px;}"
+ +".ct{width:100%;border-collapse:collapse;font-size:10.5px;}.ct th{font-size:8px;letter-spacing:2px;color:#b08a3a;text-align:left;padding:7px 4px;border-bottom:1px solid #1e2a56;font-weight:700;}.ct th.n,.ct td.n{text-align:right;}.ct td{padding:8px 4px;border-bottom:1px solid #d9cfb6;}.ct tr.s td{font-weight:700;border-bottom:1px solid #1e2a56;}.ct tr.f td{background:#1e2a56;color:#fff;font-weight:700;padding:11px 8px;}.ct tr.f td.n{font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;font-weight:500;}.nt{font-style:italic;font-size:9px;color:#6a6458;line-height:1.6;margin-top:14px;}"
+ +".chk{display:inline-block;width:10px;height:10px;border:1px solid #1e2a56;}@media screen{.pg{box-shadow:0 2px 10px rgba(0,0,0,.15);margin:14px auto;}}";
+function tbl(L,sub,lbl){return L.map(function(l){return "<tr><td>"+l[0]+"</td><td class='n'>"+v2(l[1])+"</td></tr>";}).join("")+(sub?("<tr class='s'><td>"+lbl+"</td><td class='n'>"+v2(sub)+"</td></tr>"):"");}
+function blocoEv(X){var L=linhasEvento(X),C=L.C;var tR=L.R.reduce(function(t,l){return t+l[1];},0),tA=L.AR.reduce(function(t,l){return t+l[1];},0);
+  var h="<div class='ev'><div class='dd'>"+esc(cap1(fdat(X.data).replace(/ de \d{4}$/,"")))+"</div><h3>"+esc((X.tipo||"Evento")+(X.local?(" no "+X.local):""))+"</h3>"
+    +"<div class='lb'>DESPESAS</div><table class='t'>"+tbl(L.D,C.total,"Total de despesas")+"</table>"
+    +"<div class='lb'>RECEBIMENTOS</div><table class='t'>"+(C.real?(tbl(L.R,null)+"<tr class='s'><td>Total recebido</td><td class='n'>"+v2(tR)+"</td></tr>"+L.AR.map(function(l){return "<tr class='i'><td>"+l[0]+"</td><td class='n'>"+v2(l[1])+"</td></tr>";}).join("")+(L.AR.length?"<tr class='s'><td>Total com valores a receber</td><td class='n'>"+v2(tR+tA)+"</td></tr>":"")):tbl(L.R,C.arrec,"Total previsto"))+"</table>";
+  if(C.real){h+="<div class='sd'><span>Saldo realizado</span><b class='"+(C.resultadoReal<0?"neg":"pos")+"'>"+sbrl(C.resultadoReal)+"</b></div>"+(L.AR.length?"<div class='sd'><span>Com valores a receber</span><b class='"+(C.resultado<0?"neg":"pos")+"'>"+sbrl(C.resultado)+"</b></div>":"");}
+  else h+="<div class='sd'><span>Resultado previsto</span><b class='"+(C.resultado<0?"neg":"pos")+"'>"+sbrl(C.resultado)+"</b></div>";
+  return h+"</div>";}
+function pagina(inner,rod,n,tot){return "<div class='pg'><div class='fr'>"+inner+"<div class='ft'><span>Commanderie de Bordeaux au Brésil"+(rod?(" · "+rod):"")+"</span><span>"+n+" / "+tot+"</span></div></div></div>";}
+function imprimir(){var pgs=[];
+  if(isCons()){var K=calcCons();if(!K.E.length){alert("Marque pelo menos um evento no relatório.");return;}
+    var ajTxt=K.aj?(K.aj>0?", já com "+(S.ajustes||[]).filter(function(a){return num(a.valor);}).map(function(a){return a.nome.toLowerCase();}).join(" e "):""):"";
+    var p1="<div class='top'>COMMANDERIE DE BORDEAUX AU BRÉSIL<i></i></div><h1>Relatório de despesas<br>e recebimentos</h1><div class='subt'>"+esc(S.subtitulo||S.titulo)+"</div>"
+      +"<div class='kp'><div><span>SALDO FINAL REALIZADO</span><b>"+sbrl(K.f)+"</b><small>"+(K.f<0?"negativo":"positivo")+ajTxt+"</small></div><div><span>COM VALORES A RECEBER</span><b>"+sbrl(K.fA)+"</b><small>"+(K.fA<0?"negativo":"positivo")+(K.tA-K.tR?(", após receber "+brl(K.tA-K.tR)):"")+"</small></div></div>"
+      +"<div class='sh'>OS EVENTOS</div>";
+    var blocos=K.E.map(function(e){return blocoEv(e.d);});for(var i=0;i<blocos.length;i+=2)p1+="<div class='cols'><div>"+blocos[i]+"</div><div>"+(blocos[i+1]||"")+"</div></div>";
+    pgs.push(p1);
+    var p2="<div class='hd2'><span>RELATÓRIO DE DESPESAS E RECEBIMENTOS</span><span>CONSOLIDADO</span></div><h2>Consolidado "+(K.E.length===2?"dos dois eventos":"dos eventos")+"</h2><div class='it'>Valores em reais (R$)</div><table class='ct'><thead><tr><th>DESCRIÇÃO</th><th class='n'>REALIZADO</th><th class='n'>COM VALORES A RECEBER</th></tr></thead><tbody>"
+      +K.E.map(function(e){return "<tr><td>Despesas · "+esc(dCurta(e.d))+"</td><td class='n'>"+v2(e.C.total)+"</td><td class='n'>"+v2(e.C.total)+"</td></tr>";}).join("")+"<tr class='s'><td>Total de despesas</td><td class='n'>"+v2(K.tD)+"</td><td class='n'>"+v2(K.tD)+"</td></tr>"
+      +K.E.map(function(e){return "<tr><td>Recebimentos · "+esc(dCurta(e.d,1))+"</td><td class='n'>"+v2(e.C.real?e.C.arrecReal:e.C.arrec)+"</td><td class='n'>"+v2(e.C.arrec)+"</td></tr>";}).join("")+"<tr class='s'><td>Total de recebimentos</td><td class='n'>"+v2(K.tR)+"</td><td class='n'>"+v2(K.tA)+"</td></tr>"
+      +"<tr class='s'><td>Saldo "+(K.E.length===2?"dos dois eventos":"dos eventos")+"</td><td class='n "+(K.s<0?"neg":"pos")+"'>"+sbrl(K.s).replace("R$ ","")+"</td><td class='n "+(K.sA<0?"neg":"pos")+"'>"+sbrl(K.sA).replace("R$ ","")+"</td></tr>"
+      +(S.ajustes||[]).filter(function(a){return num(a.valor);}).map(function(a){return "<tr><td class='"+(num(a.valor)<0?"neg":"pos")+"'>"+esc(a.nome)+"</td><td class='n "+(num(a.valor)<0?"neg":"pos")+"'>"+(a.recebido!==false?sbrl(num(a.valor)).replace("R$ ",""):"—")+"</td><td class='n "+(num(a.valor)<0?"neg":"pos")+"'>"+sbrl(num(a.valor)).replace("R$ ","")+"</td></tr>";}).join("")
+      +"<tr class='f'><td>Saldo final</td><td class='n'>"+sbrl(K.f).replace("R$ ","")+"</td><td class='n'>"+sbrl(K.fA).replace("R$ ","")+"</td></tr></tbody></table>"
+      +"<div class='nt'>“Realizado” considera apenas os valores já recebidos. “Com valores a receber” inclui também o que ainda falta receber"+(S.obs?(". "+esc(S.obs)):".")+"</div>";
+    pgs.push(p2);}
+  else{var L=linhasEvento(S),C=L.C,p=S.p,real=C.real;
+    var kp=real?("<div class='kp'><div><span>SALDO REALIZADO</span><b>"+sbrl(C.resultadoReal)+"</b><small>com "+brl(C.arrecReal)+" recebidos</small></div><div><span>COM VALORES A RECEBER</span><b>"+sbrl(C.resultado)+"</b><small>"+(C.arrec-C.arrecReal?("após receber "+brl(C.arrec-C.arrecReal)):"tudo já recebido")+"</small></div></div>")
+      :("<div class='kp'><div><span>CUSTO TOTAL</span><b>"+brl(C.total)+"</b><small>"+brl(C.porPessoa)+" por pessoa presente</small></div><div><span>MEMBRO PRECISA PAGAR</span><b>"+(p.mp?brl0(arred(C.nec,C.ar)):"—")+"</b><small>com convidado a "+brl0(C.vc)+"</small></div><div><span>RESULTADO COM "+brl0(C.vm)+"</span><b>"+sbrl(C.resultado).replace(",00","")+"</b><small>"+(C.resultado>=0?"cobre todas as despesas":"não cobre as despesas")+"</small></div></div>");
+    var p1="<div class='top'>COMMANDERIE DE BORDEAUX AU BRÉSIL<i></i></div><h1>"+(real?"Relatório de despesas<br>e recebimentos":"Simulação de custo")+"</h1><div class='subt'>"+esc(S.titulo||"")+(S.data?(" · "+esc(new Date(S.data+"T12:00:00").toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"}))):"")+"</div>"+kp
+      +"<div class='sh'>O EVENTO</div>"
+      +"<div class='cols'><div>"+blocoEv(S)+"</div><div><div class='ev'><div class='dd'>quem vem</div><h3>Pessoas</h3><table class='t'><tr><td>Membros que pagam</td><td class='n'>"+(p.mp||0)+"</td></tr><tr><td>Convidados que pagam</td><td class='n'>"+(p.cp||0)+"</td></tr><tr><td>Membros / Conselho (cortesia)</td><td class='n'>"+(p.mc||0)+"</td></tr><tr><td>Convidados de cortesia</td><td class='n'>"+(p.cc||0)+"</td></tr><tr class='s'><td>Total de pessoas</td><td class='n'>"+C.P+"</td></tr></table>"
+      +"<div class='lb'>VALORES</div><table class='t'><tr><td>Valor por membro</td><td class='n'>"+v2(C.vm)+"</td></tr><tr><td>Valor por convidado</td><td class='n'>"+v2(C.vc)+"</td></tr>"+(real?"":"<tr><td>Membro precisaria pagar (cobre tudo)</td><td class='n'>"+(p.mp?v2(arred(C.nec,C.ar)):"—")+"</td></tr><tr><td>Mesmo valor para todos</td><td class='n'>"+(C.pag?v2(arred(C.igual,C.ar)):"—")+"</td></tr>")+"</table>"
+      +(C.minM&&C.vm?("<div class='nt' style='margin-top:8px;'>A "+brl0(C.vm)+" por membro, o evento fecha a conta com no mínimo <b>"+C.minM+" membros pagantes</b>.</div>"):"")+"</div></div></div>";
+    if(!real){var lin=[],base=p.mp||0,ini=Math.max(1,base-6);for(var m=ini;m<=base+6;m+=2)lin.push(m);if(lin.indexOf(base)<0&&base>0){lin.push(base);lin.sort(function(a,b){return a-b;});}
+      p1+="<div class='sh' style='margin-top:10px;'>E SE VIEREM MAIS OU MENOS MEMBROS?</div><table class='ct'><thead><tr><th>MEMBROS QUE PAGAM</th><th class='n'>PESSOAS</th><th class='n'>CUSTO TOTAL</th><th class='n'>MEMBRO PRECISARIA PAGAR</th><th class='n'>RESULTADO A "+brl0(C.vm)+"</th></tr></thead><tbody>"+lin.map(function(mm){var X=JSON.parse(JSON.stringify(S));X.p.mp=mm;var c=calc(X);return "<tr"+(mm===base?" class='s'":"")+"><td>"+mm+"</td><td class='n'>"+c.P+"</td><td class='n'>"+v2(c.total)+"</td><td class='n'>"+v2(arred(c.nec,c.ar))+"</td><td class='n "+(c.resultado<0?"neg":"pos")+"'>"+sbrl(c.resultado).replace("R$ ","")+"</td></tr>";}).join("")+"</tbody></table>";}
+    if(S.obs)p1+="<div class='nt'>"+esc(S.obs)+"</div>";
+    pgs.push(p1);
+    if(S.lista.length){var ord=["mp","cp","mc","cc"];var LL=S.lista.slice().sort(function(a,b){return ord.indexOf(a.cat)-ord.indexOf(b.cat)||a.nome.localeCompare(b.nome);});
+      pgs.push("<div class='hd2'><span>"+esc((S.titulo||"").toUpperCase())+"</span><span>LISTA DE PRESENÇA</span></div><h2>Lista de presença</h2><div class='it'>"+LL.length+" pessoas"+(S.data?(" · "+new Date(S.data+"T12:00:00").toLocaleDateString("pt-BR")):"")+"</div><table class='ct'><thead><tr><th>Nº</th><th>NOME</th><th>TIPO</th><th>SITUAÇÃO</th><th>OBS.</th><th class='n'>PRESENTE</th></tr></thead><tbody>"
+        +LL.map(function(x,i){var pg=x.cat==="mp"||x.cat==="cp";return "<tr><td>"+(i+1)+"</td><td style=\"font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;\">"+esc(x.nome)+"</td><td>"+(x.cat==="mp"||x.cat==="mc"?"Membro":"Convidado")+"</td><td>"+(pg?("Paga "+brl0(x.cat==="mp"?C.vm:C.vc)):"Cortesia")+"</td><td>"+esc(x.obs||"")+"</td><td class='n'><span class='chk'></span></td></tr>";}).join("")+"</tbody></table><div class='nt'>Assinale a coluna Presente na chegada.</div>");}}
+  var html=pgs.map(function(x,i){return pagina(x,"",i+1,pgs.length);}).join("");
   var w=window.open("","_blank");if(!w){alert("Permita janelas pop-up para imprimir.");return;}
-  w.document.write("<!doctype html><html><head><meta charset='utf-8'><title>"+esc("Simulação · "+(S.titulo||"evento"))+"</title><style>"+CSSP+"</style></head><body>"+pg1+pg2+"<script>window.onload=function(){setTimeout(function(){window.print();},400);};<\/script></body></html>");w.document.close();}
+  w.document.write("<!doctype html><html><head><meta charset='utf-8'><title>"+esc(S.titulo||"Relatório")+"</title>"+FONTS+"<style>"+CSSP+"</style></head><body>"+html+"<script>window.onload=function(){setTimeout(function(){window.print();},700);};<\/script></body></html>");w.document.close();}
 document.addEventListener("DOMContentLoaded",init);
 </script></body></html>

@@ -88,7 +88,7 @@ td.n,th.n{text-align:right;white-space:nowrap;}
     <button class="btn g" onclick="novoCons()">+ Relatório de vários eventos</button>
     <button class="btn v" onclick="salvarSim()">&#128190; Salvar</button>
     <button class="btn g" onclick="duplicarSim()">Duplicar</button>
-    <button class="btn g" onclick="imprimir()">&#128424; Imprimir</button>
+    <button class="btn g" onclick="imprimir()">&#128424; Imprimir</button><button class="btn" onclick="imprimir('pdf')">&#128196; Baixar PDF</button>
     <button class="btn r" onclick="excluirSim()">Excluir</button>
     <span id="msg" style="font-size:12.5px;"></span>
   </div>
@@ -296,7 +296,7 @@ function blocoEv(X){var L=linhasEvento(X),C=L.C;var tR=L.R.reduce(function(t,l){
   else h+="<div class='sd'><span>Resultado previsto</span><b class='"+(C.resultado<0?"neg":"pos")+"'>"+sbrl(C.resultado)+"</b></div>";
   return h+"</div>";}
 function pagina(inner,rod,n,tot){return "<div class='pg'><div class='fr'>"+inner+"<div class='ft'><span>Commanderie de Bordeaux au Brésil"+(rod?(" · "+rod):"")+"</span><span>"+n+" / "+tot+"</span></div></div></div>";}
-function imprimir(){var pgs=[];
+function imprimir(modo){var pgs=[];
   if(isCons()){var K=calcCons();if(!K.E.length){alert("Marque pelo menos um evento no relatório.");return;}
     var ajTxt=K.aj?(K.aj>0?", já com "+(S.ajustes||[]).filter(function(a){return num(a.valor);}).map(function(a){return a.nome.toLowerCase();}).join(" e "):""):"";
     var p1="<div class='top'>COMMANDERIE DE BORDEAUX AU BRÉSIL<i></i></div><h1>Relatório de despesas<br>e recebimentos</h1><div class='subt'>"+esc(S.subtitulo||S.titulo)+"</div>"
@@ -329,6 +329,10 @@ function imprimir(){var pgs=[];
         +LL.map(function(x,i){var pg=x.cat==="mp"||x.cat==="cp";return "<tr><td>"+(i+1)+"</td><td style=\"font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;\">"+esc(x.nome)+"</td><td>"+(x.cat==="mp"||x.cat==="mc"?"Membro":"Convidado")+"</td><td>"+(pg?("Paga "+brl0(x.cat==="mp"?C.vm:C.vc)):"Cortesia")+"</td><td>"+esc(x.obs||"")+"</td><td class='n'><span class='chk'></span></td></tr>";}).join("")+"</tbody></table><div class='nt'>Assinale a coluna Presente na chegada.</div>");}}
   var html=pgs.map(function(x,i){return pagina(x,"",i+1,pgs.length);}).join("");
   var w=window.open("","_blank");if(!w){alert("Permita janelas pop-up para imprimir.");return;}
-  w.document.write("<!doctype html><html><head><meta charset='utf-8'><title>"+esc(S.titulo||"Relatório")+"</title>"+FONTS+"<style>"+CSSP+"</style></head><body>"+html+"<script>window.onload=function(){setTimeout(function(){window.print();},700);};<\/script></body></html>");w.document.close();}
+  var nome=(S.titulo||"relatorio").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  var bar="<div class='tb'><span>"+esc(S.titulo||"Relatório")+"</span><button onclick='baixarPDF()'>&#128196; Baixar PDF</button><button onclick='window.print()'>&#128424; Imprimir</button><span id='pm'></span></div>";
+  var js="var NOME="+JSON.stringify(nome)+";function lib(u){return new Promise(function(ok,er){var x=document.createElement('script');x.src=u;x.onload=ok;x.onerror=function(){er('não consegui carregar '+u)};document.head.appendChild(x);});}function baixarPDF(){var m=document.getElementById('pm');m.textContent='Gerando o PDF…';Promise.all([window.html2canvas?1:lib('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'),window.jspdf?1:lib('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')]).then(function(){return document.fonts?document.fonts.ready:1;}).then(function(){var P=[].slice.call(document.querySelectorAll('.pg'));var pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',compress:true});var i=0;function prox(){if(i>=P.length){pdf.save(NOME+'.pdf');m.textContent='✔ PDF baixado';return;}var el=P[i];html2canvas(el,{scale:2,backgroundColor:'#f3ede1',useCORS:true,logging:false}).then(function(c){if(i)pdf.addPage();var h=c.height/c.width*210;var w=210;if(h>297){w=210*297/h;h=297;}pdf.addImage(c.toDataURL('image/jpeg',0.92),'JPEG',(210-w)/2,0,w,h);i++;prox();}).catch(function(e){m.textContent='Erro: '+e;});}prox();}).catch(function(e){m.textContent='Erro: '+e+' — use Imprimir e escolha Salvar como PDF.';});}"
+    +"window.onload=function(){setTimeout(function(){"+(modo==="pdf"?"baixarPDF();":"window.print();")+"},800);};";
+  w.document.write("<!doctype html><html><head><meta charset='utf-8'><title>"+esc(S.titulo||"Relatório")+"</title>"+FONTS+"<style>"+CSSP+".tb{position:sticky;top:0;z-index:9;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;background:#1e2a56;color:#f3e3bd;padding:10px;font-family:Arial,sans-serif;font-size:13px;}.tb button{background:#b08a3a;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;}@media print{.tb{display:none;}}</style></head><body>"+bar+html+"<script>"+js+"<\/script></body></html>");w.document.close();}
 document.addEventListener("DOMContentLoaded",init);
 </script></body></html>

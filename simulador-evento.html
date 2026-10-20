@@ -68,6 +68,7 @@ td.n,th.n{text-align:right;white-space:nowrap;}
 .sens tr.me td{background:#f6efdc;font-weight:bold;}
 .cat{font-size:11px;border-radius:8px;padding:2px 8px;white-space:nowrap;}
 .c-mp{background:#eef6ef;color:#2f6b3a;}.c-cp{background:#e8edf8;color:#1e2a56;}.c-mc{background:#f6efdc;color:#8a6a1f;}.c-cc{background:#f3e8e8;color:#8f1d24;}
+.modoS .mP,.modoP .mS{display:none!important;}
 .state{text-align:center;padding:70px 20px;color:#6a634f;}
 .tag{font-size:10.5px;color:#9a937f;}
 .seg{display:inline-flex;border:1.5px solid var(--gold);border-radius:10px;overflow:hidden;}
@@ -84,8 +85,8 @@ td.n,th.n{text-align:right;white-space:nowrap;}
   <div class="sub" id="h1s">Preencha os custos e as pessoas — o sistema calcula o rateio necessário para cobrir todas as despesas.</div>
   <div class="bar">
     <select class="inp" id="selSim" onchange="abrirSim(this.value)" style="flex:1;min-width:220px;"></select>
-    <button class="btn g" onclick="novaSim()">+ Nova simulação</button>
-    <button class="btn g" onclick="novoCons()">+ Relatório de vários eventos</button>
+    <button class="btn g mS" onclick="novaSim()">+ Nova simulação</button><button class="btn g mP" onclick="novaPrest()">+ Nova prestação de contas</button>
+    <button class="btn g mP" onclick="novoCons()">+ Relatório de vários eventos</button>
     <button class="btn v" onclick="salvarSim()">&#128190; Salvar</button>
     <button class="btn g" onclick="duplicarSim()">Duplicar</button>
     <button class="btn g" onclick="imprimir()">&#128424; Imprimir</button><button class="btn" onclick="imprimir('pdf')">&#128196; Baixar PDF</button>
@@ -101,7 +102,7 @@ td.n,th.n{text-align:right;white-space:nowrap;}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
-var SIMS=[],ADEGA=[],MEMB=[],CUR=null,S=null,SUJO=false;
+var MODO="P",SIMS=[],ADEGA=[],MEMB=[],CUR=null,S=null,SUJO=false;
 var CATS={mp:"Membro (paga)",cp:"Convidado (paga)",mc:"Membro / Conselho (não paga)",cc:"Convidado de cortesia (não paga)"};
 var CUSTOS_PADRAO=[["Gráfica (convites, menus, cartões)","fixo"],["Material de comunicação","fixo"],["Locação de material (taças, mesas, toalhas)","fixo"],["Flores e decoração","fixo"],["Músico","fixo"],["Fotógrafo","fixo"],["Transporte / frete dos vinhos","fixo"],["Taxa de rolha / serviço de sommelier","fixo"],["Brindes, medalhas e diplomas","fixo"]];
 function novoS(){return {kind:"evento",status:"simulacao",titulo:"",data:"",local:"",tipo:"Jantar",rest_modo:"pessoa",preco_pessoa:0,rest_total:0,servico_pct:10,p:{mp:20,cp:5,mc:4,cc:2},ar:{mp:0,cp:0},vinhos:[],custos:CUSTOS_PADRAO.map(function(c){return {nome:c[0],valor:0,modo:c[1]};}),imprevistos_pct:5,valor_membro:0,valor_convidado:0,arred:10,receitas:[],lista:[],obs:""};}
@@ -155,17 +156,24 @@ async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){document.
   var m=await sb.from("membros").select("nome").order("nome",{ascending:true});MEMB=(m.data||[]).map(function(x){return x.nome;}).filter(Boolean);
   document.getElementById("dlMemb").innerHTML=MEMB.map(function(n){return "<option value=\""+esc(n)+"\">";}).join("");
   document.getElementById("st").style.display="none";document.getElementById("app").style.display="block";
-  var id=new URLSearchParams(location.search).get("id");
-  if(id&&SIMS.some(function(x){return x.id===id;}))abrirSim(id);else if(SIMS.length)abrirSim(SIMS[0].id);else novaSim(true);}
+  var qs=new URLSearchParams(location.search),id=qs.get("id"),tipo=qs.get("tipo");
+  if(id&&SIMS.some(function(x){return x.id===id;})){abrirSim(id);return;}
+  if(tipo==="simulacao")MODO="S";if(tipo==="realizado"){MODO="P";var R=SIMS.filter(function(x){var d=x.dados||{};return d.kind==="consolidado"||d.status==="realizado";});if(R.length){abrirSim(R[0].id);}else{novaPrest();}return;}
+  if(tipo==="simulacao"){var F=SIMS.filter(function(x){var d=x.dados||{};return d.kind!=="consolidado"&&d.status!=="realizado";});if(F.length)abrirSim(F[0].id);else novaSim(true);return;}
+  if(tipo==="nova-prestacao"){novaPrest();return;}if(tipo==="relatorio"){novoCons();return;}MODO="P";var R2=SIMS.filter(function(x){return modoDe(x)==="P";});if(R2.length)abrirSim(R2[0].id);else novaPrest();}
 function rotulo(x){var d=x.dados||{};var k=d.kind==="consolidado"?"📑 ":(d.status==="realizado"?"✔ ":"🧮 ");return k+(x.titulo||"Sem título")+(x.data?(" · "+new Date(x.data+"T12:00:00").toLocaleDateString("pt-BR")):"");}
+function setModo(m){MODO=m;var a=document.getElementById("app");a.classList.toggle("modoS",m==="S");a.classList.toggle("modoP",m==="P");document.querySelectorAll(".dtop a").forEach(function(a){a.href="painel-conselho.html?sec=eventos"+(m==="P"?"&tab=prestacao":"");});var t=document.querySelector(".dtop b");if(t)t.textContent=m==="S"?"Simular novo evento":"Prestação de contas dos eventos";document.title=(m==="S"?"Simular novo evento":"Prestação de contas")+" — Commanderie de Bordeaux";}
+function modoDe(x){var d=(x&&x.dados)||x||{};return (d.kind==="consolidado"||d.status==="realizado")?"P":"S";}
 function listaSel(){var g=function(f,t){var L=SIMS.filter(f);return L.length?("<optgroup label='"+t+"'>"+L.map(function(x){return "<option value='"+x.id+"'"+(CUR===x.id?" selected":"")+">"+esc(rotulo(x))+"</option>";}).join("")+"</optgroup>"):"";};
-  document.getElementById("selSim").innerHTML=(CUR?"":"<option value=''>— "+(isCons()?"Novo relatório":"Nova simulação")+" (ainda não salvo) —</option>")
-   +g(function(x){return (x.dados||{}).kind!=="consolidado"&&(x.dados||{}).status!=="realizado";},"Simulações de eventos futuros")
-   +g(function(x){return (x.dados||{}).kind!=="consolidado"&&(x.dados||{}).status==="realizado";},"Eventos realizados (prestação de contas)")
-   +g(function(x){return (x.dados||{}).kind==="consolidado";},"Relatórios de vários eventos");}
-function abrirSim(id){if(!id)return;if(SUJO&&!confirm("Há alterações não salvas. Abrir outra mesmo assim?")){listaSel();return;}var x=SIMS.find(function(s){return s.id===id;});if(!x)return;CUR=id;var d=JSON.parse(JSON.stringify(x.dados||{}));S=Object.assign(d.kind==="consolidado"?novoC():novoS(),d);S.titulo=x.titulo;S.data=x.data||"";if(!S.ar)S.ar={mp:0,cp:0};SUJO=false;listaSel();render();}
-function novaSim(silent){if(!silent&&SUJO&&!confirm("Há alterações não salvas. Começar uma nova mesmo assim?"))return;CUR=null;S=novoS();SUJO=false;listaSel();render();}
-function novoCons(){if(SUJO&&!confirm("Há alterações não salvas. Começar um novo relatório mesmo assim?"))return;CUR=null;S=novoC();SUJO=false;listaSel();render();}
+  setModo(MODO);
+  document.getElementById("selSim").innerHTML=(CUR?"":"<option value=''>— "+(isCons()?"Novo relatório":(MODO==="S"?"Nova simulação":"Nova prestação de contas"))+" (ainda não salvo) —</option>")
+   +(MODO==="S"?g(function(x){return modoDe(x)==="S";},"Simulações de novos eventos"):
+     (g(function(x){return (x.dados||{}).kind!=="consolidado"&&(x.dados||{}).status==="realizado";},"Prestação de contas dos eventos")
+     +g(function(x){return (x.dados||{}).kind==="consolidado";},"Relatórios de vários eventos")));}
+function abrirSim(id){if(!id)return;if(SUJO&&!confirm("Há alterações não salvas. Abrir outra mesmo assim?")){listaSel();return;}var x=SIMS.find(function(s){return s.id===id;});if(!x)return;CUR=id;MODO=modoDe(x);var d=JSON.parse(JSON.stringify(x.dados||{}));S=Object.assign(d.kind==="consolidado"?novoC():novoS(),d);S.titulo=x.titulo;S.data=x.data||"";if(!S.ar)S.ar={mp:0,cp:0};SUJO=false;listaSel();render();}
+function novaSim(silent){if(!silent&&SUJO&&!confirm("Há alterações não salvas. Começar uma nova mesmo assim?"))return;MODO="S";CUR=null;S=novoS();SUJO=false;listaSel();render();}
+function novaPrest(){if(SUJO&&!confirm("Há alterações não salvas. Começar uma nova mesmo assim?"))return;MODO="P";CUR=null;S=novoS();S.status="realizado";S.imprevistos_pct=0;S.p={mp:0,cp:0,mc:0,cc:0};SUJO=false;listaSel();render();}
+function novoCons(){if(SUJO&&!confirm("Há alterações não salvas. Começar um novo relatório mesmo assim?"))return;MODO="P";CUR=null;S=novoC();SUJO=false;listaSel();render();}
 function duplicarSim(){S=JSON.parse(JSON.stringify(S));S.titulo=(S.titulo||"Simulação")+" (cópia)";CUR=null;SUJO=true;listaSel();render();msg("Cópia criada — ajuste e clique em Salvar.","#5b5446");}
 async function salvarSim(){if(!(S.titulo||"").trim()){msg("Dê um nome (item 1).","#8f1d24");var t=document.getElementById("f_titulo");if(t)t.focus();return;}
   var d=JSON.parse(JSON.stringify(S));var rec={titulo:S.titulo.trim(),data:S.data||null,dados:d,updated_at:new Date().toISOString()};
@@ -184,7 +192,7 @@ function render(){if(isCons()){renderCons();return;}
   var C=calc();var p=S.p,real=S.status==="realizado";var h="";var n=0;function I(){n++;return "<i>"+n+"</i>";}
   document.getElementById("h1").textContent=real?"Prestação de contas do evento":"Simulação de custo do evento";
   document.getElementById("h1s").textContent=real?"Despesas e recebimentos do evento realizado. Mude qualquer número para ver como ficaria.":"Preencha os custos e as pessoas — o sistema calcula o rateio necessário para cobrir todas as despesas.";
-  h+="<div class='sec'><h2>"+I()+"Evento</h2><div class='d'>Nome, data e tipo do evento.</div><div style='margin:0 0 10px;'>"+seg("status",S.status,[["simulacao","🧮 Simulação (evento futuro)"],["realizado","✔ Evento realizado"]])+"</div><div class='f2'>"
+  h+="<div class='sec'><h2>"+I()+"Evento</h2><div class='d'>Nome, data e tipo do evento.</div>"+(real?"":"<div style='margin:0 0 10px;'><button class='btn g' style='font-size:12.5px;padding:6px 12px;' onclick='passarPrest()'>✔ O evento aconteceu? Passar para a prestação de contas</button></div>")+"<div class='f2'>"
     +"<label class='l' style='grid-column:1/-1;'><span>Nome do evento *</span><input class='inp' id='f_titulo' value='"+esc(S.titulo)+"' placeholder='Ex.: Capítulo XI · Jantar de entronização' oninput=\"set('titulo',this.value)\"></label>"
     +"<label class='l'><span>Data</span><input class='inp' type='date' value='"+esc(S.data)+"' oninput=\"set('data',this.value)\"></label>"
     +"<label class='l'><span>Tipo</span><select class='inp' onchange=\"set('tipo',this.value,1)\">"+["Jantar","Almoço","Degustação","Coquetel"].map(function(t){return "<option"+(S.tipo===t?" selected":"")+">"+t+"</option>";}).join("")+"</select></label>"
@@ -246,6 +254,7 @@ function side(){if(isCons()){sideCons();return;}var C=calc(),p=S.p;
     +(C.minM&&C.vm?("<div class='hint' style='margin-top:8px;'>Para fechar a conta a "+brl0(C.vm)+", precisa de no mínimo <b style='color:var(--navy);'>"+C.minM+" membros pagantes</b>"+(p.mp>=C.minM?" ✔":" (hoje: "+(p.mp||0)+")")+".</div>"):(C.vm&&C.vm<=C.custoVar?"<div class='hint bad' style='margin-top:8px;'>O valor do membro é menor que o custo de cada pessoa ("+brl0(C.custoVar)+"): quanto mais gente, maior o prejuízo.</div>":""))+"</div>";}
   h+="<button class='btn v' style='width:100%;' onclick='salvarSim()'>&#128190; Salvar</button>"+(SUJO?"<div class='hint' style='text-align:center;margin-top:6px;color:#b06a1f;'>alterações ainda não salvas</div>":"");
   document.getElementById("side").innerHTML=h;}
+function passarPrest(){if(!confirm("Passar \""+(S.titulo||"este evento")+"\" para a Prestação de contas? Depois coloque os valores reais e quem ainda não pagou."))return;S.status="realizado";S.imprevistos_pct=0;MODO="P";SUJO=true;listaSel();render();msg("Agora é prestação de contas — ajuste e clique em Salvar.","#2f6b3a");}
 function usar(m,c){S.valor_membro=m;if(c!=null)S.valor_convidado=c;SUJO=true;render();}
 function daAdega(id){var v=ADEGA.find(function(x){return ""+x.id===""+id;});if(!v)return;S.vinhos.push({nome:v.nome+(v.formato&&v.formato!=="750 mL"?(" "+v.formato):"")+(v.safra?(" "+v.safra):""),qtd:Math.min(6,v.est),preco:v.valor_unit!=null?Number(v.valor_unit):0,adega:v.id,est:v.est});SUJO=true;render();}
 function addLista(){var n=document.getElementById("lNome").value.trim();if(!n)return;var c=document.getElementById("lCat").value;S.lista.push({nome:n,cat:c});SUJO=true;render();var i=document.getElementById("lNome");i.focus();document.getElementById("lCat").value=c;}

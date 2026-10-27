@@ -233,10 +233,10 @@ function renderAnuAnos(){var el=document.getElementById("finGeral");if(!el)retur
   var vinho=(receitas||[]).filter(function(x){return x.categoria==="Doação"&&Number(x.ano)===ant&&x.pago;}).reduce(function(a,x){return a+(Number(x.valor)||0);},0);
   if(vinho)det+="<div class=\"n\" style=\"color:#8a8270;\">+ doações: <b>"+brl(vinho)+"</b></div>";
   el.innerHTML=finBox("Anuidades "+ant+" + "+cur,c+anuTc,p+anuTp,(vinho?"<div class=\"n\" style=\"margin-top:4px;color:#8a8270;\">+ doações ("+ant+"): <b>"+brl(vinho)+"</b></div>":""))+finBox("Anuidades "+ant,c,p,det)+finBox("Anuidades "+cur+" (ciclo atual)",anuTc,anuTp,"<div class=\"n\" style=\"margin-top:4px;color:#8a8270;\">"+(window.ANU_N||0)+" membros</div>");}
-function finBox(titulo,c,p,extra){return "<div class=\"fin\"><h3>"+esc(titulo)+"</h3>"
-  +"<div class=\"n\">Cotizado: <b>"+brl(c)+"</b></div>"
-  +"<div class=\"n\"><span class=\"dot\" style=\"background:#3a9a4e;\"></span>Arrecadado: <b>"+brl(p)+"</b></div>"
-  +"<div class=\"n\"><span class=\"dot\" style=\"background:#c0392b;\"></span>A receber: <b>"+brl(c-p)+"</b></div>"+(extra||"")+"</div>";}
+function finBox(titulo,c,p,extra,fmt){fmt=fmt||brl;return "<div class=\"fin\"><h3>"+esc(titulo)+"</h3>"
+  +"<div class=\"n\">Cotizado: <b>"+fmt(c)+"</b></div>"
+  +"<div class=\"n\"><span class=\"dot\" style=\"background:#3a9a4e;\"></span>Arrecadado: <b>"+fmt(p)+"</b></div>"
+  +"<div class=\"n\"><span class=\"dot\" style=\"background:#c0392b;\"></span>A receber: <b>"+fmt(c-p)+"</b></div>"+(extra||"")+"</div>";}
 var ANO_ANUIDADE=2026;var anuTc=0,anuTp=0;var receitas=[];var despesas=[];var CICLO=2026;var impTc=0,impTp=0;
 async function carregarCiclo(){try{var r=await sb.from("parametros").select("valor").eq("chave","ciclo_anuidade").maybeSingle();if(!r.error&&r.data&&r.data.valor){CICLO=parseInt(r.data.valor,10)||CICLO;}}catch(e){}var a=document.getElementById("cicloAtual");if(a)a.textContent=CICLO;var inp=document.getElementById("cicloAno");if(inp&&!inp.value)inp.value=CICLO+1;}
 async function virarCiclo(){var inp=document.getElementById("cicloAno");var msg=document.getElementById("cicloMsg");var ano=parseInt(inp.value,10);if(!ano){msg.style.color="#8f1d24";msg.textContent="Informe o ano.";return;}if(!confirm("Virar a vigência da carteira para "+ano+"?\n\nIsso marca TODOS os membros não isentos como 'a pagar' do novo ciclo. Depois você relança quem já pagou no quadro de anuidades, e as carteiras passam a valer para "+ano+".\n\nConfirmar?"))return;msg.style.color="#2f6b3a";msg.textContent="Aplicando...";var r=await sb.rpc("virar_ciclo",{p_ano:ano,p_reset:true});if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}CICLO=ano;var a=document.getElementById("cicloAtual");if(a)a.textContent=ano;inp.value=ano+1;msg.textContent="Ciclo "+ano+" lançado!";carregarFinanceiro();}
@@ -338,12 +338,12 @@ async function carregarImportadoras(){
   var rows=q.data||[];window.IMP_ROWS={};rows.forEach(function(x){window.IMP_ROWS[x.id]=x;});var Tc=0,Tp=0;
   rows.forEach(function(x){var v=Number(x.anuidade_valor)||0;Tc+=v;if(x.anuidade_paga)Tp+=v;});
   impTc=Tc;impTp=Tp;
-  document.getElementById("impGeral").innerHTML=finBox("Importadoras",Tc,Tp,"<div class=\"n\" style=\"margin-top:4px;color:#8a8270;\">"+rows.length+" importadoras · cotas € 900 / € 1.800</div>");
+  document.getElementById("impGeral").innerHTML=finBox("Importadoras (em euros)",Tc,Tp,"<div class=\"n\" style=\"margin-top:4px;color:#8a8270;\">"+rows.length+" importadoras · cotas € 900 / € 1.800</div><div class=\"n\" style=\"margin-top:4px;color:#8a8270;font-size:11.5px;\">Valores em euros: não entram no caixa em reais. Quando receber, lance o valor em R$ em Receitas.</div>",eur);
   var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Responsável</th><th>Anuidade</th><th>Status</th><th></th></tr></thead><tbody>";
   rows.forEach(function(x){var pill;if(x.anuidade_paga)pill="<span class=\"pill\" style=\"color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;\">Em dia</span>";else if(new Date()>new Date("2026-11-02T12:00:00"))pill="<span class=\"pill\" style=\"color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;\">Em atraso</span>";else pill="<span class=\"pill\" style=\"color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);\">A vencer 02/11</span>";var act=(x.anuidade_paga?"<a onclick=\"togglePagoImp('"+x.id+"',false)\" style=\"color:#8a6a1f;cursor:pointer;font-size:12px;\">reabrir</a>":"<a onclick=\"togglePagoImp('"+x.id+"',true)\" style=\"color:#2f6b3a;cursor:pointer;font-size:12px;\">marcar pago</a>")+" <a onclick=\"editarImpFin('"+x.id+"')\" style=\"color:#8a6a1f;cursor:pointer;font-size:12px;margin-left:10px;\">editar</a>";tb+="<tr><td>"+esc(x.nome)+"</td><td>"+esc(x.responsavel_nome||"")+"</td><td>"+eur(x.anuidade_valor||0)+"</td><td>"+pill+"</td><td>"+act+"</td></tr>";});
   tb+="</tbody></table>";document.getElementById("impTabela").innerHTML=tb;
 }
-var IMP_CAMPOS=[["nome","Importadora"],["responsavel_nome","Responsável"],["anuidade_valor","Valor da anuidade (R$)","number"],["email","E-mail"],["telefone","Telefone"],["cidade","Cidade"],["instagram","Instagram"]];
+var IMP_CAMPOS=[["nome","Importadora"],["responsavel_nome","Responsável"],["anuidade_valor","Valor da anuidade (€)","number"],["email","E-mail"],["telefone","Telefone"],["cidade","Cidade"],["instagram","Instagram"]];
 function editarImpFin(id){var x=(window.IMP_ROWS||{})[id];if(!x)return;var ii="width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:14px;box-sizing:border-box;";
   var h="<div style=\"position:fixed;inset:0;background:rgba(10,8,5,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;\" onclick=\"if(event.target===this)fecharImpEd()\"><div style=\"background:#fffdf7;border:1px solid var(--line);border-radius:14px;max-width:400px;width:100%;max-height:90vh;overflow:auto;padding:20px 22px;\"><div style=\"font-family:Georgia,serif;color:var(--navy);font-size:18px;\">Editar &middot; "+esc(x.nome)+"</div>"
    +IMP_CAMPOS.filter(function(c){return c[0] in x;}).map(function(c){return "<label style=\"font-size:12px;color:#8a8270;display:block;margin:12px 0 4px;\">"+c[1]+"</label><input id=\"ie_"+c[0]+"\" "+(c[2]==="number"?"type=\"number\" step=\"0.01\" ":"")+"value=\""+esc(x[c[0]]==null?"":x[c[0]])+"\" style=\""+ii+"\">";}).join("")
@@ -539,7 +539,7 @@ function resultBox(ano,Rp,Dp){var saldo=Rp-Dp;var cor=saldo>=0?"#2f6b3a":"#8f1d2
   +"<div class=\"n\">Pago: <b>"+brl(Dp)+"</b></div>"
   +"<div class=\"n\" style=\"margin-top:4px;\">"+((""+ano).indexOf("+")>=0?"Saldo do período":"Saldo do ano")+": <b style=\"color:"+cor+";\">"+brl(saldo)+"</b></div></div>";}
 function renderCaixa(){
-  var entr=anuTp+impTp;receitas.forEach(function(x){if(x.pago&&catNorm(x.categoria)!=="Eventos")entr+=Number(x.valor)||0;});entr+=evCalc("todos").TR;
+  var entr=anuTp;receitas.forEach(function(x){if(x.pago&&catNorm(x.categoria)!=="Eventos")entr+=Number(x.valor)||0;});entr+=evCalc("todos").TR;
   var said=0;despesas.forEach(function(x){said+=despPg(x);});
   var caixa=entr-said;var el=document.getElementById("caixaBox");if(!el)return;
   el.innerHTML="<div style=\"background:var(--navy);color:#fff;border-radius:14px;padding:18px 20px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;\">"
@@ -548,7 +548,7 @@ function renderCaixa(){
     +"<div><div style=\"color:#bfe3c5;\">Entradas recebidas</div><b style=\"font-size:16px;\">"+brl(entr)+"</b></div>"
     +"<div><div style=\"color:#e8b4b4;\">Saídas pagas</div><b style=\"font-size:16px;\">"+brl(said)+"</b></div>"
     +"</div></div>"
-    +"<p style=\"font-size:11.5px;color:#9a937f;margin:6px 2px 0;\">Caixa = anuidades de membros e importadoras + eventos (reservas pagas) + outros recebimentos já recebidos &minus; despesas já pagas (acumulado).</p>";
+    +"<p style=\"font-size:11.5px;color:#9a937f;margin:6px 2px 0;\">Caixa = anuidades de membros + eventos (reservas pagas) + outros recebimentos já recebidos &minus; despesas já pagas (acumulado).</p>";
 }
 function filtrarDesp(g){window.DESP_FILTRO=g;renderDespTabela(window.DESP_ANO);}
 function renderDespTabela(ano){

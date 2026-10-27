@@ -39,6 +39,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .envio .f{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-bottom:8px;}
 .envio input,.envio textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:13.5px;font-family:inherit;background:#fff;color:var(--ink);}
 .envio textarea{min-height:190px;line-height:1.5;resize:vertical;}
+.envio .esc{display:flex;gap:8px 14px;flex-wrap:wrap;align-items:center;font-size:13.5px;color:#5b5446;margin-bottom:10px;}.envio .esc span{color:#8a8270;font-size:12.5px;}.envio .esc label{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 12px;cursor:pointer;}.envio .esc input{width:auto;margin:0;}.envio .esc a{color:var(--navy);cursor:pointer;font-size:12.5px;text-decoration:underline;}
 .envio .b{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
 .btn-wa{display:inline-flex;align-items:center;gap:7px;background:#25D366;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;font-weight:bold;cursor:pointer;font-family:inherit;}
 .btn-em{display:inline-flex;align-items:center;gap:7px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;font-family:inherit;}
@@ -55,7 +56,12 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <div class="info"><h3>Apresentação Importadores</h3><p>Programa de Importadoras Oficiais da Commanderie — cotas Ouro/Prata, benefícios, Loja Bordeaux, 4 eventos. Apresentação animada com narração e música. Para enviar a importadoras.</p></div>
     <div class="acts"><a class="btn-s" href="/apresentacao-importadores/" target="_blank" rel="noopener">&#9654; Apresentação</a><a class="btn-g" href="/importador-inscricao.html" target="_blank" rel="noopener">Formulário de inscrição</a><a class="btn-g" href="importadores.html" target="_blank" rel="noopener">Programa (web)</a></div>
     <div class="envio">
-      <div class="t">Enviar as 3 coisas para uma importadora</div>
+      <div class="t">Enviar para uma importadora</div>
+      <div class="esc"><span>O que enviar:</span>
+        <label><input type="checkbox" id="cA" checked onchange="trocou()"> &#9654; Apresentação</label>
+        <label><input type="checkbox" id="cP" checked onchange="trocou()"> &#128203; Programa (web)</label>
+        <label><input type="checkbox" id="cF" checked onchange="trocou()"> &#9997;&#65039; Formulário de inscrição</label>
+        <a onclick="todos(true)">todos</a></div>
       <div class="f">
         <input id="eNome" placeholder="Nome do contato (opcional)" oninput="montar()">
         <input id="eMail" type="email" placeholder="E-mail (para enviar por e-mail)">
@@ -68,7 +74,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
         <button class="btn-cp" onclick="copiarTxt()">&#128203; Copiar texto</button>
         <span id="envMsg"></span>
       </div>
-      <p class="note" style="text-align:left;margin-top:8px;">A mensagem leva os 3 links: apresentação, programa (web) e formulário de inscrição. Pode editar o texto antes de enviar.<br><b>E-mail:</b> ao clicar, a mensagem é copiada já com os <b>botões e links funcionando</b> e o seu e-mail abre com destinatário e assunto — é só clicar no corpo e <b>colar (Cmd+V / Ctrl+V)</b>.</p>
+      <p class="note" style="text-align:left;margin-top:8px;">Marque o que quer enviar: os 3 juntos ou só um (por exemplo, só o formulário). Pode editar o texto antes de enviar.<br><b>E-mail:</b> ao clicar, a mensagem é copiada já com os <b>botões e links funcionando</b> e o seu e-mail abre com destinatário e assunto — é só clicar no corpo e <b>colar (Cmd+V / Ctrl+V)</b>.</p>
     </div>
   </div>
 
@@ -77,18 +83,23 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 </div>
 <script>
 var SITE="https://commanderiedebordeaux.com.br",EDITADO=false;
-function texto(nome){return (nome?("Olá, "+nome+"!"):"Olá!")+"\n\n"
- +"A Commanderie de Bordeaux do Brasil tem o prazer de apresentar o Programa de Importadoras Oficiais da Commanderie: cotas Ouro e Prata, benefícios, a Loja Bordeaux e quatro eventos por ano com os nossos Comendadores.\n\n"
- +"▶ Apresentação (com narração):\n"+SITE+"/apresentacao-importadores/\n\n"
- +"📋 Programa completo (web):\n"+SITE+"/importadores.html\n\n"
- +"✍️ Formulário de inscrição:\n"+SITE+"/importador-inscricao.html\n\n"
- +"Ficamos à disposição para qualquer dúvida.\n\n"
- +"Commanderie de Bordeaux do Brasil\nBordeaux, toujours Bordeaux.";}
+var ITENS=[["cA","Apresentação (com narração)","/apresentacao-importadores/","▶"],["cP","Programa completo (web)","/importadores.html","📋"],["cF","Formulário de inscrição","/importador-inscricao.html","✍️"]];
+function sel(){return ITENS.filter(function(x){return document.getElementById(x[0]).checked;});}
+function texto(nome){var S=sel();var so=S.length===1?S[0][0]:"";
+ var intro=so==="cF"?"Segue o formulário de inscrição no Programa de Importadoras Oficiais da Commanderie de Bordeaux do Brasil."
+  :so==="cA"?"Segue a apresentação do Programa de Importadoras Oficiais da Commanderie de Bordeaux do Brasil."
+  :so==="cP"?"Segue o programa completo de Importadoras Oficiais da Commanderie de Bordeaux do Brasil."
+  :"A Commanderie de Bordeaux do Brasil tem o prazer de apresentar o Programa de Importadoras Oficiais da Commanderie: cotas Ouro e Prata, benefícios, a Loja Bordeaux e quatro eventos por ano com os nossos Comendadores.";
+ return (nome?("Olá, "+nome+"!"):"Olá!")+"\n\n"+intro+"\n\n"
+  +S.map(function(x){return x[3]+" "+x[1]+":\n"+SITE+x[2];}).join("\n\n")+"\n\n"
+  +"Ficamos à disposição para qualquer dúvida.\n\nCommanderie de Bordeaux do Brasil\nBordeaux, toujours Bordeaux.";}
+function trocou(){if(!sel().length){aviso("Escolha pelo menos um item.");}EDITADO=false;montar();}
+function todos(v){ITENS.forEach(function(x){document.getElementById(x[0]).checked=v;});trocou();}
 function montar(){if(EDITADO)return;document.getElementById("eTxt").value=texto(document.getElementById("eNome").value.trim());}
 document.getElementById("eTxt").addEventListener("input",function(){EDITADO=true;});
 montar();
 function aviso(t){var m=document.getElementById("envMsg");m.textContent=t;clearTimeout(window._em);window._em=setTimeout(function(){m.textContent="";},4000);}
-function enviarWa(){var t=document.getElementById("eTxt").value;var tel=(document.getElementById("eTel").value||"").replace(/\D/g,"");if(tel&&tel.length<=11)tel="55"+tel;window.open("https://wa.me/"+(tel||"")+"?text="+encodeURIComponent(t),"_blank");}
+function enviarWa(){if(!sel().length){aviso("Escolha pelo menos um item para enviar.");return;}var t=document.getElementById("eTxt").value;var tel=(document.getElementById("eTel").value||"").replace(/\D/g,"");if(tel&&tel.length<=11)tel="55"+tel;window.open("https://wa.me/"+(tel||"")+"?text="+encodeURIComponent(t),"_blank");}
 function escH(x){return (""+x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function htmlEmail(t){var L={};L[SITE+"/apresentacao-importadores/"]="▶ Assistir à apresentação";L[SITE+"/importadores.html"]="📋 Ver o programa completo";L[SITE+"/importador-inscricao.html"]="✍️ Preencher o formulário de inscrição";
   var linhas=t.split("\n"),out=[];for(var i=0;i<linhas.length;i++){var ln=linhas[i].trim();
@@ -96,11 +107,11 @@ function htmlEmail(t){var L={};L[SITE+"/apresentacao-importadores/"]="▶ Assist
     if(/^https?:\/\//.test(ln)){out.push('<p style="margin:0 0 10px;"><a href="'+ln+'" style="color:#1e2a56;">'+escH(ln)+'</a></p>');continue;}
     out.push(ln?('<p style="margin:0 0 10px;">'+escH(ln).replace(/(https?:\/\/\S+)/g,'<a href="$1" style="color:#1e2a56;">$1</a>')+'</p>'):'');}
   return '<div style="font-family:Georgia,serif;font-size:15px;color:#2a2620;line-height:1.55;">'+out.join("")+'</div>';}
-function enviarEmail(){var t=document.getElementById("eTxt").value;var to=(document.getElementById("eMail").value||"").trim();var assunto="Programa de Importadoras Oficiais — Commanderie de Bordeaux do Brasil";
+function enviarEmail(){if(!sel().length){aviso("Escolha pelo menos um item para enviar.");return;}var t=document.getElementById("eTxt").value;var to=(document.getElementById("eMail").value||"").trim();var S1=sel();var assunto=(S1.length===1&&S1[0][0]==="cF"?"Formulário de inscrição — ":S1.length===1&&S1[0][0]==="cA"?"Apresentação — ":"")+"Programa de Importadoras Oficiais — Commanderie de Bordeaux do Brasil";
   var mail="mailto:"+encodeURIComponent(to).replace(/%40/g,"@")+"?subject="+encodeURIComponent(assunto);
   var html=htmlEmail(t);
   if(navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([t],{type:"text/plain"})})]).then(function(){aviso("✔ Mensagem copiada com os links. No e-mail que abriu, clique no corpo e cole (Cmd+V / Ctrl+V).");setTimeout(function(){location.href=mail;},400);}).catch(function(){location.href=mail+"&body="+encodeURIComponent(t);});}
   else location.href=mail+"&body="+encodeURIComponent(t);}
-function copiarTxt(){var t=document.getElementById("eTxt").value;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){aviso("✔ Texto copiado");}).catch(function(){var a=document.getElementById("eTxt");a.select();document.execCommand("copy");aviso("✔ Texto copiado");});}
+function copiarTxt(){if(!sel().length){aviso("Escolha pelo menos um item para enviar.");return;}var t=document.getElementById("eTxt").value;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){aviso("✔ Texto copiado");}).catch(function(){var a=document.getElementById("eTxt");a.select();document.execCommand("copy");aviso("✔ Texto copiado");});}
 </script>
 </body></html>

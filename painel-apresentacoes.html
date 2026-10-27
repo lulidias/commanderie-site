@@ -74,7 +74,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
         <button class="btn-cp" onclick="copiarTxt()">&#128203; Copiar texto</button>
         <span id="envMsg"></span>
       </div>
-      <p class="note" style="text-align:left;margin-top:8px;">Marque o que quer enviar: os 3 juntos ou só um (por exemplo, só o formulário). Pode editar o texto antes de enviar.<br><b>E-mail:</b> ao clicar, a mensagem é copiada já com os <b>botões e links funcionando</b> e o seu e-mail abre com destinatário e assunto — é só clicar no corpo e <b>colar (Cmd+V / Ctrl+V)</b>.</p>
+      <p class="note" style="text-align:left;margin-top:8px;">Marque o que quer enviar: os 3 juntos ou só um (por exemplo, só o formulário). Pode editar o texto antes de enviar.<br><b>E-mail:</b> o seu e-mail abre já com destinatário, assunto, o texto e os links clicáveis. Se preferir a versão com botões azuis, apague o texto do e-mail e cole (Cmd+V / Ctrl+V) — ela já fica copiada.</p>
     </div>
   </div>
 
@@ -108,10 +108,10 @@ function htmlEmail(t){var L={};L[SITE+"/apresentacao-importadores/"]="▶ Assist
     out.push(ln?('<p style="margin:0 0 10px;">'+escH(ln).replace(/(https?:\/\/\S+)/g,'<a href="$1" style="color:#1e2a56;">$1</a>')+'</p>'):'');}
   return '<div style="font-family:Georgia,serif;font-size:15px;color:#2a2620;line-height:1.55;">'+out.join("")+'</div>';}
 function enviarEmail(){if(!sel().length){aviso("Escolha pelo menos um item para enviar.");return;}var t=document.getElementById("eTxt").value;var to=(document.getElementById("eMail").value||"").trim();var S1=sel();var assunto=(S1.length===1&&S1[0][0]==="cF"?"Formulário de inscrição — ":S1.length===1&&S1[0][0]==="cA"?"Apresentação — ":"")+"Programa de Importadoras Oficiais — Commanderie de Bordeaux do Brasil";
-  var mail="mailto:"+encodeURIComponent(to).replace(/%40/g,"@")+"?subject="+encodeURIComponent(assunto);
-  var html=htmlEmail(t);
-  if(navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([t],{type:"text/plain"})})]).then(function(){aviso("✔ Mensagem copiada com os links. No e-mail que abriu, clique no corpo e cole (Cmd+V / Ctrl+V).");setTimeout(function(){location.href=mail;},400);}).catch(function(){location.href=mail+"&body="+encodeURIComponent(t);});}
-  else location.href=mail+"&body="+encodeURIComponent(t);}
+  var mail="mailto:"+encodeURIComponent(to).replace(/%40/g,"@")+"?subject="+encodeURIComponent(assunto)+"&body="+encodeURIComponent(t.replace(/\n/g,"\r\n"));
+  try{if(navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([htmlEmail(t)],{type:"text/html"}),"text/plain":new Blob([t],{type:"text/plain"})})]).catch(function(){});}}catch(e){}
+  aviso("✔ O e-mail abriu com o texto e os links. Para enviar com botões, apague o texto e cole (Cmd+V / Ctrl+V).");
+  location.href=mail;}
 function copiarTxt(){if(!sel().length){aviso("Escolha pelo menos um item para enviar.");return;}var t=document.getElementById("eTxt").value;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){aviso("✔ Texto copiado");}).catch(function(){var a=document.getElementById("eTxt");a.select();document.execCommand("copy");aviso("✔ Texto copiado");});}
 </script>
 </body></html>

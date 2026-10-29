@@ -39,6 +39,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .envio .f{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-bottom:8px;}
 .envio input,.envio textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:13.5px;font-family:inherit;background:#fff;color:var(--ink);}
 .envio textarea{min-height:190px;line-height:1.5;resize:vertical;}
+.link1{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#f6efdc;border:1px solid #e6d9b3;border-radius:12px;padding:12px 14px;margin-bottom:16px;}.link1 b{display:block;font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:16px;margin-top:4px;word-break:break-all;}.link1 small{display:block;color:#8a8270;font-size:12px;margin-top:2px;}.link1 .la{display:flex;gap:8px;}
 .envio .esc{display:flex;gap:8px 14px;flex-wrap:wrap;align-items:center;font-size:13.5px;color:#5b5446;margin-bottom:10px;}.envio .esc span{color:#8a8270;font-size:12.5px;}.envio .esc label{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 12px;cursor:pointer;}.envio .esc input{width:auto;margin:0;}.envio .esc a{color:var(--navy);cursor:pointer;font-size:12.5px;text-decoration:underline;}
 .envio .b{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
 .btn-wa{display:inline-flex;align-items:center;gap:7px;background:#25D366;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;font-weight:bold;cursor:pointer;font-family:inherit;}
@@ -56,6 +57,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <div class="info"><h3>Apresentação Importadores</h3><p>Programa de Importadoras Oficiais da Commanderie — cotas Ouro/Prata, benefícios, Loja Bordeaux, 4 eventos. Apresentação animada com narração e música. Para enviar a importadoras.</p></div>
     <div class="acts"><a class="btn-s" href="/apresentacao-importadores/" target="_blank" rel="noopener">&#9654; Apresentação</a><a class="btn-g" href="/importador-inscricao.html" target="_blank" rel="noopener">Formulário de inscrição</a><a class="btn-g" href="importadores.html" target="_blank" rel="noopener">Programa (web)</a></div>
     <div class="envio">
+      <div class="link1"><div><span class="t" style="margin:0;">Página única para as importadoras</span><b>commanderiedebordeaux.com.br/importadoras-oficiais.html</b><small>Os 3 juntos numa página só: apresentação, programa e formulário.</small></div><div class="la"><a class="btn-s" href="importadoras-oficiais.html" target="_blank" rel="noopener">Abrir</a><button class="btn-cp" onclick="copiarLink()">Copiar link</button></div></div>
       <div class="t">Enviar para uma importadora</div>
       <div class="esc"><span>O que enviar:</span>
         <label><input type="checkbox" id="cA" checked onchange="trocou()"> &#9654; Apresentação</label>
@@ -84,6 +86,8 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <script>
 var SITE="https://commanderiedebordeaux.com.br",EDITADO=false;
 var ITENS=[["cA","Apresentação (com narração)","/apresentacao-importadores/","▶"],["cP","Programa completo (web)","/importadores.html","📋"],["cF","Formulário de inscrição","/importador-inscricao.html","✍️"]];
+var PAG="/importadoras-oficiais.html";
+function copiarLink(){var t=SITE+PAG;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){aviso("✔ Link copiado");}).catch(function(){prompt("Copie o link:",t);});}
 function sel(){return ITENS.filter(function(x){return document.getElementById(x[0]).checked;});}
 function texto(nome){var S=sel();var so=S.length===1?S[0][0]:"";
  var intro=so==="cF"?"Segue o formulário de inscrição no Programa de Importadoras Oficiais da Commanderie de Bordeaux do Brasil."
@@ -91,7 +95,7 @@ function texto(nome){var S=sel();var so=S.length===1?S[0][0]:"";
   :so==="cP"?"Segue o programa completo de Importadoras Oficiais da Commanderie de Bordeaux do Brasil."
   :"A Commanderie de Bordeaux do Brasil tem o prazer de apresentar o Programa de Importadoras Oficiais da Commanderie: cotas Ouro e Prata, benefícios, a Loja Bordeaux e quatro eventos por ano com os nossos Comendadores.";
  return (nome?("Olá, "+nome+"!"):"Olá!")+"\n\n"+intro+"\n\n"
-  +S.map(function(x){return x[3]+" "+x[1]+":\n"+SITE+x[2];}).join("\n\n")+"\n\n"
+  +(S.length===3?("Tudo em uma página só — apresentação, programa completo e formulário de inscrição:\n"+SITE+PAG):S.map(function(x){return x[3]+" "+x[1]+":\n"+SITE+x[2];}).join("\n\n"))+"\n\n"
   +"Ficamos à disposição para qualquer dúvida.\n\nCommanderie de Bordeaux do Brasil\nBordeaux, toujours Bordeaux.";}
 function trocou(){if(!sel().length){aviso("Escolha pelo menos um item.");}EDITADO=false;montar();}
 function todos(v){ITENS.forEach(function(x){document.getElementById(x[0]).checked=v;});trocou();}
@@ -101,7 +105,7 @@ montar();
 function aviso(t){var m=document.getElementById("envMsg");m.textContent=t;clearTimeout(window._em);window._em=setTimeout(function(){m.textContent="";},4000);}
 function enviarWa(){if(!sel().length){aviso("Escolha pelo menos um item para enviar.");return;}var t=document.getElementById("eTxt").value;var tel=(document.getElementById("eTel").value||"").replace(/\D/g,"");if(tel&&tel.length<=11)tel="55"+tel;window.open("https://wa.me/"+(tel||"")+"?text="+encodeURIComponent(t),"_blank");}
 function escH(x){return (""+x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function htmlEmail(t){var L={};L[SITE+"/apresentacao-importadores/"]="▶ Assistir à apresentação";L[SITE+"/importadores.html"]="📋 Ver o programa completo";L[SITE+"/importador-inscricao.html"]="✍️ Preencher o formulário de inscrição";
+function htmlEmail(t){var L={};L[SITE+"/apresentacao-importadores/"]="▶ Assistir à apresentação";L[SITE+"/importadores.html"]="📋 Ver o programa completo";L[SITE+"/importadoras-oficiais.html"]="Abrir a página das Importadoras Oficiais";L[SITE+"/importador-inscricao.html"]="✍️ Preencher o formulário de inscrição";
   var linhas=t.split("\n"),out=[];for(var i=0;i<linhas.length;i++){var ln=linhas[i].trim();
     if(L[ln]){out.push('<p style="margin:6px 0 14px;"><a href="'+ln+'" style="display:inline-block;background:#1e2a56;color:#ffffff;text-decoration:none;border-radius:8px;padding:10px 18px;font-family:Arial,sans-serif;font-size:14px;">'+L[ln]+'</a></p>');if(out.length>1&&/:\s*$/.test(linhas[i-1]||""))out.splice(out.length-2,1);continue;}
     if(/^https?:\/\//.test(ln)){out.push('<p style="margin:0 0 10px;"><a href="'+ln+'" style="color:#1e2a56;">'+escH(ln)+'</a></p>');continue;}

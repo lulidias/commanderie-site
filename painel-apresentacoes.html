@@ -19,105 +19,100 @@
 *{box-sizing:border-box;}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
 .dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
-.dtop img{width:34px;}
-.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
-.dtop .back{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;transition:all .15s ease;}.dtop .back:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.dtop img{width:34px;}.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;}
 .dhead{text-align:center;padding:34px 20px 4px;}
 .dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
 .dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:32px;margin:6px 0 2px;}
-.wrap{max-width:760px;margin:0 auto;padding:18px 20px 60px;}
-.pcard{background:#fffdf7;border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:16px;padding:20px 22px;margin-bottom:16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;box-shadow:0 6px 18px rgba(40,30,10,.06);}
-.pcard .ico{flex:none;width:54px;height:54px;border-radius:13px;background:#f6efdc;border:1px solid #e6d9b3;color:#b08a3a;display:flex;align-items:center;justify-content:center;}
-.pcard .info{flex:1;min-width:200px;}
-.pcard h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:19px;margin:0 0 3px;}
-.pcard p{font-size:13px;color:#8a8270;margin:0;}
-.pcard .acts{display:flex;gap:8px;flex-wrap:wrap;}
-.btn-s{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;}
-.btn-g{display:inline-block;background:transparent;color:var(--navy);border:1px solid var(--gold);border-radius:10px;padding:9px 16px;font-size:13.5px;text-decoration:none;}
-.envio{flex-basis:100%;border-top:1px solid #ece0c2;padding-top:14px;margin-top:2px;}
-.envio .t{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
-.envio .f{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-bottom:8px;}
-.envio input,.envio textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:13.5px;font-family:inherit;background:#fff;color:var(--ink);}
-.envio textarea{min-height:190px;line-height:1.5;resize:vertical;}
-.link1{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#f6efdc;border:1px solid #e6d9b3;border-radius:12px;padding:12px 14px;margin-bottom:16px;}.link1 b{display:block;font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:16px;margin-top:4px;word-break:break-all;}.link1 small{display:block;color:#8a8270;font-size:12px;margin-top:2px;}.link1 .la{display:flex;gap:8px;}
-.envio .esc{display:flex;gap:8px 14px;flex-wrap:wrap;align-items:center;font-size:13.5px;color:#5b5446;margin-bottom:10px;}.envio .esc span{color:#8a8270;font-size:12.5px;}.envio .esc label{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 12px;cursor:pointer;}.envio .esc input{width:auto;margin:0;}.envio .esc a{color:var(--navy);cursor:pointer;font-size:12.5px;text-decoration:underline;}
-.envio .b{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
-.btn-wa{display:inline-flex;align-items:center;gap:7px;background:#25D366;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;font-weight:bold;cursor:pointer;font-family:inherit;}
-.btn-em{display:inline-flex;align-items:center;gap:7px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;font-family:inherit;}
-.btn-cp{background:transparent;color:var(--navy);border:1px solid var(--gold);border-radius:10px;padding:10px 16px;font-size:13.5px;cursor:pointer;font-family:inherit;}
-#envMsg{font-size:12.5px;color:#2f6b3a;align-self:center;}
-.note{font-size:12.5px;color:#8a8270;text-align:center;margin-top:6px;}
+.dhead p{font-size:13.5px;color:#8a8270;margin:4px 0 0;}
+.wrap{max-width:820px;margin:0 auto;padding:18px 20px 60px;}
+.pcard{background:#fffdf7;border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:16px;padding:22px 24px;margin-bottom:16px;box-shadow:0 6px 18px rgba(40,30,10,.06);}
+.pcard .top{display:flex;gap:16px;align-items:flex-start;}
+.pcard .ico{flex:none;width:54px;height:54px;border-radius:13px;background:var(--navy);color:#f3e3bd;display:flex;align-items:center;justify-content:center;}
+.pcard h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:22px;margin:0 0 4px;}
+.pcard p{font-size:13.5px;color:#6a634f;margin:0;line-height:1.55;}
+.pcard .url{display:block;font-family:Georgia,serif;color:var(--navy);font-size:15px;margin-top:8px;word-break:break-all;text-decoration:none;}
+.pcard .ed{margin-left:auto;display:flex;gap:10px;font-size:12px;white-space:nowrap;}
+.pcard .ed a{color:#8a6a1f;cursor:pointer;}.pcard .ed a.r{color:var(--red);}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.b{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:10px;padding:11px 17px;font-size:14px;cursor:pointer;font-family:inherit;text-decoration:none;}
+.b.s{background:var(--navy);color:#fff;}.b.g{background:transparent;color:var(--navy);border:1px solid var(--gold);}
+.b.wa{background:#25D366;color:#fff;font-weight:bold;}
+.envio{display:none;margin-top:14px;border-top:1px solid #ece0c2;padding-top:14px;}
+.envio.on{display:block;}
+.f{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-bottom:8px;}
+input,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:13.5px;font-family:inherit;background:#fff;color:var(--ink);}
+textarea{min-height:150px;line-height:1.5;resize:vertical;}
+.new{border:1.5px dashed var(--gold);border-radius:16px;padding:18px 22px;text-align:center;background:transparent;width:100%;cursor:pointer;color:var(--navy);font-size:15px;font-family:Georgia,serif;}
+.modal{position:fixed;inset:0;background:rgba(20,29,56,.55);z-index:50;display:none;align-items:center;justify-content:center;padding:16px;}
+.box{background:#fffdf7;border-radius:14px;max-width:520px;width:100%;padding:20px 22px;max-height:92vh;overflow:auto;}
+.box h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;margin:0 0 10px;font-size:20px;}
+.box label{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin:10px 0 4px;}
+.hint{font-size:12px;color:#8a8270;margin-top:6px;}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#2f6b3a;color:#fff;padding:11px 20px;border-radius:9px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:60;max-width:90vw;text-align:center;}
+.state{text-align:center;padding:40px 20px;color:#6a634f;}
 </style></head><body>
 <div class="dtop"><a href="painel-conselho.html" style="display:inline-flex;align-items:center;" title="Painel do Conselho"><img src="img/brasao.png" alt="Brasão"></a><b>Apresentações</b><a class="back" href="painel-conselho.html">&#8592; Voltar</a></div>
-<div class="dhead"><div class="k">Conselho Diretor</div><h1>Apresentações</h1></div>
+<div class="dhead"><div class="k">Conselho Diretor</div><h1>Apresentações</h1><p>Páginas e materiais para enviar por WhatsApp ou e-mail.</p></div>
 <div class="wrap">
-
-  <div class="pcard">
-    <div class="ico"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h6M7 12h10"/></svg></div>
-    <div class="info"><h3>Apresentação Importadores</h3><p>Programa de Importadoras Oficiais da Commanderie — cotas Ouro/Prata, benefícios, Loja Bordeaux, 4 eventos. Apresentação animada com narração e música. Para enviar a importadoras.</p></div>
-    <div class="acts"><a class="btn-s" href="/apresentacao-importadores/" target="_blank" rel="noopener">&#9654; Apresentação</a><a class="btn-g" href="/importador-inscricao.html" target="_blank" rel="noopener">Formulário de inscrição</a><a class="btn-g" href="importadores.html" target="_blank" rel="noopener">Programa (web)</a></div>
-    <div class="envio">
-      <div class="link1"><div><span class="t" style="margin:0;">Página única para as importadoras</span><b>commanderiedebordeaux.com.br/importadoras-oficiais.html</b><small>Os 3 juntos numa página só: apresentação, programa e formulário.</small></div><div class="la"><a class="btn-s" href="importadoras-oficiais.html" target="_blank" rel="noopener">Abrir</a><button class="btn-cp" onclick="copiarLink()">Copiar link</button></div></div>
-      <div class="t">Enviar para uma importadora</div>
-      <div class="esc"><span>O que enviar:</span>
-        <label><input type="checkbox" id="cA" checked onchange="trocou()"> &#9654; Apresentação</label>
-        <label><input type="checkbox" id="cP" checked onchange="trocou()"> &#128203; Programa (web)</label>
-        <label><input type="checkbox" id="cF" checked onchange="trocou()"> &#9997;&#65039; Formulário de inscrição</label>
-        <a onclick="todos(true)">todos</a></div>
-      <div class="f">
-        <input id="eNome" placeholder="Nome do contato (opcional)" oninput="montar()">
-        <input id="eMail" type="email" placeholder="E-mail (para enviar por e-mail)">
-        <input id="eTel" type="tel" placeholder="WhatsApp com DDD (opcional)">
-      </div>
-      <textarea id="eTxt"></textarea>
-      <div class="b">
-        <button class="btn-wa" onclick="enviarWa()"><svg viewBox="0 0 24 24" width="17" height="17" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>Enviar pelo WhatsApp</button>
-        <button class="btn-em" onclick="enviarEmail('gmail')">&#9993; E-mail pelo Gmail</button><button class="btn-em" onclick="enviarEmail('outlook')">&#9993; E-mail pelo Outlook</button><button class="btn-cp" onclick="enviarEmail()">&#9993; Outro programa de e-mail</button>
-        <button class="btn-cp" onclick="copiarTxt()">&#128203; Copiar texto</button>
-        <span id="envMsg"></span>
-      </div>
-      <p class="note" style="text-align:left;margin-top:8px;">Marque o que quer enviar: os 3 juntos ou só um (por exemplo, só o formulário). Pode editar o texto antes de enviar.<br><b>E-mail:</b> escolha <b>Gmail</b> ou <b>Outlook</b> — abre a mensagem pronta (destinatário, assunto, texto e links) no navegador. "Outro programa" usa o e-mail padrão do computador. Se preferir a versão com botões azuis, apague o texto do e-mail e cole (Cmd+V / Ctrl+V) — ela já fica copiada.</p>
-    </div>
-  </div>
-
-  <p class="note">As apresentações animadas são atualizadas direto na página — o link aqui já abre sempre a versão mais recente.</p>
-
+  <div id="lista"><div class="state">Carregando…</div></div>
+  <button class="new" onclick="abrirForm()">+ Nova apresentação</button>
 </div>
+<div class="modal" id="mF"><div class="box">
+  <h3 id="fTit">Nova apresentação</h3>
+  <label>Título *</label><input id="fT" placeholder="Ex.: Capítulo XI · Convite">
+  <label>Descrição</label><textarea id="fD" style="min-height:70px;" placeholder="Uma frase sobre o material"></textarea>
+  <label>Link (endereço da página)</label><input id="fU" placeholder="https://commanderiedebordeaux.com.br/...">
+  <label>ou enviar um PDF</label><input id="fP" type="file" accept="application/pdf">
+  <label>Mensagem que acompanha o link (opcional)</label><textarea id="fM" style="min-height:80px;" placeholder="Texto que vai antes do link no WhatsApp/e-mail"></textarea>
+  <div class="hint" id="fMsg"></div>
+  <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px;"><button class="b g" onclick="fechar()">Cancelar</button><button class="b s" onclick="salvar()">Salvar</button></div>
+</div></div>
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-var SITE="https://commanderiedebordeaux.com.br",EDITADO=false;
-var ITENS=[["cA","Apresentação (com narração)","/apresentacao-importadores/","▶"],["cP","Programa completo (web)","/importadores.html","📋"],["cF","Formulário de inscrição","/importador-inscricao.html","✍️"]];
-var PAG="/importadoras-oficiais.html";
-function copiarLink(){var t=SITE+PAG;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){aviso("✔ Link copiado");}).catch(function(){prompt("Copie o link:",t);});}
-function sel(){return ITENS.filter(function(x){return document.getElementById(x[0]).checked;});}
-function texto(nome){var S=sel();var so=S.length===1?S[0][0]:"";
- var intro=so==="cF"?"Segue o formulário de inscrição no Programa de Importadoras Oficiais da Commanderie de Bordeaux do Brasil."
-  :so==="cA"?"Segue a apresentação do Programa de Importadoras Oficiais da Commanderie de Bordeaux do Brasil."
-  :so==="cP"?"Segue o programa completo de Importadoras Oficiais da Commanderie de Bordeaux do Brasil."
-  :"A Commanderie de Bordeaux do Brasil tem o prazer de apresentar o Programa de Importadoras Oficiais da Commanderie: cotas Ouro e Prata, benefícios, a Loja Bordeaux e quatro eventos por ano com os nossos Comendadores.";
- return (nome?("Olá, "+nome+"!"):"Olá!")+"\n\n"+intro+"\n\n"
-  +(S.length===3?("Tudo em uma página só — apresentação, programa completo e formulário de inscrição:\n"+SITE+PAG):S.map(function(x){return x[3]+" "+x[1]+":\n"+SITE+x[2];}).join("\n\n"))+"\n\n"
-  +"Ficamos à disposição para qualquer dúvida.\n\nCommanderie de Bordeaux do Brasil\nBordeaux, toujours Bordeaux.";}
-function trocou(){if(!sel().length){aviso("Escolha pelo menos um item.");}EDITADO=false;montar();}
-function todos(v){ITENS.forEach(function(x){document.getElementById(x[0]).checked=v;});trocou();}
-function montar(){if(EDITADO)return;document.getElementById("eTxt").value=texto(document.getElementById("eNome").value.trim());}
-document.getElementById("eTxt").addEventListener("input",function(){EDITADO=true;});
-montar();
-function aviso(t){var m=document.getElementById("envMsg");m.textContent=t;clearTimeout(window._em);window._em=setTimeout(function(){m.textContent="";},4000);}
-function enviarWa(){if(!sel().length){aviso("Escolha pelo menos um item para enviar.");return;}var t=document.getElementById("eTxt").value;var tel=(document.getElementById("eTel").value||"").replace(/\D/g,"");if(tel&&tel.length<=11)tel="55"+tel;window.open("https://wa.me/"+(tel||"")+"?text="+encodeURIComponent(t),"_blank");}
-function escH(x){return (""+x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function htmlEmail(t){var L={};L[SITE+"/apresentacao-importadores/"]="▶ Assistir à apresentação";L[SITE+"/importadores.html"]="📋 Ver o programa completo";L[SITE+"/importadoras-oficiais.html"]="Abrir a página das Importadoras Oficiais";L[SITE+"/importador-inscricao.html"]="✍️ Preencher o formulário de inscrição";
-  var linhas=t.split("\n"),out=[];for(var i=0;i<linhas.length;i++){var ln=linhas[i].trim();
-    if(L[ln]){out.push('<p style="margin:6px 0 14px;"><a href="'+ln+'" style="display:inline-block;background:#1e2a56;color:#ffffff;text-decoration:none;border-radius:8px;padding:10px 18px;font-family:Arial,sans-serif;font-size:14px;">'+L[ln]+'</a></p>');if(out.length>1&&/:\s*$/.test(linhas[i-1]||""))out.splice(out.length-2,1);continue;}
-    if(/^https?:\/\//.test(ln)){out.push('<p style="margin:0 0 10px;"><a href="'+ln+'" style="color:#1e2a56;">'+escH(ln)+'</a></p>');continue;}
-    out.push(ln?('<p style="margin:0 0 10px;">'+escH(ln).replace(/(https?:\/\/\S+)/g,'<a href="$1" style="color:#1e2a56;">$1</a>')+'</p>'):'');}
-  return '<div style="font-family:Georgia,serif;font-size:15px;color:#2a2620;line-height:1.55;">'+out.join("")+'</div>';}
-function enviarEmail(via){if(!sel().length){aviso("Escolha pelo menos um item para enviar.");return;}var t=document.getElementById("eTxt").value;var to=(document.getElementById("eMail").value||"").trim();var S1=sel();var assunto=(S1.length===1&&S1[0][0]==="cF"?"Formulário de inscrição — ":S1.length===1&&S1[0][0]==="cA"?"Apresentação — ":"")+"Programa de Importadoras Oficiais — Commanderie de Bordeaux do Brasil";
-  var mail="mailto:"+encodeURIComponent(to).replace(/%40/g,"@")+"?subject="+encodeURIComponent(assunto)+"&body="+encodeURIComponent(t.replace(/\n/g,"\r\n"));
-  try{if(navigator.clipboard&&window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([htmlEmail(t)],{type:"text/html"}),"text/plain":new Blob([t],{type:"text/plain"})})]).catch(function(){});}}catch(e){}
-  aviso("✔ O e-mail abriu com o texto e os links. Para enviar com botões, apague o texto e cole (Cmd+V / Ctrl+V).");
-  if(via==="gmail"){window.open("https://mail.google.com/mail/?view=cm&fs=1&to="+encodeURIComponent(to)+"&su="+encodeURIComponent(assunto)+"&body="+encodeURIComponent(t),"_blank");return;}
-  if(via==="outlook"){window.open("https://outlook.office.com/mail/deeplink/compose?to="+encodeURIComponent(to)+"&subject="+encodeURIComponent(assunto)+"&body="+encodeURIComponent(t),"_blank");return;}
-  location.href=mail;}
-function copiarTxt(){if(!sel().length){aviso("Escolha pelo menos um item para enviar.");return;}var t=document.getElementById("eTxt").value;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){aviso("✔ Texto copiado");}).catch(function(){var a=document.getElementById("eTxt");a.select();document.execCommand("copy");aviso("✔ Texto copiado");});}
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+var PADRAO=[{id:"padrao",titulo:"Importadoras Oficiais",descricao:"Programa de Importadoras Oficiais da Commanderie: apresentação com narração, programa completo e formulário de inscrição, tudo numa página só.",url:"https://commanderiedebordeaux.com.br/importadoras-oficiais.html",mensagem:"A Commanderie de Bordeaux do Brasil tem o prazer de apresentar o Programa de Importadoras Oficiais: cotas Ouro e Prata, benefícios, a Loja Bordeaux e quatro eventos por ano com os nossos Comendadores. Na página abaixo estão a apresentação, o programa completo e o formulário de inscrição."}];
+var L=[],TEM_TAB=true,EDIT=null;
+function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function toast(t){var e=document.getElementById("toast");e.textContent=t;e.style.opacity=1;clearTimeout(e._t);e._t=setTimeout(function(){e.style.opacity=0;},4200);}
+async function carregar(){var q=await sb.from("apresentacoes").select("*").order("ordem",{ascending:true}).order("created_at",{ascending:true});
+  if(q.error){TEM_TAB=false;L=PADRAO;}else{L=q.data&&q.data.length?q.data:PADRAO;}render();}
+var IC_P='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M10 8.5v5l4-2.5z"/></svg>';
+var WA='<svg viewBox="0 0 24 24" width="17" height="17" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>';
+function render(){document.getElementById("lista").innerHTML=L.map(function(a,i){var curto=(a.url||"").replace(/^https?:\/\//,"");
+  return '<div class="pcard"><div class="top"><div class="ico">'+IC_P+'</div><div style="flex:1;min-width:0;"><h3>'+esc(a.titulo)+'</h3><p>'+esc(a.descricao||"")+'</p><a class="url" href="'+esc(a.url)+'" target="_blank" rel="noopener">'+esc(curto)+'</a></div>'
+   +(TEM_TAB&&a.id!=="padrao"?'<div class="ed"><a onclick="abrirForm('+i+')">editar</a><a class="r" onclick="remover('+i+')">remover</a></div>':'')+'</div>'
+   +'<div class="acts"><a class="b s" href="'+esc(a.url)+'" target="_blank" rel="noopener">Abrir</a><button class="b wa" onclick="abrirEnvio('+i+',\'wa\')">'+WA+'WhatsApp</button><button class="b s" onclick="abrirEnvio('+i+',\'mail\')">&#9993; E-mail</button><button class="b g" onclick="copiar(\''+esc(a.url)+'\',\'✔ Link copiado\')">Copiar link</button></div>'
+   +'<div class="envio" id="env'+i+'"><div class="f"><input id="n'+i+'" placeholder="Nome do contato (opcional)" oninput="montar('+i+')"><input id="e'+i+'" type="email" placeholder="E-mail"><input id="t'+i+'" type="tel" placeholder="WhatsApp com DDD (opcional)"></div><textarea id="m'+i+'"></textarea>'
+   +'<div class="acts"><button class="b wa" onclick="viaWa('+i+')">'+WA+'Enviar pelo WhatsApp</button><button class="b s" onclick="viaMail('+i+',\'gmail\')">&#9993; Gmail</button><button class="b s" onclick="viaMail('+i+',\'outlook\')">&#9993; Outlook</button><button class="b g" onclick="viaMail('+i+')">&#9993; Mail / outro</button><button class="b g" onclick="copiar(document.getElementById(\'m'+i+'\').value,\'✔ Texto copiado — cole no e-mail ou na conversa\')">Copiar texto</button></div>'
+   +'<div class="hint">No <b>Mail do Mac</b>, se o texto não aparecer, use <b>Copiar texto</b> e cole no corpo do e-mail (Cmd+V).</div></div></div>';}).join("")
+   +(TEM_TAB?"":'<div class="hint" style="text-align:center;margin-bottom:12px;">Para criar outras apresentações, rode o SQL <b>apresentacoes.sql</b> no Supabase.</div>');}
+function texto(i){var a=L[i],n=(document.getElementById("n"+i)||{}).value||"";n=n.trim();
+  return (n?("Olá, "+n+"!"):"Olá!")+"\n\n"+(a.mensagem||("Segue: "+a.titulo+"."))+"\n\n"+a.url+"\n\nFicamos à disposição para qualquer dúvida.\n\nCommanderie de Bordeaux do Brasil\nBordeaux, toujours Bordeaux.";}
+function montar(i){document.getElementById("m"+i).value=texto(i);}
+function abrirEnvio(i,modo){var e=document.getElementById("env"+i);var ja=e.classList.contains("on");document.querySelectorAll(".envio").forEach(function(x){x.classList.remove("on");});if(!ja||e._modo!==modo){e.classList.add("on");e._modo=modo;if(!document.getElementById("m"+i).value)montar(i);document.getElementById(modo==="wa"?"t"+i:"e"+i).focus();}}
+function viaWa(i){var t=document.getElementById("m"+i).value;var tel=(document.getElementById("t"+i).value||"").replace(/\D/g,"");if(tel&&tel.length<=11)tel="55"+tel;window.open("https://wa.me/"+tel+"?text="+encodeURIComponent(t),"_blank");}
+function viaMail(i,via){var a=L[i],t=document.getElementById("m"+i).value,to=(document.getElementById("e"+i).value||"").trim(),su=a.titulo+" — Commanderie de Bordeaux do Brasil";
+  try{navigator.clipboard.writeText(t);}catch(e){}
+  if(via==="gmail"){window.open("https://mail.google.com/mail/?view=cm&fs=1&to="+encodeURIComponent(to)+"&su="+encodeURIComponent(su)+"&body="+encodeURIComponent(t),"_blank");return;}
+  if(via==="outlook"){window.open("https://outlook.office.com/mail/deeplink/compose?to="+encodeURIComponent(to)+"&subject="+encodeURIComponent(su)+"&body="+encodeURIComponent(t),"_blank");return;}
+  toast("Texto copiado. Se o e-mail abrir vazio, clique no corpo e cole (Cmd+V).");
+  location.href="mailto:"+encodeURIComponent(to).replace(/%40/g,"@")+"?subject="+encodeURIComponent(su)+"&body="+encodeURIComponent(t.replace(/\n/g,"\r\n"));}
+function copiar(t,msg){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){toast(msg);}).catch(function(){prompt("Copie:",t);});}
+// ---------- criar / editar ----------
+function abrirForm(i){if(!TEM_TAB){toast("Rode o SQL apresentacoes.sql no Supabase para criar apresentações.");return;}EDIT=(i==null)?null:L[i];var a=EDIT||{};
+  document.getElementById("fTit").textContent=EDIT?"Editar apresentação":"Nova apresentação";document.getElementById("fT").value=a.titulo||"";document.getElementById("fD").value=a.descricao||"";document.getElementById("fU").value=a.url||"";document.getElementById("fM").value=a.mensagem||"";document.getElementById("fP").value="";document.getElementById("fMsg").textContent="";document.getElementById("mF").style.display="flex";}
+function fechar(){document.getElementById("mF").style.display="none";}
+async function salvar(){var m=document.getElementById("fMsg");var rec={titulo:document.getElementById("fT").value.trim(),descricao:document.getElementById("fD").value.trim()||null,url:document.getElementById("fU").value.trim(),mensagem:document.getElementById("fM").value.trim()||null};
+  if(!rec.titulo){m.style.color="#8f1d24";m.textContent="Informe o título.";return;}
+  var f=document.getElementById("fP").files[0];
+  if(f){m.style.color="#5b5446";m.textContent="Enviando o PDF…";var path="apresentacoes/"+Date.now()+"_"+f.name.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9._-]+/g,"-");var up=await sb.storage.from("eventos").upload(path,f,{contentType:f.type||"application/pdf",upsert:false});if(up.error){m.style.color="#8f1d24";m.textContent="Erro ao enviar o PDF: "+up.error.message;return;}rec.url=sb.storage.from("eventos").getPublicUrl(path).data.publicUrl;}
+  if(!rec.url){m.style.color="#8f1d24";m.textContent="Coloque o link ou escolha um PDF.";return;}
+  if(!/^https?:\/\//.test(rec.url))rec.url="https://"+rec.url.replace(/^\/+/,"");
+  var r=EDIT?await sb.from("apresentacoes").update(rec).eq("id",EDIT.id):await sb.from("apresentacoes").insert(Object.assign({ordem:(L.length+1)*10},rec));
+  if(r.error){m.style.color="#8f1d24";m.textContent="Erro: "+r.error.message;return;}fechar();carregar();toast("✔ Salvo");}
+async function remover(i){var a=L[i];if(!confirm("Remover \""+a.titulo+"\" da lista de apresentações?"))return;var r=await sb.from("apresentacoes").delete().eq("id",a.id);if(r.error){alert("Erro: "+r.error.message);return;}carregar();}
+carregar();
 </script>
 </body></html>

@@ -111,7 +111,7 @@ async function init(){
   if(q.error&&/evento_videos/.test(q.error.message||""))q=await sb.from("eventos").select("id,tipo,numero,titulo,data,local,realizado,evento_fotos(id,url,ordem)").order("data",{ascending:false});
   if(q.error){document.getElementById("needLogin").style.display="block";document.querySelector("#needLogin p").textContent="Não foi possível carregar ("+q.error.message+").";return;}
   EVS=(q.data||[]).filter(function(e){return e.realizado||(e.data&&e.data<=hoje);}).map(function(e){e.k="ev";e.fotos=(e.evento_fotos||[]).slice().sort(function(a,b){return (a.ordem||0)-(b.ordem||0);}).map(function(f){return f.url;});e.videos=(e.evento_videos||[]).slice().sort(function(a,b){return (""+a.created_at).localeCompare(""+b.created_at);});return e;});
-  try{var ri=await sb.rpc("eventos_institucionais_membros");(ri.data||[]).forEach(function(x){if((x.fotos||[]).length)EVS.push({k:"inst",id:"i_"+x.id,titulo:x.titulo,data:x.data,local:x.local,tipo:"Institucional",fotos:x.fotos,videos:[]});});}catch(e){}
+  try{var ri=await sb.rpc("eventos_institucionais_membros");(ri.data||[]).forEach(function(x){EVS.push({k:"inst",rid:x.id,id:"i_"+x.id,titulo:x.titulo,data:x.data,local:x.local,tipo:"Institucional",fotos:x.fotos||[],videos:x.videos||[]});});}catch(e){}
   EVS.sort(function(a,b){return (""+(b.data||"")).localeCompare(""+(a.data||""));});
   document.getElementById("app").style.display="block";
   var anos=[];EVS.forEach(function(e){var a=(e.data||"").slice(0,4);if(a&&anos.indexOf(a)<0)anos.push(a);});
@@ -132,7 +132,7 @@ function videoHtml(v){var y=ytId(v.url),inner;
   var baixa=(!y&&(v.path||/\.(mp4|mov|webm|m4v)(\?|$)/i.test(v.url)))?("<a class='b g' style='padding:6px 10px;font-size:12px;' onclick='baixar(\""+esc(v.url)+"\",\"video-"+(v.id||"")+".mp4\")'>&#11015; Baixar</a>"):("<a href='"+esc(v.url)+"' target='_blank' rel='noopener' style='color:var(--navy);font-size:12px;'>abrir ›</a>");
   return "<div class='vd'><div class='fr'>"+inner+"</div><div class='vt'><span>"+esc(v.titulo||"Vídeo")+"</span>"+baixa+"</div></div>";}
 function abrir(id){CUR=EVS.find(function(e){return e.id===id;});if(!CUR)return;document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("on",t.id==="t_"+id);});var t=document.getElementById("t_"+id);if(t)t.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});
-  var e=CUR,pode=e.k==="ev";
+  var e=CUR,pode=true;
   var h="<div class='ph'><div><div class='d'>"+esc(fdat(e.data,true))+"</div><h2>"+esc(nomeEv(e))+"</h2>"+(e.local?("<div class='l'>"+esc(e.local)+"</div>"):"")+"</div><div class='acts'>"
     +(e.fotos.length?("<button class='b go' id='bZip' onclick='baixarTodas()'>&#11015; Baixar todas as fotos ("+e.fotos.length+")</button>"):"")
     +"<button class='b wa' onclick='whatsEvento()'>"+WA+"Enviar este evento</button><button class='b g' onclick='copiarLinkEv()'>Copiar link</button>"
@@ -161,7 +161,9 @@ function baixarAtual(){baixar(CUR.fotos[LBI],nomeArq(LBI));}
 document.addEventListener("keydown",function(e){if(document.getElementById("lb").style.display!=="flex")return;if(e.key==="ArrowRight")mover(1);else if(e.key==="ArrowLeft")mover(-1);else if(e.key==="Escape")fecharLb();});
 // ---------- enviar ----------
 function comprimeFoto(f,max,q){return new Promise(function(res){var img=new Image();img.onload=function(){var k=Math.min(1,max/Math.max(img.width,img.height));var c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);c.toBlob(function(b){res(b||f);},"image/jpeg",q);};img.onerror=function(){res(f);};img.src=URL.createObjectURL(f);});}
-async function proposta(rec){var ins=await sb.from("evento_fotos_propostas").insert(rec).select("id").single();if(ins.error)throw ins.error;if(CONS){var r=await sb.rpc("foto_proposta_decidir",{p_id:ins.data.id,p_aprovar:true});if(r.error)throw r.error;}}
+async function proposta(rec){var inst=CUR&&CUR.k==="inst";var tab=inst?"inst_propostas":"evento_fotos_propostas";if(inst){rec.evento_id=CUR.rid;if(!rec.tipo)rec.tipo="foto";}
+  var ins=await sb.from(tab).insert(rec).select("id").single();if(ins.error){if(inst&&/inst_propostas/.test(ins.error.message||""))throw new Error("o Conselho ainda precisa ativar o envio nos eventos institucionais");throw ins.error;}
+  if(CONS){var r=await sb.rpc(inst?"inst_proposta_decidir":"foto_proposta_decidir",{p_id:ins.data.id,p_aprovar:true});if(r.error)throw r.error;}}
 async function enviarFotos(files){if(!files||!files.length||!CUR)return;var ev=CUR.id,ok=0,err="";for(var i=0;i<files.length;i++){toast("Enviando "+(i+1)+" de "+files.length+"…",60000);try{var blob=await comprimeFoto(files[i],2000,0.86);var path="propostas/"+ev+"/"+U.id+"/"+Date.now()+"_"+i+".jpg";var up=await sb.storage.from("eventos").upload(path,blob,{contentType:"image/jpeg",upsert:false});if(up.error)throw up.error;var url=sb.storage.from("eventos").getPublicUrl(path).data.publicUrl;await proposta({evento_id:ev,url:url,path:path});ok++;if(CONS)CUR.fotos.push(url);}catch(e){err=e.message||String(e);}}
   toast(ok?(CONS?("✔ "+ok+" foto(s) adicionada(s)."):("✔ Obrigado! "+ok+" foto(s) enviada(s) — aparecem depois que o Conselho aprovar.")):("Não foi possível enviar: "+err),6000);if(CONS&&ok){abrir(ev);renderTabs();}}
 function abrirVideo(){["vLink","vTit"].forEach(function(k){document.getElementById(k).value="";});document.getElementById("vArq").value="";document.getElementById("vMsg").textContent="";document.getElementById("mV").style.display="flex";}

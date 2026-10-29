@@ -91,6 +91,19 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
   <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px;"><button class="b g" onclick="document.getElementById('mV').style.display='none'">Cancelar</button><button class="b s" id="vBtn" onclick="salvarVideo()">Enviar</button></div>
 </div></div>
 <input type="file" id="fArq" accept="image/*" multiple style="display:none" onchange="enviarFotos(this.files);this.value=''">
+<input type="file" id="fPasta" webkitdirectory directory multiple style="display:none" onchange="enviarFotos(this.files);this.value=''">
+<div class="modal" id="mF"><div class="box" style="max-width:520px;">
+  <h3>Enviar fotos</h3>
+  <div id="drop" style="border:2px dashed var(--gold);border-radius:14px;padding:30px 16px;text-align:center;background:#faf6ea;cursor:pointer;" onclick="document.getElementById('fArq').click()">
+    <div style="font-size:34px;">&#128247;</div>
+    <div style="font-family:Georgia,serif;color:var(--navy);font-size:18px;margin:6px 0 4px;">Arraste as fotos aqui</div>
+    <div style="font-size:13px;color:#8a8270;">ou clique para escolher — <b>pode escolher várias de uma vez</b></div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;"><button class="b s" onclick="document.getElementById('fArq').click()">Escolher fotos</button><button class="b g" onclick="document.getElementById('fPasta').click()">Escolher uma pasta inteira</button></div>
+  <div class="hint">No computador: segure <b>Cmd</b> (Mac) ou <b>Ctrl</b> (Windows) e clique nas fotos, ou <b>Cmd/Ctrl + A</b> para todas. No celular: toque em <b>Selecionar</b> e marque várias.</div>
+  <div id="fProg" style="display:none;margin-top:14px;"><div style="height:8px;background:#efe6cf;border-radius:6px;overflow:hidden;"><div id="fBar" style="height:100%;width:0;background:var(--gold);transition:width .3s;"></div></div><div id="fTxt" style="font-size:13px;color:#5b5446;margin-top:6px;text-align:center;"></div></div>
+  <div style="display:flex;justify-content:flex-end;margin-top:14px;"><button class="b g" id="fFechar" onclick="document.getElementById('mF').style.display='none'">Fechar</button></div>
+</div></div>
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -136,7 +149,7 @@ function abrir(id){CUR=EVS.find(function(e){return e.id===id;});if(!CUR)return;d
   var h="<div class='ph'><div><div class='d'>"+esc(fdat(e.data,true))+"</div><h2>"+esc(nomeEv(e))+"</h2>"+(e.local?("<div class='l'>"+esc(e.local)+"</div>"):"")+"</div><div class='acts'>"
     +(e.fotos.length?("<button class='b go' id='bZip' onclick='baixarTodas()'>&#11015; Baixar todas as fotos ("+e.fotos.length+")</button>"):"")
     +"<button class='b wa' onclick='whatsEvento()'>"+WA+"Enviar este evento</button><button class='b g' onclick='copiarLinkEv()'>Copiar link</button>"
-    +(pode?"<button class='b s' onclick='document.getElementById(\"fArq\").click()'>+ Enviar fotos</button><button class='b g' onclick='abrirVideo()'>+ Vídeo</button>":"")+"</div></div>";
+    +(pode?"<button class='b s' onclick='abrirFotos()'>+ Enviar fotos</button><button class='b g' onclick='abrirVideo()'>+ Vídeo</button>":"")+"</div></div>";
   if(e.videos.length)h+="<div class='sub'>Vídeos ("+e.videos.length+")</div><div class='vids'>"+e.videos.map(videoHtml).join("")+"</div>";
   h+="<div class='sub'>Fotos ("+e.fotos.length+")</div>"+(e.fotos.length?("<div class='grid'>"+e.fotos.map(function(u,i){return "<div class='ft' onclick='abrirLb("+i+")'><img src='"+esc(u)+"' loading='lazy' alt=''><button class='dl' title='Baixar' onclick='event.stopPropagation();baixar(\""+esc(u)+"\",nomeArq("+i+"))'><svg viewBox='0 0 24 24' width='17' height='17' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'><path d='M12 4v11M7 10l5 5 5-5M5 20h14'/></svg></button></div>";}).join("")+"</div>"):"<div class='vazio'>Ainda não há fotos deste evento."+(pode?" Seja o primeiro a enviar! Clique em <b>+ Enviar fotos</b>.":"")+"</div>");
   if(pode)h+="<div class='hint' style='margin-top:14px;'>"+(CONS?"Como Conselho, as fotos e vídeos que você enviar entram na hora.":"As fotos e vídeos que você enviar aparecem aqui depois que o Conselho aprovar.")+"</div>";
@@ -164,8 +177,16 @@ function comprimeFoto(f,max,q){return new Promise(function(res){var img=new Imag
 async function proposta(rec){var inst=CUR&&CUR.k==="inst";var tab=inst?"inst_propostas":"evento_fotos_propostas";if(inst){rec.evento_id=CUR.rid;if(!rec.tipo)rec.tipo="foto";}
   var ins=await sb.from(tab).insert(rec).select("id").single();if(ins.error){if(inst&&/inst_propostas/.test(ins.error.message||""))throw new Error("o Conselho ainda precisa ativar o envio nos eventos institucionais");throw ins.error;}
   if(CONS){var r=await sb.rpc(inst?"inst_proposta_decidir":"foto_proposta_decidir",{p_id:ins.data.id,p_aprovar:true});if(r.error)throw r.error;}}
-async function enviarFotos(files){if(!files||!files.length||!CUR)return;var ev=CUR.id,ok=0,err="";for(var i=0;i<files.length;i++){toast("Enviando "+(i+1)+" de "+files.length+"…",60000);try{var blob=await comprimeFoto(files[i],2000,0.86);var path="propostas/"+ev+"/"+U.id+"/"+Date.now()+"_"+i+".jpg";var up=await sb.storage.from("eventos").upload(path,blob,{contentType:"image/jpeg",upsert:false});if(up.error)throw up.error;var url=sb.storage.from("eventos").getPublicUrl(path).data.publicUrl;await proposta({evento_id:ev,url:url,path:path});ok++;if(CONS)CUR.fotos.push(url);}catch(e){err=e.message||String(e);}}
-  toast(ok?(CONS?("✔ "+ok+" foto(s) adicionada(s)."):("✔ Obrigado! "+ok+" foto(s) enviada(s) — aparecem depois que o Conselho aprovar.")):("Não foi possível enviar: "+err),6000);if(CONS&&ok){abrir(ev);renderTabs();}}
+function abrirFotos(){document.getElementById("fProg").style.display="none";document.getElementById("mF").style.display="flex";}
+(function(){var d=document.getElementById("drop");if(!d)return;["dragenter","dragover"].forEach(function(t){d.addEventListener(t,function(e){e.preventDefault();d.style.background="#f1e6c8";});});["dragleave","drop"].forEach(function(t){d.addEventListener(t,function(e){e.preventDefault();d.style.background="#faf6ea";});});d.addEventListener("drop",function(e){enviarFotos(e.dataTransfer.files);});})();
+async function enviarFotos(files){if(!files||!CUR)return;var L=[].slice.call(files).filter(function(f){return /^image\//.test(f.type)||/\.(jpe?g|png|heic|webp)$/i.test(f.name);});if(!L.length){toast("Nenhuma foto encontrada.");return;}
+  document.getElementById("mF").style.display="flex";var pg=document.getElementById("fProg"),bar=document.getElementById("fBar"),tx=document.getElementById("fTxt");pg.style.display="block";
+  var ev=CUR.id,ok=0,feitos=0,err="",k=0,novas=[];function mostra(){bar.style.width=Math.round(feitos/L.length*100)+"%";tx.textContent="Enviando "+feitos+" de "+L.length+" fotos…";}mostra();
+  async function um(f,i){try{var blob=await comprimeFoto(f,2000,0.86);var path="propostas/"+ev+"/"+U.id+"/"+Date.now()+"_"+i+"_"+Math.random().toString(36).slice(2,6)+".jpg";var up=await sb.storage.from("eventos").upload(path,blob,{contentType:"image/jpeg",upsert:false});if(up.error)throw up.error;var url=sb.storage.from("eventos").getPublicUrl(path).data.publicUrl;await proposta({evento_id:ev,url:url,path:path});ok++;novas.push(url);}catch(e){err=e.message||String(e);}feitos++;mostra();}
+  async function worker(){while(k<L.length){var i=k++;await um(L[i],i);}}
+  await Promise.all([worker(),worker(),worker()]);
+  tx.innerHTML=ok?(CONS?("✔ <b>"+ok+"</b> foto(s) adicionada(s)."):("✔ Obrigado! <b>"+ok+"</b> foto(s) enviada(s) — aparecem depois que o Conselho aprovar.")):"";if(err)tx.innerHTML+="<br><span style='color:#8f1d24;'>Algumas não foram enviadas: "+esc(err)+"</span>";
+  if(CONS&&ok){var e=EVS.find(function(x){return x.id===ev;});if(e){e.fotos=e.fotos.concat(novas);}if(CUR&&CUR.id===ev)abrir(ev);renderTabs();}}
 function abrirVideo(){["vLink","vTit"].forEach(function(k){document.getElementById(k).value="";});document.getElementById("vArq").value="";document.getElementById("vMsg").textContent="";document.getElementById("mV").style.display="flex";}
 async function salvarVideo(){var m=document.getElementById("vMsg"),b=document.getElementById("vBtn");var link=document.getElementById("vLink").value.trim(),f=document.getElementById("vArq").files[0],tit=document.getElementById("vTit").value.trim()||null;var ev=CUR.id;
   if(!link&&!f){m.style.color="#8f1d24";m.textContent="Cole o link ou escolha o arquivo do vídeo.";return;}

@@ -51,6 +51,7 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
 .fld input,.fld textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:9px;font-size:16px;font-family:Arial,sans-serif;background:#fff;}
 .fld .req{color:var(--red);}
 .btn{display:inline-block;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:14px 30px;font-size:16px;font-family:Arial,sans-serif;cursor:pointer;}
+.btn{text-decoration:none;}
 .btn:disabled{opacity:.6;cursor:default;}
 #msg{font-family:Arial,sans-serif;font-size:15px;margin-top:14px;min-height:20px;line-height:1.5;}
 .note{font-family:Arial,sans-serif;font-size:12.5px;color:var(--ink2);line-height:1.6;background:#faf6ea;border:1px solid #e6d9b3;border-radius:10px;padding:12px 14px;margin-top:14px;}
@@ -59,6 +60,19 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
 .lema{text-align:center;font-style:italic;color:var(--gold);font-size:18px;margin-top:14px;}
 .ok-wrap{display:none;text-align:center;}
 .ok-wrap .big{font-family:Georgia,serif;color:var(--navy);font-size:26px;margin:10px 0 6px;}
+.brl{display:block;font-family:Arial,sans-serif;font-size:12.5px;color:#2f6b3a;margin:-2px 0 6px;min-height:16px;}
+.pay{display:none;}
+.pay .valor{text-align:center;background:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:18px 16px;margin:16px 0;}
+.pay .valor .k{font-family:Arial,sans-serif;font-size:11.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;}
+.pay .valor .v{font-size:38px;color:var(--navy);margin:4px 0 2px;}
+.pay .valor .c{font-family:Arial,sans-serif;font-size:12.5px;color:var(--ink2);line-height:1.6;}
+.pay .pix{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;background:#faf6ea;border:1px solid #e6d9b3;border-radius:14px;padding:16px;}
+.pay #qr{background:#fff;padding:10px;border-radius:10px;border:1px solid var(--line);}
+.pay .pinfo{flex:1;min-width:220px;font-family:Arial,sans-serif;font-size:13.5px;color:var(--ink2);line-height:1.7;}
+.pay .pinfo b{color:var(--navy);}
+.btn.g{background:var(--gold);}.btn.o{background:transparent;color:var(--navy);border:1px solid var(--gold);}
+.btn.sm{padding:10px 16px;font-size:14px;margin:4px 4px 0 0;}
+.steps{font-family:Arial,sans-serif;font-size:13.5px;color:var(--ink2);line-height:1.7;margin:14px 0 0 18px;}
 @media(max-width:480px){h1{font-size:27px;}.inner{padding:24px 18px;}}
 </style>
 </head>
@@ -75,12 +89,12 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
     <div class="planos">
       <div class="plano ouro sel" data-plano="Ouro" onclick="selPlano(this)"><span class="ck"></span>
         <div class="pn"><span class="d"></span>Ouro</div>
-        <div class="pp">€ 1.800<small> / ano</small></div>
+        <div class="pp">€ 1.800<small> / ano</small></div><span class="brl" id="brlOuro"></span>
         <ul><li>2 Comendadores + 2 Embaixadas / ano</li><li>Representante entronizado (anuidade isenta)</li></ul>
       </div>
       <div class="plano prata" data-plano="Prata" onclick="selPlano(this)"><span class="ck"></span>
         <div class="pn"><span class="d"></span>Prata</div>
-        <div class="pp">€ 900<small> / ano</small></div>
+        <div class="pp">€ 900<small> / ano</small></div><span class="brl" id="brlPrata"></span>
         <ul><li>1 Comendador + 1 Embaixada / ano</li><li>Representante entronizado (anuidade isenta)</li></ul>
       </div>
     </div>
@@ -98,10 +112,10 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
       <div class="fld full"><label>Observações</label><textarea id="obs" rows="3" placeholder="Portfólio de Bordeaux, expectativas, algo que queira nos contar…"></textarea></div>
     </div>
 
-    <div class="note">A anuidade é <b>cobrada todos os anos em novembro</b>. Após a inscrição, o Conselho confirma a associação e envia os dados para pagamento (PIX).</div>
+    <div class="note">A anuidade é <b>cobrada todos os anos em novembro</b>. Ao enviar a inscrição, você já pode <b>finalizar com o pagamento por PIX</b>, em reais, pelo câmbio do dia.</div>
 
     <div style="text-align:center;margin-top:18px;">
-      <button class="btn" id="btn" onclick="enviar()">Enviar inscrição</button>
+      <button class="btn" id="btn" onclick="enviar()">Enviar inscrição e ir para o pagamento</button>
       <div id="msg"></div>
     </div>
   </div>
@@ -112,14 +126,66 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
     <p class="sub">Obrigado. O Conselho da Commanderie entrará em contato em breve para concluir a associação da sua importadora.</p>
   </div>
 
+  <div class="pay" id="pay">
+    <div class="sep"></div>
+    <div class="kick" style="letter-spacing:3px;">Passo 2 de 2 · Finalizar a inscrição</div>
+    <h1 style="font-size:28px;margin-top:6px;">Pagamento por PIX</h1>
+    <p class="sub">Inscrição recebida ✦ Para concluir a associação, pague a anuidade da cota <b id="pCota">Ouro</b> por PIX.</p>
+    <div class="valor">
+      <div class="k">Valor em reais</div>
+      <div class="v" id="pBrl">—</div>
+      <div class="c" id="pCalc">Calculando o câmbio do dia…</div>
+    </div>
+    <div class="pix">
+      <div id="qr"></div>
+      <div class="pinfo">
+        Favorecido: <b>Commanderie de Bordeaux do Brasil</b><br>
+        Chave PIX (CNPJ): <b>69.296.264/0001-30</b><br>
+        <button class="btn g sm" onclick="copiarPix()">Copiar Pix Copia e Cola</button><button class="btn o sm" onclick="copiarChave()">Copiar chave CNPJ</button>
+        <div id="pMsg" style="font-size:12.5px;color:#2f6b3a;margin-top:6px;min-height:16px;"></div>
+      </div>
+    </div>
+    <ol class="steps">
+      <li>No app do banco, escolha <b>Pix → Ler QR Code</b> ou <b>Pix Copia e Cola</b> (o valor já vem preenchido).</li>
+      <li>Depois de pagar, envie o <b>comprovante</b> — o Conselho confirma e conclui a associação.</li>
+    </ol>
+    <div style="text-align:center;margin-top:16px;"><a class="btn" id="pComp" href="#">Enviar comprovante por e-mail</a></div>
+    <p class="sub" style="font-size:12.5px;margin-top:12px;">O valor em reais segue o câmbio comercial do euro no momento da inscrição, acrescido de <span id="pMg"></span> para variação cambial e encargos.</p>
+  </div>
+
   <div class="foot"><img src="/img/brasao-alta.png" alt=""></div>
   <div class="lema">« Bordeaux, toujours Bordeaux »</div>
 </div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
 var PLANO="Ouro";
+var EUR={Ouro:1800,Prata:900};
+var MARGEM=4;            // % acrescentado ao cambio comercial do dia (variacao + encargos)
+var COT=null,COT_HORA="";
+var PIX_CHAVE="69296264000130",PIX_NOME="ASSOCIACAO COMMANDERIE DE",PIX_CIDADE="CURITIBA",PIX="";
+function brl(n){return "R$ "+n.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function valorBrl(eur){return COT?Math.ceil(eur*COT*(1+MARGEM/100)):null;}
+async function cotacao(){
+  try{var r=await fetch("https://economia.awesomeapi.com.br/json/last/EUR-BRL",{cache:"no-store"});var j=await r.json();var b=parseFloat(j.EURBRL.bid);if(b>0){COT=b;var d=(j.EURBRL.create_date||"").replace(" ","T");var dt=new Date(d);COT_HORA=isNaN(dt)?"":dt.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});}}catch(e){}
+  if(!COT){try{var r2=await fetch("https://open.er-api.com/v6/latest/EUR");var j2=await r2.json();if(j2&&j2.rates&&j2.rates.BRL){COT=j2.rates.BRL;COT_HORA=new Date().toLocaleString("pt-BR");}}catch(e){}}
+  ["Ouro","Prata"].forEach(function(k){var el=document.getElementById("brl"+k);if(el)el.textContent=COT?("≈ "+brl(valorBrl(EUR[k]))+" hoje, por PIX"):"";});
+  return COT;}
+cotacao();
+function tlv(id,v){v=""+v;return id+(v.length<10?"0":"")+v.length+v;}
+function crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var k=0;k<8;k++)c=(c&0x8000)?((c<<1)^0x1021):(c<<1);c&=0xFFFF;}return ("0000"+c.toString(16).toUpperCase()).slice(-4);}
+function pixPayload(valor,txid){var mai=tlv("00","BR.GOV.BCB.PIX")+tlv("01",PIX_CHAVE);var p=tlv("00","01")+tlv("26",mai)+tlv("52","0000")+tlv("53","986")+(valor?tlv("54",valor.toFixed(2)):"")+tlv("58","BR")+tlv("59",PIX_NOME)+tlv("60",PIX_CIDADE)+tlv("62",tlv("05",txid||"***"))+"6304";return p+crc16(p);}
+function copiarPix(){var m=document.getElementById("pMsg");(navigator.clipboard?navigator.clipboard.writeText(PIX):Promise.reject()).then(function(){m.textContent="✔ Código copiado! No banco, use “Pix Copia e Cola”.";}).catch(function(){prompt("Copie o código PIX:",PIX);});}
+function copiarChave(){var m=document.getElementById("pMsg");(navigator.clipboard?navigator.clipboard.writeText("69.296.264/0001-30"):Promise.reject()).then(function(){m.textContent="✔ Chave CNPJ copiada.";}).catch(function(){prompt("Chave PIX (CNPJ):","69.296.264/0001-30");});}
+function mostrarPagamento(nome){var eur=EUR[PLANO];var v=valorBrl(eur);document.getElementById("pCota").textContent=PLANO+" (€ "+eur.toLocaleString("pt-BR")+")";document.getElementById("pMg").textContent=MARGEM+"%";
+  var txid=("IMP"+(nome||"").normalize("NFD").replace(/[^A-Za-z0-9]/g,"").toUpperCase()).slice(0,25);
+  if(v){document.getElementById("pBrl").textContent=brl(v);document.getElementById("pCalc").innerHTML="€ "+eur.toLocaleString("pt-BR")+" × câmbio "+COT.toLocaleString("pt-BR",{minimumFractionDigits:4,maximumFractionDigits:4})+" + "+MARGEM+"%"+(COT_HORA?("<br>cotação de "+COT_HORA):"");PIX=pixPayload(v,txid);}
+  else{document.getElementById("pBrl").textContent="€ "+eur.toLocaleString("pt-BR");document.getElementById("pCalc").textContent="Não foi possível obter o câmbio agora. O Conselho enviará o valor em reais; a chave PIX abaixo já pode ser usada.";PIX=pixPayload(0,txid);}
+  var q=document.getElementById("qr");q.innerHTML="";try{new QRCode(q,{text:PIX,width:180,height:180,correctLevel:QRCode.CorrectLevel.M});}catch(e){q.style.display="none";}
+  document.getElementById("pComp").href="mailto:sac@commanderiedebordeaux.com.br?subject="+encodeURIComponent("Comprovante PIX — Importadora "+(nome||"")+" — cota "+PLANO)+"&body="+encodeURIComponent("Segue o comprovante do PIX da anuidade (cota "+PLANO+(v?(", "+brl(v)):"")+") da importadora "+(nome||"")+".");
+  document.getElementById("form").style.display="none";document.getElementById("pay").style.display="block";window.scrollTo({top:0,behavior:"smooth"});}
 function selPlano(el){PLANO=el.getAttribute("data-plano");document.querySelectorAll(".plano").forEach(function(p){p.classList.toggle("sel",p===el);});}
 function v(id){var e=document.getElementById(id);return e?e.value.trim():"";}
 function diz(t,cor){var m=document.getElementById("msg");m.style.color=cor||"#5b5446";m.textContent=t;}
@@ -130,11 +196,11 @@ async function enviar(){
   if(!email||email.indexOf("@")<0){diz("Informe um e-mail válido.","#8f1d24");return;}
   var btn=document.getElementById("btn");btn.disabled=true;diz("Enviando…");
   try{
-    var r=await sb.rpc("inscrever_importadora",{p:{nome:nome,responsavel:resp,cnpj:v("cnpj"),email:email,telefone:v("telefone"),cidade:v("cidade"),instagram:v("instagram"),plano:PLANO,obs:v("obs")}});
+    if(!COT)await cotacao();var vb=valorBrl(EUR[PLANO]);
+    var pag=vb?("[Pagamento PIX] cota "+PLANO+" € "+EUR[PLANO]+" × câmbio "+COT.toFixed(4)+" + "+MARGEM+"% = "+brl(vb)+(COT_HORA?(" (cotação "+COT_HORA+")"):"")):"";
+    var r=await sb.rpc("inscrever_importadora",{p:{nome:nome,responsavel:resp,cnpj:v("cnpj"),email:email,telefone:v("telefone"),cidade:v("cidade"),instagram:v("instagram"),plano:PLANO,obs:[v("obs"),pag].filter(Boolean).join("\n")}});
     if(r.error){btn.disabled=false;diz("Não foi possível enviar: "+r.error.message,"#8f1d24");return;}
-    document.getElementById("form").style.display="none";
-    document.getElementById("ok").style.display="block";
-    window.scrollTo({top:0,behavior:"smooth"});
+    mostrarPagamento(nome);
   }catch(e){btn.disabled=false;diz("Não foi possível enviar. Tente de novo.","#8f1d24");}
 }
 </script>

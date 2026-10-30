@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Factures · Commanderie de Bordeaux</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--cream:#f8f3e6;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 16px 60px;}
+.dhead{text-align:center;padding:8px 0 10px;}.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:30px;margin:6px 0 2px;}
+.bn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:14px;cursor:pointer;}
+.bn.g{background:var(--gold);}.bn.o{background:#fffdf7;color:var(--navy);border:1px solid var(--gold);}.bn:disabled{opacity:.6;}
+.lista .it{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;cursor:pointer;}
+.lista .it:hover{border-color:var(--gold);}
+.lista .n{font-family:Georgia,serif;color:var(--navy);font-size:16px;min-width:90px;}
+.lista .d{flex:1;min-width:180px;font-size:13px;color:#5b5446;}
+.lista .v{font-family:Georgia,serif;font-size:17px;color:var(--navy);}
+.pill{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:3px 9px;}
+.p-emitida{color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);}.p-paga{color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;}.p-cancelada{color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;}
+.ed{display:grid;grid-template-columns:400px 1fr;gap:18px;align-items:start;}
+@media(max-width:980px){.ed{grid-template-columns:1fr;}}
+.fm{background:#fffdf7;border:1px solid var(--line);border-radius:14px;padding:14px;}
+.fm h3{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:16px;margin:12px 0 8px;}.fm h3:first-child{margin-top:0;}
+.fm label{display:block;margin-bottom:7px;}.fm label span{display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;}
+.fm input,.fm select,.fm textarea{width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fbf7ec;font-family:inherit;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.li{display:grid;grid-template-columns:1fr 56px 90px 26px;gap:6px;margin-bottom:6px;align-items:start;}
+.li textarea{min-height:38px;resize:vertical;}
+.li .x{background:none;border:none;color:var(--red);font-size:18px;cursor:pointer;padding-top:6px;}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center;}
+#msg{font-size:13px;}
+.prevw{overflow:hidden;}
+.scaler{transform-origin:top left;}
+/* ---------- folha A4 da facture ---------- */
+.sheet{width:794px;height:1123px;background:#fffefb;position:relative;font-variant-numeric:lining-nums;box-shadow:0 14px 40px rgba(40,30,10,.18);font-family:'Cormorant Garamond',Georgia,serif;color:#1d1a16;overflow:hidden;}
+.sheet .fr{position:absolute;inset:22px;border:1.4px solid #b08a3a;}
+.sheet .fr:before{content:"";position:absolute;inset:4px;border:.6px solid rgba(176,138,58,.55);}
+.sheet .in{position:absolute;inset:50px 56px 40px;}
+.hd{display:flex;align-items:flex-start;gap:16px;}
+.hd img{width:92px;}
+.hd .em{flex:1;font-size:14px;line-height:1.45;color:#3a342b;}
+.hd .em b{display:block;font-family:'Cinzel',Georgia,serif;font-weight:600;font-size:17px;letter-spacing:1px;color:#1e2a56;margin-bottom:2px;}
+.hd .ti{text-align:right;}
+.hd .ti .t{font-family:'Cinzel',Georgia,serif;font-weight:600;font-size:36px;letter-spacing:6px;color:#1e2a56;line-height:1;}
+.hd .ti .nr{font-size:15px;margin-top:8px;color:#3a342b;line-height:1.5;}
+.hd .ti .nr b{color:#1e2a56;}
+.gr{height:1px;background:linear-gradient(90deg,transparent,#b08a3a 15%,#b08a3a 85%,transparent);margin:20px 0 18px;}
+.bl{display:flex;gap:24px;}
+.bl .bx{flex:1;}
+.bl .k{font-family:'Cinzel',Georgia,serif;font-size:11px;letter-spacing:3px;color:#8a6a2a;margin-bottom:5px;}
+.bl .bx div.v{font-size:15.5px;line-height:1.45;white-space:pre-line;}
+.bl .bx div.v b{font-size:17px;color:#1e2a56;}
+.obj{margin-top:16px;font-size:16px;}.obj span{font-family:'Cinzel',Georgia,serif;font-size:11px;letter-spacing:3px;color:#8a6a2a;margin-right:8px;}
+table.t{width:100%;border-collapse:collapse;margin-top:16px;font-size:15.5px;}
+table.t th{background:#1e2a56;color:#f3e3bd;font-family:'Cinzel',Georgia,serif;font-weight:500;font-size:11.5px;letter-spacing:2px;text-align:left;padding:9px 10px;}
+table.t th.r,table.t td.r{text-align:right;white-space:nowrap;}
+table.t td{padding:9px 10px;border-bottom:1px solid #e8dfc6;vertical-align:top;white-space:pre-line;}
+table.t tr:nth-child(even) td{background:#fbf7ec;}
+.tot{margin-left:auto;width:300px;margin-top:12px;font-size:16px;}
+.tot div{display:flex;justify-content:space-between;padding:5px 10px;}
+.tot .g{background:#1e2a56;color:#fff;font-family:'Cinzel',Georgia,serif;font-size:15px;letter-spacing:1px;padding:10px;margin-top:4px;}
+.tot .g b{color:#f3e3bd;font-family:'Cormorant Garamond',Georgia,serif;font-size:21px;}
+.tot .m{font-size:13px;font-style:italic;color:#5b5446;}
+.pg{margin-top:20px;border:1px solid #e6d9b3;background:#faf6ea;border-radius:6px;padding:12px 14px;font-size:14.5px;line-height:1.5;white-space:pre-line;}
+.pg .k{font-family:'Cinzel',Georgia,serif;font-size:11px;letter-spacing:3px;color:#8a6a2a;display:block;margin-bottom:3px;}
+.nt{margin-top:12px;font-size:14px;font-style:italic;color:#5b5446;white-space:pre-line;}
+.ft{position:absolute;left:0;right:0;bottom:0;text-align:center;font-size:12.5px;color:#6a634f;line-height:1.5;}
+.ft .l{font-family:'Cinzel',Georgia,serif;font-size:12px;letter-spacing:5px;color:#8a6a2a;margin-bottom:4px;}
+.annul{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%) rotate(-24deg);font-family:'Cinzel',Georgia,serif;font-size:120px;letter-spacing:12px;color:rgba(143,29,36,.12);display:none;}
+.sheet.cancelada .annul{display:block;}
+.pay{position:absolute;right:70px;top:300px;transform:rotate(-12deg);border:3px solid rgba(47,107,58,.55);color:rgba(47,107,58,.7);font-family:'Cinzel',Georgia,serif;font-size:30px;letter-spacing:6px;padding:4px 16px;border-radius:6px;display:none;}
+.sheet.paga .pay{display:block;}
+@media print{
+  @page{size:A4;margin:0;}
+  body{background:#fff;}
+  .dtop,.dhead,#lista,.fm,#topActs{display:none!important;}
+  .wrap{padding:0;max-width:none;}
+  .ed{display:block;}
+  .scaler{transform:none!important;width:auto!important;height:auto!important;}
+  .sheet{width:210mm;height:297mm;box-shadow:none;}
+}
+</style></head><body>
+<div class="dtop"><a href="painel-conselho.html" style="display:inline-flex;"><img src="img/brasao.png" alt="Brasão"></a><b>Factures</b><a class="back" href="painel-conselho.html">&#8592; Voltar</a></div>
+<div id="st" class="state">Carregando…</div>
+<div class="wrap" id="main" style="display:none;">
+  <div class="dhead"><div class="k">Conselho Diretor</div><h1>Factures (faturas em francês · €)</h1></div>
+  <div id="lista">
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;"><button class="bn" onclick="nova()">+ Nouvelle facture</button><input id="busca" placeholder="Buscar por número ou destinatário" oninput="renderLista()" style="flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:#fffdf7;"></div>
+    <div class="lista" id="lis"></div>
+  </div>
+  <div id="editor" style="display:none;">
+    <div class="acts" id="topActs" style="margin:0 0 12px;"><button class="bn o" onclick="fechar()">&#8592; Lista de faturas</button></div>
+    <div class="ed">
+      <div class="fm">
+        <h3>Facture</h3>
+        <div class="row2"><label><span>Numéro</span><input id="fNum" oninput="pintar()"></label><label><span>Situação</span><select id="fSt" onchange="pintar()"><option value="emitida">Emitida</option><option value="paga">Paga</option><option value="cancelada">Cancelada</option></select></label></div>
+        <div class="row2"><label><span>Date</span><input id="fData" type="date" oninput="pintar()"></label><label><span>Échéance</span><input id="fEch" type="date" oninput="pintar()"></label></div>
+        <h3>Facturé à (destinatário)</h3>
+        <label><span>Nom / Raison sociale *</span><input id="dNome" oninput="pintar()"></label>
+        <label><span>Adresse</span><textarea id="dEnd" rows="2" oninput="pintar()"></textarea></label>
+        <div class="row2"><label><span>Pays</span><input id="dPais" oninput="pintar()" value="France"></label><label><span>N° TVA / SIRET</span><input id="dId" oninput="pintar()"></label></div>
+        <label><span>E-mail</span><input id="dEmail" oninput="pintar()"></label>
+        <label><span>Objet</span><input id="fObj" oninput="pintar()" placeholder="ex. : Cotisation annuelle 2026"></label>
+        <h3>Désignation · Qté · Prix unitaire (€)</h3>
+        <div id="itens"></div>
+        <button class="bn o" style="padding:6px 12px;font-size:13px;" onclick="addItem()">+ ligne</button>
+        <div class="row2" style="margin-top:10px;"><label><span>TVA (%)</span><input id="fTva" type="number" step="0.01" value="0" oninput="pintar()"></label><label><span>&nbsp;</span><small style="color:#8a8270;font-size:11.5px;">0 = « TVA non applicable »</small></label></div>
+        <h3>Paiement</h3>
+        <label><span>Modalités de paiement</span><textarea id="fPag" rows="3" oninput="pintar()"></textarea></label>
+        <label><span>Notes</span><textarea id="fNot" rows="2" oninput="pintar()"></textarea></label>
+        <h3>Émetteur</h3>
+        <label><span>Dados da Commanderie (aparecem no topo)</span><textarea id="fEmi" rows="4" oninput="pintar()"></textarea></label>
+        <div class="acts"><button class="bn" id="bSalvar" onclick="salvar()">Salvar</button><button class="bn g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><button class="bn o" onclick="window.print()">&#128424; Imprimir</button><button class="bn o" id="bDup" onclick="duplicar()">Duplicar</button><span id="msg"></span></div>
+      </div>
+      <div class="prevw" id="prevw"><div class="scaler" id="scaler"><div class="sheet" id="sheet">
+        <div class="fr"></div><div class="annul">ANNULÉE</div><div class="pay">PAYÉE</div>
+        <div class="in">
+          <div class="hd"><img src="img/brasao-alta.png" alt=""><div class="em" id="sEmi"></div><div class="ti"><div class="t">FACTURE</div><div class="nr">N° <b id="sNum"></b><br>Date : <span id="sData"></span><br><span id="sEchW">Échéance : <span id="sEch"></span></span></div></div></div>
+          <div class="gr"></div>
+          <div class="bl"><div class="bx"><div class="k">FACTURÉ À</div><div class="v" id="sDest"></div></div></div>
+          <div class="obj" id="sObjW"><span>OBJET</span><span id="sObj" style="font-family:inherit;font-size:16px;letter-spacing:0;color:inherit;"></span></div>
+          <table class="t"><thead><tr><th>Désignation</th><th class="r">Qté</th><th class="r">Prix unitaire</th><th class="r">Montant</th></tr></thead><tbody id="sIt"></tbody></table>
+          <div class="tot"><div><span>Total HT</span><span id="sHT"></span></div><div id="sTvaW"><span id="sTvaL"></span><span id="sTva"></span></div><div class="g"><span>TOTAL À PAYER</span><b id="sTot"></b></div><div class="m" id="sTvaM">TVA non applicable</div></div>
+          <div class="pg" id="sPagW"><span class="k">MODALITÉS DE PAIEMENT</span><span id="sPag"></span></div>
+          <div class="nt" id="sNot"></div>
+          <div class="ft"><div class="l">BORDEAUX, TOUJOURS BORDEAUX</div><span id="sFt"></span></div>
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+var EMI_PADRAO="Commanderie de Bordeaux du Brésil\nAssociação Commanderie de Bordeaux do Brasil\nCNPJ 69.296.264/0001-30 · São Paulo — Brésil\nsac@commanderiedebordeaux.com.br · commanderiedebordeaux.com.br";
+var PAG_PADRAO="Virement bancaire en euros (coordonnées bancaires sur demande)\nou PIX — clé (CNPJ) : 69.296.264/0001-30";
+var MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+var L=[],CUR=null;
+function $(i){return document.getElementById(i);}
+function esc(t){return (""+(t==null?"":t)).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function eur(n){return (Number(n)||0).toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2}).replace(/ | /g," ")+" €";}
+function num(t){t=(""+(t==null?"":t)).replace(/€|\s/g,"");if(!t)return 0;if(t.indexOf(",")>=0)t=t.replace(/\./g,"").replace(",",".");var n=parseFloat(t);return isNaN(n)?0:n;}
+function fdate(d){if(!d)return "";var p=(""+d).slice(0,10).split("-");var dia=parseInt(p[2],10);return (dia===1?"1er":dia)+" "+MOIS[parseInt(p[1],10)-1]+" "+p[0];}
+function hoje(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function mais30(d){var x=new Date(d+"T12:00:00");x.setDate(x.getDate()+30);return x.toISOString().slice(0,10);}
+function lsGet(k,def){try{return localStorage.getItem(k)||def;}catch(e){return def;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function proxNum(){var a=new Date().getFullYear(),m=0;L.forEach(function(f){var r=(""+f.numero).match(/^(\d{4})-(\d+)$/);if(r&&+r[1]===a)m=Math.max(m,+r[2]);});return a+"-"+String(m+1).padStart(3,"0");}
+/* ---------- lista ---------- */
+function renderLista(){var q=($("busca").value||"").toLowerCase();var r=L.filter(function(f){return !q||(f.numero+" "+f.dest_nome+" "+(f.objet||"")).toLowerCase().indexOf(q)>=0;});
+  $("lis").innerHTML=r.length?r.map(function(f){return "<div class='it' onclick=\"abrir('"+f.id+"')\"><span class='n'>N° "+esc(f.numero)+"</span><span class='d'><b>"+esc(f.dest_nome)+"</b>"+(f.objet?(" · "+esc(f.objet)):"")+"<br>"+fdate(f.data)+"</span><span class='pill p-"+f.status+"'>"+({emitida:"Emitida",paga:"Paga",cancelada:"Cancelada"})[f.status]+"</span><span class='v'>"+eur(f.total)+"</span></div>";}).join(""):"<p style='text-align:center;color:#8a8270;padding:30px 0;'>"+(L.length?"Nenhuma fatura encontrada.":"Nenhuma fatura ainda. Use <b>+ Nouvelle facture</b>.")+"</p>";}
+async function carregar(){var r=await sb.from("factures").select("*").order("data",{ascending:false}).order("numero",{ascending:false});
+  if(r.error){$("lis").innerHTML="<p style='color:#8f1d24;text-align:center;'>"+(/factures/.test(r.error.message)?"Falta rodar o SQL <b>factures.sql</b> no Supabase.":esc(r.error.message))+"</p>";return;}L=r.data||[];renderLista();}
+/* ---------- editor ---------- */
+function linhaHtml(it){return "<div class='li'><textarea class='iD' placeholder='Désignation' oninput='pintar()'>"+esc(it.d||"")+"</textarea><input class='iQ' value='"+esc(it.q==null?1:it.q)+"' oninput='pintar()'><input class='iP' placeholder='0,00' value='"+esc(it.p==null?"":(""+it.p).replace(".",","))+"' oninput='pintar()'><button class='x' title='remover linha' onclick='this.parentNode.remove();pintar()'>&times;</button></div>";}
+function addItem(it){$("itens").insertAdjacentHTML("beforeend",linhaHtml(it||{}));pintar();}
+function itens(){return Array.prototype.map.call(document.querySelectorAll("#itens .li"),function(li){return {d:li.querySelector(".iD").value.trim(),q:num(li.querySelector(".iQ").value)||0,p:num(li.querySelector(".iP").value)};}).filter(function(i){return i.d||i.p;});}
+function preencher(f){CUR=f&&f.id?f:null;$("fNum").value=f.numero||proxNum();$("fSt").value=f.status||"emitida";$("fData").value=f.data?(""+f.data).slice(0,10):hoje();$("fEch").value=f.echeance?(""+f.echeance).slice(0,10):mais30($("fData").value);
+  $("dNome").value=f.dest_nome||"";$("dEnd").value=f.dest_endereco||"";$("dPais").value=f.dest_pais||"France";$("dId").value=f.dest_id||"";$("dEmail").value=f.dest_email||"";$("fObj").value=f.objet||"";
+  $("fTva").value=f.tva_pct!=null?f.tva_pct:0;$("fPag").value=f.pagamento||lsGet("fac_pag",PAG_PADRAO);$("fNot").value=f.notas||"";$("fEmi").value=lsGet("fac_emi",EMI_PADRAO);
+  $("itens").innerHTML="";(f.itens&&f.itens.length?f.itens:[{d:"",q:1,p:""}]).forEach(function(i){$("itens").insertAdjacentHTML("beforeend",linhaHtml(i));});
+  $("bDup").style.display=CUR?"inline-block":"none";$("msg").textContent="";
+  $("lista").style.display="none";$("editor").style.display="block";pintar();escala();window.scrollTo(0,0);}
+function nova(){preencher({});}
+function abrir(id){var f=L.filter(function(x){return x.id===id;})[0];if(f)preencher(f);}
+function duplicar(){var f=dados();f.numero=proxNum();f.status="emitida";f.data=hoje();f.echeance=mais30(hoje());delete f.id;preencher(f);$("msg").style.color="#8a6a1f";$("msg").textContent="Cópia criada — confira e salve.";}
+function fechar(){$("editor").style.display="none";$("lista").style.display="block";renderLista();}
+function totais(){var it=itens(),ht=0;it.forEach(function(i){ht+=Math.round(i.q*i.p*100)/100;});var tv=num($("fTva").value);var t=Math.round(ht*tv)/100;return {it:it,ht:ht,tva:tv,vt:t,tot:Math.round((ht+t)*100)/100};}
+function pintar(){var T=totais();
+  var emi=$("fEmi").value.split("\n");$("sEmi").innerHTML="<b>"+esc(emi[0]||"")+"</b>"+emi.slice(1).map(esc).join("<br>");
+  $("sNum").textContent=$("fNum").value;$("sData").textContent=fdate($("fData").value);$("sEch").textContent=fdate($("fEch").value);$("sEchW").style.display=$("fEch").value?"inline":"none";
+  $("sDest").innerHTML="<b>"+esc($("dNome").value||"—")+"</b>"+($("dEnd").value?("\n"+esc($("dEnd").value)):"")+($("dPais").value?("\n"+esc($("dPais").value)):"")+($("dId").value?("\nN° TVA / SIRET : "+esc($("dId").value)):"")+($("dEmail").value?("\n"+esc($("dEmail").value)):"");
+  $("sObj").textContent=$("fObj").value;$("sObjW").style.display=$("fObj").value?"block":"none";
+  $("sIt").innerHTML=T.it.map(function(i){return "<tr><td>"+esc(i.d)+"</td><td class='r'>"+(""+i.q).replace(".",",")+"</td><td class='r'>"+eur(i.p)+"</td><td class='r'>"+eur(i.q*i.p)+"</td></tr>";}).join("")||"<tr><td colspan='4' style='color:#9a937f;font-style:italic;'>—</td></tr>";
+  $("sHT").textContent=eur(T.ht);$("sTvaW").style.display=T.tva?"flex":"none";$("sTvaL").textContent="TVA "+(""+T.tva).replace(".",",")+" %";$("sTva").textContent=eur(T.vt);$("sTot").textContent=eur(T.tot);
+  $("sTvaM").textContent=T.tva?"":"TVA non applicable";
+  $("sPag").textContent=$("fPag").value;$("sPagW").style.display=$("fPag").value.trim()?"block":"none";$("sNot").textContent=$("fNot").value;
+  $("sFt").textContent=(emi[0]||"")+(emi[2]?(" · "+emi[2]):"");
+  var st=$("fSt").value;$("sheet").classList.toggle("paga",st==="paga");$("sheet").classList.toggle("cancelada",st==="cancelada");}
+function escala(){var box=$("prevw");var w=Math.min(box.clientWidth||794,794);var s=w/794;var sc=$("scaler");sc.style.transform="scale("+s+")";sc.style.width="794px";sc.style.height=(1123*s)+"px";box.style.height=(1123*s)+"px";}
+window.addEventListener("resize",function(){if($("editor").style.display==="block")escala();});
+function dados(){var T=totais();return {numero:$("fNum").value.trim(),data:$("fData").value||hoje(),echeance:$("fEch").value||null,dest_nome:$("dNome").value.trim(),dest_endereco:$("dEnd").value.trim()||null,dest_pais:$("dPais").value.trim()||null,dest_id:$("dId").value.trim()||null,dest_email:$("dEmail").value.trim()||null,objet:$("fObj").value.trim()||null,itens:T.it,tva_pct:T.tva,total:T.tot,pagamento:$("fPag").value.trim()||null,notas:$("fNot").value.trim()||null,status:$("fSt").value};}
+async function salvar(){var m=$("msg"),d=dados();if(!d.numero){m.style.color="#8f1d24";m.textContent="Informe o número.";return;}if(!d.dest_nome){m.style.color="#8f1d24";m.textContent="Informe o destinatário.";return;}if(!d.itens.length){m.style.color="#8f1d24";m.textContent="Inclua pelo menos uma linha.";return;}
+  lsSet("fac_emi",$("fEmi").value);lsSet("fac_pag",$("fPag").value);
+  m.style.color="#5b5446";m.textContent="Salvando…";var r=CUR?await sb.from("factures").update(d).eq("id",CUR.id).select("*"):await sb.from("factures").insert(d).select("*");
+  if(r.error){m.style.color="#8f1d24";m.textContent=/duplicate|unique/i.test(r.error.message)?"Já existe uma fatura com esse número.":(/factures/.test(r.error.message)?"Falta rodar o SQL factures.sql no Supabase.":("Erro: "+r.error.message));return;}
+  if(!r.data||!r.data.length){m.style.color="#8f1d24";m.textContent="O banco não aceitou (sem permissão).";return;}
+  CUR=r.data[0];$("bDup").style.display="inline-block";m.style.color="#2f6b3a";m.textContent="✔ Salvo.";await carregar();}
+function lib(u){return new Promise(function(ok,er){var x=document.createElement("script");x.src=u;x.onload=ok;x.onerror=function(){er("não consegui carregar "+u);};document.head.appendChild(x);});}
+async function baixarPDF(){var b=$("bPdf");b.disabled=true;$("msg").style.color="#5b5446";$("msg").textContent="Gerando o PDF…";
+  try{if(!window.html2canvas)await lib("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");if(!window.jspdf)await lib("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+    await document.fonts.ready;var sc=$("scaler"),old=sc.style.transform;sc.style.transform="none";var cv=await html2canvas($("sheet"),{scale:3,useCORS:true,backgroundColor:"#fffefb"});sc.style.transform=old;
+    var pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4"});pdf.addImage(cv.toDataURL("image/jpeg",0.93),"JPEG",0,0,210,297);
+    var nm=($("dNome").value||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");
+    pdf.save("Facture-"+($("fNum").value||"").replace(/[^A-Za-z0-9-]/g,"")+(nm?("-"+nm):"")+".pdf");$("msg").textContent="";}
+  catch(e){$("msg").style.color="#8f1d24";$("msg").textContent="Não foi possível gerar o PDF ("+e+"). Use Imprimir → Salvar como PDF.";}
+  b.disabled=false;}
+async function iniciar(){var u=(await sb.auth.getUser()).data.user;
+  if(!u){$("st").innerHTML="<h2>Acesso restrito</h2><p>Entre na sua conta para acessar.</p><a class='btn' href='index.html?login=1&next=factures.html'>Entrar</a>";return;}
+  var c=await sb.rpc("is_conselho");if(!(c&&c.data===true)){$("st").innerHTML="<h2>Apenas o Conselho</h2><p>Esta área é exclusiva do Conselho.</p><a class='btn' href='index.html'>Voltar</a>";return;}
+  $("st").style.display="none";$("main").style.display="block";await carregar();}
+iniciar();
+</script>
+</body></html>

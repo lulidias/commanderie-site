@@ -662,8 +662,10 @@ async function salvarEdicao(tipo,id){
   var dados={categoria:document.getElementById("edCat").value,ano:ano,nucleo:document.getElementById("edNuc").value||null,descricao:document.getElementById("edDesc").value.trim()||null,valor:valor,pago:document.getElementById("edPago").checked};
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
   var tabela=tipo==="receita"?"receitas":"despesas";
-  var r=await sb.from(tabela).update(dados).eq("id",id);
+  var r=await sb.from(tabela).update(dados).eq("id",id).select("id,valor");
   if(r.error){msg.style.color="#8f1d24";msg.textContent="Erro: "+r.error.message;return;}
+  if(!r.data||!r.data.length){msg.style.color="#8f1d24";msg.textContent="O banco não aceitou a alteração (sem permissão para editar este lançamento). Avise o suporte do site.";return;}
+  if(Math.abs(Number(r.data[0].valor)-valor)>0.001){msg.style.color="#8f1d24";msg.textContent="O banco gravou "+brl(r.data[0].valor)+" em vez de "+brl(valor)+". Avise o suporte do site.";return;}
   fecharFicha();
   if(tipo==="receita")await carregarReceitas();else await carregarDespesas();
   document.getElementById("anoSel").value=ano;renderAno();

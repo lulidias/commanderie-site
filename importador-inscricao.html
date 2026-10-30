@@ -58,6 +58,9 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
 .foot{text-align:center;margin-top:24px;}
 .foot img{height:60px;opacity:.95;}
 .lema{text-align:center;font-style:italic;color:var(--gold);font-size:18px;margin-top:14px;}
+.topbar{max-width:640px;margin:0 auto 12px;}
+.voltar{display:inline-flex;align-items:center;gap:6px;font-family:Arial,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:8px 16px;text-decoration:none;}
+.voltar:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
 .ok-wrap{display:none;text-align:center;}
 .dipbox{margin-top:18px;}.dipbox a{display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--ink);background:#fffdf7;border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-family:Arial,sans-serif;font-size:13px;line-height:1.5;}
 .dipbox img{width:46px;flex:none;}.dipbox b{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:16px;}.dipbox u{color:var(--gold);}
@@ -79,6 +82,7 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
 </style>
 </head>
 <body>
+<div class="topbar"><a class="voltar" href="importadoras-oficiais.html" onclick="return voltar()">&#8592; Voltar</a></div>
 <div class="card"><div class="inner">
   <img class="brasao" src="/img/brasao-alta.png" alt="Commanderie de Bordeaux do Brasil">
   <div class="kick">Commanderie de Bordeaux do Brasil</div>
@@ -189,6 +193,7 @@ function mostrarPagamento(nome){var eur=EUR[PLANO];var v=valorBrl(eur);document.
   var q=document.getElementById("qr");q.innerHTML="";try{new QRCode(q,{text:PIX,width:180,height:180,correctLevel:QRCode.CorrectLevel.M});}catch(e){q.style.display="none";}
   document.getElementById("pComp").href="mailto:sac@commanderiedebordeaux.com.br?subject="+encodeURIComponent("Comprovante PIX — Importadora "+(nome||"")+" — cota "+PLANO)+"&body="+encodeURIComponent("Segue o comprovante do PIX da anuidade (cota "+PLANO+(v?(", "+brl(v)):"")+") da importadora "+(nome||"")+".");
   document.getElementById("pDip").href="diploma-importadora.html?nome="+encodeURIComponent(nome||"")+"&rep="+encodeURIComponent(document.getElementById("responsavel").value.trim())+"&cota="+PLANO;document.getElementById("form").style.display="none";document.getElementById("pay").style.display="block";window.scrollTo({top:0,behavior:"smooth"});}
+function voltar(){if(document.referrer&&document.referrer.indexOf(location.host)>=0&&history.length>1){history.back();return false;}return true;}
 function selPlano(el){PLANO=el.getAttribute("data-plano");document.querySelectorAll(".plano").forEach(function(p){p.classList.toggle("sel",p===el);});}
 function v(id){var e=document.getElementById(id);return e?e.value.trim():"";}
 function diz(t,cor){var m=document.getElementById("msg");m.style.color=cor||"#5b5446";m.textContent=t;}

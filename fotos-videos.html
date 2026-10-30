@@ -45,6 +45,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .ft{position:relative;border-radius:10px;overflow:hidden;background:#efe6cf;aspect-ratio:4/3;cursor:zoom-in;}
 .ft img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
 .ft:hover img{transform:scale(1.04);}
+.ft.sel{outline:4px solid #8f1d24;outline-offset:-4px;}.ft.sel:after{content:"✓";position:absolute;top:7px;left:7px;width:26px;height:26px;border-radius:50%;background:#8f1d24;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;}
 .ft .dl{position:absolute;right:7px;bottom:7px;width:34px;height:34px;border-radius:50%;background:rgba(255,253,247,.94);color:var(--navy);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.25);border:none;cursor:pointer;opacity:.95;}
 .vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
 .vd{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
@@ -123,9 +124,10 @@ async function init(){
   var q=await sb.from("eventos").select("id,tipo,numero,titulo,data,local,realizado,evento_fotos(id,url,ordem),evento_videos(id,url,titulo,path,created_at)").order("data",{ascending:false});
   if(q.error&&/evento_videos/.test(q.error.message||""))q=await sb.from("eventos").select("id,tipo,numero,titulo,data,local,realizado,evento_fotos(id,url,ordem)").order("data",{ascending:false});
   if(q.error){document.getElementById("needLogin").style.display="block";document.querySelector("#needLogin p").textContent="Não foi possível carregar ("+q.error.message+").";return;}
-  EVS=(q.data||[]).filter(function(e){return e.realizado||(e.data&&e.data<=hoje);}).map(function(e){e.k="ev";e.fotos=(e.evento_fotos||[]).slice().sort(function(a,b){return (a.ordem||0)-(b.ordem||0);}).map(function(f){return f.url;});e.videos=(e.evento_videos||[]).slice().sort(function(a,b){return (""+a.created_at).localeCompare(""+b.created_at);});return e;});
-  try{var ri=await sb.rpc("eventos_institucionais_membros");(ri.data||[]).forEach(function(x){EVS.push({k:"inst",rid:x.id,id:"i_"+x.id,titulo:x.titulo,data:x.data,local:x.local,tipo:"Institucional",fotos:x.fotos||[],videos:x.videos||[]});});}catch(e){}
+  EVS=(q.data||[]).filter(function(e){return e.realizado||(e.data&&e.data<=hoje);}).map(function(e){e.k="ev";e.fotos=(e.evento_fotos||[]).slice().sort(function(a,b){return (a.ordem||0)-(b.ordem||0);}).map(function(f){return f.url;});e.fids=(e.evento_fotos||[]).slice().sort(function(a,b){return (a.ordem||0)-(b.ordem||0);}).map(function(f){return f.id;});e.videos=(e.evento_videos||[]).slice().sort(function(a,b){return (""+a.created_at).localeCompare(""+b.created_at);});return e;});
+  try{var ri=await sb.rpc("eventos_institucionais_membros");(ri.data||[]).forEach(function(x){EVS.push({k:"inst",rid:x.id,id:"i_"+x.id,titulo:x.titulo,data:x.data,local:x.local,tipo:"Institucional",fotos:x.fotos||[],fids:x.fids||[],videos:x.videos||[]});});}catch(e){}
   EVS.sort(function(a,b){return (""+(b.data||"")).localeCompare(""+(a.data||""));});
+  await carregarPend();
   document.getElementById("app").style.display="block";
   var anos=[];EVS.forEach(function(e){var a=(e.data||"").slice(0,4);if(a&&anos.indexOf(a)<0)anos.push(a);});
   var qs=new URLSearchParams(location.search),ev=qs.get("evento");
@@ -138,21 +140,37 @@ function renderTabs(){var L=EVS.filter(function(e){return !ANO||(e.data||"").sli
   document.getElementById("tabs").innerHTML=L.map(function(e){var cap=e.fotos[0]||"img/brasao-alta.png";var n=e.fotos.length,v=e.videos.length;
     return "<button class='tab"+(CUR&&CUR.id===e.id?" on":"")+"' id='t_"+e.id+"' onclick='abrir(\""+e.id+"\")'><div class='th' style=\"background-image:url('"+esc(cap)+"');"+(e.fotos[0]?"":"background-size:46%;")+"\"><span>"+esc(e.k==="inst"?"Institucional":(e.tipo||"Evento"))+"</span></div><div class='tb'><div class='td'>"+fdat(e.data)+"</div><div class='tt'>"+esc(nomeEv(e))+"</div><div class='tc'>"+n+" foto"+(n===1?"":"s")+(v?(" · "+v+" vídeo"+(v===1?"":"s")):"")+"</div></div></button>";}).join("");}
 function ytId(u){var m=(u||"").match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/))([\w-]{11})/);return m?m[1]:null;}
+var PEND={};
+async function carregarPend(){PEND={};try{var a=await sb.from("evento_fotos_propostas").select("id,evento_id,url,tipo").eq("user_id",U.id).eq("status","pendente");(a.data||[]).forEach(function(x){(PEND[x.evento_id]=PEND[x.evento_id]||[]).push(Object.assign({k:"ev"},x));});}catch(e){}
+  try{var b=await sb.from("inst_propostas").select("id,evento_id,url,tipo").eq("user_id",U.id).eq("status","pendente");(b.data||[]).forEach(function(x){(PEND["i_"+x.evento_id]=PEND["i_"+x.evento_id]||[]).push(Object.assign({k:"inst"},x));});}catch(e){}}
+async function cancelarPend(pid,k){if(!confirm("Cancelar este envio? Ele ainda não foi aprovado."))return;var r=await sb.from(k==="inst"?"inst_propostas":"evento_fotos_propostas").delete().eq("id",pid);if(r.error){toast("Erro: "+r.error.message);return;}await carregarPend();abrir(CUR.id);toast("Envio cancelado.");}
+var SELREM=null;
+function modoRemover(){SELREM=SELREM?null:{};abrir(CUR.id);}
+function marcaRem(i,el){if(!SELREM)return;if(SELREM[i])delete SELREM[i];else SELREM[i]=1;el.classList.toggle("sel",!!SELREM[i]);var n=Object.keys(SELREM).length;var b=document.getElementById("bRem");if(b){b.disabled=!n;b.textContent="🗑 Remover selecionadas ("+n+")";}}
+async function removerSel(){var idx=Object.keys(SELREM||{}).map(Number).sort(function(a,b){return b-a;});if(!idx.length)return;if(!confirm("Remover "+idx.length+" foto(s) deste evento? Não dá para desfazer."))return;
+  var tab=CUR.k==="inst"?"inst_fotos":"evento_fotos";var ids=idx.map(function(i){return (CUR.fids||[])[i];}).filter(Boolean);if(ids.length!==idx.length){toast("Não foi possível identificar algumas fotos. Atualize a página e tente de novo.");return;}
+  var r=await sb.from(tab).delete().in("id",ids);if(r.error){toast("Erro: "+r.error.message);return;}
+  idx.forEach(function(i){CUR.fotos.splice(i,1);CUR.fids.splice(i,1);});SELREM=null;abrir(CUR.id);renderTabs();toast("✔ "+ids.length+" foto(s) removida(s).");}
+async function removerVideo(vid){if(!confirm("Remover este vídeo?"))return;var r=await sb.from(CUR.k==="inst"?"inst_videos":"evento_videos").delete().eq("id",vid);if(r.error){toast("Erro: "+r.error.message);return;}CUR.videos=CUR.videos.filter(function(v){return v.id!==vid;});abrir(CUR.id);renderTabs();toast("✔ Vídeo removido.");}
 function videoHtml(v){var y=ytId(v.url),inner;
   if(y)inner="<iframe src='https://www.youtube-nocookie.com/embed/"+y+"' allow='accelerometer; encrypted-media; picture-in-picture; fullscreen' allowfullscreen loading='lazy'></iframe>";
   else if(/\.(mp4|mov|webm|m4v)(\?|$)/i.test(v.url)||v.path)inner="<video src='"+esc(v.url)+"' controls preload='metadata' playsinline></video>";
   else inner="<a class='vl' href='"+esc(v.url)+"' target='_blank' rel='noopener'>&#9654; Assistir ao vídeo</a>";
   var baixa=(!y&&(v.path||/\.(mp4|mov|webm|m4v)(\?|$)/i.test(v.url)))?("<a class='b g' style='padding:6px 10px;font-size:12px;' onclick='baixar(\""+esc(v.url)+"\",\"video-"+(v.id||"")+".mp4\")'>&#11015; Baixar</a>"):("<a href='"+esc(v.url)+"' target='_blank' rel='noopener' style='color:var(--navy);font-size:12px;'>abrir ›</a>");
-  return "<div class='vd'><div class='fr'>"+inner+"</div><div class='vt'><span>"+esc(v.titulo||"Vídeo")+"</span>"+baixa+"</div></div>";}
-function abrir(id){CUR=EVS.find(function(e){return e.id===id;});if(!CUR)return;document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("on",t.id==="t_"+id);});var t=document.getElementById("t_"+id);if(t)t.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});
+  return "<div class='vd'><div class='fr'>"+inner+"</div><div class='vt'><span>"+esc(v.titulo||"Vídeo")+"</span><span>"+baixa+(CONS&&v.id?(" <a onclick='removerVideo(\""+v.id+"\")' style='color:#8f1d24;cursor:pointer;font-size:12px;margin-left:8px;'>remover</a>"):"")+"</span></div></div>";}
+function abrir(id){if(!CUR||CUR.id!==id)SELREM=null;CUR=EVS.find(function(e){return e.id===id;});if(!CUR)return;document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("on",t.id==="t_"+id);});var t=document.getElementById("t_"+id);if(t)t.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});
   var e=CUR,pode=true;
   var h="<div class='ph'><div><div class='d'>"+esc(fdat(e.data,true))+"</div><h2>"+esc(nomeEv(e))+"</h2>"+(e.local?("<div class='l'>"+esc(e.local)+"</div>"):"")+"</div><div class='acts'>"
     +(e.fotos.length?("<button class='b go' id='bZip' onclick='baixarTodas()'>&#11015; Baixar todas as fotos ("+e.fotos.length+")</button>"):"")
     +"<button class='b wa' onclick='whatsEvento()'>"+WA+"Enviar este evento</button><button class='b g' onclick='copiarLinkEv()'>Copiar link</button>"
-    +(pode?"<button class='b s' onclick='abrirFotos()'>+ Enviar fotos</button><button class='b g' onclick='abrirVideo()'>+ Vídeo</button>":"")+"</div></div>";
+    +(pode?"<button class='b s' onclick='abrirFotos()'>"+(CONS?"+ Enviar fotos":"+ Propor fotos")+"</button><button class='b g' onclick='abrirVideo()'>"+(CONS?"+ Vídeo":"+ Propor vídeo")+"</button>":"")
+    +(CONS&&e.fotos.length?("<button class='b g' style='color:#8f1d24;border-color:#e3c4c4;' onclick='modoRemover()'>"+(SELREM?"Cancelar":"🗑 Remover fotos")+"</button>"):"")+"</div></div>";
+  if(SELREM)h+="<div style='background:#fbeeee;border:1px solid #ecc9c9;border-radius:10px;padding:10px 14px;margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13.5px;color:#8f1d24;'>Toque nas fotos que quer remover. <button class='b' id='bRem' disabled style='background:#8f1d24;color:#fff;' onclick='removerSel()'>🗑 Remover selecionadas (0)</button></div>";
+  var pend=PEND[e.id]||[];
+  if(pend.length)h+="<div class='sub'>Suas fotos e vídeos aguardando aprovação ("+pend.length+")</div><div class='grid'>"+pend.map(function(x){return "<div class='ft' style='cursor:default;opacity:.85;'>"+(x.tipo==="video"?"<div style='width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#26335f,#161f3f);color:#f3e3bd;font-size:13px;'>&#9654; Vídeo</div>":("<img src='"+esc(x.url)+"' loading='lazy' alt=''>"))+"<span style='position:absolute;left:7px;top:7px;background:#f6efdc;color:#8a6a1f;font-size:10.5px;border-radius:10px;padding:2px 8px;'>aguardando</span><button class='dl' title='Cancelar envio' onclick='cancelarPend(\""+x.id+"\",\""+x.k+"\")' style='color:#8f1d24;'>&times;</button></div>";}).join("")+"</div>";
   if(e.videos.length)h+="<div class='sub'>Vídeos ("+e.videos.length+")</div><div class='vids'>"+e.videos.map(videoHtml).join("")+"</div>";
-  h+="<div class='sub'>Fotos ("+e.fotos.length+")</div>"+(e.fotos.length?("<div class='grid'>"+e.fotos.map(function(u,i){return "<div class='ft' onclick='abrirLb("+i+")'><img src='"+esc(u)+"' loading='lazy' alt=''><button class='dl' title='Baixar' onclick='event.stopPropagation();baixar(\""+esc(u)+"\",nomeArq("+i+"))'><svg viewBox='0 0 24 24' width='17' height='17' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'><path d='M12 4v11M7 10l5 5 5-5M5 20h14'/></svg></button></div>";}).join("")+"</div>"):"<div class='vazio'>Ainda não há fotos deste evento."+(pode?" Seja o primeiro a enviar! Clique em <b>+ Enviar fotos</b>.":"")+"</div>");
-  if(pode)h+="<div class='hint' style='margin-top:14px;'>"+(CONS?"Como Conselho, as fotos e vídeos que você enviar entram na hora.":"As fotos e vídeos que você enviar aparecem aqui depois que o Conselho aprovar.")+"</div>";
+  h+="<div class='sub'>Fotos ("+e.fotos.length+")</div>"+(e.fotos.length?("<div class='grid'>"+e.fotos.map(function(u,i){return "<div class='ft"+(SELREM&&SELREM[i]?" sel":"")+"' onclick='"+(SELREM?("marcaRem("+i+",this)"):("abrirLb("+i+")"))+"'><img src='"+esc(u)+"' loading='lazy' alt=''><button class='dl' title='Baixar' "+(SELREM?"style='display:none' ":"")+"onclick='event.stopPropagation();baixar(\""+esc(u)+"\",nomeArq("+i+"))'><svg viewBox='0 0 24 24' width='17' height='17' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'><path d='M12 4v11M7 10l5 5 5-5M5 20h14'/></svg></button></div>";}).join("")+"</div>"):"<div class='vazio'>Ainda não há fotos deste evento."+(pode?" Seja o primeiro a enviar! Clique em <b>+ Enviar fotos</b>.":"")+"</div>");
+  if(pode)h+="<div class='hint' style='margin-top:14px;'>"+(CONS?"Como Conselho, as fotos e vídeos que você enviar entram na hora. Para tirar fotos, use <b>🗑 Remover fotos</b>.":"Tem fotos ou vídeos deste evento? Use <b>+ Propor fotos</b> ou <b>+ Propor vídeo</b> — eles aparecem para todos depois que o Conselho aprovar.")+"</div>";
   document.getElementById("painel").innerHTML=h;
   try{var u=new URL(location.href);u.searchParams.set("evento",id);history.replaceState(null,"",u);}catch(x){}}
 function linkEv(){return SITE+"?evento="+encodeURIComponent(CUR.id);}
@@ -186,7 +204,7 @@ async function enviarFotos(files){if(!files||!CUR)return;var L=[].slice.call(fil
   async function worker(){while(k<L.length){var i=k++;await um(L[i],i);}}
   await Promise.all([worker(),worker(),worker()]);
   tx.innerHTML=ok?(CONS?("✔ <b>"+ok+"</b> foto(s) adicionada(s)."):("✔ Obrigado! <b>"+ok+"</b> foto(s) enviada(s) — aparecem depois que o Conselho aprovar.")):"";if(err)tx.innerHTML+="<br><span style='color:#8f1d24;'>Algumas não foram enviadas: "+esc(err)+"</span>";
-  if(CONS&&ok){var e=EVS.find(function(x){return x.id===ev;});if(e){e.fotos=e.fotos.concat(novas);}if(CUR&&CUR.id===ev)abrir(ev);renderTabs();}}
+  if(!CONS&&ok){await carregarPend();if(CUR&&CUR.id===ev)abrir(ev);}if(CONS&&ok){var e=EVS.find(function(x){return x.id===ev;});if(e){e.fotos=e.fotos.concat(novas);}if(CUR&&CUR.id===ev)abrir(ev);renderTabs();}}
 function abrirVideo(){["vLink","vTit"].forEach(function(k){document.getElementById(k).value="";});document.getElementById("vArq").value="";document.getElementById("vMsg").textContent="";document.getElementById("mV").style.display="flex";}
 async function salvarVideo(){var m=document.getElementById("vMsg"),b=document.getElementById("vBtn");var link=document.getElementById("vLink").value.trim(),f=document.getElementById("vArq").files[0],tit=document.getElementById("vTit").value.trim()||null;var ev=CUR.id;
   if(!link&&!f){m.style.color="#8f1d24";m.textContent="Cole o link ou escolha o arquivo do vídeo.";return;}

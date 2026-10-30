@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anuidade da importadora — Commanderie de Bordeaux do Brasil</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Commanderie de Bordeaux do Brasil">
+<meta property="og:title" content="Anuidade · Importadora Oficial — Commanderie de Bordeaux do Brasil">
+<meta property="og:description" content="Commanderie de Bordeaux do Brasil — a confraria oficial dos vinhos de Bordeaux. Bordeaux, toujours Bordeaux.">
+<meta property="og:url" content="https://commanderiedebordeaux.com.br/pagamento-importadora.html">
+<meta property="og:image" content="https://commanderiedebordeaux.com.br/img/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://commanderiedebordeaux.com.br/img/og-card.png">
+
+<meta name="description" content="Pagamento por PIX da anuidade das Importadoras Oficiais da Commanderie de Bordeaux do Brasil."><meta name="robots" content="noindex">
+<link rel="icon" href="/img/favicon-64.png">
+<style>
+:root{--navy:#1e2a56;--gold:#b08a3a;--gold-lt:#c9a85c;--red:#8f1d24;--paper:#faf7ef;--ink:#2a2620;--ink2:#5b5446;--line:#ddd0ad;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#eee7d5;font-family:Georgia,'Times New Roman',serif;color:var(--ink);line-height:1.5;padding:22px 12px;}
+.card{max-width:640px;margin:0 auto;background:var(--paper);border:1px solid var(--gold);box-shadow:0 10px 40px rgba(30,26,20,.12);border-radius:6px;overflow:hidden;}
+.inner{border:1px solid var(--line);margin:10px;border-radius:4px;padding:34px 30px 28px;}
+.brasao{display:block;width:84px;margin:2px auto 14px;}
+.kick{text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:bold;}
+h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-height:1.1;margin:8px 0 4px;}
+.sub{text-align:center;font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;max-width:460px;margin:6px auto 0;line-height:1.55;}
+.sep{height:1px;background:var(--line);margin:22px 0;}
+.lbl{font-family:Arial,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;margin-bottom:10px;}
+.planos{display:flex;gap:12px;flex-wrap:wrap;}
+.plano{flex:1;min-width:210px;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;background:#fff;transition:border-color .15s,box-shadow .15s;position:relative;}
+.plano:hover{border-color:var(--gold-lt);}
+.plano.sel{border-color:var(--navy);box-shadow:0 8px 22px rgba(30,42,86,.12);}
+.plano .pn{font-size:20px;color:var(--navy);display:flex;align-items:center;gap:8px;}
+.plano .pn .d{width:12px;height:12px;border-radius:50%;}
+.plano.ouro .d{background:linear-gradient(140deg,#e7c572,#b08a3a);}
+.plano.prata .d{background:linear-gradient(140deg,#dfe4e9,#aab3bd);}
+.plano .pp{font-size:22px;color:var(--navy);margin:2px 0 6px;}
+.plano .pp small{font-size:13px;color:var(--ink2);font-family:Arial,sans-serif;}
+.plano ul{list-style:none;font-family:Arial,sans-serif;font-size:12.5px;color:var(--ink2);line-height:1.7;}
+.plano .ck{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line);}
+.plano.sel .ck{background:var(--navy);border-color:var(--navy);}
+.plano.sel .ck:after{content:"✓";color:#fff;font-size:13px;position:absolute;top:0;left:4px;}
+.grid{display:flex;gap:12px;flex-wrap:wrap;}
+.fld{flex:1;min-width:200px;margin-top:12px;}
+.fld.full{flex-basis:100%;}
+.fld label{display:block;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:var(--ink2);margin-bottom:4px;}
+.fld input,.fld textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:9px;font-size:16px;font-family:Arial,sans-serif;background:#fff;}
+.fld .req{color:var(--red);}
+.btn{display:inline-block;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:14px 30px;font-size:16px;font-family:Arial,sans-serif;cursor:pointer;}
+.btn{text-decoration:none;}
+.btn:disabled{opacity:.6;cursor:default;}
+#msg{font-family:Arial,sans-serif;font-size:15px;margin-top:14px;min-height:20px;line-height:1.5;}
+.note{font-family:Arial,sans-serif;font-size:12.5px;color:var(--ink2);line-height:1.6;background:#faf6ea;border:1px solid #e6d9b3;border-radius:10px;padding:12px 14px;margin-top:14px;}
+.foot{text-align:center;margin-top:24px;}
+.foot img{height:60px;opacity:.95;}
+.lema{text-align:center;font-style:italic;color:var(--gold);font-size:18px;margin-top:14px;}
+.topbar{max-width:640px;margin:0 auto 12px;}
+.voltar{display:inline-flex;align-items:center;gap:6px;font-family:Arial,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:8px 16px;text-decoration:none;}
+.voltar:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.ok-wrap{display:none;text-align:center;}
+.dipbox{margin-top:18px;}.dipbox .dipin{display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--ink);background:#fffdf7;border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-family:Arial,sans-serif;font-size:13px;line-height:1.5;}
+.dipbox img{width:46px;flex:none;}.dipbox b{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:16px;}.dipbox u{color:var(--gold);}
+.ok-wrap .big{font-family:Georgia,serif;color:var(--navy);font-size:26px;margin:10px 0 6px;}
+.brl{display:block;font-family:Arial,sans-serif;font-size:12.5px;color:#2f6b3a;margin:-2px 0 6px;min-height:16px;}
+.pay{display:block;}
+.pay .valor{text-align:center;background:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:18px 16px;margin:16px 0;}
+.pay .valor .k{font-family:Arial,sans-serif;font-size:11.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:bold;}
+.pay .valor .v{font-size:38px;color:var(--navy);margin:4px 0 2px;}
+.pay .valor .c{font-family:Arial,sans-serif;font-size:12.5px;color:var(--ink2);line-height:1.6;}
+.pay .pix{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;background:#faf6ea;border:1px solid #e6d9b3;border-radius:14px;padding:16px;}
+.pay #qr{background:#fff;padding:10px;border-radius:10px;border:1px solid var(--line);}
+.pay .pinfo{flex:1;min-width:220px;font-family:Arial,sans-serif;font-size:13.5px;color:var(--ink2);line-height:1.7;}
+.pay .pinfo b{color:var(--navy);}
+.btn.g{background:var(--gold);}.btn.o{background:transparent;color:var(--navy);border:1px solid var(--gold);}
+.btn.sm{padding:10px 16px;font-size:14px;margin:4px 4px 0 0;}
+.steps{font-family:Arial,sans-serif;font-size:13.5px;color:var(--ink2);line-height:1.7;margin:14px 0 0 18px;}
+@media(max-width:480px){h1{font-size:27px;}.inner{padding:24px 18px;}}
+</style>
+</head>
+<body>
+<div class="card"><div class="inner">
+  <img class="brasao" src="/img/brasao-alta.png" alt="Commanderie de Bordeaux do Brasil">
+  <div class="kick">Commanderie de Bordeaux do Brasil</div>
+  <div class="pay" id="pay">
+    <h1 style="font-size:30px;margin-top:8px;">Anuidade · Importadora Oficial</h1>
+    <p class="sub" id="pSub">Pagamento por PIX da anuidade do Programa das Importadoras Oficiais.</p>
+    <div class="valor">
+      <div class="k" id="pK">Valor em reais</div>
+      <div class="v" id="pBrl">—</div>
+      <div class="c" id="pCalc">Calculando o câmbio do dia…</div>
+    </div>
+    <div class="pix">
+      <div id="qr"></div>
+      <div class="pinfo">
+        Favorecido: <b>Commanderie de Bordeaux do Brasil</b><br>
+        Chave PIX (CNPJ): <b>69.296.264/0001-30</b><br>
+        <button class="btn g sm" onclick="copiarPix()">Copiar Pix Copia e Cola</button><button class="btn o sm" onclick="copiarChave()">Copiar chave CNPJ</button>
+        <div id="pMsg" style="font-size:12.5px;color:#2f6b3a;margin-top:6px;min-height:16px;"></div>
+      </div>
+    </div>
+    <ol class="steps">
+      <li>No app do banco, escolha <b>Pix → Ler QR Code</b> ou <b>Pix Copia e Cola</b> (o valor já vem preenchido).</li>
+      <li>Depois de pagar, envie o <b>comprovante</b> — o Conselho confirma o pagamento.</li>
+    </ol>
+    <div style="text-align:center;margin-top:16px;"><a class="btn" id="pComp" href="#">Enviar comprovante por e-mail</a></div>
+    <p class="sub" style="font-size:12.5px;margin-top:12px;">O valor em reais segue o câmbio comercial do euro no momento em que esta página é aberta.</p>
+  </div>
+  <div class="foot"><img src="/img/brasao-alta.png" alt=""></div>
+  <div class="lema">« Bordeaux, toujours Bordeaux »</div>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+var EUR={Ouro:1800,Prata:900};
+var MARGEM=0;            // % acrescentado ao cambio comercial do dia (0 = sem acrescimo)
+var COT=null,COT_HORA="";
+var PIX_CHAVE="69296264000130",PIX_NOME="ASSOCIACAO COMMANDERIE DE",PIX_CIDADE="CURITIBA",PIX="";
+function brl(n){return "R$ "+n.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function valorBrl(eur){return COT?Math.ceil(eur*COT*(1+MARGEM/100)):null;}
+async function cotacao(){
+  try{var r=await fetch("https://economia.awesomeapi.com.br/json/last/EUR-BRL",{cache:"no-store"});var j=await r.json();var b=parseFloat(j.EURBRL.bid);if(b>0){COT=b;var d=(j.EURBRL.create_date||"").replace(" ","T");var dt=new Date(d);COT_HORA=isNaN(dt)?"":dt.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});}}catch(e){}
+  if(!COT){try{var r2=await fetch("https://open.er-api.com/v6/latest/EUR");var j2=await r2.json();if(j2&&j2.rates&&j2.rates.BRL){COT=j2.rates.BRL;COT_HORA=new Date().toLocaleString("pt-BR");}}catch(e){}}
+  return COT;}
+function tlv(id,v){v=""+v;return id+(v.length<10?"0":"")+v.length+v;}
+function crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var k=0;k<8;k++)c=(c&0x8000)?((c<<1)^0x1021):(c<<1);c&=0xFFFF;}return ("0000"+c.toString(16).toUpperCase()).slice(-4);}
+function pixPayload(valor,txid){var mai=tlv("00","BR.GOV.BCB.PIX")+tlv("01",PIX_CHAVE);var p=tlv("00","01")+tlv("26",mai)+tlv("52","0000")+tlv("53","986")+(valor?tlv("54",valor.toFixed(2)):"")+tlv("58","BR")+tlv("59",PIX_NOME)+tlv("60",PIX_CIDADE)+tlv("62",tlv("05",txid||"***"))+"6304";return p+crc16(p);}
+function copiarPix(){var m=document.getElementById("pMsg");(navigator.clipboard?navigator.clipboard.writeText(PIX):Promise.reject()).then(function(){m.textContent="✔ Código copiado! No banco, use “Pix Copia e Cola”.";}).catch(function(){prompt("Copie o código PIX:",PIX);});}
+function copiarChave(){var m=document.getElementById("pMsg");(navigator.clipboard?navigator.clipboard.writeText("69.296.264/0001-30"):Promise.reject()).then(function(){m.textContent="✔ Chave CNPJ copiada.";}).catch(function(){prompt("Chave PIX (CNPJ):","69.296.264/0001-30");});}
+var Q=new URLSearchParams(location.search);
+var NOME=(Q.get("imp")||"").slice(0,80),PLANO=/prata/i.test(Q.get("cota")||"")?"Prata":"Ouro",ANO=(Q.get("ano")||"").replace(/\D/g,"").slice(0,4);
+var EURV=parseFloat(Q.get("eur"));if(!(EURV>0&&EURV<100000))EURV=EUR[PLANO];
+async function iniciar(){
+  document.getElementById("pSub").innerHTML=(NOME?("<b>"+NOME.replace(/[<>&]/g,"")+"</b> · "):"")+"cota <b>"+PLANO+"</b> · € "+EURV.toLocaleString("pt-BR")+(ANO?(" · anuidade "+ANO):"");
+  await cotacao();var v=valorBrl(EURV);var txid=("IMP"+NOME.normalize("NFD").replace(/[^A-Za-z0-9]/g,"").toUpperCase()+(ANO||"")).slice(0,25);
+  if(v){document.getElementById("pBrl").textContent=brl(v);document.getElementById("pCalc").innerHTML="€ "+EURV.toLocaleString("pt-BR")+" × câmbio "+COT.toLocaleString("pt-BR",{minimumFractionDigits:4,maximumFractionDigits:4})+(MARGEM?(" + "+MARGEM+"%"):"")+(COT_HORA?("<br>cotação de "+COT_HORA):"");PIX=pixPayload(v,txid);}
+  else{document.getElementById("pBrl").textContent="€ "+EURV.toLocaleString("pt-BR");document.getElementById("pCalc").textContent="Não foi possível obter o câmbio agora. Atualize a página em instantes; a chave PIX abaixo já pode ser usada.";PIX=pixPayload(0,txid);}
+  var q=document.getElementById("qr");q.innerHTML="";try{new QRCode(q,{text:PIX,width:180,height:180,correctLevel:QRCode.CorrectLevel.M});}catch(e){q.style.display="none";}
+  document.getElementById("pComp").href="mailto:sac@commanderiedebordeaux.com.br?subject="+encodeURIComponent("Comprovante PIX — Anuidade importadora "+NOME+(ANO?(" "+ANO):"")+" — cota "+PLANO)+"&body="+encodeURIComponent("Segue o comprovante do PIX da anuidade"+(ANO?(" "+ANO):"")+" (cota "+PLANO+(v?(", "+brl(v)):"")+") da importadora "+NOME+".");}
+iniciar();
+</script>
+</body>
+</html>

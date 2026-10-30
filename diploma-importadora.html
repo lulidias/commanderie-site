@@ -23,6 +23,8 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
 .bt.g{background:var(--gold);}
 .bt:disabled{opacity:.6;}
 #msg{font-size:13px;color:#5b5446;}
+.bloq{max-width:520px;margin:70px auto;text-align:center;padding:0 20px;}.bloq img{width:70px;}.bloq h2{font-family:Georgia,serif;font-weight:normal;color:var(--navy);}.bloq p{color:#6a634f;font-size:14px;line-height:1.6;}.bloq a.bt{display:none;text-decoration:none;}
+.so-imp .form{display:none;}
 .aviso{margin-top:10px;font-size:13px;color:#8a6a1f;background:#f6efdc;border:1px solid #e6d9b3;border-radius:10px;padding:9px 12px;line-height:1.5;}
 /* ---------- folha A4 ---------- */
 .stage{display:flex;justify-content:center;padding:10px 0 50px;}
@@ -97,7 +99,8 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
   .sheet.pais{width:297mm;height:210mm;}
 }
 </style></head><body>
-<div class="ctl" id="ctl">
+<div class="bloq" id="bloq"><img src="img/brasao.png" alt=""><h2>Carregando…</h2><p></p><a class="bt" href="index.html?login=1&amp;next=diploma-importadora.html">Entrar</a></div>
+<div class="ctl" id="ctl" style="display:none;">
   <div class="top"><a id="lnkLogo" href="painel-importadoras.html"><img src="img/brasao.png" alt="Brasão"></a><b>Diploma · Importadora Oficial</b><a class="back" id="lnkBack" href="painel-importadoras.html">&#8592; Voltar</a></div>
   <div class="form">
     <label id="selWrap" style="display:none;grid-column:1/-1;"><span>Importadora (cadastro)</span><select id="selImp" onchange="escolher(this.value)"></select></label>
@@ -106,14 +109,13 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
     <label><span>Cota</span><select id="iCota" onchange="pintar()"><option value="Ouro">Ouro (Or)</option><option value="Prata">Prata (Argent)</option></select></label>
     <label><span>Cidade</span><input id="iCid" value="São Paulo" oninput="pintar()"></label>
     <label><span>Data</span><input id="iData" type="date" oninput="pintar()"></label>
-    <label><span>Formato</span><select id="iFmt" onchange="pintar()"><option value="r">Vertical (retrato)</option><option value="p">Horizontal (paisagem)</option></select></label>
     <label><span>Grão-Mestre</span><input id="iGM" value="Manu Brandão" oninput="pintar()"></label>
   </div>
-  <div class="acts"><button class="bt" onclick="imprimir()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><span id="msg"></span></div>
-  <div class="aviso" id="avPrev" style="display:none;">Esta é uma <b>prévia</b>. O diploma oficial, sem a marca d'água, é emitido pelo Conselho depois da confirmação da associação.</div>
+  <div class="acts"><input type="hidden" id="iFmt" value="p"><button class="bt" onclick="imprimir()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><span id="msg"></span></div>
+  <div class="aviso" id="avPrev" style="display:none;"></div>
 </div>
 
-<div class="stage"><div class="scaler" id="scaler"><div class="sheet previa" id="sheet">
+<div class="stage" id="stage" style="display:none;"><div class="scaler" id="scaler"><div class="sheet previa pais" id="sheet">
   <div class="f1"><div class="f2"><div class="f3">
     <img class="cn tl" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2062%2062%22%20width%3D%2262%22%20height%3D%2262%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b08a3a%22%20stroke-width%3D%221.3%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M6%2056%20V14%20Q6%206%2014%206%20H56%22/%3E%3Cpath%20d%3D%22M12%2050%20V20%20Q12%2012%2020%2012%20H50%22/%3E%3Cpath%20d%3D%22M20%2020%20q10%202%2012%2012%20q-8%20-2%20-12%20-12z%22%20fill%3D%22%23b08a3a%22%20fill-opacity%3D%22.35%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%223%22%20fill%3D%22%238f1d24%22%20stroke%3D%22none%22/%3E%3Cpath%20d%3D%22M26%206%20q4%208%200%2014%20M6%2026%20q8%204%2014%200%22/%3E%3C/g%3E%3C/svg%3E">
     <img class="cn tr" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2062%2062%22%20width%3D%2262%22%20height%3D%2262%22%3E%3Cg%20transform%3D%22translate%2862%2C0%29%20scale%28-1%2C1%29%22%20fill%3D%22none%22%20stroke%3D%22%23b08a3a%22%20stroke-width%3D%221.3%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M6%2056%20V14%20Q6%206%2014%206%20H56%22/%3E%3Cpath%20d%3D%22M12%2050%20V20%20Q12%2012%2020%2012%20H50%22/%3E%3Cpath%20d%3D%22M20%2020%20q10%202%2012%2012%20q-8%20-2%20-12%20-12z%22%20fill%3D%22%23b08a3a%22%20fill-opacity%3D%22.35%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%223%22%20fill%3D%22%238f1d24%22%20stroke%3D%22none%22/%3E%3Cpath%20d%3D%22M26%206%20q4%208%200%2014%20M6%2026%20q8%204%2014%200%22/%3E%3C/g%3E%3C/svg%3E">
@@ -171,7 +173,7 @@ function pintar(){
   $("dCota").innerHTML="<i></i>"+(ouro?"COTE OR":"COTE ARGENT")+"<i></i>";
   $("sF").setAttribute("fill",ouro?"url(#gO)":"url(#gP)");$("sT").textContent=ouro?"OR":"ARGENT";
   $("sheet").classList.toggle("previa",!OFICIAL);var P=$("iFmt").value==="p";$("sheet").classList.toggle("pais",P);
-  var pg=$("pgStyle");if(!pg){pg=document.createElement("style");pg.id="pgStyle";document.head.appendChild(pg);}pg.textContent="@media print{@page{size:A4 "+(P?"landscape":"portrait")+";margin:0;}}";escala();$("avPrev").style.display=OFICIAL?"none":"block";
+  var pg=$("pgStyle");if(!pg){pg=document.createElement("style");pg.id="pgStyle";document.head.appendChild(pg);}pg.textContent="@media print{@page{size:A4 "+(P?"landscape":"portrait")+";margin:0;}}";escala();
 }
 function preencher(x){
   $("iNome").value=x.nome_fantasia||x.nome||"";$("iRep").value=x.responsavel_nome||"";
@@ -195,22 +197,24 @@ async function baixarPDF(){var b=$("bPdf");b.disabled=true;$("msg").textContent=
   b.disabled=false;}
 async function iniciar(){
   var q=new URLSearchParams(location.search);$("iData").value=q.get("data")||hoje();
-  if(q.get("nome"))$("iNome").value=q.get("nome");if(q.get("rep"))$("iRep").value=q.get("rep");
-  if(q.get("cota"))$("iCota").value=/prata|argent/i.test(q.get("cota"))?"Prata":"Ouro";if(q.get("cidade"))$("iCid").value=q.get("cidade");if(q.get("formato")==="paisagem")$("iFmt").value="p";
+
   if(q.get("de")==="importador"){$("lnkBack").href="painel-importador.html";$("lnkLogo").href="painel-importador.html";}
-  escala();pintar();
-  if(!sb)return;
-  try{var u=(await sb.auth.getUser()).data.user;if(!u)return;
+  function bloq(t,p,login){$("bloq").querySelector("h2").textContent=t;$("bloq").querySelector("p").textContent=p||"";$("bloq").querySelector("a").style.display=login?"inline-block":"none";}
+  function mostra(){$("bloq").style.display="none";$("ctl").style.display="block";$("stage").style.display="flex";escala();pintar();}
+  if(!sb){bloq("Não foi possível carregar","Tente de novo em instantes.");return;}
+  try{var u=(await sb.auth.getUser()).data.user;if(!u){bloq("Acesso restrito","Entre na sua conta para ver o diploma.",true);return;}
     var c=await sb.rpc("is_conselho");var cons=!!(c&&c.data===true);
     var r=await sb.from("importadoras").select("*").order("nome");IMPS=r.data||[];
     if(!cons)IMPS=IMPS.filter(function(x){return x.owner_user_id===u.id;});
-    if(!IMPS.length)return;
-    if(!cons){["iNome","iRep","iCota","iData","iGM"].forEach(function(k){var e=$(k);e.disabled=true;e.style.opacity=".8";});$("lnkBack").href="painel-importador.html";$("lnkLogo").href="painel-importador.html";}
+    if(!IMPS.length){bloq("Diploma não disponível","O diploma é emitido pelo Conselho para as Importadoras Oficiais. Se a sua importadora já é associada, peça ao Conselho para vincular o seu login a ela.");return;}
+    if(!cons){document.body.classList.add("so-imp");$("lnkBack").href="painel-importador.html";$("lnkLogo").href="painel-importador.html";$("avPrev").style.display="block";$("avPrev").innerHTML="Diploma da sua importadora, emitido pelo Conselho da Commanderie. Para corrigir algum dado, fale com o Conselho.";}
+    else{$("lnkBack").href=q.get("de")==="importadoras"?"painel-importadoras.html":"painel-conselho.html";$("lnkLogo").href=$("lnkBack").href;}
     OFICIAL=true;
+    mostra();
     if(cons){$("selWrap").style.display="block";$("selImp").innerHTML="<option value=''>— escolha a importadora —</option>"+IMPS.map(function(x){return "<option value='"+x.id+"'>"+(x.nome||"").replace(/</g,"&lt;")+"</option>";}).join("");}
     var alvo=q.get("id")?IMPS.filter(function(x){return x.id===q.get("id");})[0]:(cons?null:IMPS[0]);
     if(alvo){$("selImp").value=alvo.id;preencher(alvo);}else pintar();
-  }catch(e){}
+  }catch(e){bloq("Não foi possível carregar","Tente de novo em instantes.");}
 }
 iniciar();
 </script>

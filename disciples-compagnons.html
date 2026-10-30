@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Disciple &amp; Compagnon · Commanderie de Bordeaux</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
+<style>
+:root{--parch:#f3ecd9;--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;padding-top:calc(12px + env(safe-area-inset-top));background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}
+.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;}
+.dhead{text-align:center;padding:26px 20px 4px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:30px;margin:6px 0 4px;}
+.dhead .sub{font-size:13px;color:#8a8270;max-width:620px;margin:0 auto;line-height:1.5;}
+.wrap{max-width:960px;margin:0 auto;padding:14px 16px 60px;}
+.tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0 14px;}
+.tab{background:#fffdf7;border:1px solid var(--line);border-radius:22px;padding:9px 16px;font-size:13.5px;color:#5b5446;cursor:pointer;}
+.tab.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+.tab b{font-weight:normal;opacity:.7;margin-left:4px;}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.inp{flex:1;min-width:180px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:#fffdf7;}
+.bn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;}
+.bn.g{background:var(--gold);}
+.card{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:9px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.sel{flex:none;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:15px;color:#f3dca0;border:2px solid #e3c372;}
+.sel.D{background:radial-gradient(circle at 38% 32%,#c2424b,#8f1d24 55%,#4e0c11);}
+.sel.C{background:radial-gradient(circle at 38% 32%,#3d5296,#1e2a56 55%,#0e1530);}
+.tx{flex:1;min-width:200px;}
+.tx .t{font-family:Georgia,serif;color:var(--navy);font-size:17px;}
+.tx .m{font-size:12.5px;color:#6a634f;margin-top:3px;line-height:1.5;}
+.pill{display:inline-block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:2px 9px;margin-left:6px;vertical-align:middle;}
+.pill.D{color:#8f1d24;background:#fbeaea;border:1px solid #e6cccc;}
+.pill.C{color:#1e2a56;background:#e9edf7;border:1px solid #cfd6ea;}
+.ac{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.dl{background:var(--gold);color:#fff;border:none;border-radius:9px;padding:8px 14px;font-size:13px;cursor:pointer;text-decoration:none;white-space:nowrap;}
+.lk{background:none;border:none;color:var(--navy);font-size:12.5px;cursor:pointer;text-decoration:underline;padding:4px;}
+.lk.r{color:var(--red);}
+.modal{position:fixed;inset:0;background:rgba(20,25,45,.55);display:none;align-items:flex-start;justify-content:center;z-index:20;overflow:auto;padding:24px 12px;}
+.box{background:#fffdf7;border-radius:14px;max-width:640px;width:100%;padding:18px 18px 16px;border:1px solid var(--gold);}
+.box h3{font-family:Georgia,serif;font-weight:normal;color:var(--navy);margin:0 0 12px;font-size:20px;}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;}
+.fg label span{display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fbf7ec;font-family:inherit;}
+.full{grid-column:1/-1;}
+.msg{font-size:13px;margin-left:8px;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}
+.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.btn{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;border-radius:11px;padding:11px 22px;font-size:15px;}
+.vazio{color:#8a8270;font-size:13.5px;text-align:center;padding:30px 10px;}
+</style></head>
+<body>
+<div class="dtop"><a href="painel-conselho.html" style="display:inline-flex;align-items:center;"><img src="img/brasao.png" alt="Brasão"></a><b>Disciple &amp; Compagnon</b><a class="back" href="painel-conselho.html">&#8592; Voltar</a></div>
+<div id="st" class="state">Carregando…</div>
+<div id="main" style="display:none;">
+  <div class="dhead"><div class="k">Conselho Diretor</div><h1>Disciple &amp; Compagnon</h1><div class="sub">Cadastro dos Disciples e Compagnons da Commanderie. De cada pessoa você emite o diploma, já preenchido.</div></div>
+  <div class="wrap">
+    <div class="tabs" id="tabs"></div>
+    <div class="tools"><input class="inp" id="busca" placeholder="Buscar por nome, núcleo ou padrinho" oninput="render()"><button class="bn" onclick="abrir()">+ Nova pessoa</button><a class="bn g" style="text-decoration:none;" id="lnkLote" href="diploma-disciple.html?v=2">&#127891; Diplomas em lote</a></div>
+    <div id="lista"></div>
+  </div>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)fechar()"><div class="box">
+  <h3 id="mTit">Nova pessoa</h3>
+  <div class="fg">
+    <label><span>Título</span><select id="fTipo"><option>Disciple</option><option>Compagnon</option></select></label>
+    <label class="full"><span>Nome *</span><input id="fNome"></label>
+    <label><span>Núcleo</span><select id="fNuc" onchange="nucMes()"><option value="">—</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option><option value="Brésil">Brasil (Grão-Mestre)</option></select></label>
+    <label><span>Data da promoção</span><input id="fData" type="date"></label>
+    <label><span>Cidade da cerimônia</span><input id="fCid"></label>
+    <label><span>Mestre que assina</span><input id="fMes"></label>
+    <label><span>Padrinho (Parrain)</span><input id="fPad"></label>
+    <label><span>E-mail</span><input id="fEmail" type="email"></label>
+    <label><span>Telefone</span><input id="fTel"></label>
+    <label class="full"><span>Observações</span><textarea id="fObs" rows="2"></textarea></label>
+  </div>
+  <div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><button class="bn" onclick="salvar()">Salvar</button><button class="lk" onclick="fechar()">Cancelar</button><span class="msg" id="fMsg"></span></div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+var MESTRES={"Brésil":"Manu Brandão","São Paulo":"Luli Dias","Rio de Janeiro":"","Porto Alegre":"Jadir Engers","Curitiba":"Abner Almeida","Recife":"Tito Dias"};
+var L=[],F="todos",ED=null;
+function $(i){return document.getElementById(i);}
+function esc(t){return (""+(t==null?"":t)).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function nrm(t){return (""+(t||"")).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
+function fdat(d){if(!d)return "";var p=(""+d).slice(0,10).split("-");return p[2]+"/"+p[1]+"/"+p[0];}
+function nucTxt(n){return n==="Brésil"?"Brasil":n;}
+function tabs(){var c={todos:L.length,Disciple:0,Compagnon:0};L.forEach(function(x){c[x.tipo]=(c[x.tipo]||0)+1;});
+  $("tabs").innerHTML=[["todos","Todos"],["Disciple","Disciples"],["Compagnon","Compagnons"]].map(function(t){return "<span class='tab"+(F===t[0]?" on":"")+"' onclick=\"F='"+t[0]+"';render()\">"+t[1]+"<b>"+c[t[0]]+"</b></span>";}).join("");}
+function render(){tabs();var q=nrm($("busca").value);
+  var r=L.filter(function(x){return (F==="todos"||x.tipo===F)&&(!q||nrm([x.nome,x.nucleo,x.padrinho,x.cidade].join(" ")).indexOf(q)>=0);});
+  $("lnkLote").href=(F==="Compagnon"?"diploma-compagnon.html":"diploma-disciple.html")+"?v=2";$("lnkLote").innerHTML="&#127891; Diplomas em lote ("+(F==="Compagnon"?"Compagnon":"Disciple")+")";
+  if(!r.length){$("lista").innerHTML="<div class='vazio'>"+(L.length?"Ninguém encontrado.":"Ainda não há ninguém cadastrado. Use <b>+ Nova pessoa</b>.")+"</div>";return;}
+  $("lista").innerHTML=r.map(function(x){var k=x.tipo==="Compagnon"?"C":"D";
+    var meta=[x.nucleo?nucTxt(x.nucleo):"",x.data?("promovido em "+fdat(x.data)):"",x.padrinho?("padrinho: "+x.padrinho):"",x.email||"",x.telefone||""].filter(Boolean).map(esc).join(" · ");
+    return "<div class='card'><div class='sel "+k+"'>"+k+"</div><div class='tx'><div class='t'>"+esc(x.nome)+"<span class='pill "+k+"'>"+esc(x.tipo)+"</span></div><div class='m'>"+(meta||"&nbsp;")+(x.obs?("<br><i>"+esc(x.obs)+"</i>"):"")+"</div></div>"
+      +"<div class='ac'><a class='dl' href='"+(k==="C"?"diploma-compagnon.html":"diploma-disciple.html")+"?v=2&id="+x.id+"'>&#127891; Diploma</a><button class='lk' onclick=\"abrir('"+x.id+"')\">editar</button><button class='lk r' onclick=\"remover('"+x.id+"')\">remover</button></div></div>";}).join("");}
+function nucMes(){var n=$("fNuc").value;if(n in MESTRES&&!$("fMes").value)$("fMes").value=MESTRES[n];if(n&&n!=="Brésil"&&!$("fCid").value)$("fCid").value=n;}
+function abrir(id){ED=id||null;var x=id?L.filter(function(i){return i.id===id;})[0]:{tipo:F==="Compagnon"?"Compagnon":"Disciple"};
+  $("mTit").textContent=id?"Editar":"Nova pessoa";$("fTipo").value=x.tipo||"Disciple";$("fNome").value=x.nome||"";$("fNuc").value=x.nucleo||"";$("fData").value=x.data?(""+x.data).slice(0,10):"";
+  $("fCid").value=x.cidade||"";$("fMes").value=x.mestre||"";$("fPad").value=x.padrinho||"";$("fEmail").value=x.email||"";$("fTel").value=x.telefone||"";$("fObs").value=x.obs||"";$("fMsg").textContent="";
+  $("modal").style.display="flex";setTimeout(function(){$("fNome").focus();},50);}
+function fechar(){$("modal").style.display="none";}
+async function salvar(){var m=$("fMsg");var d={tipo:$("fTipo").value,nome:$("fNome").value.trim(),nucleo:$("fNuc").value||null,data:$("fData").value||null,cidade:$("fCid").value.trim()||null,mestre:$("fMes").value.trim()||null,padrinho:$("fPad").value.trim()||null,email:$("fEmail").value.trim()||null,telefone:$("fTel").value.trim()||null,obs:$("fObs").value.trim()||null};
+  if(!d.nome){m.style.color="#8f1d24";m.textContent="Informe o nome.";return;}
+  m.style.color="#5b5446";m.textContent="Salvando…";
+  var r=ED?await sb.from("titulados").update(d).eq("id",ED).select("id"):await sb.from("titulados").insert(d).select("id");
+  if(r.error){m.style.color="#8f1d24";m.textContent=/titulados/.test(r.error.message)?"Falta rodar o SQL disciples_compagnons.sql no Supabase.":("Erro: "+r.error.message);return;}
+  if(!r.data||!r.data.length){m.style.color="#8f1d24";m.textContent="O banco não aceitou (sem permissão).";return;}
+  fechar();await carregar();}
+async function remover(id){var x=L.filter(function(i){return i.id===id;})[0]||{};if(!confirm("Remover "+(x.nome||"esta pessoa")+" do cadastro?"))return;
+  var r=await sb.from("titulados").delete().eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}await carregar();}
+async function carregar(){var r=await sb.from("titulados").select("*").order("data",{ascending:false,nullsFirst:false}).order("nome");
+  if(r.error){$("lista").innerHTML="<div class='vazio' style='color:#8f1d24;'>"+(/titulados/.test(r.error.message)?"Falta rodar o SQL <b>disciples_compagnons.sql</b> no Supabase.":esc(r.error.message))+"</div>";L=[];tabs();return;}
+  L=r.data||[];render();}
+async function iniciar(){var u=(await sb.auth.getUser()).data.user;
+  if(!u){$("st").innerHTML="<h2>Acesso restrito</h2><p>Entre na sua conta para acessar.</p><a class='btn' href='index.html?login=1&next=disciples-compagnons.html'>Entrar</a>";return;}
+  var c=await sb.rpc("is_conselho");if(!(c&&c.data===true)){$("st").innerHTML="<h2>Apenas o Conselho</h2><p>Esta área é exclusiva do Conselho.</p><a class='btn' href='index.html'>Voltar</a>";return;}
+  $("st").style.display="none";$("main").style.display="block";var q=new URLSearchParams(location.search);if(q.get("tipo")==="Compagnon"||q.get("tipo")==="Disciple")F=q.get("tipo");await carregar();}
+iniciar();
+</script>
+</body></html>

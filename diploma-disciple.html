@@ -110,7 +110,7 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
 </style></head><body>
 <div class="bloq" id="bloq"><img src="img/brasao.png" alt=""><h2>Carregando…</h2><p></p><a class="bt" href="index.html?login=1&amp;next=diploma-disciple.html">Entrar</a></div>
 <div class="ctl" id="ctl" style="display:none;">
-  <div class="top"><a id="lnkLogo" href="painel-conselho.html"><img src="img/brasao.png" alt="Brasão"></a><b>Diploma · Disciple</b><a class="back" id="lnkBack" href="painel-conselho.html">&#8592; Voltar</a></div>
+  <div class="top"><a id="lnkLogo" href="disciples-compagnons.html"><img src="img/brasao.png" alt="Brasão"></a><b>Diploma · Disciple</b><a class="back" id="lnkBack" href="disciples-compagnons.html">&#8592; Voltar</a></div>
   <div class="form">
     <label style="grid-column:1/-1;"><span>Nome(s) — um por linha (o PDF sai com uma página para cada nome)</span><textarea id="iNomes" rows="3" oninput="listaNomes()" style="width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fbf7ec;font-family:inherit;"></textarea></label>
     <label id="verWrap" style="display:none;grid-column:span 2;"><span>Ver na tela</span><select id="iVer" onchange="pintar()"></select></label>
@@ -206,6 +206,9 @@ async function iniciar(){
   if(!sb){bloq("Não foi possível carregar","Tente de novo em instantes.");return;}
   try{var u=(await sb.auth.getUser()).data.user;if(!u){bloq("Acesso restrito","Entre na sua conta para emitir diplomas.",true);return;}
     var c=await sb.rpc("is_conselho");if(!(c&&c.data===true)){bloq("Apenas o Conselho","Os diplomas de Disciple são emitidos pelo Conselho da Commanderie.");return;}
+    var q=new URLSearchParams(location.search);
+    if(q.get("id")){try{var r=await sb.from("titulados").select("*").eq("id",q.get("id")).maybeSingle();var x=r&&r.data;
+      if(x){$("iNomes").value=x.nome||"";if(x.nucleo&&x.nucleo in MESTRES){$("iNuc").value=x.nucleo;trocaNuc();}if(x.mestre)$("iMes").value=x.mestre;if(x.cidade)$("iCid").value=x.cidade;if(x.data)$("iData").value=(""+x.data).slice(0,10);}}catch(e){}}
     $("bloq").style.display="none";$("ctl").style.display="block";$("stage").style.display="flex";listaNomes();
   }catch(e){bloq("Não foi possível carregar","Tente de novo em instantes.");}
 }

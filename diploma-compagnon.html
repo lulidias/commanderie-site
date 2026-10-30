@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diploma · Compagnon de Bordeaux — Commanderie de Bordeaux</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1e2a56;--gold:#b08a3a;--red:#8f1d24;--ink:#1d1b18;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:var(--ink);}
+.bloq{max-width:520px;margin:70px auto;text-align:center;padding:0 20px;}.bloq img{width:70px;}.bloq h2{font-family:Georgia,serif;font-weight:normal;color:var(--navy);}.bloq p{color:#6a634f;font-size:14px;line-height:1.6;}
+.bt{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block;}
+.bt.g{background:var(--gold);}.bt:disabled{opacity:.6;}
+.ctl{max-width:1160px;margin:0 auto;padding:18px 16px 8px;}
+.ctl .top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.ctl .top img{width:36px;}
+.ctl .top b{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:19px;}
+.ctl .top a.back{margin-left:auto;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;background:#fffdf7;}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:14px;background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:12px;}
+.form label span{display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;}
+.form input,.form select,.form textarea{width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fbf7ec;font-family:inherit;}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center;}
+#msg{font-size:13px;color:#5b5446;}
+.stage{display:flex;justify-content:center;padding:10px 0 50px;}
+.scaler{transform-origin:top center;}
+/* ---------- folha A4 paisagem ---------- */
+.sheet{width:1123px;height:794px;position:relative;overflow:hidden;background:#fbfaf6;box-shadow:0 18px 50px rgba(40,30,10,.25);
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.012) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(0,0,0,.012) 0 1px,transparent 1px 3px);}
+.tit{position:absolute;left:0;right:0;top:34px;text-align:center;font-family:'Pinyon Script',cursive;font-size:60px;color:#141318;line-height:1;}
+.col{position:absolute;top:118px;bottom:38px;width:214px;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:9.6px;line-height:1.22;letter-spacing:.15px;color:#7a1a22;text-align:justify;overflow:hidden;text-transform:uppercase;}
+.col.e{left:42px;}.col.d{right:42px;}
+.mid{position:absolute;left:290px;right:290px;top:112px;bottom:38px;}
+.brasao{display:block;width:172px;margin:-6px auto 0;}
+.wm{position:absolute;left:50%;top:205px;width:300px;transform:translateX(-50%);opacity:.08;filter:grayscale(1);pointer-events:none;}
+.txt{position:relative;font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:19px;line-height:1.3;color:#1d1b18;padding-left:60px;}
+.txt .p1{margin-top:12px;}
+.lin{display:flex;align-items:flex-end;gap:10px;margin-top:20px;margin-left:-60px;}
+.lin .lb{font-size:19px;}
+.lin .v{flex:1;border-bottom:1px solid #2a2620;text-align:center;font-family:'Pinyon Script',cursive;font-weight:normal;font-size:40px;line-height:1.05;padding-bottom:2px;color:#141318;}
+.titulo{margin:18px 0 0 -60px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:50px;letter-spacing:1.5px;color:#141318;white-space:nowrap;line-height:1.1;}
+.del{display:flex;gap:16px;margin:16px 0 0 -40px;align-items:flex-end;font-size:18px;}
+.del .v{font-family:'Pinyon Script',cursive;font-weight:normal;font-size:28px;line-height:1;border-bottom:1px dotted #2a2620;padding:0 10px 1px;min-width:150px;text-align:center;}
+.ass{display:flex;justify-content:space-around;margin:34px 0 0 -60px;text-align:center;font-size:12.5px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;}
+.ass div{width:42%;text-align:center;}
+.ass .n{display:block;font-family:'Pinyon Script',cursive;font-weight:normal;font-size:22px;margin-top:4px;color:#2a2620;}
+.cmd{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-family:'Cinzel',Georgia,serif;font-size:10px;letter-spacing:4px;color:#8a6a2a;}
+@media print{
+  @page{size:A4 landscape;margin:0;}
+  body{background:#fff;}
+  .ctl,.bloq{display:none!important;}
+  .stage{padding:0;display:block!important;}
+  .scaler{transform:none!important;width:auto!important;height:auto!important;}
+  .sheet{width:297mm;height:210mm;box-shadow:none;}
+}
+</style></head><body>
+<div class="bloq" id="bloq"><img src="img/brasao.png" alt=""><h2>Carregando…</h2><p></p><a class="bt" id="bEntrar" style="display:none;" href="index.html?login=1&amp;next=diploma-compagnon.html">Entrar</a></div>
+<div class="ctl" id="ctl" style="display:none;">
+  <div class="top"><a href="disciples-compagnons.html?tipo=Compagnon"><img src="img/brasao.png" alt="Brasão"></a><b>Diploma · Compagnon de Bordeaux</b><a class="back" href="disciples-compagnons.html?tipo=Compagnon">&#8592; Voltar</a></div>
+  <div class="form">
+    <label style="grid-column:1/-1;"><span>Nome(s) — um por linha (o PDF sai com uma página para cada nome)</span><textarea id="iNomes" rows="2" oninput="listaNomes()"></textarea></label>
+    <label id="verWrap" style="display:none;grid-column:span 2;"><span>Ver na tela</span><select id="iVer" onchange="pintar()"></select></label>
+    <label><span>Tratamento</span><select id="iTrat" onchange="pintar()"><option value="M.">M. (Monsieur)</option><option value="Mme">Mme (Madame)</option></select></label>
+    <label><span>Délivré à (cidade)</span><input id="iCid" value="São Paulo" oninput="pintar()"></label>
+    <label><span>Data</span><input id="iData" type="date" oninput="pintar()"></label>
+    <label><span>Padrinho(s)</span><input id="iPad" oninput="pintar()"></label>
+    <label><span>Le Président (assina)</span><input id="iPres" value="Manu Brandão" oninput="pintar()"></label>
+  </div>
+  <div class="acts"><button class="bt" onclick="window.print()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><span id="msg"></span></div>
+</div>
+
+<div class="stage" id="stage" style="display:none;"><div class="scaler" id="scaler"><div class="sheet" id="sheet">
+  <div class="tit">Le Grand Conseil du Vin de Bordeaux</div>
+  <div class="col e" id="colE"></div><div class="col d" id="colD"></div>
+  <img class="wm" src="img/brasao-alta.png" alt="">
+  <div class="mid">
+    <img class="brasao" src="img/brasao-alta.png" alt="Commanderie de Bordeaux">
+    <div class="txt">
+      <div class="p1">ayant délibéré sur la requête de ses membres,<br>en considération des excellents services que</div>
+      <div class="lin"><span class="lb" id="dTrat">M.</span><span class="v" id="dNome">&nbsp;</span></div>
+      <div style="margin-top:14px;">a rendus aux Vins de Bordeaux<br>décide de l'honorer en lui décernant le titre de</div>
+      <div class="titulo">Compagnon de Bordeaux</div>
+      <div class="del"><span>Délivré à</span><span class="v" id="dCid">São Paulo</span><span>le</span><span class="v" id="dData"></span></div>
+      <div class="ass"><div>Les parrains :<span class="n" id="dPad">&nbsp;</span></div><div>Le Président :<span class="n" id="dPres">Manu Brandão</span></div></div>
+    </div>
+  </div>
+  <div class="cmd">Commanderie de Bordeaux du Brésil</div>
+</div></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=null;try{sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");}catch(e){}
+var MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+var AOC=["Barsac","Blaye","Bordeaux","Bordeaux Supérieur","Cérons","Canon Fronsac","Côtes de Blaye","Côtes de Bourg","Saint Macaire","Fronsac","Entre deux Mers","Graves","Graves de Vayres","Graves Supérieures","Haut Médoc","Lalande de Pomerol","Loupiac","Lussac Saint Émilion","Médoc","Montagne Saint Émilion","Moulis","Pomerol","Premières Côtes de Blaye","Premières Côtes de Bordeaux","Saint Émilion","Sauternes","Sainte Croix du Mont","Saint Estèphe","Pessac Léognan","Sainte Foy Bordeaux","Saint Georges Saint Émilion","Cadillac","Côtes de Bordeaux","Listrac","Margaux","Pauillac","Puisseguin Saint Émilion","Saint Julien","Côtes de Castillon","Côtes de Francs"];
+function $(i){return document.getElementById(i);}
+function hoje(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function colunas(){function txt(off){var a=AOC.slice(off).concat(AOC.slice(0,off)),s="";while(s.length<5200)s+=a.join(" - ")+" - ";return s;}$("colE").textContent=txt(0);$("colD").textContent=txt(14);}
+function nomes(){return $("iNomes").value.split(/\n/).map(function(x){return x.trim();}).filter(Boolean);}
+function listaNomes(){var n=nomes(),sel=$("iVer"),cur=sel.value;sel.innerHTML=n.map(function(x,i){return "<option value='"+i+"'>"+x.replace(/</g,"&lt;")+"</option>";}).join("");if(cur&&cur<n.length)sel.value=cur;$("verWrap").style.display=n.length>1?"block":"none";$("bPdf").innerHTML=n.length>1?("&#11015; Baixar PDF ("+n.length+" diplomas)"):"&#11015; Baixar PDF";pintar();}
+function pintar(nf){var n=nomes();var nm=nf!=null?nf:(n[parseInt($("iVer").value||"0",10)]||n[0]||"");
+  $("dNome").textContent=nm||" ";$("dNome").style.fontSize=(nm.length>34?32:nm.length>26?36:40)+"px";
+  $("dTrat").textContent=$("iTrat").value;
+  $("dCid").textContent=$("iCid").value.trim()||" ";
+  var dt=($("iData").value||hoje()).split("-");var dia=parseInt(dt[2],10);$("dData").textContent=(dia===1?"1er":dia)+" "+MOIS[parseInt(dt[1],10)-1]+" "+dt[0];
+  $("dPad").textContent=$("iPad").value.trim()||" ";$("dPres").textContent=$("iPres").value.trim()||" ";escala();}
+function escala(){var W=1123,H=794;var w=Math.min(window.innerWidth-24,W);var s=w/W;var sc=$("scaler");sc.style.transform="scale("+s+")";sc.style.width=W+"px";sc.style.height=(H*s)+"px";}
+window.addEventListener("resize",escala);
+function lib(u){return new Promise(function(ok,er){var x=document.createElement("script");x.src=u;x.onload=ok;x.onerror=function(){er("não consegui carregar "+u);};document.head.appendChild(x);});}
+function arq(t){return (t||"compagnon").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");}
+async function baixarPDF(){var b=$("bPdf");var n=nomes();if(!n.length){$("msg").textContent="Escreva o nome do Compagnon.";return;}b.disabled=true;
+  try{if(!window.html2canvas)await lib("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+    if(!window.jspdf)await lib("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+    await document.fonts.ready;var sc=$("scaler"),old=sc.style.transform;
+    var pdf=new window.jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
+    for(var i=0;i<n.length;i++){$("msg").textContent="Gerando o PDF… "+(i+1)+" de "+n.length;pintar(n[i]);sc.style.transform="none";
+      var cv=await html2canvas($("sheet"),{scale:3,useCORS:true,backgroundColor:"#fbfaf6"});if(i)pdf.addPage("a4","landscape");pdf.addImage(cv.toDataURL("image/jpeg",0.93),"JPEG",0,0,297,210);}
+    sc.style.transform=old;pintar();
+    pdf.save(n.length>1?"Diplomas-Compagnon-de-Bordeaux.pdf":("Diploma-Compagnon-"+arq(n[0])+".pdf"));$("msg").textContent="";}
+  catch(e){$("msg").textContent="Não foi possível gerar o PDF ("+e+"). Use Imprimir → Salvar como PDF.";}
+  b.disabled=false;}
+async function iniciar(){
+  $("iData").value=hoje();colunas();
+  function bloq(t,p,login){$("bloq").querySelector("h2").textContent=t;$("bloq").querySelector("p").textContent=p||"";$("bEntrar").style.display=login?"inline-block":"none";}
+  if(!sb){bloq("Não foi possível carregar","Tente de novo em instantes.");return;}
+  try{var u=(await sb.auth.getUser()).data.user;if(!u){bloq("Acesso restrito","Entre na sua conta para emitir diplomas.",true);return;}
+    var c=await sb.rpc("is_conselho");if(!(c&&c.data===true)){bloq("Apenas o Conselho","Os diplomas de Compagnon são emitidos pelo Conselho da Commanderie.");return;}
+    var q=new URLSearchParams(location.search);
+    if(q.get("id")){var r=await sb.from("titulados").select("*").eq("id",q.get("id")).maybeSingle();var x=r&&r.data;
+      if(x){$("iNomes").value=x.nome||"";if(x.data)$("iData").value=(""+x.data).slice(0,10);if(x.cidade||x.nucleo)$("iCid").value=x.cidade||(x.nucleo==="Brésil"?"São Paulo":x.nucleo);if(x.padrinho)$("iPad").value=x.padrinho;}}
+    $("bloq").style.display="none";$("ctl").style.display="block";$("stage").style.display="flex";listaNomes();
+  }catch(e){bloq("Não foi possível carregar","Tente de novo em instantes.");}
+}
+iniciar();
+</script>
+</body></html>

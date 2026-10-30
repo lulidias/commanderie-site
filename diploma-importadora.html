@@ -36,7 +36,7 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
   background-image:radial-gradient(ellipse at 50% 45%,#fffefb,#fbf6ea 80%,#f5eedb 100%);}
 .f3:before{content:"";position:absolute;inset:5px;border:.6px solid rgba(176,138,58,.55);}
 .cn{position:absolute;width:62px;height:62px;}
-.cn.tl{top:2px;left:2px;}.cn.tr{top:2px;right:2px;transform:scaleX(-1);}.cn.bl{bottom:2px;left:2px;transform:scaleY(-1);}.cn.br{bottom:2px;right:2px;transform:scale(-1,-1);}
+.cn.tl{top:2px;left:2px;}.cn.tr{top:2px;right:2px;}.cn.bl{bottom:2px;left:2px;}.cn.br{bottom:2px;right:2px;}
 .wm{position:absolute;left:50%;top:50%;width:420px;transform:translate(-50%,-44%);opacity:.055;filter:grayscale(1) sepia(1);pointer-events:none;}
 .cont{position:absolute;inset:0;padding:52px 70px 0;text-align:center;font-family:'Cormorant Garamond',Georgia,serif;color:#1d1a16;}
 .brasao{width:168px;display:block;margin:0 auto 14px;}
@@ -67,13 +67,34 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
 .prev{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%) rotate(-28deg);font-family:'Cinzel',Georgia,serif;font-size:110px;letter-spacing:14px;color:rgba(143,29,36,.13);white-space:nowrap;pointer-events:none;display:none;}
 .prev small{display:block;font-size:20px;letter-spacing:5px;text-align:center;}
 .sheet.previa .prev{display:block;}
+.sheet.pais{width:1123px;height:794px;}
+.pais br.q{display:none;}
+.pais .wm{width:360px;}
+.pais .cont{padding:40px 120px 0;}
+.pais .brasao{width:112px;margin:0 auto 6px;}
+.pais .l{font-size:18px;line-height:1.38;}
+.pais .par .tx{max-width:none!important;flex:none;}
+.pais .cap{width:50px;height:50px;}.pais .cap span{font-size:36px;}
+.pais .nomeGM{font-size:32px;margin:2px 0 0;}
+.pais .nomeImp{font-size:46px;margin:6px 0 0;}
+.pais .rep{font-size:16px;}.pais .rep .sc{font-size:26px;}
+.pais .par[style]{margin-top:12px!important;}
+.pais .titulo{font-size:20px;}
+.pais .cota{margin-top:8px;}
+.pais .l[style*="margin-top:18px"]{margin-top:10px!important;}
+.pais .data{font-size:18px;margin-top:10px;}.pais .data .sc{font-size:27px;}
+.pais .ass{left:170px;right:170px;bottom:112px;align-items:center;}
+.pais .ass>div[style]{transform:scale(.76);margin-bottom:-44px!important;}
+.pais .selo,.pais .selo+img{}
+.pais .lema{bottom:52px;font-size:13px;}
 @media print{
-  @page{size:A4;margin:0;}
+
   body{background:#fff;}
   .ctl{display:none!important;}
   .stage{padding:0;display:block;}
   .scaler{transform:none!important;width:auto!important;height:auto!important;}
   .sheet{width:210mm;height:297mm;box-shadow:none;zoom:1;}
+  .sheet.pais{width:297mm;height:210mm;}
 }
 </style></head><body>
 <div class="ctl" id="ctl">
@@ -85,7 +106,8 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
     <label><span>Cota</span><select id="iCota" onchange="pintar()"><option value="Ouro">Ouro (Or)</option><option value="Prata">Prata (Argent)</option></select></label>
     <label><span>Cidade</span><input id="iCid" value="São Paulo" oninput="pintar()"></label>
     <label><span>Data</span><input id="iData" type="date" oninput="pintar()"></label>
-    <label><span>Grão-Mestre</span><input id="iGM" value="Manuel Brandão" oninput="pintar()"></label>
+    <label><span>Formato</span><select id="iFmt" onchange="pintar()"><option value="r">Vertical (retrato)</option><option value="p">Horizontal (paisagem)</option></select></label>
+    <label><span>Grão-Mestre</span><input id="iGM" value="Manu Brandão" oninput="pintar()"></label>
   </div>
   <div class="acts"><button class="bt" onclick="imprimir()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><span id="msg"></span></div>
   <div class="aviso" id="avPrev" style="display:none;">Esta é uma <b>prévia</b>. O diploma oficial, sem a marca d'água, é emitido pelo Conselho depois da confirmação da associação.</div>
@@ -93,24 +115,24 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
 
 <div class="stage"><div class="scaler" id="scaler"><div class="sheet previa" id="sheet">
   <div class="f1"><div class="f2"><div class="f3">
-    <svg class="cn tl" viewBox="0 0 62 62"><g fill="none" stroke="#b08a3a" stroke-width="1.3" stroke-linecap="round"><path d="M6 56 V14 Q6 6 14 6 H56"/><path d="M12 50 V20 Q12 12 20 12 H50"/><path d="M20 20 q10 2 12 12 q-8 -2 -12 -12z" fill="#b08a3a" fill-opacity=".35"/><circle cx="20" cy="20" r="3" fill="#8f1d24" stroke="none"/><path d="M26 6 q4 8 0 14 M6 26 q8 4 14 0"/></g></svg>
-    <svg class="cn tr" viewBox="0 0 62 62"><g fill="none" stroke="#b08a3a" stroke-width="1.3" stroke-linecap="round"><path d="M6 56 V14 Q6 6 14 6 H56"/><path d="M12 50 V20 Q12 12 20 12 H50"/><path d="M20 20 q10 2 12 12 q-8 -2 -12 -12z" fill="#b08a3a" fill-opacity=".35"/><circle cx="20" cy="20" r="3" fill="#8f1d24" stroke="none"/><path d="M26 6 q4 8 0 14 M6 26 q8 4 14 0"/></g></svg>
-    <svg class="cn bl" viewBox="0 0 62 62"><g fill="none" stroke="#b08a3a" stroke-width="1.3" stroke-linecap="round"><path d="M6 56 V14 Q6 6 14 6 H56"/><path d="M12 50 V20 Q12 12 20 12 H50"/><path d="M20 20 q10 2 12 12 q-8 -2 -12 -12z" fill="#b08a3a" fill-opacity=".35"/><circle cx="20" cy="20" r="3" fill="#8f1d24" stroke="none"/><path d="M26 6 q4 8 0 14 M6 26 q8 4 14 0"/></g></svg>
-    <svg class="cn br" viewBox="0 0 62 62"><g fill="none" stroke="#b08a3a" stroke-width="1.3" stroke-linecap="round"><path d="M6 56 V14 Q6 6 14 6 H56"/><path d="M12 50 V20 Q12 12 20 12 H50"/><path d="M20 20 q10 2 12 12 q-8 -2 -12 -12z" fill="#b08a3a" fill-opacity=".35"/><circle cx="20" cy="20" r="3" fill="#8f1d24" stroke="none"/><path d="M26 6 q4 8 0 14 M6 26 q8 4 14 0"/></g></svg>
+    <img class="cn tl" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2062%2062%22%20width%3D%2262%22%20height%3D%2262%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b08a3a%22%20stroke-width%3D%221.3%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M6%2056%20V14%20Q6%206%2014%206%20H56%22/%3E%3Cpath%20d%3D%22M12%2050%20V20%20Q12%2012%2020%2012%20H50%22/%3E%3Cpath%20d%3D%22M20%2020%20q10%202%2012%2012%20q-8%20-2%20-12%20-12z%22%20fill%3D%22%23b08a3a%22%20fill-opacity%3D%22.35%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%223%22%20fill%3D%22%238f1d24%22%20stroke%3D%22none%22/%3E%3Cpath%20d%3D%22M26%206%20q4%208%200%2014%20M6%2026%20q8%204%2014%200%22/%3E%3C/g%3E%3C/svg%3E">
+    <img class="cn tr" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2062%2062%22%20width%3D%2262%22%20height%3D%2262%22%3E%3Cg%20transform%3D%22translate%2862%2C0%29%20scale%28-1%2C1%29%22%20fill%3D%22none%22%20stroke%3D%22%23b08a3a%22%20stroke-width%3D%221.3%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M6%2056%20V14%20Q6%206%2014%206%20H56%22/%3E%3Cpath%20d%3D%22M12%2050%20V20%20Q12%2012%2020%2012%20H50%22/%3E%3Cpath%20d%3D%22M20%2020%20q10%202%2012%2012%20q-8%20-2%20-12%20-12z%22%20fill%3D%22%23b08a3a%22%20fill-opacity%3D%22.35%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%223%22%20fill%3D%22%238f1d24%22%20stroke%3D%22none%22/%3E%3Cpath%20d%3D%22M26%206%20q4%208%200%2014%20M6%2026%20q8%204%2014%200%22/%3E%3C/g%3E%3C/svg%3E">
+    <img class="cn bl" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2062%2062%22%20width%3D%2262%22%20height%3D%2262%22%3E%3Cg%20transform%3D%22translate%280%2C62%29%20scale%281%2C-1%29%22%20fill%3D%22none%22%20stroke%3D%22%23b08a3a%22%20stroke-width%3D%221.3%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M6%2056%20V14%20Q6%206%2014%206%20H56%22/%3E%3Cpath%20d%3D%22M12%2050%20V20%20Q12%2012%2020%2012%20H50%22/%3E%3Cpath%20d%3D%22M20%2020%20q10%202%2012%2012%20q-8%20-2%20-12%20-12z%22%20fill%3D%22%23b08a3a%22%20fill-opacity%3D%22.35%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%223%22%20fill%3D%22%238f1d24%22%20stroke%3D%22none%22/%3E%3Cpath%20d%3D%22M26%206%20q4%208%200%2014%20M6%2026%20q8%204%2014%200%22/%3E%3C/g%3E%3C/svg%3E">
+    <img class="cn br" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2062%2062%22%20width%3D%2262%22%20height%3D%2262%22%3E%3Cg%20transform%3D%22translate%2862%2C62%29%20scale%28-1%2C-1%29%22%20fill%3D%22none%22%20stroke%3D%22%23b08a3a%22%20stroke-width%3D%221.3%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M6%2056%20V14%20Q6%206%2014%206%20H56%22/%3E%3Cpath%20d%3D%22M12%2050%20V20%20Q12%2012%2020%2012%20H50%22/%3E%3Cpath%20d%3D%22M20%2020%20q10%202%2012%2012%20q-8%20-2%20-12%20-12z%22%20fill%3D%22%23b08a3a%22%20fill-opacity%3D%22.35%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%223%22%20fill%3D%22%238f1d24%22%20stroke%3D%22none%22/%3E%3Cpath%20d%3D%22M26%206%20q4%208%200%2014%20M6%2026%20q8%204%2014%200%22/%3E%3C/g%3E%3C/svg%3E">
   </div></div></div>
   <img class="wm" src="img/brasao-alta.png" alt="">
   <div class="cont">
     <img class="brasao" src="img/brasao-alta.png" alt="Commanderie de Bordeaux">
     <div class="par"><div class="cap"><span>P</span></div><div class="tx l" style="text-align:left;max-width:520px;">ar les pouvoirs à lui conférés par le<br><span class="caps" style="font-size:17px;">Grand Conseil du Vin de Bordeaux,</span></div></div>
-    <div class="sc nomeGM" id="dGM">Manuel Brandão</div>
+    <div class="sc nomeGM" id="dGM">Manu Brandão</div>
     <div class="l">Grand Maître de la Commanderie de Bordeaux au Brésil,</div>
-    <div class="l" style="margin-top:10px;">et le Conseil Privé, déclarent et attestent par le présent<br>document dûment paraphé avoir reconnu la maison</div>
+    <div class="l" style="margin-top:10px;">et le Conseil Privé, déclarent et attestent par le présent<br class="q"> document dûment paraphé avoir reconnu la maison</div>
     <div class="sc nomeImp" id="dNome">Importadora</div>
     <div class="rep" id="dRepW">représentée par <span class="sc" id="dRep"></span></div>
-    <div class="par" style="margin-top:22px;"><div class="cap"><span>A</span></div><div class="tx titulo" style="text-align:left;max-width:540px;"><span style="font-size:21px;">u titre d'</span><span class="caps">Importateur Officiel</span><br><span class="caps">de la Commanderie de Bordeaux</span><br><span class="caps">du Brésil</span></div></div>
+    <div class="par" style="margin-top:22px;"><div class="cap"><span>A</span></div><div class="tx titulo" style="text-align:left;max-width:540px;"><span style="font-size:21px;">u titre d'</span><span class="caps">Importateur Officiel</span><br><span class="caps">de la Commanderie de Bordeaux</span><br class="q"> <span class="caps">du Brésil</span></div></div>
     <div class="cota" id="dCota"><i></i>COTE OR<i></i></div>
-    <div class="l" style="margin-top:18px;">En hommage à son engagement envers la diffusion,<br>la défense et la reconnaissance de l'excellence<br>des Vins de Bordeaux au Brésil.</div>
-    <div class="data">A <span class="sc" id="dCid">São Paulo</span>, ce <span class="sc" id="dDia">1er</span> jour du mois<br>de <span class="sc" id="dMes">Octobre</span> de l'An de Grâce <span class="sc" id="dAno">2026</span></div>
+    <div class="l" style="margin-top:18px;">En hommage à son engagement envers la diffusion,<br class="q"> la défense et la reconnaissance de l'excellence<br> des Vins de Bordeaux au Brésil.</div>
+    <div class="data">A <span class="sc" id="dCid">São Paulo</span>, ce <span class="sc" id="dDia">1er</span> jour du mois<br class="q"> de <span class="sc" id="dMes">Octobre</span> de l'An de Grâce <span class="sc" id="dAno">2026</span></div>
   </div>
   <div class="ass">
     <div class="s"><div class="ln"></div>Le Grand Maître<small>Commanderie de Bordeaux du Brésil</small></div>
@@ -141,21 +163,22 @@ function pintar(){
   $("dNome").textContent=$("iNome").value.trim()||"Nom de l'importateur";
   var nm=$("dNome").textContent.length;$("dNome").style.fontSize=(nm>34?36:nm>26?42:52)+"px";
   var rep=$("iRep").value.trim();$("dRep").textContent=rep;$("dRepW").style.visibility=rep?"visible":"hidden";
-  $("dGM").textContent=$("iGM").value.trim()||"Manuel Brandão";
+  $("dGM").textContent=$("iGM").value.trim()||"Manu Brandão";
   $("dCid").textContent=$("iCid").value.trim()||"São Paulo";
   var dt=($("iData").value||hoje()).split("-");var dia=parseInt(dt[2],10);
   $("dDia").textContent=dia===1?"1er":String(dia);$("dMes").textContent=MESES[parseInt(dt[1],10)-1]||"";$("dAno").textContent=dt[0];
   var ouro=$("iCota").value!=="Prata";
   $("dCota").innerHTML="<i></i>"+(ouro?"COTE OR":"COTE ARGENT")+"<i></i>";
   $("sF").setAttribute("fill",ouro?"url(#gO)":"url(#gP)");$("sT").textContent=ouro?"OR":"ARGENT";
-  $("sheet").classList.toggle("previa",!OFICIAL);$("avPrev").style.display=OFICIAL?"none":"block";
+  $("sheet").classList.toggle("previa",!OFICIAL);var P=$("iFmt").value==="p";$("sheet").classList.toggle("pais",P);
+  var pg=$("pgStyle");if(!pg){pg=document.createElement("style");pg.id="pgStyle";document.head.appendChild(pg);}pg.textContent="@media print{@page{size:A4 "+(P?"landscape":"portrait")+";margin:0;}}";escala();$("avPrev").style.display=OFICIAL?"none":"block";
 }
 function preencher(x){
   $("iNome").value=x.nome_fantasia||x.nome||"";$("iRep").value=x.responsavel_nome||"";
   $("iCota").value=(x.plano==="Prata")?"Prata":"Ouro";
   $("iData").value=x.membro_desde?(""+x.membro_desde).slice(0,10):hoje();pintar();}
 function escolher(id){var x=IMPS.filter(function(i){return i.id===id;})[0];if(x){preencher(x);history.replaceState(null,"","?id="+id);}}
-function escala(){var w=Math.min(window.innerWidth-24,794);var s=w/794;var sc=$("scaler");sc.style.transform="scale("+s+")";sc.style.width="794px";sc.style.height=(1123*s)+"px";}
+function escala(){var P=$("sheet").classList.contains("pais"),W=P?1123:794,H=P?794:1123;var w=Math.min(window.innerWidth-24,W);var s=w/W;var sc=$("scaler");sc.style.transform="scale("+s+")";sc.style.width=W+"px";sc.style.height=(H*s)+"px";}
 window.addEventListener("resize",escala);
 function imprimir(){window.print();}
 function lib(u){return new Promise(function(ok,er){var x=document.createElement("script");x.src=u;x.onload=ok;x.onerror=function(){er("não consegui carregar "+u);};document.head.appendChild(x);});}
@@ -164,8 +187,8 @@ async function baixarPDF(){var b=$("bPdf");b.disabled=true;$("msg").textContent=
     if(!window.jspdf)await lib("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
     await document.fonts.ready;var sc=$("scaler"),old=sc.style.transform;sc.style.transform="none";
     var cv=await html2canvas($("sheet"),{scale:3,useCORS:true,backgroundColor:"#fffdf8"});sc.style.transform=old;
-    var pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
-    pdf.addImage(cv.toDataURL("image/jpeg",0.95),"JPEG",0,0,210,297);
+    var P=$("sheet").classList.contains("pais");var pdf=new window.jspdf.jsPDF({orientation:P?"landscape":"portrait",unit:"mm",format:"a4"});
+    pdf.addImage(cv.toDataURL("image/jpeg",0.95),"JPEG",0,0,P?297:210,P?210:297);
     var nome=($("iNome").value||"importadora").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");
     pdf.save("Diploma-Importadora-Oficial-"+nome+(OFICIAL?"":"-PREVIA")+".pdf");$("msg").textContent="";}
   catch(e){$("msg").textContent="Não foi possível gerar o PDF ("+e+"). Use Imprimir → Salvar como PDF.";}
@@ -173,7 +196,7 @@ async function baixarPDF(){var b=$("bPdf");b.disabled=true;$("msg").textContent=
 async function iniciar(){
   var q=new URLSearchParams(location.search);$("iData").value=q.get("data")||hoje();
   if(q.get("nome"))$("iNome").value=q.get("nome");if(q.get("rep"))$("iRep").value=q.get("rep");
-  if(q.get("cota"))$("iCota").value=/prata|argent/i.test(q.get("cota"))?"Prata":"Ouro";if(q.get("cidade"))$("iCid").value=q.get("cidade");
+  if(q.get("cota"))$("iCota").value=/prata|argent/i.test(q.get("cota"))?"Prata":"Ouro";if(q.get("cidade"))$("iCid").value=q.get("cidade");if(q.get("formato")==="paisagem")$("iFmt").value="p";
   if(q.get("de")==="importador"){$("lnkBack").href="painel-importador.html";$("lnkLogo").href="painel-importador.html";}
   escala();pintar();
   if(!sb)return;

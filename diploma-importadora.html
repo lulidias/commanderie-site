@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diploma · Importadora Oficial — Commanderie de Bordeaux</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1e2a56;--gold:#b08a3a;--gold2:#c9a85c;--red:#8f1d24;--ink:#26221c;--cream:#f8f3e6;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:var(--ink);}
+/* ---------- barra de controles ---------- */
+.ctl{max-width:900px;margin:0 auto;padding:18px 16px 8px;}
+.ctl .top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.ctl .top img{width:36px;}
+.ctl .top b{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:19px;}
+.ctl .top a.back{margin-left:auto;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;background:#fffdf7;}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:14px;background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:12px;}
+.form label span{display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;}
+.form input,.form select{width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fbf7ec;font-family:inherit;}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center;}
+.bt{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;}
+.bt.g{background:var(--gold);}
+.bt:disabled{opacity:.6;}
+#msg{font-size:13px;color:#5b5446;}
+.aviso{margin-top:10px;font-size:13px;color:#8a6a1f;background:#f6efdc;border:1px solid #e6d9b3;border-radius:10px;padding:9px 12px;line-height:1.5;}
+/* ---------- folha A4 ---------- */
+.stage{display:flex;justify-content:center;padding:10px 0 50px;}
+.scaler{transform-origin:top center;}
+.sheet{width:794px;height:1123px;position:relative;background:#fffdf8;box-shadow:0 18px 50px rgba(40,30,10,.25);overflow:hidden;
+  background-image:radial-gradient(ellipse at 50% 45%,rgba(255,255,255,.9),rgba(246,240,224,.55) 75%,rgba(236,226,200,.6) 100%);}
+.f1{position:absolute;inset:26px;border:1.6px solid var(--gold);padding:5px;}
+.f2{position:absolute;inset:5px;padding:13px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cg fill='none' stroke='%23b08a3a' stroke-width='1'%3E%3Cpath d='M9 2 L16 9 L9 16 L2 9Z'/%3E%3Ccircle cx='9' cy='9' r='1.6' fill='%23b08a3a'/%3E%3C/g%3E%3C/svg%3E") repeat;background-size:13px 13px;}
+.f3{position:absolute;inset:13px;background:inherit;border:1.2px solid var(--gold);background:#fffdf8;
+  background-image:radial-gradient(ellipse at 50% 45%,#fffefb,#fbf6ea 80%,#f5eedb 100%);}
+.f3:before{content:"";position:absolute;inset:5px;border:.6px solid rgba(176,138,58,.55);}
+.cn{position:absolute;width:62px;height:62px;}
+.cn.tl{top:2px;left:2px;}.cn.tr{top:2px;right:2px;transform:scaleX(-1);}.cn.bl{bottom:2px;left:2px;transform:scaleY(-1);}.cn.br{bottom:2px;right:2px;transform:scale(-1,-1);}
+.wm{position:absolute;left:50%;top:50%;width:420px;transform:translate(-50%,-44%);opacity:.055;filter:grayscale(1) sepia(1);pointer-events:none;}
+.cont{position:absolute;inset:0;padding:52px 70px 0;text-align:center;font-family:'Cormorant Garamond',Georgia,serif;color:#1d1a16;}
+.brasao{width:168px;display:block;margin:0 auto 14px;}
+.l{font-size:20px;line-height:1.45;letter-spacing:.2px;}
+.caps{font-family:'Cinzel',Georgia,serif;font-weight:600;letter-spacing:1.4px;}
+.sc{font-family:'Pinyon Script',cursive;color:#14131c;font-weight:normal;line-height:1.05;}
+.nomeGM{font-size:40px;margin:6px 0 2px;}
+.nomeImp{font-size:52px;margin:14px 0 4px;}
+.rep{font-size:18px;font-style:italic;color:#4a4235;}
+.rep .sc{font-size:30px;font-style:normal;vertical-align:-3px;margin-left:4px;}
+.par{display:flex;align-items:flex-start;justify-content:center;gap:12px;}
+.par .tx{flex:1;}
+.cap{flex:none;width:60px;height:60px;position:relative;background:var(--navy);border:2px solid var(--gold);box-shadow:0 0 0 1px #fff inset,0 0 0 3px var(--navy) inset;display:flex;align-items:center;justify-content:center;margin-top:4px;}
+.cap:before{content:"";position:absolute;inset:6px;background:radial-gradient(circle at 20% 25%,#8f1d24 2px,transparent 3px),radial-gradient(circle at 80% 22%,#c9a85c 2px,transparent 3px),radial-gradient(circle at 22% 80%,#c9a85c 2px,transparent 3px),radial-gradient(circle at 78% 78%,#8f1d24 2px,transparent 3px);}
+.cap span{position:relative;font-family:'Cinzel',Georgia,serif;font-weight:600;font-size:44px;line-height:1;color:#e3c372;text-shadow:0 1px 0 #6d5420;}
+.titulo{font-size:22px;line-height:1.3;color:var(--navy);margin-top:2px;}
+.cota{display:inline-block;margin-top:14px;font-family:'Cinzel',Georgia,serif;font-size:14px;letter-spacing:4px;color:#6d5420;}
+.cota i{display:inline-block;width:46px;height:1px;background:var(--gold);vertical-align:middle;margin:0 10px;}
+.data{font-size:20px;margin-top:22px;line-height:1.5;}
+.data .sc{font-size:30px;margin:0 4px;vertical-align:-4px;}
+.ass{font-family:'Cormorant Garamond',Georgia,serif;position:absolute;left:96px;right:96px;bottom:118px;display:flex;justify-content:space-between;align-items:flex-end;}
+.ass .s{width:210px;text-align:center;font-size:18px;}
+.ass .s .ln{border-top:1px solid rgba(38,34,28,.55);margin-bottom:5px;height:48px;}
+.ass .s small{display:block;font-size:14px;color:#5b5446;font-style:italic;}
+.selo{width:132px;height:132px;display:block;}
+.lema{position:absolute;left:0;right:0;bottom:66px;text-align:center;font-family:'Cinzel',Georgia,serif;font-size:15px;letter-spacing:6px;color:#8a6a2a;}
+.lema:before,.lema:after{content:"";display:inline-block;width:70px;height:1px;background:var(--gold);vertical-align:middle;margin:0 14px;}
+.prev{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%) rotate(-28deg);font-family:'Cinzel',Georgia,serif;font-size:110px;letter-spacing:14px;color:rgba(143,29,36,.13);white-space:nowrap;pointer-events:none;display:none;}
+.prev small{display:block;font-size:20px;letter-spacing:5px;text-align:center;}
+.sheet.previa .prev{display:block;}
+@media print{
+  @page{size:A4;margin:0;}
+  body{background:#fff;}
+  .ctl{display:none!important;}
+  .stage{padding:0;display:block;}
+  .scaler{transform:none!important;width:auto!important;height:auto!important;}
+  .sheet{width:210mm;height:297mm;box-shadow:none;zoom:1;}
+}
+</style></head><body>
+<div class="ctl" id="ctl">
+  <div class="top"><a href="painel-importadoras.html"><img src="img/brasao.png" alt="Brasão"></a><b>Diploma · Importadora Oficial</b><a class="back" href="painel-importadoras.html">&#8592; Voltar</a></div>
+  <div class="form">
+    <label id="selWrap" style="display:none;grid-column:1/-1;"><span>Importadora (cadastro)</span><select id="selImp" onchange="escolher(this.value)"></select></label>
+    <label style="grid-column:span 2;"><span>Importadora</span><input id="iNome" oninput="pintar()"></label>
+    <label><span>Representante</span><input id="iRep" oninput="pintar()"></label>
+    <label><span>Cota</span><select id="iCota" onchange="pintar()"><option value="Ouro">Ouro (Or)</option><option value="Prata">Prata (Argent)</option></select></label>
+    <label><span>Cidade</span><input id="iCid" value="São Paulo" oninput="pintar()"></label>
+    <label><span>Data</span><input id="iData" type="date" oninput="pintar()"></label>
+    <label><span>Grão-Mestre</span><input id="iGM" value="Manuel Brandão" oninput="pintar()"></label>
+  </div>
+  <div class="acts"><button class="bt" onclick="imprimir()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><span id="msg"></span></div>
+  <div class="aviso" id="avPrev" style="display:none;">Esta é uma <b>prévia</b>. O diploma oficial, sem a marca d'água, é emitido pelo Conselho depois da confirmação da associação.</div>
+</div>
+
+<div class="stage"><div class="scaler" id="scaler"><div class="sheet previa" id="sheet">
+  <div class="f1"><div class="f2"><div class="f3">
+    <svg class="cn tl" viewBox="0 0 62 62"><g fill="none" stroke="#b08a3a" stroke-width="1.3" stroke-linecap="round"><path d="M6 56 V14 Q6 6 14 6 H56"/><path d="M12 50 V20 Q12 12 20 12 H50"/><path d="M20 20 q10 2 12 12 q-8 -2 -12 -12z" fill="#b08a3a" fill-opacity=".35"/><circle cx="20" cy="20" r="3" fill="#8f1d24" stroke="none"/><path d="M26 6 q4 8 0 14 M6 26 q8 4 14 0"/></g></svg>
+    <svg class="cn tr" viewBox="0 0 62 62"><g fill="none" stroke="#b08a3a" stroke-width="1.3" stroke-linecap="round"><path d="M6 56 V14 Q6 6 14 6 H56"/><path d="M12 50 V20 Q12 12 20 12 H50"/><path d="M20 20 q10 2 12 12 q-8 -2 -12 -12z" fill="#b08a3a" fill-opacity=".35"/><circle cx="20" cy="20" r="3" fill="#8f1d24" stroke="none"/><path d="M26 6 q4 8 0 14 M6 26 q8 4 14 0"/></g></svg>
+    <svg class="cn bl" viewBox="0 0 62 62"><g fill="none" stroke="#b08a3a" stroke-width="1.3" stroke-linecap="round"><path d="M6 56 V14 Q6 6 14 6 H56"/><path d="M12 50 V20 Q12 12 20 12 H50"/><path d="M20 20 q10 2 12 12 q-8 -2 -12 -12z" fill="#b08a3a" fill-opacity=".35"/><circle cx="20" cy="20" r="3" fill="#8f1d24" stroke="none"/><path d="M26 6 q4 8 0 14 M6 26 q8 4 14 0"/></g></svg>
+    <svg class="cn br" viewBox="0 0 62 62"><g fill="none" stroke="#b08a3a" stroke-width="1.3" stroke-linecap="round"><path d="M6 56 V14 Q6 6 14 6 H56"/><path d="M12 50 V20 Q12 12 20 12 H50"/><path d="M20 20 q10 2 12 12 q-8 -2 -12 -12z" fill="#b08a3a" fill-opacity=".35"/><circle cx="20" cy="20" r="3" fill="#8f1d24" stroke="none"/><path d="M26 6 q4 8 0 14 M6 26 q8 4 14 0"/></g></svg>
+  </div></div></div>
+  <img class="wm" src="img/brasao-alta.png" alt="">
+  <div class="cont">
+    <img class="brasao" src="img/brasao-alta.png" alt="Commanderie de Bordeaux">
+    <div class="par"><div class="cap"><span>P</span></div><div class="tx l" style="text-align:left;max-width:520px;">ar les pouvoirs à lui conférés par le<br><span class="caps" style="font-size:17px;">Grand Conseil du Vin de Bordeaux,</span></div></div>
+    <div class="sc nomeGM" id="dGM">Manuel Brandão</div>
+    <div class="l">Grand Maître de la Commanderie de Bordeaux au Brésil,</div>
+    <div class="l" style="margin-top:10px;">et le Conseil Privé, déclarent et attestent par le présent<br>document dûment paraphé avoir reconnu la maison</div>
+    <div class="sc nomeImp" id="dNome">Importadora</div>
+    <div class="rep" id="dRepW">représentée par <span class="sc" id="dRep"></span></div>
+    <div class="par" style="margin-top:22px;"><div class="cap"><span>A</span></div><div class="tx titulo" style="text-align:left;max-width:540px;"><span style="font-size:21px;">u titre d'</span><span class="caps">Importateur Officiel</span><br><span class="caps">de la Commanderie de Bordeaux</span><br><span class="caps">du Brésil</span></div></div>
+    <div class="cota" id="dCota"><i></i>COTE OR<i></i></div>
+    <div class="l" style="margin-top:18px;">En hommage à son engagement envers la diffusion,<br>la défense et la reconnaissance de l'excellence<br>des Vins de Bordeaux au Brésil.</div>
+    <div class="data">A <span class="sc" id="dCid">São Paulo</span>, ce <span class="sc" id="dDia">1er</span> jour du mois<br>de <span class="sc" id="dMes">Octobre</span> de l'An de Grâce <span class="sc" id="dAno">2026</span></div>
+  </div>
+  <div class="ass">
+    <div class="s"><div class="ln"></div>Le Grand Maître<small>Commanderie de Bordeaux du Brésil</small></div>
+    <div style="position:relative;width:132px;height:132px;margin-bottom:-14px;"><svg class="selo" id="selo" viewBox="0 0 132 132">
+      <defs><radialGradient id="gO" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#f3dc95"/><stop offset=".55" stop-color="#c9a24c"/><stop offset="1" stop-color="#8a6a26"/></radialGradient>
+      <radialGradient id="gP" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#c4cad1"/><stop offset="1" stop-color="#7f8892"/></radialGradient>
+      <path id="arc" d="M66 66 m-47 0 a47 47 0 1 1 94 0 a47 47 0 1 1 -94 0"/></defs>
+      <circle id="sF" cx="66" cy="66" r="62" fill="url(#gO)"/>
+      <circle cx="66" cy="66" r="58" fill="none" stroke="rgba(80,55,15,.55)" stroke-width="1"/>
+      <circle cx="66" cy="66" r="37" fill="none" stroke="rgba(80,55,15,.55)" stroke-width="1"/>
+      <text font-family="Cinzel,Georgia,serif" font-size="9.6" font-weight="600" letter-spacing="1.5" fill="#3b2a0c"><textPath href="#arc" startOffset="0" textLength="292" lengthAdjust="spacing">IMPORTATEUR OFFICIEL · COMMANDERIE DE BORDEAUX ·</textPath></text>
+            <text id="sT" x="66" y="97" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-size="8.5" font-weight="600" letter-spacing="2" fill="#3b2a0c">OR</text>
+    </svg><img src="img/brasao-alta.png" alt="" style="position:absolute;left:40px;top:34px;width:52px;height:50px;"></div>
+    <div class="s"><div class="ln"></div>Le Chancelier<small>pour le Conseil Privé</small></div>
+  </div>
+  <div class="lema">Bordeaux, toujours Bordeaux</div>
+  <div class="prev">PRÉVIA<small>documento sem validade</small></div>
+</div></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=null;try{sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");}catch(e){}
+var MESES=["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+var IMPS=[],OFICIAL=false;
+function $(i){return document.getElementById(i);}
+function hoje(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function pintar(){
+  $("dNome").textContent=$("iNome").value.trim()||"Nom de l'importateur";
+  var nm=$("dNome").textContent.length;$("dNome").style.fontSize=(nm>34?36:nm>26?42:52)+"px";
+  var rep=$("iRep").value.trim();$("dRep").textContent=rep;$("dRepW").style.visibility=rep?"visible":"hidden";
+  $("dGM").textContent=$("iGM").value.trim()||"Manuel Brandão";
+  $("dCid").textContent=$("iCid").value.trim()||"São Paulo";
+  var dt=($("iData").value||hoje()).split("-");var dia=parseInt(dt[2],10);
+  $("dDia").textContent=dia===1?"1er":String(dia);$("dMes").textContent=MESES[parseInt(dt[1],10)-1]||"";$("dAno").textContent=dt[0];
+  var ouro=$("iCota").value!=="Prata";
+  $("dCota").innerHTML="<i></i>"+(ouro?"COTE OR":"COTE ARGENT")+"<i></i>";
+  $("sF").setAttribute("fill",ouro?"url(#gO)":"url(#gP)");$("sT").textContent=ouro?"OR":"ARGENT";
+  $("sheet").classList.toggle("previa",!OFICIAL);$("avPrev").style.display=OFICIAL?"none":"block";
+}
+function preencher(x){
+  $("iNome").value=x.nome_fantasia||x.nome||"";$("iRep").value=x.responsavel_nome||"";
+  $("iCota").value=(x.plano==="Prata")?"Prata":"Ouro";
+  $("iData").value=x.membro_desde?(""+x.membro_desde).slice(0,10):hoje();pintar();}
+function escolher(id){var x=IMPS.filter(function(i){return i.id===id;})[0];if(x){preencher(x);history.replaceState(null,"","?id="+id);}}
+function escala(){var w=Math.min(window.innerWidth-24,794);var s=w/794;var sc=$("scaler");sc.style.transform="scale("+s+")";sc.style.width="794px";sc.style.height=(1123*s)+"px";}
+window.addEventListener("resize",escala);
+function imprimir(){window.print();}
+function lib(u){return new Promise(function(ok,er){var x=document.createElement("script");x.src=u;x.onload=ok;x.onerror=function(){er("não consegui carregar "+u);};document.head.appendChild(x);});}
+async function baixarPDF(){var b=$("bPdf");b.disabled=true;$("msg").textContent="Gerando o PDF…";
+  try{if(!window.html2canvas)await lib("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+    if(!window.jspdf)await lib("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+    await document.fonts.ready;var sc=$("scaler"),old=sc.style.transform;sc.style.transform="none";
+    var cv=await html2canvas($("sheet"),{scale:3,useCORS:true,backgroundColor:"#fffdf8"});sc.style.transform=old;
+    var pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
+    pdf.addImage(cv.toDataURL("image/jpeg",0.95),"JPEG",0,0,210,297);
+    var nome=($("iNome").value||"importadora").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");
+    pdf.save("Diploma-Importadora-Oficial-"+nome+(OFICIAL?"":"-PREVIA")+".pdf");$("msg").textContent="";}
+  catch(e){$("msg").textContent="Não foi possível gerar o PDF ("+e+"). Use Imprimir → Salvar como PDF.";}
+  b.disabled=false;}
+async function iniciar(){
+  var q=new URLSearchParams(location.search);$("iData").value=q.get("data")||hoje();
+  if(q.get("nome"))$("iNome").value=q.get("nome");if(q.get("rep"))$("iRep").value=q.get("rep");
+  if(q.get("cota"))$("iCota").value=/prata|argent/i.test(q.get("cota"))?"Prata":"Ouro";if(q.get("cidade"))$("iCid").value=q.get("cidade");
+  escala();pintar();
+  if(!sb)return;
+  try{var u=(await sb.auth.getUser()).data.user;if(!u)return;
+    var c=await sb.rpc("is_conselho");var cons=!!(c&&c.data===true);
+    var r=await sb.from("importadoras").select("*").order("nome");IMPS=r.data||[];
+    if(!cons)IMPS=IMPS.filter(function(x){return x.owner_user_id===u.id;});
+    if(!IMPS.length)return;
+    OFICIAL=true;
+    if(cons){$("selWrap").style.display="block";$("selImp").innerHTML="<option value=''>— escolha a importadora —</option>"+IMPS.map(function(x){return "<option value='"+x.id+"'>"+(x.nome||"").replace(/</g,"&lt;")+"</option>";}).join("");}
+    var alvo=q.get("id")?IMPS.filter(function(x){return x.id===q.get("id");})[0]:(cons?null:IMPS[0]);
+    if(alvo){$("selImp").value=alvo.id;preencher(alvo);}else pintar();
+  }catch(e){}
+}
+iniciar();
+</script>
+</body></html>

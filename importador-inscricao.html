@@ -59,6 +59,8 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
 .foot img{height:60px;opacity:.95;}
 .lema{text-align:center;font-style:italic;color:var(--gold);font-size:18px;margin-top:14px;}
 .ok-wrap{display:none;text-align:center;}
+.dipbox{margin-top:18px;}.dipbox a{display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--ink);background:#fffdf7;border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-family:Arial,sans-serif;font-size:13px;line-height:1.5;}
+.dipbox img{width:46px;flex:none;}.dipbox b{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:16px;}.dipbox u{color:var(--gold);}
 .ok-wrap .big{font-family:Georgia,serif;color:var(--navy);font-size:26px;margin:10px 0 6px;}
 .brl{display:block;font-family:Arial,sans-serif;font-size:12.5px;color:#2f6b3a;margin:-2px 0 6px;min-height:16px;}
 .pay{display:none;}
@@ -150,6 +152,7 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
       <li>Depois de pagar, envie o <b>comprovante</b> — o Conselho confirma e conclui a associação.</li>
     </ol>
     <div style="text-align:center;margin-top:16px;"><a class="btn" id="pComp" href="#">Enviar comprovante por e-mail</a></div>
+    <div class="dipbox"><a id="pDip" href="#" target="_blank" rel="noopener"><img src="img/brasao-alta.png" alt=""><span><b>Diploma de Importadora Oficial</b><br>Após a confirmação, a sua importadora recebe o diploma da Commanderie de Bordeaux, no padrão dos diplomas do Grand Conseil. <u>Ver prévia ›</u></span></a></div>
     <p class="sub" style="font-size:12.5px;margin-top:12px;">O valor em reais segue o câmbio comercial do euro no momento da inscrição, acrescido de <span id="pMg"></span> para variação cambial e encargos.</p>
   </div>
 
@@ -185,7 +188,7 @@ function mostrarPagamento(nome){var eur=EUR[PLANO];var v=valorBrl(eur);document.
   else{document.getElementById("pBrl").textContent="€ "+eur.toLocaleString("pt-BR");document.getElementById("pCalc").textContent="Não foi possível obter o câmbio agora. O Conselho enviará o valor em reais; a chave PIX abaixo já pode ser usada.";PIX=pixPayload(0,txid);}
   var q=document.getElementById("qr");q.innerHTML="";try{new QRCode(q,{text:PIX,width:180,height:180,correctLevel:QRCode.CorrectLevel.M});}catch(e){q.style.display="none";}
   document.getElementById("pComp").href="mailto:sac@commanderiedebordeaux.com.br?subject="+encodeURIComponent("Comprovante PIX — Importadora "+(nome||"")+" — cota "+PLANO)+"&body="+encodeURIComponent("Segue o comprovante do PIX da anuidade (cota "+PLANO+(v?(", "+brl(v)):"")+") da importadora "+(nome||"")+".");
-  document.getElementById("form").style.display="none";document.getElementById("pay").style.display="block";window.scrollTo({top:0,behavior:"smooth"});}
+  document.getElementById("pDip").href="diploma-importadora.html?nome="+encodeURIComponent(nome||"")+"&rep="+encodeURIComponent(document.getElementById("responsavel").value.trim())+"&cota="+PLANO;document.getElementById("form").style.display="none";document.getElementById("pay").style.display="block";window.scrollTo({top:0,behavior:"smooth"});}
 function selPlano(el){PLANO=el.getAttribute("data-plano");document.querySelectorAll(".plano").forEach(function(p){p.classList.toggle("sel",p===el);});}
 function v(id){var e=document.getElementById(id);return e?e.value.trim():"";}
 function diz(t,cor){var m=document.getElementById("msg");m.style.color=cor||"#5b5446";m.textContent=t;}

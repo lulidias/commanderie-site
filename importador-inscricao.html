@@ -157,7 +157,7 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
     </ol>
     <div style="text-align:center;margin-top:16px;"><a class="btn" id="pComp" href="#">Enviar comprovante por e-mail</a></div>
     <div class="dipbox"><div class="dipin"><img src="img/brasao-alta.png" alt=""><span><b>Diploma de Importadora Oficial</b><br>Após a confirmação, o Conselho emite o diploma da sua importadora, no padrão dos diplomas do Grand Conseil. Ele fica disponível para baixar no Painel do Importador.</span></div></div>
-    <p class="sub" style="font-size:12.5px;margin-top:12px;">O valor em reais segue o câmbio comercial do euro no momento da inscrição, acrescido de <span id="pMg"></span> para variação cambial e encargos.</p>
+    <p class="sub" style="font-size:12.5px;margin-top:12px;">O valor em reais segue o câmbio comercial do euro no momento da inscrição.</p>
   </div>
 
   <div class="foot"><img src="/img/brasao-alta.png" alt=""></div>
@@ -170,7 +170,7 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
 var PLANO="Ouro";
 var EUR={Ouro:1800,Prata:900};
-var MARGEM=4;            // % acrescentado ao cambio comercial do dia (variacao + encargos)
+var MARGEM=0;            // % acrescentado ao cambio comercial do dia (0 = sem acrescimo)
 var COT=null,COT_HORA="";
 var PIX_CHAVE="69296264000130",PIX_NOME="ASSOCIACAO COMMANDERIE DE",PIX_CIDADE="CURITIBA",PIX="";
 function brl(n){return "R$ "+n.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -186,9 +186,9 @@ function crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8
 function pixPayload(valor,txid){var mai=tlv("00","BR.GOV.BCB.PIX")+tlv("01",PIX_CHAVE);var p=tlv("00","01")+tlv("26",mai)+tlv("52","0000")+tlv("53","986")+(valor?tlv("54",valor.toFixed(2)):"")+tlv("58","BR")+tlv("59",PIX_NOME)+tlv("60",PIX_CIDADE)+tlv("62",tlv("05",txid||"***"))+"6304";return p+crc16(p);}
 function copiarPix(){var m=document.getElementById("pMsg");(navigator.clipboard?navigator.clipboard.writeText(PIX):Promise.reject()).then(function(){m.textContent="✔ Código copiado! No banco, use “Pix Copia e Cola”.";}).catch(function(){prompt("Copie o código PIX:",PIX);});}
 function copiarChave(){var m=document.getElementById("pMsg");(navigator.clipboard?navigator.clipboard.writeText("69.296.264/0001-30"):Promise.reject()).then(function(){m.textContent="✔ Chave CNPJ copiada.";}).catch(function(){prompt("Chave PIX (CNPJ):","69.296.264/0001-30");});}
-function mostrarPagamento(nome){var eur=EUR[PLANO];var v=valorBrl(eur);document.getElementById("pCota").textContent=PLANO+" (€ "+eur.toLocaleString("pt-BR")+")";document.getElementById("pMg").textContent=MARGEM+"%";
+function mostrarPagamento(nome){var eur=EUR[PLANO];var v=valorBrl(eur);document.getElementById("pCota").textContent=PLANO+" (€ "+eur.toLocaleString("pt-BR")+")";
   var txid=("IMP"+(nome||"").normalize("NFD").replace(/[^A-Za-z0-9]/g,"").toUpperCase()).slice(0,25);
-  if(v){document.getElementById("pBrl").textContent=brl(v);document.getElementById("pCalc").innerHTML="€ "+eur.toLocaleString("pt-BR")+" × câmbio "+COT.toLocaleString("pt-BR",{minimumFractionDigits:4,maximumFractionDigits:4})+" + "+MARGEM+"%"+(COT_HORA?("<br>cotação de "+COT_HORA):"");PIX=pixPayload(v,txid);}
+  if(v){document.getElementById("pBrl").textContent=brl(v);document.getElementById("pCalc").innerHTML="€ "+eur.toLocaleString("pt-BR")+" × câmbio "+COT.toLocaleString("pt-BR",{minimumFractionDigits:4,maximumFractionDigits:4})+(MARGEM?(" + "+MARGEM+"%"):"")+(COT_HORA?("<br>cotação de "+COT_HORA):"");PIX=pixPayload(v,txid);}
   else{document.getElementById("pBrl").textContent="€ "+eur.toLocaleString("pt-BR");document.getElementById("pCalc").textContent="Não foi possível obter o câmbio agora. O Conselho enviará o valor em reais; a chave PIX abaixo já pode ser usada.";PIX=pixPayload(0,txid);}
   var q=document.getElementById("qr");q.innerHTML="";try{new QRCode(q,{text:PIX,width:180,height:180,correctLevel:QRCode.CorrectLevel.M});}catch(e){q.style.display="none";}
   document.getElementById("pComp").href="mailto:sac@commanderiedebordeaux.com.br?subject="+encodeURIComponent("Comprovante PIX — Importadora "+(nome||"")+" — cota "+PLANO)+"&body="+encodeURIComponent("Segue o comprovante do PIX da anuidade (cota "+PLANO+(v?(", "+brl(v)):"")+") da importadora "+(nome||"")+".");
@@ -205,7 +205,7 @@ async function enviar(){
   var btn=document.getElementById("btn");btn.disabled=true;diz("Enviando…");
   try{
     if(!COT)await cotacao();var vb=valorBrl(EUR[PLANO]);
-    var pag=vb?("[Pagamento PIX] cota "+PLANO+" € "+EUR[PLANO]+" × câmbio "+COT.toFixed(4)+" + "+MARGEM+"% = "+brl(vb)+(COT_HORA?(" (cotação "+COT_HORA+")"):"")):"";
+    var pag=vb?("[Pagamento PIX] cota "+PLANO+" € "+EUR[PLANO]+" × câmbio "+COT.toFixed(4)+(MARGEM?(" + "+MARGEM+"%"):"")+" = "+brl(vb)+(COT_HORA?(" (cotação "+COT_HORA+")"):"")):"";
     var r=await sb.rpc("inscrever_importadora",{p:{nome:nome,responsavel:resp,cnpj:v("cnpj"),email:email,telefone:v("telefone"),cidade:v("cidade"),instagram:v("instagram"),plano:PLANO,obs:[v("obs"),pag].filter(Boolean).join("\n")}});
     if(r.error){btn.disabled=false;diz("Não foi possível enviar: "+r.error.message,"#8f1d24");return;}
     mostrarPagamento(nome);

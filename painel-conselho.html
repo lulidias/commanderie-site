@@ -516,7 +516,7 @@ async function addReceita(){
   var cat=document.getElementById("rcCat").value;var ano=parseInt(document.getElementById("rcAno").value,10);
   if(/^anuidade/i.test(cat)&&ano===ANO_ANUIDADE&&!confirm("A anuidade "+ANO_ANUIDADE+" dos membros já é controlada no cadastro (Financeiro → Anuidades dos membros → marcar pago).\n\nLançar aqui também faz contar em dobro. Use só para anuidade de quem NÃO está no cadastro.\n\nLançar mesmo assim?"))return;
   var nucleo=document.getElementById("rcNucleo").value||null;var desc=document.getElementById("rcDesc").value.trim()||null;
-  var valor=parseFloat(document.getElementById("rcValor").value);var pago=document.getElementById("rcPago").checked;
+  var valor=numBR(document.getElementById("rcValor").value);var pago=document.getElementById("rcPago").checked;
   if(!ano||isNaN(valor)){msg.style.color="#8f1d24";msg.textContent="Informe ano e valor.";return;}
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
   var r=await sb.from("receitas").insert({ano:ano,categoria:cat,nucleo:nucleo,descricao:desc,valor:valor,pago:pago});
@@ -614,7 +614,7 @@ async function addDespesa(){
   var msg=document.getElementById("dpMsg");
   var cat=document.getElementById("dpCat").value;var ano=parseInt(document.getElementById("dpAno").value,10);
   var nucleo=document.getElementById("dpNucleo").value||null;var desc=document.getElementById("dpDesc").value.trim()||null;
-  var valor=parseFloat(document.getElementById("dpValor").value);var pago=document.getElementById("dpPago").checked;
+  var valor=numBR(document.getElementById("dpValor").value);var pago=document.getElementById("dpPago").checked;
   if(!ano||isNaN(valor)){msg.style.color="#8f1d24";msg.textContent="Informe ano e valor.";return;}
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";
   var r=await sb.from("despesas").insert({ano:ano,categoria:cat,nucleo:nucleo,descricao:desc,valor:valor,pago:pago}).select("id").single();
@@ -635,6 +635,7 @@ function despGrupo(c){for(var i=0;i<DESP_GRUPOS.length;i++){if(DESP_GRUPOS[i].s.
 function despSelHtml(id,val){var h="<select id=\""+id+"\" style=\"width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;box-sizing:border-box;\">";var achou=(val==="Outro");DESP_GRUPOS.forEach(function(g){h+="<optgroup label=\""+esc(g.g)+"\">"+g.s.map(function(o){if(o===val)achou=true;return "<option"+(o===val?" selected":"")+">"+esc(o)+"</option>";}).join("")+"</optgroup>";});h+="<option"+(val==="Outro"?" selected":"")+">Outro</option>";if(val&&!achou)h+="<optgroup label=\"Categoria antiga\"><option value=\""+esc(val)+"\" selected>"+esc(val)+"</option></optgroup>";return h+"</select>";}
 var CATD=[].concat.apply([],DESP_GRUPOS.map(function(g){return g.s;})).concat(["Outro"]);
 var NUCS=["","São Paulo","Rio de Janeiro","Porto Alegre","Curitiba","Recife"];
+function numBR(t){t=(""+(t==null?"":t)).replace(/R\$|\s/g,"");if(!t)return NaN;if(t.indexOf(",")>=0)t=t.replace(/\./g,"").replace(",",".");else if(/^-?\d{1,3}(\.\d{3})+$/.test(t))t=t.replace(/\./g,"");return parseFloat(t);}
 function fldInput(id,val,ph){return "<input id=\""+id+"\" value=\""+esc(val||"")+"\" placeholder=\""+ph+"\" style=\"width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;box-sizing:border-box;\">";}
 function fldSel(id,opts,val){return "<select id=\""+id+"\" style=\"width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;box-sizing:border-box;\">"+opts.map(function(o){var label=o===""?"Sem núcleo":o;return "<option value=\""+esc(o)+"\""+(o===val?" selected":"")+">"+esc(label)+"</option>";}).join("")+"</select>";}
 function lbl(t){return "<div style=\"font-size:12px;color:#8a8270;margin:10px 0 3px;\">"+t+"</div>";}
@@ -656,7 +657,7 @@ function editarDespesa(id){var x=despesas.filter(function(r){return String(r.id)
 async function salvarEdicao(tipo,id){
   var msg=document.getElementById("edMsg");
   var ano=parseInt(document.getElementById("edAno").value,10);
-  var valor=parseFloat(document.getElementById("edValor").value);
+  var valor=numBR(document.getElementById("edValor").value);
   if(!ano||isNaN(valor)){msg.style.color="#8f1d24";msg.textContent="Informe ano e valor.";return;}
   var dados={categoria:document.getElementById("edCat").value,ano:ano,nucleo:document.getElementById("edNuc").value||null,descricao:document.getElementById("edDesc").value.trim()||null,valor:valor,pago:document.getElementById("edPago").checked};
   msg.style.color="#2f6b3a";msg.textContent="Salvando...";

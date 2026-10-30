@@ -207,12 +207,17 @@ async function iniciar(){
     var r=await sb.from("importadoras").select("*").order("nome");IMPS=r.data||[];
     if(!cons)IMPS=IMPS.filter(function(x){return x.owner_user_id===u.id;});
     if(!IMPS.length){bloq("Diploma não disponível","O diploma é emitido pelo Conselho para as Importadoras Oficiais. Se a sua importadora já é associada, peça ao Conselho para vincular o seu login a ela.");return;}
-    if(!cons){document.body.classList.add("so-imp");$("lnkBack").href="painel-importador.html";$("lnkLogo").href="painel-importador.html";$("avPrev").style.display="block";$("avPrev").innerHTML="Diploma da sua importadora, emitido pelo Conselho da Commanderie. Para corrigir algum dado, fale com o Conselho.";}
+    var teste=cons&&(q.get("teste")==="1"||q.get("de")==="importador");
+    if(!cons||teste){document.body.classList.add("so-imp");$("lnkBack").href="painel-importador.html";$("lnkLogo").href="painel-importador.html";$("avPrev").style.display="block";$("avPrev").innerHTML="Diploma da sua importadora, emitido pelo Conselho da Commanderie. Para corrigir algum dado, fale com o Conselho.";}
     else{$("lnkBack").href=q.get("de")==="importadoras"?"painel-importadoras.html":"painel-conselho.html";$("lnkLogo").href=$("lnkBack").href;}
+    if(teste){$("avPrev").style.cssText="display:block;background:#fbeaea;border-color:#e6cccc;color:#8f1d24;";
+      $("avPrev").innerHTML="<b>MODO TESTE</b> — você está vendo exatamente o que a importadora vê no Painel do Importador (sem poder editar). Importadora: <select id='tSel' style='padding:4px 6px;border:1px solid #e6cccc;border-radius:6px;' onchange=\"location.href='diploma-importadora.html?teste=1&id='+this.value\">"+IMPS.map(function(x){return "<option value='"+x.id+"'>"+(x.nome||"").replace(/</g,"&lt;")+"</option>";}).join("")+"</select> &nbsp;<a href='diploma-importadora.html?de=importadoras"+(q.get("id")?("&id="+q.get("id")):"")+"' style='color:#8f1d24;font-weight:bold;'>Sair do teste</a>";}
+    else if(cons){var bt=document.createElement("button");bt.className="bt";bt.style.background="#fff";bt.style.color="#1e2a56";bt.style.border="1px solid #b08a3a";bt.innerHTML="&#128065; Testar como importador";bt.onclick=function(){var id=$("selImp").value;if(!id){alert("Escolha primeiro a importadora.");return;}location.href="diploma-importadora.html?teste=1&id="+id;};$("msg").parentNode.insertBefore(bt,$("msg"));}
     OFICIAL=true;
     mostra();
     if(cons){$("selWrap").style.display="block";$("selImp").innerHTML="<option value=''>— escolha a importadora —</option>"+IMPS.map(function(x){return "<option value='"+x.id+"'>"+(x.nome||"").replace(/</g,"&lt;")+"</option>";}).join("");}
-    var alvo=q.get("id")?IMPS.filter(function(x){return x.id===q.get("id");})[0]:(cons?null:IMPS[0]);
+    var alvo=q.get("id")?IMPS.filter(function(x){return x.id===q.get("id");})[0]:((cons&&!teste)?null:IMPS[0]);
+    if(teste&&alvo&&$("tSel"))$("tSel").value=alvo.id;
     if(alvo){$("selImp").value=alvo.id;preencher(alvo);}else pintar();
   }catch(e){bloq("Não foi possível carregar","Tente de novo em instantes.");}
 }

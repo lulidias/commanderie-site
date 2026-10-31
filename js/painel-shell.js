@@ -215,11 +215,11 @@
       var id = u.data && u.data.user && u.data.user.id; if (!id) return;
       sb.from("membros").select("nome").eq("user_id", id).maybeSingle().then(function (r) { var n = r.data && r.data.nome ? String(r.data.nome).split(" ")[0] : ""; if (n) document.getElementById("hjOi").textContent = oi + ", " + n; });
     });
-    sb.from("membros").select("anuidade_paga,isento").then(function (r) {
+    sb.from("membros").select("anuidade_paga").then(function (r) {
       var L = r.data || []; if (!L.length) return;
-      var pag = L.filter(function (x) { return x.anuidade_paga || x.isento; }).length;
+      var pag = L.filter(function (x) { return !!x.anuidade_paga; }).length;
       document.getElementById("hjMem").textContent = L.length; document.getElementById("hjMemS").textContent = "Comendadores no cadastro";
-      document.getElementById("hjAn").textContent = Math.round(100 * pag / L.length) + "%"; document.getElementById("hjAnS").textContent = pag + " de " + L.length + " (pagos ou isentos)";
+      document.getElementById("hjAn").textContent = Math.round(100 * pag / L.length) + "%"; document.getElementById("hjAnS").textContent = pag + " de " + L.length + " com a anuidade paga";
       document.getElementById("hjAnB").style.width = Math.round(100 * pag / L.length) + "%";
     });
     sb.from("eventos").select("id,numero,titulo,data,local").eq("tipo", "Capítulo").eq("realizado", false).gte("data", new Date().toISOString().slice(0, 10)).order("data", { ascending: true }).limit(1).then(function (r) {

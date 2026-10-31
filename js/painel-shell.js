@@ -44,6 +44,7 @@
     { g: "Financeiro", itens: [
       { t: "Financeiro", h: "painel-conselho.html?sec=financeiro", i: "moeda", c: "fin" },
       { t: "Factures (€)", h: "factures.html", i: "doc" },
+      { t: "Estoque de vinhos (Adega)", h: "adega.html", i: "taca" },
       { t: "Patrimônio e Estoque", h: "painel-estoque.html", i: "caixa" },
       { t: "Boutique", h: "painel-loja.html", i: "loja" }] },
     { g: "Importadoras", itens: [

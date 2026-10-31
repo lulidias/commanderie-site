@@ -31,7 +31,7 @@ Site da **Commanderie de Bordeaux do Brasil**, uma confraria dedicada aos vinhos
 ## Graus e carteiras
 - Graus: **Commandeur** (membro efetivo), **Mestre** (por núcleo) e **Grão-Mestre** (Brasil); além de **Membro de Honra** (não paga anuidade, recebe diploma).
 - Cores de carteira: **marfim** para Commandeur e Membro de Honra; **bordô com moldura dourada** para Mestre e Grão-Mestre.
-- Mesa atual: Grão-Mestre **Manuel Brandão**; Mestres **Luli Dias** (SP), **Tito Dias** (Recife), **Abner Almeida** (Curitiba), **Jadir Engers** (Porto Alegre); Rio de Janeiro — Mestre a definir (Leandro Almeida assume no próximo capítulo do Rio).
+- Mesa atual: Grão-Mestre **Manuel Brandão**; Mestres **Luli Dias** (SP), **Tito Dias** (Recife), **Abner Almeida** (Curitiba), **Jadir Engers** (Porto Alegre); **Leandro Almeida** (Rio de Janeiro, desde 31/10/2026). São CINCO núcleos: SP, Rio, Recife, Curitiba, Porto Alegre.
 
 ## Fluxo de adesão (por indicação, nunca aberto ao público)
 1. Um membro **sugere um nome** ao Conselho (na Área do Membro).

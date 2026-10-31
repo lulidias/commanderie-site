@@ -8,6 +8,7 @@
 <style>
 :root{--navy:#1e2a56;--gold:#b08a3a;--red:#8f1d24;--ink:#1d1b18;--line:#ddd0ad;}
 *{box-sizing:border-box;}
+html,body{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:var(--ink);}
 .bloq{max-width:520px;margin:70px auto;text-align:center;padding:0 20px;}.bloq img{width:70px;}.bloq h2{font-family:Georgia,serif;font-weight:normal;color:var(--navy);}.bloq p{color:#6a634f;font-size:14px;line-height:1.6;}
 .bt{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block;}
@@ -66,7 +67,7 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
     <label><span>Padrinho(s)</span><input id="iPad" oninput="pintar()"></label>
     <label><span>Le Président (assina)</span><input id="iPres" value="Manu Brandão" oninput="pintar()"></label>
   </div>
-  <div class="acts"><button class="bt" onclick="window.print()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><button class="bt" id="bWa" style="background:#8f1d24;" onclick="baixarPDF('wa')">&#128172; WhatsApp</button><span id="msg"></span></div>
+  <div class="acts"><button class="bt" onclick="window.print()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><button class="bt" id="bWa" style="background:#25d366;" onclick="baixarPDF('wa')">&#128172; WhatsApp</button><span id="msg"></span></div>
 </div>
 
 <div class="stage" id="stage" style="display:none;"><div class="scaler" id="scaler"><div class="sheet" id="sheet">
@@ -116,8 +117,8 @@ async function finalizar(pdf,name,modo){if(modo!=="wa"){pdf.save(name);$("msg").
   var pode=false;try{pode=!!(navigator.canShare&&navigator.canShare({files:files}));}catch(e){}
   PRONTO={pdf:pdf,name:name,files:files,png:pngs[0]||null,txt:txt,share:pode};
   var wa="https://wa.me/"+waTel()+"?text="+encodeURIComponent(txt);
-  if(pode){$("msg").innerHTML="Diploma pronto. <button class='bt' style='background:#8f1d24;padding:8px 14px;' onclick='enviarAgora()'>&#128228; Enviar imagem pelo WhatsApp</button>";return;}
-  $("msg").innerHTML=(PRONTO.png?"<button class='bt' style='background:#8f1d24;padding:8px 14px;' onclick='copiarImg()'>&#128203; Copiar imagem do diploma</button> ":"")+"<a class='bt' style='background:#1e2a56;padding:8px 14px;text-decoration:none;' href='"+wa+"' target='_blank' rel='noopener'>Abrir o WhatsApp</a> <a href='#' onclick='baixarImgs();return false;' style='color:#1e2a56;font-size:12.5px;'>baixar imagem</a><div id='waDica' style='font-size:12.5px;color:#5b5446;margin-top:6px;'>"+(PRONTO.png?"1) Copie a imagem · 2) abra o WhatsApp · 3) na conversa, cole com <b>Cmd+V</b> (Ctrl+V no Windows) — o diploma aparece como foto.":"Baixe as imagens e arraste para a conversa do WhatsApp.")+"</div>";}
+  if(pode){$("msg").innerHTML="Diploma pronto. <button class='bt' style='background:#25d366;padding:8px 14px;' onclick='enviarAgora()'>&#128228; Enviar imagem pelo WhatsApp</button>";return;}
+  $("msg").innerHTML=(PRONTO.png?"<button class='bt' style='background:#25d366;padding:8px 14px;' onclick='copiarImg()'>&#128203; Copiar imagem do diploma</button> ":"")+"<a class='bt' style='background:#1e2a56;padding:8px 14px;text-decoration:none;' href='"+wa+"' target='_blank' rel='noopener'>Abrir o WhatsApp</a> <a href='#' onclick='baixarImgs();return false;' style='color:#1e2a56;font-size:12.5px;'>baixar imagem</a><div id='waDica' style='font-size:12.5px;color:#5b5446;margin-top:6px;'>"+(PRONTO.png?"1) Copie a imagem · 2) abra o WhatsApp · 3) na conversa, cole com <b>Cmd+V</b> (Ctrl+V no Windows) — o diploma aparece como foto.":"Baixe as imagens e arraste para a conversa do WhatsApp.")+"</div>";}
 function enviarAgora(){if(!PRONTO)return;var P=PRONTO;
   navigator.share({files:P.files,text:P.txt,title:P.name}).then(function(){$("msg").textContent="✔ Enviado.";}).catch(function(e){if(!e||e.name!=="AbortError"){P.share=false;baixarImgs();$("msg").innerHTML="As imagens foram baixadas. <a href='https://wa.me/"+waTel()+"?text="+encodeURIComponent(P.txt)+"' target='_blank' rel='noopener' style='color:#1f8f4e;font-weight:bold;'>Abrir o WhatsApp</a> e envie como foto.";}});}
 function copiarImg(){var P=PRONTO;if(!P||!P.png)return;
@@ -133,7 +134,7 @@ async function baixarPDF(modo){CVS=[];var b=$("bPdf");var n=nomes();if(!n.length
     await document.fonts.ready;var sc=$("scaler"),old=sc.style.transform;
     var pdf=new window.jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
     for(var i=0;i<n.length;i++){$("msg").textContent="Gerando o PDF… "+(i+1)+" de "+n.length;pintar(n[i]);sc.style.transform="none";
-      var cv=await html2canvas($("sheet"),{scale:3,useCORS:true,backgroundColor:"#fbfaf6"});CVS.push(cv);if(i)pdf.addPage("a4","landscape");pdf.addImage(cv.toDataURL("image/jpeg",0.93),"JPEG",0,0,297,210);}
+      var cv=await html2canvas($("sheet"),{scale:3,useCORS:true,windowWidth:1400,windowHeight:1100,backgroundColor:"#fbfaf6"});CVS.push(cv);if(i)pdf.addPage("a4","landscape");pdf.addImage(cv.toDataURL("image/jpeg",0.93),"JPEG",0,0,297,210);}
     sc.style.transform=old;pintar();
     await finalizar(pdf,n.length>1?"Diplomas-Compagnon-de-Bordeaux.pdf":("Diploma-Compagnon-"+arq(n[0])+".pdf"),modo);}
   catch(e){$("msg").textContent="Não foi possível gerar o PDF ("+e+"). Use Imprimir → Salvar como PDF.";}

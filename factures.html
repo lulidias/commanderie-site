@@ -8,6 +8,7 @@
 <style>
 :root{--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--cream:#f8f3e6;--line:#ddd0ad;}
 *{box-sizing:border-box;}
+html,body{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
 .dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
 .dtop img{width:34px;}.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
@@ -197,7 +198,7 @@ async function salvar(){var m=$("msg"),d=dados();if(!d.numero){m.style.color="#8
 function lib(u){return new Promise(function(ok,er){var x=document.createElement("script");x.src=u;x.onload=ok;x.onerror=function(){er("não consegui carregar "+u);};document.head.appendChild(x);});}
 async function baixarPDF(){var b=$("bPdf");b.disabled=true;$("msg").style.color="#5b5446";$("msg").textContent="Gerando o PDF…";
   try{if(!window.html2canvas)await lib("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");if(!window.jspdf)await lib("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
-    await document.fonts.ready;var sc=$("scaler"),old=sc.style.transform;sc.style.transform="none";var cv=await html2canvas($("sheet"),{scale:3,useCORS:true,backgroundColor:"#fffefb"});sc.style.transform=old;
+    await document.fonts.ready;var sc=$("scaler"),old=sc.style.transform;sc.style.transform="none";var cv=await html2canvas($("sheet"),{scale:3,useCORS:true,windowWidth:1400,windowHeight:1100,backgroundColor:"#fffefb"});sc.style.transform=old;
     var pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4"});pdf.addImage(cv.toDataURL("image/jpeg",0.93),"JPEG",0,0,210,297);
     var nm=($("dNome").value||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");
     pdf.save("Facture-"+($("fNum").value||"").replace(/[^A-Za-z0-9-]/g,"")+(nm?("-"+nm):"")+".pdf");$("msg").textContent="";}
@@ -209,5 +210,4 @@ async function iniciar(){var u=(await sb.auth.getUser()).data.user;
   $("st").style.display="none";$("main").style.display="block";await carregar();}
 iniciar();
 </script>
-<script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
 </body></html>

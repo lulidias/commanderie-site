@@ -63,3 +63,16 @@ Site da **Commanderie de Bordeaux do Brasil**, uma confraria dedicada aos vinhos
 - gcvb.com.br redirecionando para o domínio principal.
 - Fotos dos demais membros no diretório.
 - Ligar logins dos outros 5 responsáveis das importadoras (só a Épice está vinculada).
+
+## Trabalho em dupla — Luli e Manu (regra obrigatória, desde 31/10/2026)
+Luli (lulidias) e Manu (ManuBrandao) mexem no site ao mesmo tempo, cada um com o seu Claude. Para ninguém sobrescrever o trabalho do outro:
+1. **Sempre `git pull --rebase` ANTES de começar a editar e de novo ANTES do push.** Nunca editar uma versão velha do arquivo.
+2. **Um assunto por commit, e push logo em seguida.** Nada de deixar mudança parada no computador.
+3. **Nunca `git push --force`, nunca `git reset` em commit já publicado, nunca reescrever o arquivo inteiro a partir de uma cópia antiga.** A `main` tem proteção no GitHub contra force push e exclusão.
+4. **Se o pull trouxer mudança do outro no mesmo arquivo:** resolver juntando as duas versões. Se houver dúvida, parar e perguntar. Não descartar o que o outro fez.
+5. **Antes de mexer num arquivo que o outro alterou nas últimas 24 h** (`git log --since=24.hours -- arquivo`), ler o commit dele e preservar a mudança.
+6. **Áreas de cada um** (quem mais mexe; o outro só mexe avisando):
+   - **Manu:** diplomas (`diploma-*`, `disciples-compagnons`), importadoras (`painel-importadoras`, `importadores`, PIX das importadoras), `factures`, financeiro do `painel-conselho`.
+   - **Luli:** site público (`index`, rodapé, idiomas), redes sociais (`painel-redes`, `js/redes-*`), moldura do painel (`js/painel-shell.js`), filmes e vídeos.
+   - **Compartilhado (cuidado redobrado):** `painel-bi.html` — números financeiros SEMPRE via `fin_resumo()` (ver `sql/fin_resumo.sql`); nunca voltar ao cálculo próprio.
+7. **Banco (Supabase):** mudanças de estrutura só por arquivo em `sql/` versionado, com data e motivo.

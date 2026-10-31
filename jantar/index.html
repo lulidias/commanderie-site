@@ -398,5 +398,6 @@ function setLang(l){var els=document.querySelectorAll("[data-i18n]");for(var i=0
 (function(){var _ol=setLang;setLang=function(l){_ol(l);try{if(window.atualizarContagem)atualizarContagem();}catch(e){}};})();
 document.addEventListener("DOMContentLoaded",function(){var l="pt";try{l=localStorage.getItem("lang")||"pt";}catch(e){}setLang(l);});
 </script>
+<script src="/js/redes-rodape.js" defer></script>
 </body>
 </html>

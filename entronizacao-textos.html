@@ -88,4 +88,5 @@ function trocar(){var c=CAPS.find(function(x){return x.id===document.getElementB
   document.getElementById("doc").innerHTML=h;}
 function copiarTudo(){var t=Array.prototype.map.call(document.querySelectorAll(".capa,.pess"),function(e){var c=e.cloneNode(true);c.querySelectorAll(".noprint,img").forEach(function(x){x.remove();});document.body.appendChild(c);var r=c.innerText;c.remove();return r.replace(/\n{3,}/g,"\n\n").trim();}).join("\n\n—\n\n");(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){alert("Texto copiado! Cole no Word, Pages ou e-mail.");}).catch(function(){prompt("Copie o texto:",t);});}
 document.addEventListener("DOMContentLoaded",init);
-</script></body></html>
+</script><script src="/js/redes-rodape.js" defer></script>
+</body></html>

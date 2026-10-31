@@ -369,5 +369,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.getElemen
 <script>
 (function(){var _ss=showScene;showScene=function(i){_ss(i);var sc=scenes[i];if(!sc)return;var els=sc.querySelectorAll('[data-count]');els.forEach(function(el){var tgt=parseFloat(el.getAttribute('data-count'));var dur=1200,t0=null;function step(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);var e=1-Math.pow(1-p,3);el.textContent=Math.round(tgt*e).toLocaleString('pt-BR');if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);});};})();
 </script>
+<script src="/js/redes-rodape.js" defer></script>
 </body>
 </html>

@@ -115,4 +115,5 @@ function chev(){return '<svg class="chev" viewBox="0 0 24 24" width="18" height=
 document.getElementById("gridA").innerHTML=ITENS.map(function(x){return '<a class="'+(x.council?"council":"")+'" href="'+x.h+'"><div class="ic">'+svg(x.i)+'</div><b>'+x.t+'</b><span>'+x.s+'</span></a>';}).join("");
 document.getElementById("gridB").innerHTML=ITENS.map(function(x){return '<a class="'+(x.council?"council":"")+'" href="'+x.h+'"><div class="ic">'+svg(x.i)+'</div><div class="tx"><b>'+x.t+'</b><span>'+x.s+'</span></div>'+chev()+'</a>';}).join("");
 document.getElementById("gridC").innerHTML=ITENS.map(function(x){return '<a class="'+(x.council?"council":"")+'" href="'+x.h+'"><div class="ic">'+svg(x.i)+'</div><b>'+x.t+'</b><span>'+x.s+'</span></a>';}).join("");
-</script></body></html>
+</script><script src="/js/redes-rodape.js" defer></script>
+</body></html>

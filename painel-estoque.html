@@ -164,4 +164,5 @@ async function carregar(){var r=await sb.from("estoque").select("*").order("tipo
 async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){st("notAllowed");return;}st("panel");await carregar();}
 document.addEventListener("DOMContentLoaded",init);
 </script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+<script src="/js/redes-rodape.js" defer></script>
 </body></html>

@@ -204,5 +204,6 @@ async function whatsImagem(){var b=(_pre.k===chaveRec())?_pre.b:null;var mobile=
 function enviarWhats(){var tp=TIPOS[$("f_tipo").value]||TIPOS.outro;var t="Ol\u00e1"+($("f_nome").value?(" "+$("f_nome").value.split(" ")[0]):"")+", segue o seu recibo da Commanderie de Bordeaux ("+tp.t+", "+brl(num($("f_valor").value))+"): "+linkRecibo();
   var tel=($("f_tel").value||"").replace(/\D/g,"");if(tel&&tel.length<=11)tel="55"+tel;window.open("https://wa.me/"+(tel||"")+"?text="+encodeURIComponent(t),"_blank");}
 </script>
+<script src="/js/redes-rodape.js" defer></script>
 </body>
 </html>

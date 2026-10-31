@@ -62,4 +62,5 @@ async function recusarDica(id){if(!confirm("Recusar e remover esta sugestão?"))
 async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){state("needLogin");return;}var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){state("notAllowed");return;}await carregarDicas();state("panel");}
 document.addEventListener("DOMContentLoaded",init);
 </script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+<script src="/js/redes-rodape.js" defer></script>
 </body></html>

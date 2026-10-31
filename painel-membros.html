@@ -174,4 +174,5 @@ async function init(){
   MEMBROS=q.data||[];window.ACC={};try{var ad=await sb.rpc("is_admin_total");window.ADMIN=!ad.error&&!!ad.data;}catch(e){}try{var fl=await sb.from("membros").select("id,acesso_conselho");if(Array.isArray(fl.data))fl.data.forEach(function(x){ACC[x.id]=!!x.acesso_conselho;});}catch(e){}try{var _ma=await sb.rpc("membro_ano_atual");window.MEMBRO_ANO=(_ma&&!_ma.error&&_ma.data)||null;}catch(e){}try{var _st=await sb.from("membro_ano").select("ano,vencedor_id").eq("status","encerrada").order("ano",{ascending:true});window.MA_ESTRELAS={};((_st&&_st.data)||[]).forEach(function(r){if(r.vencedor_id)(window.MA_ESTRELAS[String(r.vencedor_id)]=window.MA_ESTRELAS[String(r.vencedor_id)]||[]).push(r.ano);});}catch(e){window.MA_ESTRELAS={};}st("panel");render();
 }
 document.addEventListener("DOMContentLoaded",init);
-</script></body></html>
+</script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+</body></html>

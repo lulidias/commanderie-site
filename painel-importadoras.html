@@ -170,4 +170,5 @@ async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){st("needL
   var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){st("notAllowed");return;}
   st("panel");await carregar();}
 document.addEventListener("DOMContentLoaded",init);
-</script></body></html>
+</script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+</body></html>

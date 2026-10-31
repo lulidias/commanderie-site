@@ -156,7 +156,8 @@ function imprimir(){var vt=ITENS.reduce(function(a,x){return a+tot(x);},0);
     h+="<h2>"+t[1]+"</h2><table><tr><th>Item</th>"+(t[0]==="Vinho"?"<th>Produtor</th><th>Safra</th><th>Formato</th>":"")+"<th>Local</th><th class=n>Qtd.</th><th class=n>Preço unit.</th><th class=n>Total</th></tr>"
      +G.map(function(x){gv+=tot(x);gq+=Number(x.quantidade)||0;return "<tr><td>"+esc(x.nome)+(x.obs?("<div class=sub>"+esc(x.obs)+"</div>"):"")+"</td>"+(t[0]==="Vinho"?("<td>"+esc(x.produtor||"")+"</td><td>"+esc(x.safra||"")+"</td><td>"+esc(x.formato||"")+"</td>"):"")+"<td>"+esc(x.local||"")+"</td><td class=n>"+(Number(x.quantidade)||0)+"</td><td class=n>"+brl(x.preco_unit)+"</td><td class=n>"+brl(tot(x))+"</td></tr>";}).join("")
      +"<tr class=tot><td colspan="+(t[0]==="Vinho"?5:2)+">Total "+t[1].toLowerCase()+"</td><td class=n>"+gq+"</td><td></td><td class=n>"+brl(gv)+"</td></tr></table>";});
-  h+="<p style=\"margin-top:16px;font-size:14px;\"><b>Valor total do patrimônio em estoque: "+brl(vt)+"</b></p></body></html>";
+  h+="<p style=\"margin-top:16px;font-size:14px;\"><b>Valor total do patrimônio em estoque: "+brl(vt)+"</b></p><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+</body></html>";
   var w=window.open("","_blank");if(!w){alert("Permita pop-ups para este site para gerar o PDF.");return;}w.document.open();w.document.write(h);w.document.close();setTimeout(function(){try{w.focus();w.print();}catch(e){}},600);}
 async function carregar(){var r=await sb.from("estoque").select("*").order("tipo",{ascending:true}).order("nome",{ascending:true});
   if(r.error){document.getElementById("lista").innerHTML="<p style=\"color:#8f1d24;font-size:13px;\">Falta rodar o SQL <b>sql/estoque.sql</b> no Supabase. ("+esc(r.error.message)+")</p>";ITENS=[];document.getElementById("kp").innerHTML="";return;}

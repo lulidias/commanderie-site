@@ -115,4 +115,5 @@ async function salvar(){var m=document.getElementById("fMsg");var rec={titulo:do
 async function remover(i){var a=L[i];if(!confirm("Remover \""+a.titulo+"\" da lista de apresentações?"))return;var r=await sb.from("apresentacoes").delete().eq("id",a.id);if(r.error){alert("Erro: "+r.error.message);return;}carregar();}
 carregar();
 </script>
+<script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
 </body></html>

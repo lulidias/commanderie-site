@@ -709,5 +709,5 @@ function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.docum
 function showSec(){var sec=new URLSearchParams(location.search).get("sec");var blks=document.querySelectorAll(".secblk");var hub=document.getElementById("acHub");if(sec){if(hub)hub.style.display="none";for(var i=0;i<blks.length;i++)blks[i].style.display=(blks[i].id==="sec"+sec)?"block":"none";}else{if(hub)hub.style.display="block";for(var j=0;j<blks.length;j++)blks[j].style.display="none";}window.scrollTo(0,0);}
 document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);showSec();});
 </script>
-<script src="/js/redes-rodape.js?v=3" defer></script>
+<script src="/js/redes-rodape.js?v=4" defer></script>
 </body></html>

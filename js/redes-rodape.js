@@ -21,9 +21,15 @@
     bar.innerHTML = '<span class="rr-t">Siga a Commanderie</span><div class="rr-ic">' + redes.map(function (r) {
       return '<div><a href="' + r[0] + '" target="_blank" rel="noopener" aria-label="' + r[1] + ' da Commanderie de Bordeaux do Brasil" title="' + r[1] + '">' + r[2] + "</a><span>" + r[1] + "</span></div>";
     }).join("") + "</div>";
-    var ft = document.querySelector("footer");
-    if (ft) { ft.appendChild(bar); }
-    else { bar.classList.add("rr-claro"); var alvo = document.querySelector(".ps-main") || document.body; alvo.appendChild(bar); }
+    // em todo lugar onde o rodapé pode estar: rodapé do site e a área logada (Painel do Comendador), que esconde o rodapé
+    var alvos = Array.prototype.slice.call(document.querySelectorAll("footer"));
+    var membro = document.getElementById("member"); if (membro) alvos.push(membro);
+    if (!alvos.length) alvos.push(document.querySelector(".ps-main") || document.body);
+    alvos.forEach(function (alvo, k) {
+      var b = k === 0 ? bar : bar.cloneNode(true);
+      if (alvo.tagName !== "FOOTER") b.classList.add("rr-claro");
+      alvo.appendChild(b);
+    });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", montar); else montar();
 })();

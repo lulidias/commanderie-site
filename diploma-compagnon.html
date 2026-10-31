@@ -66,7 +66,7 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
     <label><span>Padrinho(s)</span><input id="iPad" oninput="pintar()"></label>
     <label><span>Le Président (assina)</span><input id="iPres" value="Manu Brandão" oninput="pintar()"></label>
   </div>
-  <div class="acts"><button class="bt" onclick="window.print()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><span id="msg"></span></div>
+  <div class="acts"><button class="bt" onclick="window.print()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><button class="bt" id="bWa" style="background:#25d366;" onclick="baixarPDF('wa')">&#128172; WhatsApp</button><span id="msg"></span></div>
 </div>
 
 <div class="stage" id="stage" style="display:none;"><div class="scaler" id="scaler"><div class="sheet" id="sheet">
@@ -105,17 +105,37 @@ function pintar(nf){var n=nomes();var nm=nf!=null?nf:(n[parseInt($("iVer").value
   $("dPad").textContent=$("iPad").value.trim()||" ";$("dPres").textContent=$("iPres").value.trim()||" ";escala();}
 function escala(){var W=1123,H=794;var w=Math.min(window.innerWidth-24,W);var s=w/W;var sc=$("scaler");sc.style.transform="scale("+s+")";sc.style.width=W+"px";sc.style.height=(H*s)+"px";}
 window.addEventListener("resize",escala);
+
+var TEL="",PRONTO=null,CVS=[];
+function waTel(){var t=(TEL||"").replace(/\D/g,"");if(t&&t.length<=11)t="55"+t;return t;}
+function cvBlob(cv,tipo,maxW){return new Promise(function(ok){var c=cv;if(maxW&&cv.width>maxW){c=document.createElement("canvas");c.width=maxW;c.height=Math.round(cv.height*maxW/cv.width);c.getContext("2d").drawImage(cv,0,0,c.width,c.height);}c.toBlob(function(b){ok(b);},tipo,0.92);});}
+async function finalizar(pdf,name,modo){if(modo!=="wa"){pdf.save(name);$("msg").textContent="";return;}
+  var txt=msgWa(),base=name.replace(/\.pdf$/,""),files=[],pngs=[];
+  for(var i=0;i<CVS.length;i++){var jb=await cvBlob(CVS[i],"image/jpeg",2400);files.push(new File([jb],base+(CVS.length>1?("-"+(i+1)):"")+".jpg",{type:"image/jpeg"}));}
+  if(CVS.length===1)pngs.push(cvBlob(CVS[0],"image/png",2000));
+  var pode=false;try{pode=!!(navigator.canShare&&navigator.canShare({files:files}));}catch(e){}
+  PRONTO={pdf:pdf,name:name,files:files,png:pngs[0]||null,txt:txt,share:pode};
+  var wa="https://wa.me/"+waTel()+"?text="+encodeURIComponent(txt);
+  if(pode){$("msg").innerHTML="Diploma pronto. <button class='bt' style='background:#25d366;padding:8px 14px;' onclick='enviarAgora()'>&#128228; Enviar imagem pelo WhatsApp</button>";return;}
+  $("msg").innerHTML=(PRONTO.png?"<button class='bt' style='background:#25d366;padding:8px 14px;' onclick='copiarImg()'>&#128203; Copiar imagem do diploma</button> ":"")+"<a class='bt' style='background:#1e2a56;padding:8px 14px;text-decoration:none;' href='"+wa+"' target='_blank' rel='noopener'>Abrir o WhatsApp</a> <a href='#' onclick='baixarImgs();return false;' style='color:#1e2a56;font-size:12.5px;'>baixar imagem</a><div id='waDica' style='font-size:12.5px;color:#5b5446;margin-top:6px;'>"+(PRONTO.png?"1) Copie a imagem · 2) abra o WhatsApp · 3) na conversa, cole com <b>Cmd+V</b> (Ctrl+V no Windows) — o diploma aparece como foto.":"Baixe as imagens e arraste para a conversa do WhatsApp.")+"</div>";}
+function enviarAgora(){if(!PRONTO)return;var P=PRONTO;
+  navigator.share({files:P.files,text:P.txt,title:P.name}).then(function(){$("msg").textContent="✔ Enviado.";}).catch(function(e){if(!e||e.name!=="AbortError"){P.share=false;baixarImgs();$("msg").innerHTML="As imagens foram baixadas. <a href='https://wa.me/"+waTel()+"?text="+encodeURIComponent(P.txt)+"' target='_blank' rel='noopener' style='color:#1f8f4e;font-weight:bold;'>Abrir o WhatsApp</a> e envie como foto.";}});}
+function copiarImg(){var P=PRONTO;if(!P||!P.png)return;
+  try{navigator.clipboard.write([new ClipboardItem({"image/png":P.png})]).then(function(){$("waDica").innerHTML="✔ <b>Imagem copiada!</b> Agora abra o WhatsApp, entre na conversa e cole com <b>Cmd+V</b> (Ctrl+V no Windows).";}).catch(function(){baixarImgs();$("waDica").textContent="Não foi possível copiar; a imagem foi baixada — arraste-a para a conversa do WhatsApp.";});}
+  catch(e){baixarImgs();$("waDica").textContent="Não foi possível copiar; a imagem foi baixada — arraste-a para a conversa do WhatsApp.";}}
+function baixarImgs(){(PRONTO&&PRONTO.files||[]).forEach(function(f){var a=document.createElement("a");a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},2000);});}
+function msgWa(){var n=nomes();return "Olá"+(n.length===1?(" "+n[0].split(" ")[0]):"")+"! Segue "+(n.length>1?"os diplomas":"o seu diploma")+" de Compagnon de Bordeaux — Commanderie de Bordeaux do Brasil.\nBordeaux, toujours Bordeaux!";}
 function lib(u){return new Promise(function(ok,er){var x=document.createElement("script");x.src=u;x.onload=ok;x.onerror=function(){er("não consegui carregar "+u);};document.head.appendChild(x);});}
 function arq(t){return (t||"compagnon").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");}
-async function baixarPDF(){var b=$("bPdf");var n=nomes();if(!n.length){$("msg").textContent="Escreva o nome do Compagnon.";return;}b.disabled=true;
+async function baixarPDF(modo){CVS=[];var b=$("bPdf");var n=nomes();if(!n.length){$("msg").textContent="Escreva o nome do Compagnon.";return;}b.disabled=true;
   try{if(!window.html2canvas)await lib("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
     if(!window.jspdf)await lib("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
     await document.fonts.ready;var sc=$("scaler"),old=sc.style.transform;
     var pdf=new window.jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
     for(var i=0;i<n.length;i++){$("msg").textContent="Gerando o PDF… "+(i+1)+" de "+n.length;pintar(n[i]);sc.style.transform="none";
-      var cv=await html2canvas($("sheet"),{scale:3,useCORS:true,backgroundColor:"#fbfaf6"});if(i)pdf.addPage("a4","landscape");pdf.addImage(cv.toDataURL("image/jpeg",0.93),"JPEG",0,0,297,210);}
+      var cv=await html2canvas($("sheet"),{scale:3,useCORS:true,backgroundColor:"#fbfaf6"});CVS.push(cv);if(i)pdf.addPage("a4","landscape");pdf.addImage(cv.toDataURL("image/jpeg",0.93),"JPEG",0,0,297,210);}
     sc.style.transform=old;pintar();
-    pdf.save(n.length>1?"Diplomas-Compagnon-de-Bordeaux.pdf":("Diploma-Compagnon-"+arq(n[0])+".pdf"));$("msg").textContent="";}
+    await finalizar(pdf,n.length>1?"Diplomas-Compagnon-de-Bordeaux.pdf":("Diploma-Compagnon-"+arq(n[0])+".pdf"),modo);}
   catch(e){$("msg").textContent="Não foi possível gerar o PDF ("+e+"). Use Imprimir → Salvar como PDF.";}
   b.disabled=false;}
 async function iniciar(){
@@ -126,7 +146,7 @@ async function iniciar(){
     var c=await sb.rpc("is_conselho");if(!(c&&c.data===true)){bloq("Apenas o Conselho","Os diplomas de Compagnon são emitidos pelo Conselho da Commanderie.");return;}
     var q=new URLSearchParams(location.search);
     if(q.get("id")){var r=await sb.from("titulados").select("*").eq("id",q.get("id")).maybeSingle();var x=r&&r.data;
-      if(x){$("iNomes").value=x.nome||"";if(x.data)$("iData").value=(""+x.data).slice(0,10);if(x.cidade||x.nucleo)$("iCid").value=x.cidade||(x.nucleo==="Brésil"?"São Paulo":x.nucleo);if(x.padrinho)$("iPad").value=x.padrinho;}}
+      if(x){TEL=x.telefone||"";$("iNomes").value=x.nome||"";if(x.data)$("iData").value=(""+x.data).slice(0,10);if(x.cidade||x.nucleo)$("iCid").value=x.cidade||(x.nucleo==="Brésil"?"São Paulo":x.nucleo);if(x.padrinho)$("iPad").value=x.padrinho;}}
     $("bloq").style.display="none";$("ctl").style.display="block";$("stage").style.display="flex";listaNomes();
   }catch(e){bloq("Não foi possível carregar","Tente de novo em instantes.");}
 }

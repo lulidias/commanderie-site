@@ -53,6 +53,7 @@
       { t: "Certificados MAPA", h: "certificados.html", i: "doc" }] },
     { g: "Comunicação", itens: [
       { t: "Redes sociais", h: "painel-redes.html", i: "insta", c: "redes" },
+      { t: "Contatos (importadores e imprensa)", h: "contatos-mercado.html", i: "gente" },
       { t: "Dicas de Bordeaux", h: "painel-dicas.html", i: "mapa" },
       { t: "Parceiros", h: "painel-parceiros.html", i: "aperto" },
       { t: "Modelos de E-mail", h: "painel-emails.html", i: "email" },
@@ -177,7 +178,8 @@
       + '.hj-p .im video{width:100%;height:100%;object-fit:cover}.hj-p .tp{position:absolute;left:6px;top:6px;background:rgba(20,28,60,.82);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:7px}'
       + '.hj-p .hr{position:absolute;right:6px;bottom:6px;background:#fffdf7;color:#1e2a56;font:600 11.5px Arial;padding:2px 7px;border-radius:7px}'
       + '.hj-p .ok{background:#2f6b3a;color:#fff}'
-      + '.hj-at{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}'
+      + '.hj-at{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:8px}'
+      + '.hj-g{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8a6a2a;font-weight:bold;margin:14px 0 0}'
       + '.hj-at a{display:flex;align-items:center;gap:9px;background:#1e2a56;color:#f3ecd9;border-radius:12px;padding:12px 14px;text-decoration:none;font-size:14px}.hj-at a:hover{background:#26346a}.hj-at svg{color:#d6b66e;flex:none}'
       + '.hj .s{color:#8a8270;font-size:13px}</style>'
       + '<div class="hj-oi"><div><h1 id="hjOi">' + oi + '</h1><p>' + dia + '</p></div><div class="hj-lema">Bordeaux, toujours Bordeaux.</div></div>'
@@ -191,13 +193,9 @@
       +   '<div class="hj-cx"><h2>Próximo Capítulo <a href="painel-conselho.html?sec=eventos">Eventos →</a></h2><div id="psCap"><span class="s">Carregando…</span></div></div></div>'
       + '<div class="hj-cx"><h2>Hoje nas redes <a href="painel-redes.html">Agenda completa →</a></h2><div id="psRedes" class="hj-redes"><span class="s">Carregando…</span></div></div>'
       + '<div class="hj-cx" style="margin-top:14px"><h2>Como as redes estão crescendo <a href="painel-bi.html">Indicadores →</a></h2><div id="psMet"></div></div>'
-      + '<div class="hj-at">'
-      +   '<a href="painel-conselho.html?sec=indicacoes">' + ico("carta") + 'Indicações</a>'
-      +   '<a href="painel-conselho.html?sec=eventos">' + ico("cal") + 'Eventos</a>'
-      +   '<a href="painel-conselho.html?sec=financeiro">' + ico("moeda") + 'Financeiro</a>'
-      +   '<a href="painel-membros.html">' + ico("gente") + 'Membros</a>'
-      +   '<a href="painel-redes.html">' + ico("insta") + 'Redes sociais</a>'
-      +   '<a href="painel-bi.html">' + ico("bi") + 'Indicadores</a>'
+      + '<div class="hj-cx" style="margin-top:14px"><h2>Todas as abas</h2>'
+      + NAV.map(function (g) { var it = g.itens.filter(function (x) { return x.i !== "hoje"; }); if (!it.length) return "";
+          return (g.g ? '<div class="hj-g">' + g.g + '</div>' : '') + '<div class="hj-at">' + it.map(function (x) { return '<a href="' + x.h + '">' + ico(x.i) + x.t + '</a>'; }).join("") + '</div>'; }).join("")
       + '</div>';
     m.parentNode.insertBefore(box, m);
     document.addEventListener("painel:pendencias", function (e) {

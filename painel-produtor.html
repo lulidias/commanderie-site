@@ -273,7 +273,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <!-- IMPRENSA -->
     <div id="secImpr" class="secblk"><a class="backsec" href="painel-produtor.html">&#8592; Voltar</a>
       <div class="sec-title">Imprensa & influencers</div><div class="sec-rule"></div>
-      <p class="lead">Principais jornalistas de vinho e formadores de opinião do Brasil, com contatos.</p>
+      <p class="lead">Principais jornalistas de vinho e influenciadores do Brasil, com contatos e Instagram.</p>
       <div class="card cons-form" style="display:none;">
         <b style="font-family:Georgia,serif;color:var(--navy);">Adicionar contato (Conselho)</b>
         <div class="grid" style="margin-top:8px;">
@@ -284,6 +284,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
           <input class="inp" id="imEmail" placeholder="E-mail">
           <input class="inp" id="imTel" placeholder="Telefone">
           <input class="inp" id="imInsta" placeholder="@instagram">
+          <input class="inp" id="imEnd" placeholder="Endereço">
         </div>
         <div style="margin-top:10px;"><button class="btn-n" onclick="addImprensa()">Adicionar</button><span class="msg" id="imMsg"></span></div>
       </div>
@@ -459,13 +460,18 @@ async function carregarImportadores(){
   IMP_ROWS=q.data||[];
   if(!IMP_ROWS.length){el.innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma importadora.</p>";return;}
   var rm=IS_CONSELHO;
-  var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Responsável</th><th>Cidade</th><th>E-mail</th><th>Telefone</th>"+(rm?"<th></th>":"")+"</tr></thead><tbody>";
+  var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Contato</th><th>Endereço</th><th>E-mail</th><th>Telefone</th><th>Instagram</th>"+(rm?"<th></th>":"")+"</tr></thead><tbody>";
   IMP_ROWS.forEach(function(x){
-    var mail=x.email?("<a href=\"mailto:"+esc(x.email)+"\" style=\"color:var(--navy);\">"+esc(x.email)+"</a>"):"<span style=\"color:#b9b2a0;\">—</span>";
-    tb+="<tr><td><b>"+esc(x.nome)+"</b></td><td>"+esc(x.responsavel||"")+"</td><td>"+esc(x.cidade||"")+"</td><td>"+mail+"</td><td>"+esc(x.telefone||"—")+"</td>"+(rm?("<td><a style=\"color:var(--navy);cursor:pointer;font-size:12px;\" onclick=\"editImpContato('"+x.id+"')\">editar</a></td>"):"")+"</tr>";
+    var ct=esc(x.responsavel||"")+(x.contato_nome&&x.contato_nome!==x.responsavel?("<br><span style=\"color:#8a8270;font-size:12px;\">"+esc(x.contato_nome)+(x.contato_email?(" · "+mailLnk(x.contato_email)):"")+(x.contato_tel?(" · "+esc(x.contato_tel)):"")+"</span>"):"");
+    tb+="<tr><td><b>"+esc(x.nome)+"</b>"+(x.plano?("<br><span style=\"color:#8a8270;font-size:11.5px;\">Cota "+esc(x.plano)+"</span>"):"")+"</td><td>"+ct+"</td><td>"+esc([x.endereco,x.cidade].filter(Boolean).join(" — ")||"—")+"</td><td>"+(x.email?mailLnk(x.email):"<span style=\"color:#b9b2a0;\">—</span>")+"</td><td>"+telLnk(x.telefone)+"</td><td>"+instaLnk(x.instagram)+"</td>"+(rm?("<td><a style=\"color:var(--navy);cursor:pointer;font-size:12px;\" onclick=\"editImpContato('"+x.id+"')\">editar</a></td>"):"")+"</tr>";
   });
   el.innerHTML=tb+"</tbody></table>";
+  try{var o=await sb.from("imprensa_contatos").select("*").eq("tipo","Importador").order("nome",{ascending:true});var OI=(o&&o.data)||[];
+    if(OI.length){el.innerHTML+="<div style=\"font-family:Georgia,serif;color:var(--navy);font-size:17px;margin:18px 0 6px;\">Outros importadores</div><table class=\"tbl\"><thead><tr><th>Importadora</th><th>Contato</th><th>Endereço</th><th>E-mail</th><th>Telefone</th><th>Instagram</th></tr></thead><tbody>"+OI.map(function(x){return "<tr><td><b>"+esc(x.nome)+"</b>"+(x.site?("<br><a href=\""+esc(/^https?:/.test(x.site)?x.site:("https://"+x.site))+"\" target=\"_blank\" rel=\"noopener\" style=\"color:#8a8270;font-size:11.5px;\">"+esc(x.site)+"</a>"):"")+"</td><td>"+esc(x.contato||"")+"</td><td>"+esc([x.endereco,x.cidade].filter(Boolean).join(" — ")||"—")+"</td><td>"+(x.email?mailLnk(x.email):"—")+"</td><td>"+telLnk(x.telefone)+"</td><td>"+instaLnk(x.instagram)+"</td></tr>";}).join("")+"</tbody></table>";}}catch(e){}
 }
+function mailLnk(e){return "<a href=\"mailto:"+esc(e)+"\" style=\"color:var(--navy);\">"+esc(e)+"</a>";}
+function telLnk(t){if(!t)return "<span style=\"color:#b9b2a0;\">—</span>";var d=(""+t).replace(/\D/g,"");if(d.length<=11)d="55"+d;return "<a href=\"https://wa.me/"+d+"\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--navy);white-space:nowrap;\">"+esc(t)+"</a>";}
+function instaLnk(i){if(!i)return "<span style=\"color:#b9b2a0;\">—</span>";var h=(""+i).trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/^@/,"").replace(/\/.*$/,"");return "<a href=\"https://instagram.com/"+esc(h)+"\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--navy);\">@"+esc(h)+"</a>";}
 async function editImpContato(id){
   var x=IMP_ROWS.filter(function(r){return String(r.id)===String(id);})[0];if(!x)return;
   var e=prompt("E-mail do importador "+x.nome+":",x.email||"");if(e===null)return;
@@ -644,20 +650,20 @@ async function carregarImprensa(){
 function filtraImpr(f,el){IFILT=f;document.querySelectorAll("#imprChips .chip").forEach(function(c){c.classList.remove("on");});el.classList.add("on");renderImpr();}
 function renderImpr(){
   var el=document.getElementById("tabImpr");
-  var list=IMPR.filter(function(x){return IFILT==="todos"||x.tipo===IFILT;});
+  var list=IMPR.filter(function(x){return x.tipo!=="Importador"&&(IFILT==="todos"||x.tipo===IFILT);});
   if(!list.length){el.innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhum contato cadastrado.</p>";return;}
   var rm=IS_CONSELHO;
-  var tb="<table class=\"tbl\"><thead><tr><th>Nome</th><th>Veículo</th><th>Tipo</th><th>Cidade</th><th>Contato</th>"+(rm?"<th></th>":"")+"</tr></thead><tbody>";
-  list.forEach(function(x){var ct=[x.email,x.telefone,x.instagram].filter(Boolean).join(" · ");tb+="<tr><td><b>"+esc(x.nome)+"</b></td><td>"+esc(x.veiculo||"")+"</td><td>"+esc(x.tipo||"")+"</td><td>"+esc(x.cidade||"")+"</td><td>"+esc(ct)+"</td>"+(rm?("<td><a class=\"rm\" onclick=\"delRow('imprensa_contatos','"+x.id+"','imprensa')\">remover</a></td>"):"")+"</tr>";});
+  var tb="<table class=\"tbl\"><thead><tr><th>Nome</th><th>Veículo / canal</th><th>Tipo</th><th>Endereço</th><th>E-mail</th><th>Telefone</th><th>Instagram</th>"+(rm?"<th></th>":"")+"</tr></thead><tbody>";
+  list.forEach(function(x){tb+="<tr><td><b>"+esc(x.nome)+"</b></td><td>"+esc(x.veiculo||"")+"</td><td>"+esc(x.tipo||"")+"</td><td>"+esc([x.endereco,x.cidade].filter(Boolean).join(" — ")||"—")+"</td><td>"+(x.email?mailLnk(x.email):"—")+"</td><td>"+telLnk(x.telefone)+"</td><td>"+instaLnk(x.instagram)+"</td>"+(rm?("<td><a class=\"rm\" onclick=\"delRow('imprensa_contatos','"+x.id+"','imprensa')\">remover</a></td>"):"")+"</tr>";});
   el.innerHTML=tb+"</tbody></table>";
 }
 async function addImprensa(){
   var m=document.getElementById("imMsg");var nome=val("imNome");
   if(!nome){m.style.color="#8f1d24";m.textContent="Informe o nome.";return;}
   m.style.color="#2f6b3a";m.textContent="Salvando...";
-  var r=await sb.from("imprensa_contatos").insert({nome:nome,veiculo:val("imVeic")||null,tipo:val("imTipo"),cidade:val("imCidade")||null,email:val("imEmail")||null,telefone:val("imTel")||null,instagram:val("imInsta")||null});
+  var r=await sb.from("imprensa_contatos").insert({nome:nome,veiculo:val("imVeic")||null,tipo:val("imTipo"),cidade:val("imCidade")||null,email:val("imEmail")||null,telefone:val("imTel")||null,instagram:val("imInsta")||null,endereco:val("imEnd")||null});
   if(r.error){m.style.color="#8f1d24";m.textContent=r.error.message;return;}
-  m.textContent="Adicionado!";["imNome","imVeic","imCidade","imEmail","imTel","imInsta"].forEach(function(id){document.getElementById(id).value="";});carregarImprensa();
+  m.textContent="Adicionado!";["imNome","imVeic","imCidade","imEmail","imTel","imInsta","imEnd"].forEach(function(id){document.getElementById(id).value="";});carregarImprensa();
 }
 
 // ---- PRODUTORES (Conselho) ----

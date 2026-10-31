@@ -284,7 +284,6 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
           <input class="inp" id="imEmail" placeholder="E-mail">
           <input class="inp" id="imTel" placeholder="Telefone">
           <input class="inp" id="imInsta" placeholder="@instagram">
-          <input class="inp" id="imEnd" placeholder="Endereço">
         </div>
         <div style="margin-top:10px;"><button class="btn-n" onclick="addImprensa()">Adicionar</button><span class="msg" id="imMsg"></span></div>
       </div>
@@ -653,17 +652,17 @@ function renderImpr(){
   var list=IMPR.filter(function(x){return x.tipo!=="Importador"&&(IFILT==="todos"||x.tipo===IFILT);});
   if(!list.length){el.innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhum contato cadastrado.</p>";return;}
   var rm=IS_CONSELHO;
-  var tb="<table class=\"tbl\"><thead><tr><th>Nome</th><th>Veículo / canal</th><th>Tipo</th><th>Endereço</th><th>E-mail</th><th>Telefone</th><th>Instagram</th>"+(rm?"<th></th>":"")+"</tr></thead><tbody>";
-  list.forEach(function(x){tb+="<tr><td><b>"+esc(x.nome)+"</b></td><td>"+esc(x.veiculo||"")+"</td><td>"+esc(x.tipo||"")+"</td><td>"+esc([x.endereco,x.cidade].filter(Boolean).join(" — ")||"—")+"</td><td>"+(x.email?mailLnk(x.email):"—")+"</td><td>"+telLnk(x.telefone)+"</td><td>"+instaLnk(x.instagram)+"</td>"+(rm?("<td><a class=\"rm\" onclick=\"delRow('imprensa_contatos','"+x.id+"','imprensa')\">remover</a></td>"):"")+"</tr>";});
+  var tb="<table class=\"tbl\"><thead><tr><th>Nome</th><th>Veículo / canal</th><th>Tipo</th><th>E-mail</th><th>Telefone</th><th>Instagram</th>"+(rm?"<th></th>":"")+"</tr></thead><tbody>";
+  list.forEach(function(x){tb+="<tr><td><b>"+esc(x.nome)+"</b></td><td>"+esc(x.veiculo||"")+"</td><td>"+esc(x.tipo||"")+"</td><td>"+(x.email?mailLnk(x.email):"—")+"</td><td>"+telLnk(x.telefone)+"</td><td>"+instaLnk(x.instagram)+"</td>"+(rm?("<td><a class=\"rm\" onclick=\"delRow('imprensa_contatos','"+x.id+"','imprensa')\">remover</a></td>"):"")+"</tr>";});
   el.innerHTML=tb+"</tbody></table>";
 }
 async function addImprensa(){
   var m=document.getElementById("imMsg");var nome=val("imNome");
   if(!nome){m.style.color="#8f1d24";m.textContent="Informe o nome.";return;}
   m.style.color="#2f6b3a";m.textContent="Salvando...";
-  var r=await sb.from("imprensa_contatos").insert({nome:nome,veiculo:val("imVeic")||null,tipo:val("imTipo"),cidade:val("imCidade")||null,email:val("imEmail")||null,telefone:val("imTel")||null,instagram:val("imInsta")||null,endereco:val("imEnd")||null});
+  var r=await sb.from("imprensa_contatos").insert({nome:nome,veiculo:val("imVeic")||null,tipo:val("imTipo"),cidade:val("imCidade")||null,email:val("imEmail")||null,telefone:val("imTel")||null,instagram:val("imInsta")||null});
   if(r.error){m.style.color="#8f1d24";m.textContent=r.error.message;return;}
-  m.textContent="Adicionado!";["imNome","imVeic","imCidade","imEmail","imTel","imInsta","imEnd"].forEach(function(id){document.getElementById(id).value="";});carregarImprensa();
+  m.textContent="Adicionado!";["imNome","imVeic","imCidade","imEmail","imTel","imInsta"].forEach(function(id){document.getElementById(id).value="";});carregarImprensa();
 }
 
 // ---- PRODUTORES (Conselho) ----

@@ -114,7 +114,7 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
     <label><span>Data</span><input id="iData" type="date" oninput="pintar()"></label>
     <label><span>Grão-Mestre</span><input id="iGM" value="Manu Brandão" oninput="pintar()"></label>
   </div>
-  <div class="acts"><input type="hidden" id="iFmt" value="p"><button class="bt" onclick="imprimir()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><button class="bt" id="bWa" style="background:#25d366;" onclick="baixarPDF('wa')">&#128172; WhatsApp</button><span id="msg"></span></div>
+  <div class="acts"><input type="hidden" id="iFmt" value="p"><button class="bt" onclick="imprimir()">&#128424; Imprimir</button><button class="bt g" id="bPdf" onclick="baixarPDF()">&#11015; Baixar PDF</button><button class="bt" id="bWa" style="background:#8f1d24;" onclick="baixarPDF('wa')">&#128172; WhatsApp</button><span id="msg"></span></div>
   <div class="aviso" id="avPrev" style="display:none;"></div>
 </div>
 
@@ -197,8 +197,8 @@ async function finalizar(pdf,name,modo){if(modo!=="wa"){pdf.save(name);$("msg").
   var pode=false;try{pode=!!(navigator.canShare&&navigator.canShare({files:files}));}catch(e){}
   PRONTO={pdf:pdf,name:name,files:files,png:pngs[0]||null,txt:txt,share:pode};
   var wa="https://wa.me/"+waTel()+"?text="+encodeURIComponent(txt);
-  if(pode){$("msg").innerHTML="Diploma pronto. <button class='bt' style='background:#25d366;padding:8px 14px;' onclick='enviarAgora()'>&#128228; Enviar imagem pelo WhatsApp</button>";return;}
-  $("msg").innerHTML=(PRONTO.png?"<button class='bt' style='background:#25d366;padding:8px 14px;' onclick='copiarImg()'>&#128203; Copiar imagem do diploma</button> ":"")+"<a class='bt' style='background:#1e2a56;padding:8px 14px;text-decoration:none;' href='"+wa+"' target='_blank' rel='noopener'>Abrir o WhatsApp</a> <a href='#' onclick='baixarImgs();return false;' style='color:#1e2a56;font-size:12.5px;'>baixar imagem</a><div id='waDica' style='font-size:12.5px;color:#5b5446;margin-top:6px;'>"+(PRONTO.png?"1) Copie a imagem · 2) abra o WhatsApp · 3) na conversa, cole com <b>Cmd+V</b> (Ctrl+V no Windows) — o diploma aparece como foto.":"Baixe as imagens e arraste para a conversa do WhatsApp.")+"</div>";}
+  if(pode){$("msg").innerHTML="Diploma pronto. <button class='bt' style='background:#8f1d24;padding:8px 14px;' onclick='enviarAgora()'>&#128228; Enviar imagem pelo WhatsApp</button>";return;}
+  $("msg").innerHTML=(PRONTO.png?"<button class='bt' style='background:#8f1d24;padding:8px 14px;' onclick='copiarImg()'>&#128203; Copiar imagem do diploma</button> ":"")+"<a class='bt' style='background:#1e2a56;padding:8px 14px;text-decoration:none;' href='"+wa+"' target='_blank' rel='noopener'>Abrir o WhatsApp</a> <a href='#' onclick='baixarImgs();return false;' style='color:#1e2a56;font-size:12.5px;'>baixar imagem</a><div id='waDica' style='font-size:12.5px;color:#5b5446;margin-top:6px;'>"+(PRONTO.png?"1) Copie a imagem · 2) abra o WhatsApp · 3) na conversa, cole com <b>Cmd+V</b> (Ctrl+V no Windows) — o diploma aparece como foto.":"Baixe as imagens e arraste para a conversa do WhatsApp.")+"</div>";}
 function enviarAgora(){if(!PRONTO)return;var P=PRONTO;
   navigator.share({files:P.files,text:P.txt,title:P.name}).then(function(){$("msg").textContent="✔ Enviado.";}).catch(function(e){if(!e||e.name!=="AbortError"){P.share=false;baixarImgs();$("msg").innerHTML="As imagens foram baixadas. <a href='https://wa.me/"+waTel()+"?text="+encodeURIComponent(P.txt)+"' target='_blank' rel='noopener' style='color:#1f8f4e;font-weight:bold;'>Abrir o WhatsApp</a> e envie como foto.";}});}
 function copiarImg(){var P=PRONTO;if(!P||!P.png)return;

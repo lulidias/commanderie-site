@@ -58,12 +58,14 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <div class="kpis" id="kpis"></div>
 
     <div class="sec">Financeiro</div><div class="sec-rule"></div>
+    <div class="kpis" id="kpisAno"></div>
+    <div style="font-size:11px;color:#9a937f;margin:0 0 12px;">Mesmos números do Financeiro do Painel do Conselho, lidos do banco a cada abertura da página.</div>
     <div class="grid">
-      <div class="chartcard"><h3>Anuidade a receber por núcleo</h3><div class="cv"><canvas id="cAnuNuc"></canvas></div></div>
-      <div class="chartcard"><h3>Adimplência da anuidade</h3><div class="cv"><canvas id="cAdimp"></canvas></div></div>
-      <div class="chartcard"><h3>Receita projetada por evento <span style="font-size:11px;color:#9a937f;">(ano selecionado)</span></h3><div class="cv"><canvas id="cRecEv"></canvas></div></div>
-      <div class="chartcard"><h3>Receitas × Despesas por ano</h3><div class="cv"><canvas id="cRecDesp"></canvas></div></div>
-      <div class="chartcard"><h3>Despesas por categoria</h3><div class="cv"><canvas id="cDespCat"></canvas></div></div>
+      <div class="chartcard"><h3>Anuidade a receber por núcleo <span style="font-size:11px;color:#9a937f;" class="cicloLbl"></span></h3><div class="cv"><canvas id="cAnuNuc"></canvas></div></div>
+      <div class="chartcard"><h3>Adimplência da anuidade <span style="font-size:11px;color:#9a937f;" class="cicloLbl"></span></h3><div class="cv"><canvas id="cAdimp"></canvas></div></div>
+      <div class="chartcard"><h3>Receita por evento <span style="font-size:11px;color:#9a937f;">(ano selecionado)</span></h3><div class="cv"><canvas id="cRecEv"></canvas></div></div>
+      <div class="chartcard"><h3>Receitas × Despesas por ano <span style="font-size:11px;color:#9a937f;">(recebido × pago)</span></h3><div class="cv"><canvas id="cRecDesp"></canvas></div></div>
+      <div class="chartcard"><h3>Despesas por categoria <span style="font-size:11px;color:#9a937f;">(ano selecionado)</span></h3><div class="cv"><canvas id="cDespCat"></canvas></div></div>
       <div class="chartcard"><h3>Composição do caixa</h3><div class="cv"><canvas id="cCaixa"></canvas></div></div>
     </div>
 
@@ -99,55 +101,59 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
 var PAL=["#1e2a56","#b08a3a","#8f1d24","#2f6b3a","#5a2d86","#c9a85c","#1e5a86","#8a6a1f","#9a8f72","#c0392b"];
 var FUNIL=["Aguardando avais","Avalizada","Aguardando aprovação","Aprovado","Formulário enviado","Aguardando pagamento","Pago","Membro"];
-var D=null,CH={};
+var D=null,F=null,CH={},FANO={};
 function st(id){["needLogin","notAllowed","loading","panel"].forEach(function(x){var e=document.getElementById(x);if(e)e.style.display=(x===id)?"block":"none";});}
-function brl(v){return "R$ "+(Math.round(Number(v)||0)).toLocaleString("pt-BR");}
+function brl(v){var n=Math.round(Number(v)||0);return (n<0?"-":"")+"R$ "+Math.abs(n).toLocaleString("pt-BR");}
+function brl2(v){var n=Number(v)||0;return (n<0?"-":"")+"R$ "+Math.abs(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 function entries(o){o=o||{};return Object.keys(o).map(function(k){return [k,o[k]];});}
-function kpi(n,l){return '<div class="kpi"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';}
+function kpi(n,l,cor){return '<div class="kpi"><div class="n"'+(cor?' style="color:'+cor+';"':'')+'>'+n+'</div><div class="l">'+l+'</div></div>';}
 Chart.defaults.font.family="Arial";Chart.defaults.color="#5b5446";
-function mk(id,cfg){if(CH[id]){try{CH[id].destroy();}catch(e){}CH[id]=null;}var el=document.getElementById(id);if(el)CH[id]=new Chart(el,cfg);}
-function doughnut(id,obj){var e=entries(obj).filter(function(x){return x[1];});if(!e.length){return;}mk(id,{type:"doughnut",data:{labels:e.map(function(x){return x[0];}),datasets:[{data:e.map(function(x){return x[1];}),backgroundColor:PAL,borderColor:"#fffdf7",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"right",labels:{boxWidth:12,font:{size:11}}}}}});}
-function bar(id,labels,data,cor,horiz,money){if(!labels.length){return;}mk(id,{type:"bar",data:{labels:labels,datasets:[{data:data,backgroundColor:cor||"#1e2a56",borderRadius:6}]},options:{indexAxis:horiz?"y":"x",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return money?brl(c.raw):c.raw;}}}},scales:{x:{beginAtZero:true,ticks:{precision:0}},y:{beginAtZero:true,ticks:{precision:0}}}}});}
+// vazio()/mk(): o canvas nunca é apagado, só escondido — assim o gráfico pode voltar quando o ano muda.
+function vazio(id,msg){if(CH[id]){try{CH[id].destroy();}catch(e){}CH[id]=null;}var el=document.getElementById(id);if(!el)return;el.style.display="none";var p=el.parentNode,v=p.querySelector(".empty");if(!v){v=document.createElement("div");v.className="empty";p.appendChild(v);}v.textContent=msg;}
+function mk(id,cfg){if(CH[id]){try{CH[id].destroy();}catch(e){}CH[id]=null;}var el=document.getElementById(id);if(!el)return;el.style.display="";var v=el.parentNode.querySelector(".empty");if(v)v.remove();CH[id]=new Chart(el,cfg);}
+function doughnut(id,obj,money,msg){var e=entries(obj).filter(function(x){return x[1];});if(!e.length){vazio(id,msg||"Sem dados ainda.");return;}mk(id,{type:"doughnut",data:{labels:e.map(function(x){return x[0];}),datasets:[{data:e.map(function(x){return x[1];}),backgroundColor:PAL,borderColor:"#fffdf7",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"right",labels:{boxWidth:12,font:{size:11}}},tooltip:{callbacks:{label:function(c){return c.label+": "+(money?brl2(c.raw):c.raw);}}}}}});}
+function bar(id,labels,data,cor,horiz,money,msg){if(!labels.length){vazio(id,msg||"Sem dados ainda.");return;}mk(id,{type:"bar",data:{labels:labels,datasets:[{data:data,backgroundColor:cor||"#1e2a56",borderRadius:6}]},options:{indexAxis:horiz?"y":"x",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return money?brl2(c.raw):c.raw;}}}},scales:{x:{beginAtZero:true,ticks:{precision:0}},y:{beginAtZero:true,ticks:{precision:0}}}}});}
+// Números financeiros: SEMPRE de fin_resumo() (sql/fin_resumo.sql), a mesma regra do Financeiro do Conselho.
+async function finResumo(ano){var r=await sb.rpc("fin_resumo",{p_ano:ano?Number(ano):null});if(r.error)throw r.error;if(r.data&&r.data.erro)throw new Error(r.data.erro);return r.data;}
 async function init(){
   var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}
   var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){st("notAllowed");return;}
   var q=await sb.rpc("bi_dados");if(q.error||(q.data&&q.data.erro)){st("notAllowed");return;}
-  D=q.data;st("panel");renderEstatico();popAno();renderAno();
+  D=q.data;
+  try{F=await finResumo(null);}catch(e){F=null;st("panel");document.getElementById("geradoEm").innerHTML='<span style="color:#8f1d24;">Erro ao ler o Financeiro: '+String(e.message||e).replace(/</g,"&lt;")+'</span>';return;}
+  FANO={"":F};st("panel");renderEstatico();popAno();renderAno();
 }
+async function recarregar(){try{var q=await sb.rpc("bi_dados");if(!q.error&&q.data&&!q.data.erro)D=q.data;F=await finResumo(null);FANO={"":F};renderEstatico();await renderAno();}catch(e){document.getElementById("geradoEm").innerHTML='<span style="color:#8f1d24;">Erro ao atualizar: '+String(e.message||e).replace(/</g,"&lt;")+'</span>';}}
+function carimbo(){var t="Dados atualizados em "+(F.atualizado_em||"");if(F.ultimo_lancamento)t+=" · último lançamento no Financeiro em "+F.ultimo_lancamento;document.getElementById("geradoEm").textContent=t;}
 function renderEstatico(){
-  document.getElementById("geradoEm").textContent="Atualizado em "+(D.gerado_em||"");
-  var m=D.membros||{},ev=D.eventos||{},ind=D.indicacoes||{},pa=D.participacao||{},fin=D.financeiro||{},desp=D.despesas||{};
-  var emdia=m.anuidade_em_dia||0,avenc=m.anuidade_a_vencer||0;var adimp=(emdia+avenc)?Math.round(emdia/(emdia+avenc)*100):100;
-  var ps=ind.por_status||{};var virou=(ps["Membro"]||0)+(ps["Pago"]||0);var taxa=ind.total?Math.round(virou/ind.total*100):0;
+  carimbo();
+  var m=D.membros||{},ev=D.eventos||{},ind=D.indicacoes||{},pa=D.participacao||{},A=F.anuidade||{},cx=F.caixa||{};
+  var ps=ind.por_status||{};
+  Array.prototype.forEach.call(document.querySelectorAll(".cicloLbl"),function(e){e.textContent="(ciclo "+(A.ciclo||"")+")";});
   document.getElementById("kpis").innerHTML=
      kpi(m.total||0,"Membros")
-    +kpi(brl(fin.caixa||0),"Caixa atual")
-    +kpi(brl(m.anuidade_a_receber||0),"Anuidade a receber")
-    +kpi(brl(desp.a_pagar||0),"Despesas a pagar")
+    +kpi(brl(cx.caixa),"Caixa atual",(Number(cx.caixa)<0?"#8f1d24":""))
+    +kpi(brl(A.a_receber),"Anuidade a receber ("+(A.ciclo||"")+")")
+    +kpi(brl((F.despesas||{}).a_pagar),"Despesas a pagar")
     +kpi(ev.futuros||0,"Eventos futuros")
     +kpi(pa.total_confirmacoes||0,"Confirmações de presença")
     +kpi(ind.total||0,"Indicações");
-  // Financeiro (não-ano)
-  var an=entries(m.anuidade_por_nucleo||{});bar("cAnuNuc",an.map(function(x){return x[0];}),an.map(function(x){return x[1];}),"#8f1d24",false,true);
-  doughnut("cAdimp",{"Em dia":emdia,"A vencer":avenc,"Isentos":(m.isentos||0)});
-  // Receitas x Despesas por ano (barras agrupadas)
-  var rpa=(D.receitas&&D.receitas.por_ano)||{},dpa=desp.por_ano||{};
-  var anosF={};Object.keys(rpa).forEach(function(a){anosF[a]=1;});Object.keys(dpa).forEach(function(a){anosF[a]=1;});
-  var anosL=Object.keys(anosF).sort();
-  if(anosL.length)mk("cRecDesp",{type:"bar",data:{labels:anosL,datasets:[{label:"Receitas",data:anosL.map(function(a){return rpa[a]||0;}),backgroundColor:"#2f6b3a",borderRadius:5},{label:"Despesas",data:anosL.map(function(a){return dpa[a]||0;}),backgroundColor:"#c0392b",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:function(c){return c.dataset.label+": "+brl(c.raw);}}}},scales:{y:{beginAtZero:true}}}});else document.getElementById("cRecDesp").parentNode.innerHTML='<div class="empty">Sem lançamentos ainda.</div>';
-  // Despesas por categoria
-  var dc=entries(desp.por_categoria||{}).filter(function(x){return x[1];});
-  if(dc.length)bar("cDespCat",dc.map(function(x){return x[0];}),dc.map(function(x){return x[1];}),"#8a6a1f",true,true);else document.getElementById("cDespCat").parentNode.innerHTML='<div class="empty">Sem despesas lançadas ainda.</div>';
+  // Anuidade do ciclo (mesmo quadro "Anuidades dos membros" do Financeiro)
+  var an=entries(A.por_nucleo||{}).filter(function(x){return Number(x[1].a_receber)>0;});
+  bar("cAnuNuc",an.map(function(x){return x[0];}),an.map(function(x){return x[1].a_receber;}),"#8f1d24",false,true,"Nenhuma anuidade a receber.");
+  doughnut("cAdimp",{"Em dia":A.em_dia||0,"A pagar":A.a_pagar||0,"Isentos":A.isentos||0});
+  // Receitas x Despesas por ano (recebido x pago, como o Superávit/Déficit do Financeiro)
+  var pa2=F.por_ano||{};var anosL=Object.keys(pa2).sort();
+  if(anosL.length)mk("cRecDesp",{type:"bar",data:{labels:anosL,datasets:[{label:"Receitas recebidas",data:anosL.map(function(a){return pa2[a].receitas.recebido;}),backgroundColor:"#2f6b3a",borderRadius:5},{label:"Despesas pagas",data:anosL.map(function(a){return pa2[a].despesas.pago;}),backgroundColor:"#c0392b",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:function(c){return c.dataset.label+": "+brl2(c.raw);}}}},scales:{y:{beginAtZero:true}}}});else vazio("cRecDesp","Sem lançamentos ainda.");
   // Composicao do caixa
-  var anuRec=fin.anuidade_recebida||0,recRec=fin.receitas_recebidas||0,saidas=fin.saidas||0;
-  if(anuRec+recRec+saidas>0)doughnut("cCaixa",{"Anuidades recebidas":anuRec,"Outras receitas recebidas":recRec,"Despesas pagas":saidas});else document.getElementById("cCaixa").parentNode.innerHTML='<div class="empty">Sem movimentação ainda.</div>';
+  doughnut("cCaixa",{"Anuidades recebidas":cx.anuidades_recebidas||0,"Eventos recebidos":cx.eventos_recebidos||0,"Outras receitas recebidas":cx.outras_recebidas||0,"Despesas pagas":cx.saidas||0},true,"Sem movimentação ainda.");
   // Membros
   doughnut("cNucleo",m.por_nucleo);doughnut("cGrau",m.por_grau);
   var cr=entries(m.crescimento).sort(function(a,b){return a[0].localeCompare(b[0]);});var acc=0;var lbl=cr.map(function(x){return x[0];});var dat=cr.map(function(x){acc+=Number(x[1]);return acc;});
   if(lbl.length)mk("cCresc",{type:"line",data:{labels:lbl,datasets:[{data:dat,borderColor:"#b08a3a",backgroundColor:"rgba(176,138,58,.15)",fill:true,tension:.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}});
   // Participacao
-  var pm=pa.por_membro||[];if(pm.length)bar("cRank",pm.map(function(x){return x.nome;}),pm.map(function(x){return x.n;}),"#2f6b3a",true);else document.getElementById("cRank").parentNode.innerHTML='<div class="empty">Ainda sem confirmações de presença.</div>';
-  var pn=entries(pa.por_nucleo||{});if(pn.length)bar("cPartNuc",pn.map(function(x){return x[0];}),pn.map(function(x){return x[1];}),"#5a2d86");else document.getElementById("cPartNuc").parentNode.innerHTML='<div class="empty">Ainda sem confirmações de presença.</div>';
+  var pm=pa.por_membro||[];bar("cRank",pm.map(function(x){return x.nome;}),pm.map(function(x){return x.n;}),"#2f6b3a",true,false,"Ainda sem confirmações de presença.");
+  var pn=entries(pa.por_nucleo||{});bar("cPartNuc",pn.map(function(x){return x[0];}),pn.map(function(x){return x[1];}),"#5a2d86",false,false,"Ainda sem confirmações de presença.");
   // Eventos (não-ano)
   bar("cTipo",entries(ev.por_tipo).map(function(x){return x[0];}),entries(ev.por_tipo).map(function(x){return x[1];}),"#8f1d24");
   var fut=(ev.lista||[]).filter(function(e){return !e.realizado&&e.lugares;});
@@ -157,35 +163,49 @@ function renderEstatico(){
   bar("cInd",fo,fo.map(function(s){return ps[s]||0;}),"#5a2d86");
 }
 function popAno(){
-  var anos={};(D.eventos.lista||[]).forEach(function(e){if(e.ano)anos[e.ano]=1;});Object.keys((D.receitas&&D.receitas.por_ano)||{}).forEach(function(a){anos[a]=1;});
+  var anos={};(D.eventos.lista||[]).forEach(function(e){if(e.ano)anos[e.ano]=1;});(F.anos||[]).forEach(function(a){anos[a]=1;});
   var arr=Object.keys(anos).sort();var sel=document.getElementById("anoSel");
   sel.innerHTML='<option value="">Todos</option>'+arr.map(function(a){return '<option>'+a+'</option>';}).join("");
-  if(arr.indexOf("2026")>=0)sel.value="2026";
+  var pref=""+(F.ciclo||new Date().getFullYear());if(arr.indexOf(pref)>=0)sel.value=pref;
 }
-function renderAno(){
+async function renderAno(){
   var ano=document.getElementById("anoSel").value;
+  var FA=FANO[ano];
+  if(!FA){try{FA=FANO[ano]=await finResumo(ano);}catch(e){document.getElementById("kpisAno").innerHTML='<div style="color:#8f1d24;font-size:13px;">Erro ao ler o Financeiro: '+String(e.message||e).replace(/</g,"&lt;")+'</div>';return;}}
+  if(document.getElementById("anoSel").value!==ano)return;
+  var L=ano||"(todos os anos)",R=FA.receitas||{},De=FA.despesas||{};
+  document.getElementById("kpisAno").innerHTML=
+     kpi(brl(R.cotizado),"Receitas "+L)
+    +kpi(brl(R.recebido),"Recebido "+L,"#2f6b3a")
+    +kpi(brl(R.a_receber),"A receber "+L,"#8a6a1f")
+    +kpi(brl(De.pago),"Despesas pagas "+L,"#8f1d24")
+    +kpi(brl(De.a_pagar),"Despesas a pagar "+L,"#8a6a1f")
+    +kpi(brl(FA.saldo),(ano?"Saldo do ano ":"Saldo do período"),(Number(FA.saldo)<0?"#8f1d24":"#2f6b3a"));
+  // Receita por evento: reservas pagas (recebido) e aguardando pagamento (a receber)
+  var rp=((FA.eventos||{}).lista||[]);
+  if(rp.length)mk("cRecEv",{type:"bar",data:{labels:rp.map(function(x){return x.nome;}),datasets:[{label:"Recebido",data:rp.map(function(x){return x.recebido;}),backgroundColor:"#b08a3a",borderRadius:5},{label:"A receber",data:rp.map(function(x){return x.a_receber;}),backgroundColor:"#e6d9b3",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:function(c){return c.dataset.label+": "+brl2(c.raw);}}}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});else vazio("cRecEv","Nenhuma receita de evento neste período.");
+  var dc=entries(De.por_categoria||{}).filter(function(x){return Number(x[1].previsto);}).sort(function(a,b){return b[1].previsto-a[1].previsto;});
+  bar("cDespCat",dc.map(function(x){return x[0];}),dc.map(function(x){return x[1].previsto;}),"#8a6a1f",true,true,"Nenhuma despesa neste período.");
   var lst=(D.eventos.lista||[]).filter(function(e){return !ano||(""+e.ano)===ano;});
-  if(CH["cRecEv"]){try{CH["cRecEv"].destroy();}catch(e){}CH["cRecEv"]=null;}
-  if(CH["cCap"]){try{CH["cCap"].destroy();}catch(e){}CH["cCap"]=null;}
-  var rp=lst.filter(function(e){return e.valor>0;});
-  if(rp.length)bar("cRecEv",rp.map(function(x){return x.nome;}),rp.map(function(x){return x.valor*x.confirmados;}),"#b08a3a",false,true);
   var caps=lst.filter(function(e){return (e.tipo||"")==="Capítulo";});
-  if(caps.length)bar("cCap",caps.map(function(x){return x.nome;}),caps.map(function(x){return x.confirmados;}),"#1e2a56");
+  bar("cCap",caps.map(function(x){return x.nome;}),caps.map(function(x){return x.confirmados;}),"#1e2a56",false,false,"Nenhum capítulo neste período.");
 }
 function exportar(){
-  if(!D)return;var L=[];function add(t){L.push(t);}
-  add("Commanderie - Indicadores ("+(D.gerado_em||"")+")");add("");
+  if(!D||!F)return;var L=[];function add(t){L.push(t);}
+  add("Commanderie - Indicadores (dados atualizados em "+(F.atualizado_em||"")+")");add("");
   add("MEMBROS POR NUCLEO");entries(D.membros.por_nucleo).forEach(function(x){add(x[0]+";"+x[1]);});add("");
   add("MEMBROS POR GRAU");entries(D.membros.por_grau).forEach(function(x){add(x[0]+";"+x[1]);});add("");
-  add("ANUIDADE A RECEBER POR NUCLEO (R$)");entries(D.membros.anuidade_por_nucleo).forEach(function(x){add(x[0]+";"+x[1]);});add("");
-  add("EVENTOS;Tipo;Data;Lugares;Confirmados;Valor;Receita projetada");(D.eventos.lista||[]).forEach(function(e){add(e.nome+";"+e.tipo+";"+e.data+";"+(e.lugares||"")+";"+e.confirmados+";"+e.valor+";"+(e.valor*e.confirmados));});add("");
+  var A=F.anuidade||{};add("ANUIDADE "+(A.ciclo||"")+" POR NUCLEO;Membros;Cotizado;Recebido;A receber");entries(A.por_nucleo).forEach(function(x){add(x[0]+";"+x[1].membros+";"+x[1].cotizado+";"+x[1].recebido+";"+x[1].a_receber);});add("");
+  add("RECEITA DE EVENTOS;Data;Recebido;A receber");((F.eventos||{}).lista||[]).forEach(function(e){add(e.nome+";"+(e.data||"")+";"+e.recebido+";"+e.a_receber);});add("");
   add("INDICACOES POR STATUS");entries(D.indicacoes.por_status).forEach(function(x){add(x[0]+";"+x[1]);});add("");
-  var fin=D.financeiro||{},desp=D.despesas||{};
-  add("CAIXA");add("Anuidades recebidas;"+(fin.anuidade_recebida||0));add("Outras receitas recebidas;"+(fin.receitas_recebidas||0));add("Despesas pagas;"+(fin.despesas_pagas||0));add("Caixa atual;"+(fin.caixa||0));add("");
-  add("DESPESAS POR ANO");entries(desp.por_ano||{}).forEach(function(x){add(x[0]+";"+x[1]);});add("");
-  add("DESPESAS POR CATEGORIA");entries(desp.por_categoria||{}).forEach(function(x){add(x[0]+";"+x[1]);});
+  var cx=F.caixa||{};
+  add("CAIXA");add("Anuidades recebidas;"+cx.anuidades_recebidas);add("Eventos recebidos;"+cx.eventos_recebidos);add("Outras receitas recebidas;"+cx.outras_recebidas);add("Despesas pagas;"+cx.saidas);add("Caixa atual;"+cx.caixa);add("");
+  add("POR ANO;Receitas;Recebido;A receber;Despesas;Pago;A pagar;Saldo");entries(F.por_ano).forEach(function(x){var v=x[1];add(x[0]+";"+v.receitas.cotizado+";"+v.receitas.recebido+";"+v.receitas.a_receber+";"+v.despesas.previsto+";"+v.despesas.pago+";"+v.despesas.a_pagar+";"+v.saldo);});add("");
+  add("DESPESAS POR CATEGORIA;Previsto;Pago");entries((F.despesas||{}).por_categoria).forEach(function(x){add(x[0]+";"+x[1].previsto+";"+x[1].pago);});
   var blob=new Blob(["﻿"+L.join("\n")],{type:"text/csv;charset=utf-8;"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="indicadores-commanderie.csv";a.click();
 }
+// Voltou para a aba depois de 1 min? Lê de novo — o que mudou no Financeiro aparece sem recarregar.
+var _ultLeitura=Date.now();document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&F&&Date.now()-_ultLeitura>60000){_ultLeitura=Date.now();recarregar();}});
 document.addEventListener("DOMContentLoaded",init);
 </script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
 </body></html>

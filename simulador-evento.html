@@ -344,5 +344,5 @@ function imprimir(modo){var pgs=[];
     +"window.onload=function(){setTimeout(function(){"+(modo==="pdf"?"baixarPDF();":"window.print();")+"},800);};";
   w.document.write("<!doctype html><html><head><meta charset='utf-8'><title>"+esc(S.titulo||"Relatório")+"</title>"+FONTS+"<style>"+CSSP+".tb{position:sticky;top:0;z-index:9;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;background:#1e2a56;color:#f3e3bd;padding:10px;font-family:Arial,sans-serif;font-size:13px;}.tb button{background:#b08a3a;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;}@media print{.tb{display:none;}}</style></head><body>"+bar+html+"<script>"+js+"<\/script></body></html>");w.document.close();}
 document.addEventListener("DOMContentLoaded",init);
-</script><script src="/js/redes-rodape.js" defer></script>
+</script><script src="/js/redes-rodape.js?v=3" defer></script>
 </body></html>

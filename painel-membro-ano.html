@@ -255,5 +255,5 @@ async function encerrar(reabrir){if(!confirm(reabrir?"Reabrir a votação?":"Enc
   var r=await sb.rpc("membro_ano_encerrar",{p_ano:anoSel(),p_reabrir:!!reabrir});if(r.error){alert("Erro: "+r.error.message);return;}carregar();}
 document.addEventListener("DOMContentLoaded",init);
 </script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
-<script src="/js/redes-rodape.js" defer></script>
+<script src="/js/redes-rodape.js?v=3" defer></script>
 </body></html>

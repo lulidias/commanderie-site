@@ -13,13 +13,13 @@
     var redes = [["https://www.instagram.com/commanderiedebordeauxbr/", "Instagram", IG], ["https://www.facebook.com/1323190304220764", "Facebook", FB], ["https://www.threads.com/@commanderiedebordeauxbr", "Threads", TH]];
     var css = '.rr-bar{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 16px;font-family:Arial,Helvetica,sans-serif}'
       + '.rr-bar .rr-t{font:normal 15px Georgia,serif;letter-spacing:.3px;color:var(--rr-txt,#e7d8a8)}'
-      + '.rr-ic{display:flex;gap:12px}.rr-ic a{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--rr-borda,rgba(231,216,168,.55));color:var(--rr-txt,#e7d8a8);text-decoration:none;transition:background .15s,color .15s}'
+      + '.rr-ic{display:flex;gap:18px}.rr-ic span{display:block;margin-top:6px;font:12px Arial;color:var(--rr-txt,#e7d8a8);text-align:center}.rr-ic div{display:flex;flex-direction:column;align-items:center}.rr-ic a{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--rr-borda,rgba(231,216,168,.55));color:var(--rr-txt,#e7d8a8);text-decoration:none;transition:background .15s,color .15s}'
       + '.rr-ic a:hover,.rr-ic a:focus-visible{background:var(--rr-txt,#e7d8a8);color:var(--rr-fundo,#1e2a56);outline:none}'
       + '.rr-bar.rr-claro{--rr-txt:#1e2a56;--rr-borda:#b08a3a;--rr-fundo:#f3ecd9;background:#f3ecd9;border-top:1px solid #ddd0ad}';
     var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
     var bar = document.createElement("div"); bar.className = "rr-bar"; bar.setAttribute("data-redes-rodape", "");
     bar.innerHTML = '<span class="rr-t">Siga a Commanderie</span><div class="rr-ic">' + redes.map(function (r) {
-      return '<a href="' + r[0] + '" target="_blank" rel="noopener" aria-label="' + r[1] + ' da Commanderie de Bordeaux do Brasil" title="' + r[1] + '">' + r[2] + "</a>";
+      return '<div><a href="' + r[0] + '" target="_blank" rel="noopener" aria-label="' + r[1] + ' da Commanderie de Bordeaux do Brasil" title="' + r[1] + '">' + r[2] + "</a><span>" + r[1] + "</span></div>";
     }).join("") + "</div>";
     var ft = document.querySelector("footer");
     if (ft) { ft.appendChild(bar); }

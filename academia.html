@@ -64,6 +64,14 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .ptab tr:last-child td{border-bottom:none;}
 .ptab td:first-child{font-family:Georgia,serif;color:var(--navy);font-size:15px;white-space:nowrap;width:62px;}
 .ptab .d{color:var(--gold);letter-spacing:1px;font-size:11px;}
+/* Conteudos novos cadastrados pelo Conselho (painel-academia.html) */
+.acx{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0;}
+.acx h3{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:20px;margin:0 0 8px;}
+.acx img{max-width:100%;border-radius:10px;margin:4px 0 10px;display:block;}
+.acx p{margin:0 0 10px;line-height:1.65;}
+.acx .vid{position:relative;padding-top:56.25%;border-radius:10px;overflow:hidden;margin:6px 0 10px;}
+.acx .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.acx a.lk{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;border-radius:9px;padding:8px 14px;font-size:13.5px;font-family:Arial,sans-serif;}
 </style></head><body>
 <div class="dtop"><a href="index.html?painel=1" style="display:inline-flex;align-items:center;" title="Painel do Comendador"><img src="img/brasao.png" alt="Brasão"></a><b data-i18n="ac_brand">Academia de Bordeaux</b><a class="back" href="index.html?painel=1" data-i18n="ac_back">&#8592; Voltar ao Painel</a><span class="lang-sel" id="langSel" style="display:inline-flex;gap:2px;margin-left:8px;font-size:11.5px;letter-spacing:.5px;"><a data-lang="pt" onclick="setLang('pt')" style="cursor:pointer;padding:2px 5px;">PT</a><a data-lang="en" onclick="setLang('en')" style="cursor:pointer;padding:2px 5px;">EN</a><a data-lang="fr" onclick="setLang('fr')" style="cursor:pointer;padding:2px 5px;">FR</a></span></div>
 
@@ -80,6 +88,8 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
     <p data-i18n="ac_rev_p2">A crítica reagiu com entusiasmo raro. A Decanter deu 4,5/5 e chamou a safra de “paradoxal” e “miraculosa” — reunindo a estrutura de 2016, a elegância de 2019, o frescor de 2020, a profundidade de 2022 e o charme de 2023. Para Matthew Hemming MW, “pode ser a melhor safra que já provei de barril”. Em resumo: um possível grande clássico, ainda em barrica.</p>
     <div class="rev-d"><b data-i18n="ac_rev_d_h">Destaques — notas de barril</b><p data-i18n="ac_rev_d_p">Potenciais 100 pontos (Decanter): Beauséjour, Cheval Blanc, Haut-Bailly, Haut-Brion, Margaux, Mouton Rothschild, Pétrus e Vieux Château Certan. No topo da lista de James Suckling: Les Carmes Haut-Brion (a grande surpresa), Mouton Rothschild e Canon.</p></div>
   </div>
+
+  <div id="acadNovas"></div>
 
   <div class="amenu">
     <a class="acard" href="apresentacao-bordeaux.html"><b data-i18n="ac_m_hist">A história de Bordeaux</b><span data-i18n="ac_m_hist_s">Do Império Romano a hoje</span></a>
@@ -708,6 +718,25 @@ var _orig={};
 function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
 function showSec(){var sec=new URLSearchParams(location.search).get("sec");var blks=document.querySelectorAll(".secblk");var hub=document.getElementById("acHub");if(sec){if(hub)hub.style.display="none";for(var i=0;i<blks.length;i++)blks[i].style.display=(blks[i].id==="sec"+sec)?"block":"none";}else{if(hub)hub.style.display="block";for(var j=0;j<blks.length;j++)blks[j].style.display="none";}window.scrollTo(0,0);}
 document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);showSec();});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  function es(t){return (""+(t==null?"":t)).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+  function yt(u){var m=(u||"").match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/))([\w-]{11})/);return m?m[1]:null;}
+  function card(c){var t=(c.texto||"").split(/\n\s*\n/).map(function(p){return p.trim()?("<p>"+es(p).replace(/\n/g,"<br>")+"</p>"):"";}).join("");var y=yt(c.video_url);
+    return '<div class="acx"><h3>'+es(c.titulo)+'</h3>'+(c.imagem_url?('<img src="'+es(c.imagem_url)+'" alt="" loading="lazy">'):"")+t
+      +(y?('<div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/'+y+'" allowfullscreen loading="lazy"></iframe></div>'):(c.video_url?('<p><a href="'+es(c.video_url)+'" target="_blank" rel="noopener">&#9654; Assistir ao vídeo</a></p>'):""))
+      +(c.link_url?('<a class="lk" href="'+es(c.link_url)+'" target="_blank" rel="noopener">Saiba mais &rarr;</a>'):"")+'</div>';}
+  async function carregar(){try{if(!window.supabase)return;var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+    var r=await sb.from("academia_conteudos").select("*").eq("publicado",true).order("ordem",{ascending:true}).order("created_at",{ascending:false});if(r.error||!r.data||!r.data.length)return;
+    var G={};r.data.forEach(function(c){(G[c.secao||"Novidades"]=G[c.secao||"Novidades"]||[]).push(c);});
+    Object.keys(G).forEach(function(sec){var html=G[sec].map(card).join("");
+      if(sec==="Novidades"){var el=document.getElementById("acadNovas");if(el)el.innerHTML='<div class="sec-h">Novidades da Academia</div><div class="sec-rule"></div>'+html;}
+      else{var b=document.getElementById("sec"+sec);if(b){var d=document.createElement("div");d.innerHTML='<div class="sec-h">Do Conselho</div><div class="sec-rule"></div>'+html;b.appendChild(d);}}});
+  }catch(e){}}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",carregar);else carregar();
+})();
 </script>
 <script src="/js/redes-rodape.js?v=4" defer></script>
 </body></html>

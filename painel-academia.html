@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Academia · Painel do Conselho — Commanderie de Bordeaux</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
+<style>
+:root{--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+html,body{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;}
+.dhead{text-align:center;padding:26px 20px 4px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:28px;margin:6px 0 4px;}
+.dhead .sub{font-size:13px;color:#8a8270;max-width:640px;margin:0 auto;line-height:1.5;}
+.wrap{max-width:1060px;margin:0 auto;padding:14px 16px 60px;}
+h2{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:20px;margin:22px 0 10px;}
+.secs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.sc{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--ink);display:block;}
+.sc:hover{border-color:var(--gold);}
+.sc b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;font-size:16px;display:block;}
+.sc span{font-size:12px;color:#8a8270;}
+.sc i{font-style:normal;font-size:11px;color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;border-radius:12px;padding:1px 8px;margin-top:6px;display:inline-block;}
+.bn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block;}
+.bn.o{background:#fffdf7;color:var(--navy);border:1px solid var(--gold);}
+.it{background:#fffdf7;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.it img{width:74px;height:54px;object-fit:cover;border-radius:7px;border:1px solid var(--line);}
+.it .tx{flex:1;min-width:200px;}
+.it .t{font-family:Georgia,serif;color:var(--navy);font-size:16px;}
+.it .m{font-size:12.5px;color:#8a8270;margin-top:2px;}
+.pill{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:2px 9px;background:#f6efdc;border:1px solid #e6d9b3;color:#8a6a1f;}
+.pill.off{background:#fbeaea;border-color:#e6cccc;color:#8f1d24;}
+.lk{background:none;border:none;color:var(--navy);font-size:12.5px;cursor:pointer;text-decoration:underline;padding:2px;}
+.lk.r{color:var(--red);}
+.modal{position:fixed;inset:0;background:rgba(20,25,45,.55);display:none;align-items:flex-start;justify-content:center;z-index:20;overflow:auto;padding:24px 12px;}
+.box{background:#fffdf7;border-radius:14px;max-width:700px;width:100%;padding:18px;border:1px solid var(--gold);}
+.box h3{font-family:Georgia,serif;font-weight:normal;color:var(--navy);margin:0 0 12px;font-size:20px;}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:9px;}
+.fg label span{display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;margin-bottom:3px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fbf7ec;font-family:inherit;}
+.full{grid-column:1/-1;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.vazio{color:#8a8270;font-size:13.5px;text-align:center;padding:22px 10px;background:#fffdf7;border:1px dashed var(--line);border-radius:12px;}
+</style></head><body>
+<div class="dtop"><a href="painel-conselho.html" style="display:inline-flex;"><img src="img/brasao.png" alt="Brasão"></a><b>Academia</b><a class="back" href="painel-conselho.html">&#8592; Voltar</a></div>
+<div id="st" class="state">Carregando…</div>
+<div id="main" style="display:none;">
+  <div class="dhead"><div class="k">Conselho Diretor</div><h1>Academia de Bordeaux</h1><div class="sub">O que já existe na Academia e os conteúdos novos que o Conselho publica. Os novos aparecem na Academia dos Comendadores, na seção escolhida.</div></div>
+  <div class="wrap">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;"><button class="bn" onclick="abrir()">+ Novo conteúdo</button><a class="bn o" href="academia.html" target="_blank" rel="noopener">Abrir a Academia &#8599;</a></div>
+    <h2>O que já está na Academia</h2>
+    <div class="secs" id="secs"></div>
+    <h2>Conteúdos novos (publicados pelo Conselho)</h2>
+    <div id="lista"></div>
+  </div>
+</div>
+<div class="modal" id="modal" onclick="if(event.target===this)fechar()"><div class="box">
+  <h3 id="mTit">Novo conteúdo</h3>
+  <div class="fg">
+    <label><span>Onde aparece</span><select id="fSec"></select></label>
+    <label><span>Ordem</span><input id="fOrd" type="number" value="0"></label>
+    <label class="full"><span>Título *</span><input id="fTit"></label>
+    <label class="full"><span>Texto (deixe uma linha em branco entre os parágrafos)</span><textarea id="fTxt" rows="8"></textarea></label>
+    <label class="full"><span>Imagem (enviar arquivo ou colar o endereço)</span><input id="fImg" placeholder="https://…"><input id="fImgArq" type="file" accept="image/*" style="margin-top:6px;background:none;border:none;padding:0;"></label>
+    <label><span>Vídeo (link do YouTube)</span><input id="fVid" placeholder="https://youtu.be/…"></label>
+    <label><span>Link “Saiba mais”</span><input id="fLnk" placeholder="https://…"></label>
+    <label class="full" style="display:flex;align-items:center;gap:8px;"><input id="fPub" type="checkbox" checked style="width:auto;"> <span style="margin:0;">Publicado (aparece para os Comendadores)</span></label>
+  </div>
+  <div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><button class="bn" id="bSalvar" onclick="salvar()">Salvar</button><button class="lk" onclick="fechar()">Cancelar</button><span id="fMsg" style="font-size:13px;"></span></div>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+var SECS=[["Novidades","Novidades da Academia","Página inicial da Academia, logo após o review da safra"],["Terroir","Região, terroir e cepas","Geografia, solos e uvas"],["Aoc","AOC & rótulos","Denominações e como ler um rótulo"],["Safras","Safras por região","De 1982 a 2025"],["Familias","As 6 famílias de vinhos","Por cor, estilo e margem"],["Classif","As classificações","1855, Saint-Émilion, Graves, Pomerol…"],["Servir","Servir, degustar e guardar","Temperatura, taça, adega e curiosidades"],["Vinha","A vinha","Estações, poda, enxerto e vinificação"],["Midia","Vídeo e apresentação","Documentário e o deck do Grão-Mestre"]];
+var L=[],ED=null;
+function $(i){return document.getElementById(i);}
+function esc(t){return (""+(t==null?"":t)).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function nomeSec(k){var s=SECS.filter(function(x){return x[0]===k;})[0];return s?s[1]:k;}
+function render(){var cnt={};L.forEach(function(c){cnt[c.secao]=(cnt[c.secao]||0)+1;});
+  $("secs").innerHTML='<a class="sc" href="apresentacao-bordeaux.html" target="_blank" rel="noopener"><b>A história de Bordeaux</b><span>Do Império Romano a hoje</span></a>'
+    +SECS.map(function(s){return '<a class="sc" href="academia.html'+(s[0]==="Novidades"?"":("?sec="+s[0]))+'" target="_blank" rel="noopener"><b>'+esc(s[1])+'</b><span>'+esc(s[2])+'</span>'+(cnt[s[0]]?('<br><i>+ '+cnt[s[0]]+' do Conselho</i>'):"")+'</a>';}).join("");
+  if(!L.length){$("lista").innerHTML='<div class="vazio">Nenhum conteúdo novo ainda. Use <b>+ Novo conteúdo</b> para acrescentar textos, imagens e vídeos à Academia.</div>';return;}
+  $("lista").innerHTML=L.map(function(c){return '<div class="it">'+(c.imagem_url?('<img src="'+esc(c.imagem_url)+'" alt="">'):"")+'<div class="tx"><div class="t">'+esc(c.titulo)+'</div><div class="m">'+esc(nomeSec(c.secao))+' · ordem '+(c.ordem||0)+(c.video_url?" · vídeo":"")+(c.link_url?" · link":"")+'</div></div><span class="pill'+(c.publicado?"":" off")+'">'+(c.publicado?"Publicado":"Rascunho")+'</span><button class="lk" onclick="abrir(\''+c.id+'\')">editar</button><button class="lk" onclick="pub(\''+c.id+'\')">'+(c.publicado?"despublicar":"publicar")+'</button><button class="lk r" onclick="remover(\''+c.id+'\')">remover</button></div>';}).join("");}
+function abrir(id){ED=id||null;var c=id?L.filter(function(x){return x.id===id;})[0]:{secao:"Novidades",ordem:0,publicado:true};
+  $("fSec").innerHTML=SECS.map(function(s){return '<option value="'+s[0]+'">'+esc(s[1])+'</option>';}).join("");
+  $("mTit").textContent=id?"Editar conteúdo":"Novo conteúdo";$("fSec").value=c.secao||"Novidades";$("fOrd").value=c.ordem||0;$("fTit").value=c.titulo||"";$("fTxt").value=c.texto||"";$("fImg").value=c.imagem_url||"";$("fImgArq").value="";$("fVid").value=c.video_url||"";$("fLnk").value=c.link_url||"";$("fPub").checked=c.publicado!==false;$("fMsg").textContent="";$("modal").style.display="flex";}
+function fechar(){$("modal").style.display="none";}
+async function salvar(){var m=$("fMsg"),b=$("bSalvar");var d={secao:$("fSec").value,ordem:parseInt($("fOrd").value,10)||0,titulo:$("fTit").value.trim(),texto:$("fTxt").value.trim()||null,imagem_url:$("fImg").value.trim()||null,video_url:$("fVid").value.trim()||null,link_url:$("fLnk").value.trim()||null,publicado:$("fPub").checked,updated_at:new Date().toISOString()};
+  if(!d.titulo){m.style.color="#8f1d24";m.textContent="Informe o título.";return;}
+  b.disabled=true;m.style.color="#5b5446";
+  var f=$("fImgArq").files&&$("fImgArq").files[0];
+  if(f){m.textContent="Enviando a imagem…";var ext=((f.name||"img.jpg").split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";var path="academia/"+Date.now()+"."+ext;
+    var up=await sb.storage.from("eventos").upload(path,f,{contentType:f.type,upsert:false});if(up.error){b.disabled=false;m.style.color="#8f1d24";m.textContent="Não foi possível enviar a imagem ("+up.error.message+"). Cole o endereço da imagem no campo.";return;}
+    d.imagem_url=sb.storage.from("eventos").getPublicUrl(path).data.publicUrl;}
+  m.textContent="Salvando…";
+  var r=ED?await sb.from("academia_conteudos").update(d).eq("id",ED).select("id"):await sb.from("academia_conteudos").insert(d).select("id");b.disabled=false;
+  if(r.error){m.style.color="#8f1d24";m.textContent=/academia_conteudos/.test(r.error.message)?"Falta rodar o SQL academia_conteudos.sql no Supabase.":("Erro: "+r.error.message);return;}
+  if(!r.data||!r.data.length){m.style.color="#8f1d24";m.textContent="O banco não aceitou (sem permissão).";return;}
+  fechar();await carregar();}
+async function pub(id){var c=L.filter(function(x){return x.id===id;})[0];if(!c)return;var r=await sb.from("academia_conteudos").update({publicado:!c.publicado}).eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}await carregar();}
+async function remover(id){var c=L.filter(function(x){return x.id===id;})[0]||{};if(!confirm("Remover \""+(c.titulo||"")+"\" da Academia?"))return;var r=await sb.from("academia_conteudos").delete().eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}await carregar();}
+async function carregar(){var r=await sb.from("academia_conteudos").select("*").order("secao").order("ordem").order("created_at",{ascending:false});
+  if(r.error){L=[];render();$("lista").innerHTML='<div class="vazio" style="color:#8f1d24;">'+(/academia_conteudos/.test(r.error.message)?"Falta rodar o SQL <b>academia_conteudos.sql</b> no Supabase.":esc(r.error.message))+'</div>';return;}L=r.data||[];render();}
+async function iniciar(){var u=(await sb.auth.getUser()).data.user;
+  if(!u){$("st").innerHTML="<h2>Acesso restrito</h2><p>Entre na sua conta para acessar.</p><a class='bn' href='index.html?login=1&next=painel-academia.html'>Entrar</a>";return;}
+  var c=await sb.rpc("is_conselho");if(!(c&&c.data===true)){$("st").innerHTML="<h2>Apenas o Conselho</h2><p>Esta área é exclusiva do Conselho.</p>";return;}
+  $("st").style.display="none";$("main").style.display="block";await carregar();}
+iniciar();
+</script>
+<script src="js/painel-shell.js?v=20261031" data-esconder=".dtop,.dhead"></script>
+<script src="/js/redes-rodape.js?v=4" defer></script>
+</body></html>

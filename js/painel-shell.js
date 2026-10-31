@@ -55,6 +55,7 @@
     { g: "Comunicação", itens: [
       { t: "Redes sociais", h: "painel-redes.html", i: "insta", c: "redes" },
       { t: "Contatos (importadores e imprensa)", h: "contatos-mercado.html", i: "gente" },
+      { t: "Academia", h: "painel-academia.html", i: "doc" },
       { t: "Dicas de Bordeaux", h: "painel-dicas.html", i: "mapa" },
       { t: "Parceiros", h: "painel-parceiros.html", i: "aperto" },
       { t: "Modelos de E-mail", h: "painel-emails.html", i: "email" },

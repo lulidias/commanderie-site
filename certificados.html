@@ -290,4 +290,5 @@ async function remover(id){var x=byId(id);if(!x)return;if(!confirm("Remover o ce
   var r=await sb.from("certificados_mapa").delete().eq("id",id);if(r.error){alert(r.error.message);return;}
   if(x.arquivo_path)sb.storage.from("certificados").remove([x.arquivo_path]);carregar();}
 document.addEventListener("DOMContentLoaded",init);
-</script></body></html>
+</script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+</body></html>

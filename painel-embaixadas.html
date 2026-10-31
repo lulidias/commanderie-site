@@ -119,4 +119,5 @@ async function enviarFoto(id,inp){var fl=inp.files&&inp.files[0];if(!fl)return;v
 async function novaEmb(){var nome=prompt("Nome do restaurante:");if(!nome||!nome.trim())return;var r=await sb.from("importadora_restaurantes").insert({importadora_id:null,ano:new Date().getFullYear(),nome:nome.trim(),placa:"Prata",status:"Pendente",origem:"conselho"}).select("id").single();if(r.error){alert(r.error.message);return;}TAB="pend";ABERTO=r.data.id;carregar();}
 async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){st("notAllowed");return;}st("panel");carregar();}
 document.addEventListener("DOMContentLoaded",init);
-</script></body></html>
+</script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+</body></html>

@@ -187,4 +187,5 @@ function exportar(){
   var blob=new Blob(["﻿"+L.join("\n")],{type:"text/csv;charset=utf-8;"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="indicadores-commanderie.csv";a.click();
 }
 document.addEventListener("DOMContentLoaded",init);
-</script></body></html>
+</script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+</body></html>

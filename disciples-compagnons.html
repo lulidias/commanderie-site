@@ -124,4 +124,5 @@ async function iniciar(){var u=(await sb.auth.getUser()).data.user;
   $("st").style.display="none";$("main").style.display="block";var q=new URLSearchParams(location.search);if(q.get("tipo")==="Compagnon"||q.get("tipo")==="Disciple")F=q.get("tipo");await carregar();}
 iniciar();
 </script>
+<script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
 </body></html>

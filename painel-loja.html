@@ -139,4 +139,5 @@ async function carregarPedidos(){
 async function setStatus(id,s){var r=await sb.from("loja_pedidos").update({status:s}).eq("id",id);if(r.error)alert("Erro: "+r.error.message);}
 async function delPedido(id){if(!confirm("Remover este pedido?"))return;var r=await sb.from("loja_pedidos").delete().eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}carregarPedidos();}
 document.addEventListener("DOMContentLoaded",init);
-</script></body></html>
+</script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+</body></html>

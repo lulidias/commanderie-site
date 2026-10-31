@@ -205,4 +205,5 @@ var _orig={};
 function setLang(l){try{localStorage.setItem("lang",l);}catch(e){}document.documentElement.lang=(l==="pt"?"pt-BR":l);var d=I18N[l];var els=document.querySelectorAll("[data-i18n]");for(var i=0;i<els.length;i++){var k=els[i].getAttribute("data-i18n");if(!k)continue;if(!(k in _orig))_orig[k]=els[i].innerHTML;els[i].innerHTML=(l==="pt"||!d||d[k]==null)?_orig[k]:d[k];}var sel=document.getElementById("langSel");if(sel){var as=sel.getElementsByTagName("a");for(var j=0;j<as.length;j++){var on=as[j].getAttribute("data-lang")===l;as[j].style.color=on?"#1e2a56":"#9a8f72";as[j].style.fontWeight=on?"bold":"normal";}}}
 document.addEventListener("DOMContentLoaded",function(){var sl="pt";try{sl=localStorage.getItem("lang")||"pt";}catch(e){}if(sl!=="pt"&&sl!=="en"&&sl!=="fr")sl="pt";setLang(sl);});
 </script>
+<script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
 </body></html>

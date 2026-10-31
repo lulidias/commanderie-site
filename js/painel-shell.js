@@ -1,17 +1,12 @@
 /* Moldura do Painel do Conselho: menu lateral agrupado, contadores do que espera alguém,
    barra de topo com carimbo de atualização e busca (⌘K). Incluir no fim do <body> das telas do Conselho:
    <script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
-   Em teste: só liga com ?novo=1 (fica lembrado neste navegador); ?novo=0 desliga. */
+   Ligada para todo o Conselho; ?novo=0 mostra o formato antigo. */
 (function () {
   var me = document.currentScript;
   var q = new URLSearchParams(location.search);
-  try {
-    if (q.get("novo") === "1") localStorage.setItem("painelNovo", "1");
-    if (q.get("novo") === "0") localStorage.removeItem("painelNovo");
-  } catch (e) {}
-  var ligado = false;
-  try { ligado = localStorage.getItem("painelNovo") === "1"; } catch (e) {}
-  if (window.PAINEL_SHELL_PADRAO) ligado = q.get("novo") !== "0";
+  // Padrão para todo o Conselho desde 31/10/2026 (?novo=0 mostra o formato antigo nesta visita)
+  var ligado = q.get("novo") !== "0";
   if (!ligado) return;
 
   var I = {

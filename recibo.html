@@ -58,6 +58,8 @@ body{background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:#2a2620;pad
   .tipo,.selo{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 @media(max-width:600px){.in{padding:22px 18px}.top{flex-wrap:wrap}.num{text-align:left}.pe{flex-direction:column;align-items:stretch}.selo{display:flex!important;margin:0 auto}}
+.so-ver .ctrl .grid,.so-ver .ctrl .btns .btn:not(.keep),.so-ver #envMsg{display:none!important;}
+.so-ver .ctrl{padding-bottom:12px;}
 </style>
 </head>
 <body>
@@ -80,7 +82,7 @@ body{background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:#2a2620;pad
       <div><label>Nº do recibo</label><input id="f_num"></div>
       <div style="grid-column:1/-1"><label>Referente a</label><textarea id="f_desc"></textarea></div>
       <div><label>Forma de pagamento</label><input id="f_forma" value="PIX"></div>
-      <div><label>Assinado por</label><input id="f_ass" value="Manuel Brandão"></div>
+      <div><label>Assinado por</label><input id="f_ass" value="Manu Brandão"></div>
       <div><label>Cargo</label><input id="f_cargo" value="Grão-Mestre"></div>
       <div><label>Local</label><input id="f_local" value="Curitiba"></div>
     </div>
@@ -92,8 +94,8 @@ body{background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:#2a2620;pad
       <button class="btn g" onclick="enviarEmail()">&#9993; Enviar por e-mail</button>
       <button class="btn" style="background:#8f1d24" onclick="whatsImagem()">WhatsApp (recibo em imagem)</button>
       <button class="btn o" onclick="enviarWhats()">WhatsApp (link)</button>
-      <button class="btn" onclick="window.print()">Imprimir / Salvar em PDF</button>
-      <button class="btn o" onclick="history.length>1?history.back():window.close()">Voltar</button>
+      <button class="btn keep" onclick="window.print()">Imprimir / Salvar em PDF</button>
+      <button class="btn o keep" onclick="history.length>1?history.back():window.close()">Voltar</button>
     </div>
     <div id="envMsg" style="font-size:13px;margin-top:10px;min-height:16px;"></div>
   </div>
@@ -163,7 +165,7 @@ function render(){var tp=TIPOS[$("f_tipo").value]||TIPOS.outro;var v=num($("f_va
   $("r_selo_d").textContent=dataBR($("f_data").value);
   $("r_local").textContent=$("f_local").value||"Curitiba";$("r_sig").textContent=$("f_ass").value;$("r_ass").textContent=$("f_ass").value;$("r_cargo").textContent=$("f_cargo").value;
   document.title="Recibo "+($("f_num").value||"")+" — "+($("f_nome").value||"");}
-(function(){var P=new URLSearchParams(location.search);
+(function(){var P=new URLSearchParams(location.search);if(P.get("ver")==="1"){document.body.classList.add("so-ver");var h=document.querySelector(".ctrl h2");if(h)h.textContent="Seu recibo";}
   var map={tipo:"f_tipo",nome:"f_nome",doc:"f_doc",valor:"f_valor",data:"f_data",n:"f_num",desc:"f_desc",forma:"f_forma",ass:"f_ass",cargo:"f_cargo",local:"f_local",email:"f_email",tel:"f_tel"};
   Object.keys(map).forEach(function(k){if(P.get(k)!=null)$(map[k]).value=P.get(k);});
   if(!$("f_data").value)$("f_data").value=new Date().toISOString().slice(0,10);

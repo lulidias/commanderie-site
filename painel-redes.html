@@ -49,7 +49,7 @@ a{color:var(--navy)}
 .ficha h2{font-family:Georgia,serif;font-weight:normal;color:var(--navy);margin:0 0 4px;font-size:22px}
 .fecha{float:right;background:none;border:0;font-size:26px;cursor:pointer;color:var(--navy);line-height:1}
 .bloco{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:12px}
-.bloco h3{margin:0 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+.bloco h2,.bloco h3{margin:0 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
 .fotos{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
 .foto{flex:none;width:180px}
 .foto img{width:180px;height:225px;object-fit:cover;border-radius:8px;display:block;background:#e9e1cb;cursor:zoom-in}
@@ -99,7 +99,7 @@ textarea{width:100%;min-height:220px;border:1px solid var(--line);border-radius:
     </div>
     <div id="vPedidos" hidden>
       <div class="bloco" style="margin-top:0">
-        <h3>Novo pedido ao Claude</h3>
+        <h2>Novo pedido ao Claude</h2>
         <p class="nota" style="margin-top:0">Escreva o que quer mudar ou criar — um post novo, um assunto, uma correção. Os pedidos ficam aqui até serem feitos.</p>
         <textarea id="pedTexto" style="min-height:90px" placeholder="Ex.: fazer um carrossel sobre a Cité du Vin para o dia 29/11"></textarea>
         <div style="margin-top:8px"><button class="btn" id="pedEnviar">Enviar pedido</button></div>
@@ -108,7 +108,7 @@ textarea{width:100%;min-height:220px;border:1px solid var(--line);border-radius:
     </div>
     <div id="vNovo" hidden>
       <div class="bloco" style="margin-top:0">
-        <h3>Novo post</h3>
+        <h2>Novo post</h2>
         <div class="linha">
           <label>Tipo<select id="nTipo"><option value="carrossel">Carrossel (fotos)</option><option value="story">Story (1 foto)</option><option value="reel">Vídeo</option></select></label>
           <label>Data<input type="date" id="nData"></label>

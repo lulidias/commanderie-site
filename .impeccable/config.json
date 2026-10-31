@@ -1,0 +1,23 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "createdAt": "2026-10-31T14:20:08.217Z",
+        "reason": "Claude: Arial é a fonte auxiliar canônica da identidade da Commanderie (CLAUDE.md do site)"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "painel-redes.html"
+        ],
+        "createdAt": "2026-10-31T14:20:08.232Z",
+        "reason": "Claude: pergaminho #f3ecd9 é a cor canônica da identidade da Commanderie (CLAUDE.md do site)"
+      }
+    ]
+  }
+}

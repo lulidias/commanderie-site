@@ -190,6 +190,7 @@
       + '<div class="hj-2"><div class="hj-cx"><h2>Precisa de atenção</h2><div id="psAt"><span class="s">Carregando…</span></div></div>'
       +   '<div class="hj-cx"><h2>Próximo Capítulo <a href="painel-conselho.html?sec=eventos">Eventos →</a></h2><div id="psCap"><span class="s">Carregando…</span></div></div></div>'
       + '<div class="hj-cx"><h2>Hoje nas redes <a href="painel-redes.html">Agenda completa →</a></h2><div id="psRedes" class="hj-redes"><span class="s">Carregando…</span></div></div>'
+      + '<div class="hj-cx" style="margin-top:14px"><h2>Como as redes estão crescendo <a href="painel-bi.html">Indicadores →</a></h2><div id="psMet"></div></div>'
       + '<div class="hj-at">'
       +   '<a href="painel-conselho.html?sec=indicacoes">' + ico("carta") + 'Indicações</a>'
       +   '<a href="painel-conselho.html?sec=eventos">' + ico("cal") + 'Eventos</a>'
@@ -211,6 +212,11 @@
       document.getElementById("psAt").innerHTML = L.length ? L.map(function (x) { return '<a class="hj-a" href="' + x[2] + '"><span>' + x[1] + "</span><b>" + x[0] + "</b></a>"; }).join("") : '<div class="hj-ok">✓ Tudo em dia. Nada esperando por você.</div>';
     });
     var sb = window.sb; if (!sb) return;
+    (function () {   // números das redes (a tabela só responde ao Conselho)
+      function vai() { window.redesMetricas(document.getElementById("psMet"), sb, { modo: "compacto", link: "painel-redes.html" }); }
+      if (window.redesMetricas) return vai();
+      var s = document.createElement("script"); s.src = "js/redes-metricas.js?v=1"; s.onload = vai; document.head.appendChild(s);
+    })();
     sb.auth.getUser().then(function (u) {
       var id = u.data && u.data.user && u.data.user.id; if (!id) return;
       sb.from("membros").select("nome").eq("user_id", id).maybeSingle().then(function (r) { var n = r.data && r.data.nome ? String(r.data.nome).split(" ")[0] : ""; if (n) document.getElementById("hjOi").textContent = oi + ", " + n; });
@@ -237,12 +243,12 @@
     var ini = new Date(); ini.setHours(0, 0, 0, 0); var fim = new Date(ini.getTime() + 864e5);
     var seg = new Date(ini); seg.setDate(ini.getDate() - ((ini.getDay() + 6) % 7)); var dom = new Date(seg.getTime() + 7 * 864e5);
     sb.from("social_posts").select("id", { count: "exact", head: true }).in("tipo", ["carrossel", "reel"]).neq("status", "recusado").gte("quando", seg.toISOString()).lt("quando", dom.toISOString()).then(function (r) { document.getElementById("hjSem").textContent = r.count == null ? "—" : r.count; });
-    sb.from("social_posts").select("titulo,quando,tipo,status,imagens,video_url").in("tipo", ["carrossel", "reel"]).gte("quando", ini.toISOString()).lt("quando", fim.toISOString()).neq("status", "recusado").order("quando").then(function (r) {
+    sb.from("social_posts").select("titulo,quando,tipo,status,imagens,video_url,capa_url").in("tipo", ["carrossel", "reel"]).gte("quando", ini.toISOString()).lt("quando", fim.toISOString()).neq("status", "recusado").order("quando").then(function (r) {
       var el = document.getElementById("psRedes"), L = r.data || [];
       if (!L.length) { el.innerHTML = '<span class="s">Nenhum post no feed hoje.</span>'; return; }
       el.innerHTML = L.map(function (p) {
         var hr = new Date(p.quando).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }), pub = p.status === "publicado";
-        var img = p.imagens && p.imagens[0];
+        var img = p.capa_url || (p.imagens && p.imagens[0]);
         return '<a class="hj-p" href="painel-redes.html" title="' + String(p.titulo || "").replace(/"/g, "&quot;") + '"><div class="im"' + (img ? ' style="background-image:url(\'' + img + '\')"' : "") + ">"
           + (!img && p.video_url ? '<video src="' + p.video_url + '#t=2" preload="metadata" muted playsinline></video>' : "")
           + '<span class="tp">' + (p.tipo === "reel" ? "Vídeo" : "Carrossel") + '</span><span class="hr' + (pub ? " ok" : "") + '">' + (pub ? "✓ " : "") + hr + "</span></div></a>";

@@ -86,6 +86,7 @@ textarea{width:100%;min-height:220px;border:1px solid var(--line);border-radius:
       <button class="tab on" data-v="agenda" role="tab">Agenda</button>
       <button class="tab" data-v="revisar" role="tab">Para revisar<span class="n" id="nRev">0</span></button>
       <button class="tab" data-v="publicados" role="tab">Publicados</button>
+      <button class="tab" data-v="numeros" role="tab">Números</button>
       <button class="tab" data-v="pedidos" role="tab">Pedidos ao Claude<span class="n" id="nPed">0</span></button>
       <button class="tab" data-v="novo" role="tab">+ Novo post</button>
     </div>
@@ -97,6 +98,7 @@ textarea{width:100%;min-height:220px;border:1px solid var(--line);border-radius:
       </div>
       <div id="lista"></div>
     </div>
+    <div id="vNumeros" hidden><div id="metricas"></div></div>
     <div id="vPedidos" hidden>
       <div class="bloco" style="margin-top:0">
         <h2>Novo pedido ao Claude</h2>
@@ -137,7 +139,7 @@ function deBrt(data,hora){return new Date(data+"T"+hora+":00-03:00").toISOString
 function situacao(p){if(p.status==="publicado")return["publicado","Publicado"];if(p.status==="pausado")return["pausado","Pausado"];if(p.status==="erro")return["erro","Erro ao publicar"];if(p.status==="recusado")return["recusado","Excluído"];if(p.status==="publicando")return["agendado","Publicando…"];return["agendado","Agendado"];}
 function rev(p){return{pendente:["pendente","A revisar"],ok:["ok","Está certo"],ajuste:["ajuste","Pediu alteração"]}[p.revisao]||["pendente","A revisar"];}
 function tipoNome(t){return{carrossel:"Carrossel",reel:"Vídeo",story:"Story"}[t]||t;}
-function capa(p){return (p.imagens&&p.imagens[0])||"";}
+function capa(p){return p.capa_url||(p.imagens&&p.imagens[0])||"";}
 
 async function init(){
   var u=(await sb.auth.getUser()).data.user;
@@ -163,6 +165,7 @@ async function carregar(){
 function desenhar(){
   $("vLista").hidden=!(VISAO==="agenda"||VISAO==="revisar"||VISAO==="publicados");
   $("vPedidos").hidden=VISAO!=="pedidos";$("vNovo").hidden=VISAO!=="novo";
+  $("vNumeros").hidden=VISAO!=="numeros";if(VISAO==="numeros"&&window.redesMetricas)redesMetricas($("metricas"),sb,{modo:"completo"});
   if(VISAO==="pedidos"){desenharPedidos();return;}
   if(VISAO==="novo")return;
   var tp=$("fTipo").value,q=$("fBusca").value.trim().toLowerCase(),agora=Date.now();
@@ -328,6 +331,7 @@ $("nCriar").onclick=async function(){
 };
 init();
 </script>
+<script src="js/redes-metricas.js?v=1"></script>
 <script src="js/painel-shell.js" data-esconder=".top"></script>
 <script src="/js/redes-rodape.js?v=4" defer></script>
 </body></html>

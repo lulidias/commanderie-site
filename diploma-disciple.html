@@ -51,8 +51,8 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
 .rep .sc{font-size:30px;font-style:normal;vertical-align:-3px;margin-left:4px;}
 .par{display:flex;align-items:flex-start;justify-content:center;gap:12px;}
 .par .tx{flex:1;}
-.cap{flex:none;width:60px;height:60px;position:relative;background:var(--navy);border:2px solid var(--gold);box-shadow:0 0 0 1px #fff inset,0 0 0 3px var(--navy) inset;display:flex;align-items:center;justify-content:center;margin-top:4px;}
-.cap:before{content:"";position:absolute;inset:6px;background:radial-gradient(circle at 20% 25%,#8f1d24 2px,transparent 3px),radial-gradient(circle at 80% 22%,#c9a85c 2px,transparent 3px),radial-gradient(circle at 22% 80%,#c9a85c 2px,transparent 3px),radial-gradient(circle at 78% 78%,#8f1d24 2px,transparent 3px);}
+.cap{flex:none;width:60px;height:60px;position:relative;background:var(--navy);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin-top:4px;}
+.cap:before{content:"";position:absolute;left:3px;top:3px;right:3px;bottom:3px;border:1px solid rgba(227,195,114,.75);}
 .cap span{position:relative;font-family:'Cinzel',Georgia,serif;font-weight:600;font-size:44px;line-height:1;color:#e3c372;text-shadow:0 1px 0 #6d5420;}
 .titulo{font-size:22px;line-height:1.3;color:var(--navy);margin-top:2px;}
 .cota{display:inline-block;margin-top:14px;font-family:'Cinzel',Georgia,serif;font-size:14px;letter-spacing:4px;color:#6d5420;}
@@ -85,8 +85,11 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
 .pais .cota{margin-top:8px;}
 .pais .l[style*="margin-top:18px"]{margin-top:10px!important;}
 .pais .data{font-size:18px;margin-top:10px;}.pais .data .sc{font-size:27px;}
-.pais .ass{left:170px;right:170px;bottom:112px;align-items:center;}
-.pais .ass>div[style]{transform:scale(.76);margin-bottom:-44px!important;}
+.pais .ass{left:170px;right:170px;bottom:84px;align-items:center;}
+.pais .ass>.sealbox{width:100px!important;height:100px!important;margin-bottom:-6px!important;}
+.pais .ass .s .ln{height:26px;}
+.pais .ass>.sealbox svg{width:100px;height:100px;}
+.pais .ass>.sealbox img{left:32px!important;top:25px!important;width:36px!important;height:35px!important;}
 .pais .selo,.pais .selo+img{}
 .pais .lema{bottom:52px;font-size:13px;}
 /* Disciple: mais respiro */
@@ -144,7 +147,7 @@ body{margin:0;background:#e9e2cf;font-family:Arial,Helvetica,sans-serif;color:va
   </div>
   <div class="ass">
     <div class="s"><div class="ln"></div>Le Maître<small id="dAssCargo">Commanderie de Bordeaux à São Paulo</small></div>
-    <div style="position:relative;width:132px;height:132px;margin-bottom:-14px;"><svg class="selo" id="selo" viewBox="0 0 132 132">
+    <div class="sealbox" style="position:relative;width:132px;height:132px;margin-bottom:-14px;"><svg class="selo" id="selo" viewBox="0 0 132 132">
       <defs><radialGradient id="gW" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#c2424b"/><stop offset=".5" stop-color="#8f1d24"/><stop offset="1" stop-color="#4e0c11"/></radialGradient>
       <path id="arc" d="M66 66 m-46 0 a46 46 0 1 1 92 0 a46 46 0 1 1 -92 0"/></defs>
       <path d="M130.2 66.0 L126.7 71.3 L130.1 77.3 L125.5 81.9 L127.4 88.4 L121.6 91.9 L122.1 98.4 L115.6 100.7 L114.9 107.0 L108.1 108.1 L106.5 114.3 L100.0 114.5 L97.6 120.7 L91.2 120.1 L87.9 126.1 L81.7 124.6 L77.3 130.0 L71.4 127.3 L66.0 131.4 L60.6 127.3 L54.7 130.0 L50.3 124.6 L44.1 126.1 L40.8 120.1 L34.4 120.7 L32.0 114.5 L25.5 114.3 L23.9 108.1 L17.1 107.0 L16.4 100.7 L9.9 98.4 L10.4 91.9 L4.6 88.4 L6.5 81.9 L1.9 77.3 L5.3 71.3 L1.8 66.0 L6.3 60.8 L3.7 55.0 L8.8 50.7 L6.8 44.4 L12.1 40.9 L10.9 34.2 L16.6 31.4 L16.5 24.5 L22.7 22.7 L24.0 16.0 L30.7 15.5 L33.4 9.5 L40.2 10.6 L44.0 5.5 L50.4 8.0 L55.0 3.5 L60.8 6.9 L66.0 3.0 L71.2 6.9 L77.0 3.5 L81.6 8.0 L88.0 5.5 L91.8 10.6 L98.6 9.5 L101.3 15.5 L108.0 16.0 L109.3 22.7 L115.5 24.5 L115.4 31.4 L121.1 34.2 L119.9 40.9 L125.2 44.4 L123.2 50.7 L128.3 55.0 L125.7 60.8 L130.2 66.0Z" fill="url(#gW)"/>

@@ -163,6 +163,6 @@ async function carregar(){var r=await sb.from("estoque").select("*").order("tipo
   ITENS=r.data||[];render();}
 async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){st("needLogin");return;}var ic=await sb.rpc("is_conselho");if(ic.error||!ic.data){st("notAllowed");return;}st("panel");await carregar();}
 document.addEventListener("DOMContentLoaded",init);
-</script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+</script><script src="js/painel-shell.js?v=20261031" data-esconder=".dtop,.dhead"></script>
 <script src="/js/redes-rodape.js?v=4" defer></script>
 </body></html>

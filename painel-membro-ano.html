@@ -254,6 +254,6 @@ async function delApoio(id){if(!confirm("Remover este apoio?"))return;var r=awai
 async function encerrar(reabrir){if(!confirm(reabrir?"Reabrir a votação?":"Encerrar a votação e proclamar o Membro do Ano "+anoSel()+"?\n\nVence quem tiver mais votos (o do Grão-Mestre vale 2; empate: mais pontos)."))return;
   var r=await sb.rpc("membro_ano_encerrar",{p_ano:anoSel(),p_reabrir:!!reabrir});if(r.error){alert("Erro: "+r.error.message);return;}carregar();}
 document.addEventListener("DOMContentLoaded",init);
-</script><script src="js/painel-shell.js" data-esconder=".dtop,.dhead"></script>
+</script><script src="js/painel-shell.js?v=20261031" data-esconder=".dtop,.dhead"></script>
 <script src="/js/redes-rodape.js?v=4" defer></script>
 </body></html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Redes sociais — Painel do Conselho</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/brasao.png">
+<style>
+:root{--navy:#1e2a56;--gold:#b08a3a;--gold2:#c9a85c;--red:#8f1d24;--cream:#f3ecd9;--paper:#fffdf7;--line:#ddd0ad;--ink:#2a2620;--ink2:#6f6858;--ok:#2f6b3a;--okbg:#e6f1e7;--warn:#8a6a1f;--warnbg:#f6eccf;--errbg:#f7e4e2}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);font-size:14px}
+a{color:var(--navy)}
+.top{background:var(--navy);color:#fff;padding:12px 20px;display:flex;align-items:center;gap:14px}
+.top img{width:44px}
+.top h1{font-family:Georgia,serif;font-weight:normal;font-size:21px;margin:0}
+.top .sub{font-size:12px;color:#c9cbe0}
+.top .volta{margin-left:auto;color:#e7d8a8;text-decoration:none;font-size:13px}
+.wrap{max-width:1180px;margin:0 auto;padding:16px 20px 80px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 14px}
+.tab{border:1px solid var(--line);background:var(--paper);color:var(--navy);border-radius:999px;padding:8px 15px;cursor:pointer;font-size:13px}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab .n{display:inline-block;min-width:18px;padding:0 5px;margin-left:5px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;text-align:center}
+.barra{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.barra select,.barra input{border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:#fff;font-size:13px}
+.carimbo{margin-left:auto;font-size:12px;color:var(--ink2)}
+.dia{margin:18px 0 6px;font-family:Georgia,serif;color:var(--navy);font-size:17px;display:flex;align-items:baseline;gap:8px}
+.dia small{font-family:Arial;font-size:12px;color:var(--ink2);text-transform:capitalize}
+.lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;display:flex;gap:10px;padding:8px;align-items:stretch;text-align:left;font:inherit;color:inherit;width:100%}
+.card:hover,.card:focus-visible{border-color:var(--gold);outline:none;box-shadow:0 6px 16px rgba(40,30,10,.10)}
+.thumb{width:78px;height:98px;border-radius:8px;background:#e9e1cb center/cover no-repeat;flex:none;position:relative}
+.thumb .tp{position:absolute;bottom:4px;left:4px;background:rgba(20,28,60,.8);color:#fff;font-size:10px;padding:1px 6px;border-radius:6px}
+.card .meta{display:flex;flex-direction:column;gap:4px;min-width:0}
+.card .h{font-size:12px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.card .t{font-family:Georgia,serif;font-size:15px;color:var(--navy);line-height:1.25}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:auto}
+.chip{font-size:11px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.c-agendado{background:#e4e8f3;color:var(--navy)}.c-publicado{background:var(--okbg);color:var(--ok)}.c-pausado{background:#ececec;color:#555}
+.c-erro{background:var(--errbg);color:var(--red)}.c-recusado{background:#ececec;color:#777;text-decoration:line-through}
+.r-pendente{background:var(--warnbg);color:var(--warn)}.r-ok{background:var(--okbg);color:var(--ok)}.r-ajuste{background:var(--errbg);color:var(--red)}
+.vazio{padding:30px;text-align:center;color:var(--ink2);background:var(--paper);border:1px dashed var(--line);border-radius:12px}
+.btn{border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:9px;padding:9px 14px;cursor:pointer;font-size:13px}
+.btn.sec{background:#fff;color:var(--navy)}
+.btn.ok{background:var(--ok);border-color:var(--ok)}
+.btn.red{background:#fff;color:var(--red);border-color:var(--red)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn:focus-visible,.tab:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+/* ficha do post */
+.fundo{position:fixed;inset:0;background:rgba(14,18,40,.55);display:flex;justify-content:flex-end;z-index:20}
+.ficha{background:var(--cream);width:min(760px,100%);height:100%;overflow:auto;padding:18px 20px 90px;box-shadow:-10px 0 30px rgba(0,0,0,.2)}
+.ficha h2{font-family:Georgia,serif;font-weight:normal;color:var(--navy);margin:0 0 4px;font-size:22px}
+.fecha{float:right;background:none;border:0;font-size:26px;cursor:pointer;color:var(--navy);line-height:1}
+.bloco{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:12px}
+.bloco h3{margin:0 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+.fotos{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+.foto{flex:none;width:180px}
+.foto img{width:180px;height:225px;object-fit:cover;border-radius:8px;display:block;background:#e9e1cb;cursor:zoom-in}
+.foto .acoes{display:flex;gap:4px;margin-top:4px;justify-content:space-between}
+.foto .acoes button{flex:1;border:1px solid var(--line);background:#fff;border-radius:6px;padding:4px 0;cursor:pointer;font-size:13px}
+.foto .n{font-size:11px;color:var(--ink2)}
+.add{width:180px;height:225px;border:2px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--ink2);cursor:pointer;flex:none;font-size:13px;text-align:center}
+video{width:100%;max-height:520px;border-radius:10px;background:#000}
+textarea{width:100%;min-height:220px;border:1px solid var(--line);border-radius:8px;padding:10px;font:14px/1.5 Arial;resize:vertical}
+.linha{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.linha label{font-size:12px;color:var(--ink2);display:flex;flex-direction:column;gap:3px}
+.linha input,.linha select{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:14px;background:#fff}
+.rodape{position:sticky;bottom:-90px;background:var(--cream);padding:12px 0;margin-top:14px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+.nota{font-size:12px;color:var(--ink2)}
+.ped{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.ped .q{font-size:12px;color:var(--ink2)}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:50;display:none;max-width:90vw}
+#toast.err{background:var(--red)}
+.zoom{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:40;display:flex;align-items:center;justify-content:center;cursor:zoom-out}
+.zoom img{max-width:94vw;max-height:94vh}
+@media (max-width:600px){.ficha{padding:14px 14px 90px}.foto,.foto img,.add{width:140px}.foto img,.add{height:175px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head><body>
+<div class="top"><img src="img/brasao-escuro.png" alt="Brasão"><div><h1>Redes sociais</h1><div class="sub">Instagram · Facebook · Threads — @commanderiedebordeauxbr</div></div><a class="volta" href="painel-conselho.html">← Painel do Conselho</a></div>
+<div class="wrap">
+  <div id="needLogin" class="vazio" hidden>Entre com a sua conta para ver os posts. <a href="login.html?next=painel-redes.html">Entrar</a></div>
+  <div id="notAllowed" class="vazio" hidden>Esta área é só do Conselho.</div>
+  <div id="loading" class="vazio">Carregando…</div>
+  <div id="panel" hidden>
+    <p class="nota" style="margin:0 0 10px">Os posts saem sozinhos na data e hora marcadas. Aqui você confere cada um, marca <b>“Está certo”</b> ou <b>pede uma alteração</b>, muda a ordem, troca fotos e edita o texto. Pausar tira o post da fila até ser retomado.</p>
+    <div class="tabs" role="tablist">
+      <button class="tab on" data-v="agenda" role="tab">Agenda</button>
+      <button class="tab" data-v="revisar" role="tab">Para revisar<span class="n" id="nRev">0</span></button>
+      <button class="tab" data-v="publicados" role="tab">Publicados</button>
+      <button class="tab" data-v="pedidos" role="tab">Pedidos ao Claude<span class="n" id="nPed">0</span></button>
+      <button class="tab" data-v="novo" role="tab">+ Novo post</button>
+    </div>
+    <div id="vLista">
+      <div class="barra">
+        <select id="fTipo" aria-label="Tipo"><option value="">Todos os tipos</option><option value="carrossel">Carrosséis</option><option value="reel">Vídeos</option><option value="story">Stories</option></select>
+        <input id="fBusca" type="search" placeholder="Buscar pelo título ou texto" aria-label="Buscar">
+        <span class="carimbo" id="carimbo"></span>
+      </div>
+      <div id="lista"></div>
+    </div>
+    <div id="vPedidos" hidden>
+      <div class="bloco" style="margin-top:0">
+        <h3>Novo pedido ao Claude</h3>
+        <p class="nota" style="margin-top:0">Escreva o que quer mudar ou criar — um post novo, um assunto, uma correção. Os pedidos ficam aqui até serem feitos.</p>
+        <textarea id="pedTexto" style="min-height:90px" placeholder="Ex.: fazer um carrossel sobre a Cité du Vin para o dia 29/11"></textarea>
+        <div style="margin-top:8px"><button class="btn" id="pedEnviar">Enviar pedido</button></div>
+      </div>
+      <div id="pedLista" style="margin-top:14px"></div>
+    </div>
+    <div id="vNovo" hidden>
+      <div class="bloco" style="margin-top:0">
+        <h3>Novo post</h3>
+        <div class="linha">
+          <label>Tipo<select id="nTipo"><option value="carrossel">Carrossel (fotos)</option><option value="story">Story (1 foto)</option><option value="reel">Vídeo</option></select></label>
+          <label>Data<input type="date" id="nData"></label>
+          <label>Hora<input type="time" id="nHora" value="12:30"></label>
+          <label style="flex:1;min-width:200px">Título (só para o painel)<input id="nTitulo" placeholder="Ex.: Château Figeac"></label>
+        </div>
+        <div style="margin-top:10px"><label class="nota" for="nArq">Fotos (até 10, na ordem em que aparecem) ou o vídeo</label><br><input type="file" id="nArq" multiple accept="image/jpeg,image/png,video/mp4"></div>
+        <div style="margin-top:10px"><label class="nota" for="nLegenda">Texto do post</label><textarea id="nLegenda" style="min-height:140px" placeholder="Texto em português e francês, @ dos lugares e hashtags"></textarea></div>
+        <p class="nota">Dica: carrossel funciona melhor com fotos verticais 4:5 (1080×1350). O post entra na agenda já aprovado e sai sozinho na hora marcada.</p>
+        <button class="btn" id="nCriar">Criar post</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+var POSTS=[],PEDIDOS=[],VISAO="agenda",ATUAL=null,EDIT=null;
+function $(i){return document.getElementById(i);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function toast(t,erro){var e=$("toast");e.textContent=t;e.className=erro?"err":"";e.style.display="block";clearTimeout(window._tt);window._tt=setTimeout(function(){e.style.display="none";},erro?6000:2600);}
+function mostra(id){["needLogin","notAllowed","loading","panel"].forEach(function(x){$(x).hidden=(x!==id);});}
+var DTF=new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",weekday:"long",day:"2-digit",month:"2-digit"});
+function brt(iso){var d=new Date(iso);var p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(d);var o={};p.forEach(function(x){o[x.type]=x.value;});return{data:o.year+"-"+o.month+"-"+o.day,hora:o.hour+":"+o.minute};}
+function deBrt(data,hora){return new Date(data+"T"+hora+":00-03:00").toISOString();}
+function situacao(p){if(p.status==="publicado")return["publicado","Publicado"];if(p.status==="pausado")return["pausado","Pausado"];if(p.status==="erro")return["erro","Erro ao publicar"];if(p.status==="recusado")return["recusado","Excluído"];if(p.status==="publicando")return["agendado","Publicando…"];return["agendado","Agendado"];}
+function rev(p){return{pendente:["pendente","A revisar"],ok:["ok","Está certo"],ajuste:["ajuste","Pediu alteração"]}[p.revisao]||["pendente","A revisar"];}
+function tipoNome(t){return{carrossel:"Carrossel",reel:"Vídeo",story:"Story"}[t]||t;}
+function capa(p){return (p.imagens&&p.imagens[0])||"";}
+
+async function init(){
+  var u=(await sb.auth.getUser()).data.user;
+  if(!u){mostra("needLogin");return;}
+  var ok=await sb.rpc("is_conselho");
+  if(ok.error||!ok.data){mostra("notAllowed");return;}
+  mostra("panel");
+  $("nData").value=brt(new Date(Date.now()+864e5).toISOString()).data;
+  await carregar();
+}
+async function carregar(){
+  var a=await sb.from("social_posts").select("*").order("quando",{ascending:true});
+  if(a.error){$("lista").innerHTML='<div class="vazio">Não foi possível carregar os posts: '+esc(a.error.message)+'</div>';return;}
+  POSTS=a.data||[];
+  var b=await sb.from("social_pedidos").select("*").order("criado_em",{ascending:false});
+  PEDIDOS=b.error?[]:(b.data||[]);
+  var agora=new Date();
+  $("carimbo").textContent="Atualizado às "+agora.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+  $("nRev").textContent=POSTS.filter(function(p){return p.revisao!=="ok"&&p.status!=="recusado"&&p.status!=="publicado"&&p.tipo!=="story";}).length;
+  $("nPed").textContent=PEDIDOS.filter(function(p){return p.status==="aberto";}).length;
+  desenhar();
+}
+function desenhar(){
+  $("vLista").hidden=!(VISAO==="agenda"||VISAO==="revisar"||VISAO==="publicados");
+  $("vPedidos").hidden=VISAO!=="pedidos";$("vNovo").hidden=VISAO!=="novo";
+  if(VISAO==="pedidos"){desenharPedidos();return;}
+  if(VISAO==="novo")return;
+  var tp=$("fTipo").value,q=$("fBusca").value.trim().toLowerCase(),agora=Date.now();
+  var l=POSTS.filter(function(p){
+    if(tp&&p.tipo!==tp)return false;
+    if(q&&((p.titulo||"")+" "+(p.legenda||"")).toLowerCase().indexOf(q)<0)return false;
+    if(VISAO==="publicados")return p.status==="publicado";
+    if(VISAO==="revisar")return p.revisao!=="ok"&&p.status!=="recusado"&&p.status!=="publicado"&&p.tipo!=="story";
+    return p.status!=="publicado"&&p.status!=="recusado";
+  });
+  if(VISAO==="publicados")l.reverse();
+  if(!l.length){$("lista").innerHTML='<div class="vazio">'+(VISAO==="revisar"?"Nada para revisar. Tudo conferido.":"Nenhum post aqui.")+'</div>';return;}
+  var h="",dia="";
+  l.forEach(function(p){
+    var b=brt(p.quando);
+    if(b.data!==dia){if(dia)h+="</div>";dia=b.data;h+='<div class="dia">'+b.data.split("-").reverse().slice(0,2).join("/")+' <small>'+DTF.format(new Date(p.quando)).split(",")[0]+'</small></div><div class="lista">';}
+    var s=situacao(p),r=rev(p),c=capa(p);
+    h+='<button class="card" data-id="'+p.id+'"><div class="thumb" style="background-image:url(\''+esc(c)+'\')">'+(p.tipo==="reel"&&!c?'<video src="'+esc(p.video_url)+'#t=1" preload="metadata" muted style="width:100%;height:100%;object-fit:cover;border-radius:8px"></video>':'')+'<span class="tp">'+tipoNome(p.tipo)+'</span></div>'
+      +'<div class="meta"><span class="h">'+b.hora+' · '+esc(p.quadro||"")+'</span><span class="t">'+esc(p.titulo||"(sem título)")+'</span>'
+      +'<span class="chips"><span class="chip c-'+s[0]+'">'+s[1]+'</span>'+(p.tipo!=="story"?'<span class="chip r-'+r[0]+'">'+r[1]+'</span>':'')+'</span></div></button>';
+  });
+  $("lista").innerHTML=h+"</div>";
+}
+document.addEventListener("click",function(e){
+  var t=e.target.closest(".tab");if(t){document.querySelectorAll(".tab").forEach(function(x){x.classList.toggle("on",x===t);});VISAO=t.dataset.v;desenhar();return;}
+  var c=e.target.closest(".card");if(c){abrir(c.dataset.id);return;}
+});
+$("fTipo").onchange=desenhar;$("fBusca").oninput=desenhar;
+
+/* ---------- ficha do post ---------- */
+function abrir(id){
+  ATUAL=POSTS.find(function(p){return p.id===id;});if(!ATUAL)return;
+  EDIT={imagens:(ATUAL.imagens||[]).slice()};
+  var p=ATUAL,b=brt(p.quando),s=situacao(p),r=rev(p),pub=p.status==="publicado"||p.status==="publicando";
+  var outros=POSTS.filter(function(x){return x.id!==p.id&&x.status!=="publicado"&&x.status!=="recusado"&&x.status!=="publicando";});
+  var h='<div class="fundo" id="fundo"><div class="ficha" role="dialog" aria-modal="true" aria-label="Post">'
+   +'<button class="fecha" id="fFecha" aria-label="Fechar">×</button>'
+   +'<div class="nota">'+tipoNome(p.tipo)+' · '+esc(p.quadro||"")+'</div><h2>'+esc(p.titulo||"(sem título)")+'</h2>'
+   +'<div class="chips" style="margin-top:6px"><span class="chip c-'+s[0]+'">'+s[1]+'</span>'+(p.tipo!=="story"?'<span class="chip r-'+r[0]+'">'+r[1]+(p.revisado_por?' · '+esc(p.revisado_por.split("@")[0]):'')+'</span>':'')+'</div>'
+   +(p.erro?'<p class="nota" style="color:var(--red)">'+esc(p.erro)+'</p>':'')
+   +(p.revisao==="ajuste"&&p.revisao_obs?'<p class="nota" style="color:var(--red)">Alteração pedida: '+esc(p.revisao_obs)+'</p>':'')
+   +(pub&&(p.ig_link||p.fb_link)?'<p class="nota">'+(p.ig_link&&/^http/.test(p.ig_link)?'<a href="'+esc(p.ig_link)+'" target="_blank" rel="noopener">Ver no Instagram</a> · ':'')+(p.fb_link&&/^http/.test(p.fb_link)?'<a href="'+esc(p.fb_link)+'" target="_blank" rel="noopener">Ver no Facebook</a>':'')+'</p>':'')
+   +'<div class="bloco"><h3>'+(p.tipo==="reel"?"Vídeo":"Fotos — na ordem do post")+'</h3>'
+   +(p.tipo==="reel"?'<video src="'+esc(p.video_url)+'" controls preload="metadata" playsinline></video>':'<div class="fotos" id="fotos"></div>'+(pub?'':'<p class="nota" style="margin-bottom:0">Use ◀ ▶ para mudar a ordem, ↻ para trocar uma foto e ✕ para tirar. Clique na foto para ampliar.</p>'))
+   +'</div>'
+   +(p.tipo!=="story"?'<div class="bloco"><h3>Texto do post</h3><textarea id="eLeg" '+(pub?'readonly':'')+'>'+esc(p.legenda||"")+'</textarea></div>':'')
+   +'<div class="bloco"><h3>Quando sai</h3><div class="linha">'
+   +'<label>Data<input type="date" id="eData" value="'+b.data+'" '+(pub?'disabled':'')+'></label>'
+   +'<label>Hora<input type="time" id="eHora" value="'+b.hora+'" '+(pub?'disabled':'')+'></label>'
+   +(pub?'':'<label style="flex:1;min-width:220px">Ou trocar de lugar com<select id="eTroca"><option value="">— escolha um post —</option>'+outros.map(function(x){var bb=brt(x.quando);return '<option value="'+x.id+'">'+bb.data.split("-").reverse().slice(0,2).join("/")+' '+bb.hora+' · '+esc((x.titulo||"").slice(0,48))+'</option>';}).join("")+'</select></label>')
+   +'</div></div>'
+   +(p.tipo!=="story"?'<div class="bloco"><h3>Revisão</h3><textarea id="eObs" style="min-height:70px" placeholder="O que precisa mudar? (vai para os Pedidos ao Claude)">'+esc(p.revisao==="ajuste"?(p.revisao_obs||""):"")+'</textarea>'
+   +'<div class="linha" style="margin-top:8px"><button class="btn ok" id="eOk">✓ Está certo</button><button class="btn red" id="eAjuste">Pedir alteração</button></div></div>':'')
+   +(pub?'':'<div class="rodape"><button class="btn" id="eSalvar">Salvar alterações</button>'
+   +(p.status==="pausado"?'<button class="btn sec" id="eRetomar">▶ Retomar</button>':'<button class="btn sec" id="ePausar">⏸ Pausar</button>')
+   +'<button class="btn red" id="eExcluir" style="margin-left:auto">Excluir da agenda</button></div>')
+   +'</div></div>';
+  document.body.insertAdjacentHTML("beforeend",h);document.body.style.overflow="hidden";
+  if(p.tipo!=="reel")fotos();
+  $("fFecha").onclick=fechar;$("fundo").onclick=function(e){if(e.target.id==="fundo")fechar();};
+  document.addEventListener("keydown",escFecha);
+  if($("eOk"))$("eOk").onclick=function(){revisar("ok");};
+  if($("eAjuste"))$("eAjuste").onclick=function(){revisar("ajuste");};
+  if($("eSalvar"))$("eSalvar").onclick=function(){salvar(p.status==="pausado"?"pausado":"aprovado");};
+  if($("ePausar"))$("ePausar").onclick=function(){salvar("pausado");};
+  if($("eRetomar"))$("eRetomar").onclick=function(){salvar("aprovado");};
+  if($("eExcluir"))$("eExcluir").onclick=excluir;
+}
+function escFecha(e){if(e.key==="Escape")fechar();}
+function fechar(){var f=$("fundo");if(f)f.remove();document.body.style.overflow="";document.removeEventListener("keydown",escFecha);ATUAL=null;}
+function fotos(){
+  var el=$("fotos");if(!el)return;var pub=ATUAL.status==="publicado";
+  el.innerHTML=EDIT.imagens.map(function(u,i){return '<div class="foto"><img src="'+esc(u)+'" alt="Foto '+(i+1)+'" data-z="'+esc(u)+'"><div class="n">'+(i+1)+(i===0?' · capa':'')+'</div>'
+    +(pub?'':'<div class="acoes"><button data-m="'+i+'" data-d="-1" aria-label="Mover para a esquerda">◀</button><button data-tr="'+i+'" aria-label="Trocar foto">↻</button><button data-rm="'+i+'" aria-label="Tirar foto">✕</button><button data-m="'+i+'" data-d="1" aria-label="Mover para a direita">▶</button></div>')+'</div>';}).join("")
+    +(pub||ATUAL.tipo==="story"&&EDIT.imagens.length?'':'<label class="add">+ Adicionar foto<input type="file" accept="image/jpeg,image/png" hidden id="addFoto"></label>');
+  el.querySelectorAll("[data-m]").forEach(function(b){b.onclick=function(){var i=+b.dataset.m,j=i+(+b.dataset.d);if(j<0||j>=EDIT.imagens.length)return;var t=EDIT.imagens[i];EDIT.imagens[i]=EDIT.imagens[j];EDIT.imagens[j]=t;fotos();};});
+  el.querySelectorAll("[data-rm]").forEach(function(b){b.onclick=function(){if(EDIT.imagens.length<=1){toast("O post precisa de pelo menos uma foto.",true);return;}EDIT.imagens.splice(+b.dataset.rm,1);fotos();};});
+  el.querySelectorAll("[data-tr]").forEach(function(b){b.onclick=function(){escolherArquivo(function(f){subirFoto(f).then(function(u){if(u){EDIT.imagens[+b.dataset.tr]=u;fotos();toast("Foto trocada — clique em Salvar alterações");}});});};});
+  el.querySelectorAll("[data-z]").forEach(function(im){im.onclick=function(){var z=document.createElement("div");z.className="zoom";z.innerHTML='<img src="'+esc(im.dataset.z)+'" alt="">';z.onclick=function(){z.remove();};document.body.appendChild(z);};});
+  var add=$("addFoto");if(add)add.onchange=function(){var f=add.files[0];if(!f)return;if(EDIT.imagens.length>=10){toast("O Instagram aceita até 10 fotos por carrossel.",true);return;}subirFoto(f).then(function(u){if(u){EDIT.imagens.push(u);fotos();toast("Foto adicionada — clique em Salvar alterações");}});};
+}
+function escolherArquivo(cb){var i=document.createElement("input");i.type="file";i.accept="image/jpeg,image/png";i.onchange=function(){if(i.files[0])cb(i.files[0]);};i.click();}
+async function subirArquivo(f,pasta){
+  var ext=(f.name.split(".").pop()||"jpg").toLowerCase();
+  var nome=pasta+"/"+Date.now()+"-"+Math.random().toString(36).slice(2,7)+"."+ext;
+  var r=await sb.storage.from("social").upload(nome,f,{contentType:f.type,upsert:false});
+  if(r.error){toast("Não foi possível enviar o arquivo: "+r.error.message,true);return null;}
+  return sb.storage.from("social").getPublicUrl(nome).data.publicUrl;
+}
+async function subirFoto(f){
+  if(!/^image\/(jpeg|png)$/.test(f.type)){toast("Use foto JPG ou PNG.",true);return null;}
+  if(f.size>8e6){toast("Foto grande demais (máx. 8 MB).",true);return null;}
+  toast("Enviando foto…");return subirArquivo(f,"painel");
+}
+async function salvar(status){
+  var p=ATUAL;var bt=$("eSalvar");if(bt){bt.disabled=true;bt.textContent="Salvando…";}
+  try{
+    var troca=$("eTroca")&&$("eTroca").value;
+    var quando=deBrt($("eData").value,$("eHora").value);
+    var leg=$("eLeg")?$("eLeg").value:p.legenda;
+    var imgs=p.tipo==="reel"?null:EDIT.imagens;
+    var r=await sb.rpc("social_atualizar",{p_id:p.id,p_legenda:leg,p_quando:troca?p.quando:quando,p_imagens:imgs,p_status:status});
+    if(r.error)throw r.error;
+    if(troca){var t=await sb.rpc("social_trocar",{p_a:p.id,p_b:troca});if(t.error)throw t.error;}
+    toast(status==="pausado"&&p.status!=="pausado"?"Pausado — o post saiu da fila":status==="aprovado"&&p.status==="pausado"?"Retomado — volta a sair na hora marcada":"Alterações salvas");
+    fechar();await carregar();
+  }catch(e){toast("Não foi possível salvar: "+(e.message||e),true);if(bt){bt.disabled=false;bt.textContent="Salvar alterações";}}
+}
+async function revisar(acao){
+  var obs=$("eObs")?$("eObs").value.trim():"";
+  if(acao==="ajuste"&&!obs){toast("Escreva o que precisa mudar.",true);$("eObs").focus();return;}
+  var r=await sb.rpc("social_revisar",{p_id:ATUAL.id,p_acao:acao,p_obs:obs||null});
+  if(r.error){toast("Não foi possível registrar: "+r.error.message,true);return;}
+  toast(acao==="ok"?"Marcado como certo":"Pedido de alteração enviado");fechar();await carregar();
+}
+async function excluir(){
+  var p=ATUAL,bt=$("eExcluir");
+  if(bt.dataset.conf!=="1"){bt.dataset.conf="1";bt.textContent="Clique de novo para excluir";setTimeout(function(){if(bt){bt.dataset.conf="";bt.textContent="Excluir da agenda";}},4000);return;}
+  var r=await sb.rpc("social_atualizar",{p_id:p.id,p_legenda:p.legenda,p_quando:p.quando,p_imagens:null,p_status:"recusado"});
+  if(r.error){toast("Não foi possível excluir: "+r.error.message,true);return;}
+  toast("Excluído da agenda");fechar();await carregar();
+}
+
+/* ---------- pedidos ---------- */
+function desenharPedidos(){
+  var el=$("pedLista");
+  if(!PEDIDOS.length){el.innerHTML='<div class="vazio">Nenhum pedido ainda.</div>';return;}
+  el.innerHTML=PEDIDOS.map(function(x){var post=POSTS.find(function(p){return p.id===x.post_id;});
+    return '<div class="ped"><div class="q">'+new Date(x.criado_em).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})+' · '+esc((x.autor||"").split("@")[0])+(post?' · sobre <a href="#" data-abre="'+post.id+'">'+esc(post.titulo)+'</a>':'')
+      +' · <span class="chip '+(x.status==="feito"?"r-ok":"r-pendente")+'">'+(x.status==="feito"?"Feito":"Aberto")+'</span></div><div style="margin-top:4px;white-space:pre-wrap">'+esc(x.texto)+'</div>'
+      +(x.resposta?'<div class="nota" style="margin-top:6px;white-space:pre-wrap"><b>Resposta:</b> '+esc(x.resposta)+'</div>':'')+'</div>';}).join("");
+  el.querySelectorAll("[data-abre]").forEach(function(a){a.onclick=function(e){e.preventDefault();abrir(a.dataset.abre);};});
+}
+$("pedEnviar").onclick=async function(){
+  var t=$("pedTexto").value.trim();if(!t){toast("Escreva o pedido.",true);return;}
+  var b=this;b.disabled=true;b.textContent="Enviando…";
+  var r=await sb.rpc("social_pedir",{p_post:null,p_texto:t});
+  b.disabled=false;b.textContent="Enviar pedido";
+  if(r.error){toast("Não foi possível enviar: "+r.error.message,true);return;}
+  $("pedTexto").value="";toast("Pedido enviado");await carregar();
+};
+
+/* ---------- novo post ---------- */
+$("nCriar").onclick=async function(){
+  var tipo=$("nTipo").value,fs=Array.prototype.slice.call($("nArq").files||[]),b=this;
+  if(!$("nData").value||!$("nHora").value){toast("Escolha a data e a hora.",true);return;}
+  if(!fs.length){toast(tipo==="reel"?"Escolha o vídeo.":"Escolha as fotos.",true);return;}
+  if(tipo==="reel"&&(fs.length!==1||fs[0].type!=="video/mp4")){toast("Para vídeo, envie um único arquivo MP4.",true);return;}
+  if(tipo!=="reel"&&fs.some(function(f){return !/^image\/(jpeg|png)$/.test(f.type);})){toast("Use fotos JPG ou PNG.",true);return;}
+  if(tipo==="carrossel"&&fs.length>10){toast("O Instagram aceita até 10 fotos por carrossel.",true);return;}
+  if(tipo==="story"&&fs.length>1){toast("Story leva uma foto só.",true);return;}
+  if(tipo==="reel"&&fs[0].size>48e6){toast("Vídeo grande demais (máx. 48 MB).",true);return;}
+  b.disabled=true;b.textContent="Enviando arquivos…";
+  try{
+    var urls=[];for(var i=0;i<fs.length;i++){var u=await subirArquivo(fs[i],"painel");if(!u)throw new Error("envio interrompido");urls.push(u);}
+    b.textContent="Criando…";
+    var r=await sb.rpc("social_novo",{p_tipo:tipo,p_quando:deBrt($("nData").value,$("nHora").value),p_titulo:$("nTitulo").value.trim()||"Post do Conselho",p_quadro:"Conselho",p_legenda:$("nLegenda").value,p_imagens:tipo==="reel"?null:urls,p_video:tipo==="reel"?urls[0]:null});
+    if(r.error)throw r.error;
+    toast("Post criado e agendado");$("nArq").value="";$("nLegenda").value="";$("nTitulo").value="";
+    await carregar();document.querySelector('.tab[data-v="agenda"]').click();
+  }catch(e){toast("Não foi possível criar: "+(e.message||e),true);}
+  b.disabled=false;b.textContent="Criar post";
+};
+init();
+</script>
+</body></html>

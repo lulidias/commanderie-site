@@ -209,5 +209,15 @@
     document.dispatchEvent(new CustomEvent("painel:pendencias", { detail: window.PAINEL_PENDENCIAS }));
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", montar); else montar();
+  // Só para o Conselho: confirma no banco antes de montar a moldura (visitante e Comendador comum não veem nada)
+  async function talvez() {
+    try {
+      var sb = window.sb || (window.supabase && window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co", "sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd"));
+      if (!sb) return;
+      var u = (await sb.auth.getUser()).data.user; if (!u) return;
+      var r = await sb.rpc("is_conselho"); if (r.error || !r.data) return;
+      montar();
+    } catch (e) {}
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", talvez); else talvez();
 })();

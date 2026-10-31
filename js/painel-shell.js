@@ -142,44 +142,111 @@
   }
 
 
-  // Página inicial "Hoje": o que precisa de atenção, próximo Capítulo e o que sai nas redes hoje
+  // Página inicial "Hoje": saudação, números do dia, o que espera alguém, próximo Capítulo, redes de hoje (miniaturas) e atalhos
   function hojeHTML() {
     var aqui = location.pathname.split("/").pop() || "";
     var m = document.getElementById("menu");
     if (aqui !== "painel-conselho.html" || q.get("sec") || !m) return;
-    var box = document.createElement("div"); box.className = "ps-hoje";
-    box.innerHTML = '<style>.ps-hoje{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:6px 0 22px}'
-      + '.ps-cx{background:#fffdf7;border:1px solid #ddd0ad;border-radius:14px;padding:16px 18px}.ps-cx h2{font:normal 18px Georgia,serif;color:#1e2a56;margin:0 0 10px}'
-      + '.ps-cx a.l{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid #efe6cf;color:#2a2620;text-decoration:none;font:14px Arial}.ps-cx a.l:first-of-type{border-top:0}'
-      + '.ps-cx a.l b{background:#8f1d24;color:#fff;border-radius:10px;padding:1px 8px;font:600 12px Arial}.ps-cx .ok{color:#2f6b3a;font:14px Arial}.ps-cx .s{color:#8a8270;font:12px Arial}'
-      + '.ps-todos{font:600 10.5px Arial;letter-spacing:.16em;text-transform:uppercase;color:#b08a3a;margin:6px 0 10px}</style>'
-      + '<div class="ps-cx"><h2>Precisa de atenção</h2><div id="psAt"><span class="s">Carregando…</span></div></div>'
-      + '<div class="ps-cx"><h2>Próximo Capítulo</h2><div id="psCap"><span class="s">Carregando…</span></div></div>'
-      + '<div class="ps-cx"><h2>Hoje nas redes</h2><div id="psRedes"><span class="s">Carregando…</span></div></div>';
+    m.style.display = "none";   // a grade antiga de 22 cartões sai: o menu lateral já leva a tudo
+    var cab = document.querySelector(".dhead"); if (cab) cab.style.display = "none";
+    var h = new Date().getHours(), oi = h < 12 ? "Bom dia" : h < 18 ? "Boa tarde" : "Boa noite";
+    var dia = new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    var box = document.createElement("div"); box.className = "hj";
+    box.innerHTML = '<style>'
+      + '.hj{max-width:1120px;margin:0 auto;padding:26px 26px 60px;font-family:Arial,Helvetica,sans-serif;color:#2a2620}'
+      + '.hj-oi{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:20px}'
+      + '.hj-oi h1{font:normal 32px/1.15 Georgia,serif;color:#1e2a56;margin:0}.hj-oi p{margin:4px 0 0;color:#8a8270;font-size:13.5px;text-transform:capitalize}'
+      + '.hj-lema{font:italic 15px Georgia,serif;color:#b08a3a}'
+      + '.hj-num{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:18px}'
+      + '.hj-n{background:#fffdf7;border:1px solid #ddd0ad;border-radius:14px;padding:14px 16px;text-decoration:none;color:inherit;display:block}'
+      + '.hj-n:hover{border-color:#b08a3a}.hj-n small{display:block;font:600 10.5px Arial;letter-spacing:.14em;text-transform:uppercase;color:#b08a3a}'
+      + '.hj-n b{display:block;font:normal 30px Georgia,serif;color:#1e2a56;margin-top:4px;font-variant-numeric:tabular-nums}.hj-n span{font-size:12.5px;color:#8a8270}'
+      + '.hj-n .barra{height:5px;background:#efe6cf;border-radius:3px;margin-top:8px;overflow:hidden}.hj-n .barra i{display:block;height:100%;background:#b08a3a}'
+      + '.hj-2{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-bottom:14px}@media(max-width:820px){.hj-2{grid-template-columns:1fr}}'
+      + '.hj-cx{background:#fffdf7;border:1px solid #ddd0ad;border-radius:14px;padding:16px 18px}.hj-cx h2{font:normal 19px Georgia,serif;color:#1e2a56;margin:0 0 10px;display:flex;justify-content:space-between;align-items:baseline}'
+      + '.hj-cx h2 a{font:12.5px Arial;color:#b08a3a;text-decoration:none}'
+      + '.hj-a{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid #efe6cf;text-decoration:none;color:#2a2620;font-size:14.5px}.hj-a:first-of-type{border-top:0}'
+      + '.hj-a span{flex:1}.hj-a b{background:#8f1d24;color:#fff;border-radius:11px;padding:2px 9px;font:600 12px Arial}.hj-a:hover span{color:#1e2a56;text-decoration:underline}'
+      + '.hj-ok{display:flex;align-items:center;gap:10px;color:#2f6b3a;font-size:15px;padding:8px 0}'
+      + '.hj-cap{display:flex;gap:16px;align-items:center}.hj-cal{flex:none;width:76px;text-align:center;border:1px solid #ddd0ad;border-radius:12px;overflow:hidden;background:#fff}'
+      + '.hj-cal i{display:block;background:#8f1d24;color:#fff;font:600 11px Arial;letter-spacing:.1em;text-transform:uppercase;padding:4px 0;font-style:normal}.hj-cal b{display:block;font:normal 32px Georgia,serif;color:#1e2a56;padding:4px 0 6px}'
+      + '.hj-cap h3{font:normal 18px Georgia,serif;color:#1e2a56;margin:0}.hj-cap p{margin:3px 0 0;color:#8a8270;font-size:13px}'
+      + '.hj-bt{display:inline-block;margin-top:12px;background:#1e2a56;color:#fff;border-radius:9px;padding:8px 14px;font-size:13px;text-decoration:none}'
+      + '.hj-redes{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px}.hj-p{flex:none;width:150px;text-decoration:none;color:inherit}'
+      + '.hj-p .im{width:150px;height:188px;border-radius:10px;background:#e9e1cb center/cover no-repeat;position:relative;overflow:hidden}'
+      + '.hj-p .im video{width:100%;height:100%;object-fit:cover}.hj-p .tp{position:absolute;left:6px;top:6px;background:rgba(20,28,60,.82);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:7px}'
+      + '.hj-p .hr{position:absolute;right:6px;bottom:6px;background:#fffdf7;color:#1e2a56;font:600 11.5px Arial;padding:2px 7px;border-radius:7px}'
+      + '.hj-p .ok{background:#2f6b3a;color:#fff}'
+      + '.hj-at{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}'
+      + '.hj-at a{display:flex;align-items:center;gap:9px;background:#1e2a56;color:#f3ecd9;border-radius:12px;padding:12px 14px;text-decoration:none;font-size:14px}.hj-at a:hover{background:#26346a}.hj-at svg{color:#d6b66e;flex:none}'
+      + '.hj .s{color:#8a8270;font-size:13px}</style>'
+      + '<div class="hj-oi"><div><h1 id="hjOi">' + oi + '</h1><p>' + dia + '</p></div><div class="hj-lema">Bordeaux, toujours Bordeaux.</div></div>'
+      + '<div class="hj-num">'
+      +   '<a class="hj-n" href="painel-membros.html"><small>Membros</small><b id="hjMem">—</b><span id="hjMemS">&nbsp;</span></a>'
+      +   '<a class="hj-n" href="painel-conselho.html?sec=financeiro"><small>Anuidades em dia</small><b id="hjAn">—</b><span id="hjAnS">&nbsp;</span><div class="barra"><i id="hjAnB" style="width:0"></i></div></a>'
+      +   '<a class="hj-n" href="painel-conselho.html?sec=eventos"><small>Próximo Capítulo</small><b id="hjCapN">—</b><span id="hjCapS">&nbsp;</span></a>'
+      +   '<a class="hj-n" href="painel-redes.html"><small>Redes nesta semana</small><b id="hjSem">—</b><span>posts no feed</span></a>'
+      + '</div>'
+      + '<div class="hj-2"><div class="hj-cx"><h2>Precisa de atenção</h2><div id="psAt"><span class="s">Carregando…</span></div></div>'
+      +   '<div class="hj-cx"><h2>Próximo Capítulo <a href="painel-conselho.html?sec=eventos">Eventos →</a></h2><div id="psCap"><span class="s">Carregando…</span></div></div></div>'
+      + '<div class="hj-cx"><h2>Hoje nas redes <a href="painel-redes.html">Agenda completa →</a></h2><div id="psRedes" class="hj-redes"><span class="s">Carregando…</span></div></div>'
+      + '<div class="hj-at">'
+      +   '<a href="painel-conselho.html?sec=indicacoes">' + ico("carta") + 'Indicações</a>'
+      +   '<a href="painel-conselho.html?sec=eventos">' + ico("cal") + 'Eventos</a>'
+      +   '<a href="painel-conselho.html?sec=financeiro">' + ico("moeda") + 'Financeiro</a>'
+      +   '<a href="painel-membros.html">' + ico("gente") + 'Membros</a>'
+      +   '<a href="painel-redes.html">' + ico("insta") + 'Redes sociais</a>'
+      +   '<a href="painel-bi.html">' + ico("bi") + 'Indicadores</a>'
+      + '</div>';
     m.parentNode.insertBefore(box, m);
-    var tt = document.createElement("div"); tt.className = "ps-todos"; tt.textContent = "Todos os atalhos"; m.parentNode.insertBefore(tt, m);
     document.addEventListener("painel:pendencias", function (e) {
       var d = e.detail, L = [
         [d.indicacoes, "Indicações a aprovar", "painel-conselho.html?sec=indicacoes"],
-        [d.comprovantes, "Comprovantes de anuidade", "painel-conselho.html?sec=financeiro"],
+        [d.comprovantes, "Comprovantes de anuidade a conferir", "painel-conselho.html?sec=financeiro"],
         [d.rsvp, "Comprovantes de eventos a conferir", "painel-conselho.html?sec=eventos"],
         [d.fotos, "Fotos de eventos para aprovar", "painel-conselho.html?sec=eventos"],
         [d.inscricoes, "Inscrições de importadoras", "painel-conselho.html?sec=inscricoes"],
-        [d.redes_revisar, "Posts para revisar", "painel-redes.html"],
+        [d.redes_revisar, "Posts das redes para revisar", "painel-redes.html"],
         [d.redes_pedidos, "Pedidos ao Claude em aberto", "painel-redes.html"]].filter(function (x) { return x[0] > 0; });
-      document.getElementById("psAt").innerHTML = L.length ? L.map(function (x) { return '<a class="l" href="' + x[2] + '"><span>' + x[1] + "</span><b>" + x[0] + "</b></a>"; }).join("") : '<span class="ok">Tudo em dia.</span>';
+      document.getElementById("psAt").innerHTML = L.length ? L.map(function (x) { return '<a class="hj-a" href="' + x[2] + '"><span>' + x[1] + "</span><b>" + x[0] + "</b></a>"; }).join("") : '<div class="hj-ok">✓ Tudo em dia. Nada esperando por você.</div>';
     });
     var sb = window.sb; if (!sb) return;
-    sb.from("eventos").select("id,numero,titulo,data,local").eq("tipo", "Capítulo").eq("realizado", false).order("data", { ascending: true }).limit(1).then(function (r) {
+    sb.auth.getUser().then(function (u) {
+      var id = u.data && u.data.user && u.data.user.id; if (!id) return;
+      sb.from("membros").select("nome").eq("user_id", id).maybeSingle().then(function (r) { var n = r.data && r.data.nome ? String(r.data.nome).split(" ")[0] : ""; if (n) document.getElementById("hjOi").textContent = oi + ", " + n; });
+    });
+    sb.from("membros").select("anuidade_paga,isento").then(function (r) {
+      var L = r.data || []; if (!L.length) return;
+      var pag = L.filter(function (x) { return x.anuidade_paga || x.isento; }).length;
+      document.getElementById("hjMem").textContent = L.length; document.getElementById("hjMemS").textContent = "Comendadores no cadastro";
+      document.getElementById("hjAn").textContent = Math.round(100 * pag / L.length) + "%"; document.getElementById("hjAnS").textContent = pag + " de " + L.length + " (pagos ou isentos)";
+      document.getElementById("hjAnB").style.width = Math.round(100 * pag / L.length) + "%";
+    });
+    sb.from("eventos").select("id,numero,titulo,data,local").eq("tipo", "Capítulo").eq("realizado", false).gte("data", new Date().toISOString().slice(0, 10)).order("data", { ascending: true }).limit(1).then(function (r) {
       var e = r.data && r.data[0], el = document.getElementById("psCap");
-      if (!e) { el.innerHTML = '<span class="s">Nenhum Capítulo marcado.</span>'; return; }
-      var dt = new Date(e.data + "T12:00:00"), dias = Math.round((dt - new Date()) / 864e5);
-      el.innerHTML = '<a class="l" href="painel-conselho.html?sec=eventos"><span>' + (e.numero ? "Capítulo " + e.numero + " · " : "") + (e.titulo || "") + '<br><span class="s">' + dt.toLocaleDateString("pt-BR") + (e.local ? " · " + e.local : "") + "</span></span><b style=\"background:#1e2a56\">" + (dias >= 0 ? "em " + dias + " d" : "hoje") + "</b></a>";
+      if (!e) { el.innerHTML = '<span class="s">Nenhum Capítulo marcado. Crie o próximo em Eventos.</span><br><a class="hj-bt" href="painel-conselho.html?sec=eventos">Criar evento</a>'; document.getElementById("hjCapN").textContent = "—"; document.getElementById("hjCapS").textContent = "nenhum marcado"; return; }
+      var dt = new Date(e.data + "T12:00:00"), dias = Math.max(0, Math.round((dt - new Date()) / 864e5));
+      document.getElementById("hjCapN").textContent = dias === 0 ? "Hoje" : dias + (dias === 1 ? " dia" : " dias");
+      document.getElementById("hjCapS").textContent = dt.toLocaleDateString("pt-BR", { day: "numeric", month: "long" });
+      el.innerHTML = '<div class="hj-cap"><div class="hj-cal"><i>' + dt.toLocaleDateString("pt-BR", { month: "short" }).replace(".", "") + "</i><b>" + dt.getDate() + "</b></div><div><h3>" + (e.numero ? "Capítulo " + e.numero : (e.titulo || "Capítulo")) + "</h3><p>" + (e.numero && e.titulo ? e.titulo + " · " : "") + (e.local || "") + '</p><p id="hjIns"></p></div></div><a class="hj-bt" href="painel-conselho.html?sec=eventos">Abrir o evento</a>';
+      sb.from("evento_rsvp").select("status", { count: "exact" }).eq("evento_id", e.id).then(function (x) {
+        var L = x.data || [], c = L.filter(function (y) { return y.status === "Confirmado"; }).length;
+        if (L.length) document.getElementById("hjIns").textContent = L.length + " inscritos · " + c + " confirmados";
+      });
     });
     var ini = new Date(); ini.setHours(0, 0, 0, 0); var fim = new Date(ini.getTime() + 864e5);
-    sb.from("social_posts").select("titulo,quando,tipo,status").gte("quando", ini.toISOString()).lt("quando", fim.toISOString()).neq("status", "recusado").order("quando").then(function (r) {
-      var el = document.getElementById("psRedes"), L = (r.data || []);
-      el.innerHTML = L.length ? L.map(function (p) { return '<a class="l" href="painel-redes.html"><span>' + new Date(p.quando).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) + " · " + p.titulo + '</span><span class="s">' + (p.status === "publicado" ? "publicado" : p.status === "pausado" ? "pausado" : "agendado") + "</span></a>"; }).join("") : '<span class="s">Nada programado para hoje.</span>';
+    var seg = new Date(ini); seg.setDate(ini.getDate() - ((ini.getDay() + 6) % 7)); var dom = new Date(seg.getTime() + 7 * 864e5);
+    sb.from("social_posts").select("id", { count: "exact", head: true }).in("tipo", ["carrossel", "reel"]).neq("status", "recusado").gte("quando", seg.toISOString()).lt("quando", dom.toISOString()).then(function (r) { document.getElementById("hjSem").textContent = r.count == null ? "—" : r.count; });
+    sb.from("social_posts").select("titulo,quando,tipo,status,imagens,video_url").in("tipo", ["carrossel", "reel"]).gte("quando", ini.toISOString()).lt("quando", fim.toISOString()).neq("status", "recusado").order("quando").then(function (r) {
+      var el = document.getElementById("psRedes"), L = r.data || [];
+      if (!L.length) { el.innerHTML = '<span class="s">Nenhum post no feed hoje.</span>'; return; }
+      el.innerHTML = L.map(function (p) {
+        var hr = new Date(p.quando).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }), pub = p.status === "publicado";
+        var img = p.imagens && p.imagens[0];
+        return '<a class="hj-p" href="painel-redes.html" title="' + String(p.titulo || "").replace(/"/g, "&quot;") + '"><div class="im"' + (img ? ' style="background-image:url(\'' + img + '\')"' : "") + ">"
+          + (!img && p.video_url ? '<video src="' + p.video_url + '#t=2" preload="metadata" muted playsinline></video>' : "")
+          + '<span class="tp">' + (p.tipo === "reel" ? "Vídeo" : "Carrossel") + '</span><span class="hr' + (pub ? " ok" : "") + '">' + (pub ? "✓ " : "") + hr + "</span></div></a>";
+      }).join("");
     });
   }
 

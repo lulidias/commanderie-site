@@ -37,6 +37,19 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .mmeta{font-size:12px;color:#8a8270;margin-top:1px;}
 .pill{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:3px 9px;white-space:nowrap;}
 .p-pago{color:#2f6b3a;background:#eef6ef;border:1px solid #cfe6d3;} .p-aberto{color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);} .p-isento{color:#5b5446;background:#efe9da;border:1px solid var(--line);}
+.anuc{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:4px 0 14px;}
+.anuc .c{background:#fffdf7;border:1px solid var(--line);border-top:4px solid var(--line);border-radius:14px;padding:8px 14px;cursor:pointer;text-align:center;min-width:118px;}
+.anuc .c.on{box-shadow:0 0 0 2px var(--navy);}
+.anuc .c b{display:block;font-family:Georgia,serif;font-size:21px;color:var(--navy);font-weight:normal;}
+.anuc .c span{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;}
+.anuc .c small{display:block;font-size:11px;color:#5b5446;margin-top:2px;}
+.anuc .c.k-pago{border-top-color:#2f6b3a;} .anuc .c.k-aberto{border-top-color:#c9a85c;}
+.anuc .c.k-honra{border-top-color:var(--red);} .anuc .c.k-honra b{color:var(--red);}
+.anuc .c.k-mestre{border-top-color:var(--gold);} .anuc .c.k-mestre b{color:var(--gold);}
+.anuc .c.k-isento{border-top-color:var(--navy);}
+.p-honra{color:#fff;background:var(--red);border:1px solid var(--red);}
+.p-mestre{color:#fff;background:var(--gold);border:1px solid var(--gold);}
+.p-isento2{color:#fff;background:var(--navy);border:1px solid var(--navy);}
 .mbody{display:none;border-top:1px solid #ece0c2;padding:14px;background:#fcf9f0;}
 .grp{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:bold;margin:4px 0 8px;}
 .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 18px;}
@@ -54,6 +67,7 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 <div id="panel" style="display:none;">
   <div class="dhead"><div class="k">Conselho</div><h1>Membros</h1><div class="sub" style="font-size:13px;color:#8a8270;" id="resumo"></div></div>
   <div class="wrap">
+    <div class="anuc" id="anuChips"></div>
     <div class="tools"><input class="inp" id="busca" placeholder="Buscar por nome, e-mail, código…" oninput="render()" style="flex:1;min-width:200px;"><select class="inp" id="fNucleo" onchange="render()"><option value="">Todos os núcleos</option><option>Brasil</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Porto Alegre</option><option>Curitiba</option><option>Recife</option></select></div>
     <div id="lista"></div>
   </div>
@@ -67,7 +81,18 @@ function esc(s){return (""+(s==null?"":s)).replace(/&/g,"&amp;").replace(/</g,"&
 function fdata(d){if(!d)return "";var p=(""+d).split("T")[0].split("-");return p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):d;}
 function ini(n){var p=(""+(n||"")).trim().split(/\s+/);return (((p[0]||"")[0]||"")+((p[p.length-1]||"")[0]||"")).toUpperCase();}
 function nrm(s){return (""+(s||"")).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
-function anuidadePill(m){var g=(""+(m.grau||"")).toLowerCase();if(g.indexOf("honra")>=0||g.indexOf("mestre")>=0)return "<span class=\"pill p-isento\">Isento</span>";if(m.anuidade_paga)return "<span class=\"pill p-pago\">Anuidade em dia</span>";return "<span class=\"pill p-aberto\">"+esc(m.anuidade_status||"Em aberto")+"</span>";}
+function catAnu(m){var g=nrm(m.grau);if(g.indexOf("honra")>=0)return "honra";if(g.indexOf("mestre")>=0)return "mestre";if(/^isent/i.test(nrm(m.anuidade_status)))return "isento";return "pagante";}
+var FANU="";
+function brlA(v){return "R$ "+(Number(v)||0).toLocaleString("pt-BR",{minimumFractionDigits:0,maximumFractionDigits:0});}
+function chipsAnu(){var el=document.getElementById("anuChips");if(!el)return;var G={pagante:[],honra:[],mestre:[],isento:[]};MEMBROS.forEach(function(m){G[catAnu(m)].push(m);});
+  var pg=G.pagante,pagos=pg.filter(function(m){return m.anuidade_paga;}),abertos=pg.filter(function(m){return !m.anuidade_paga;});
+  var soma=function(L){return L.reduce(function(a,m){return a+(Number(m.anuidade_valor)||0);},0);};
+  var pa=function(L){var v=soma(L.filter(function(m){return m.anuidade_paga;}));return v>0?("<br>"+brlA(v)+" pagos antes da isenção"):"";};
+  var C=[["","","Todos",MEMBROS.length,""],["pagante","","Pagantes",pg.length,""],["pagos","k-pago","Pagantes em dia",pagos.length,brlA(soma(pagos))+" recebido"],["abertos","k-aberto","Pagantes em aberto",abertos.length,brlA(soma(abertos))+" a receber"],["honra","k-honra","Isentos · Honra",G.honra.length,"Membros de Honra"+pa(G.honra)],["mestre","k-mestre","Isentos · Mestres",G.mestre.length,"Grão-Mestre e Mestres"+pa(G.mestre)],["isento","k-isento","Isentos · outro motivo",G.isento.length,"status Isento"+pa(G.isento)]];
+  el.innerHTML=C.map(function(c){return "<div class=\"c "+c[1]+(FANU===c[0]?" on":"")+"\" onclick=\"FANU='"+c[0]+"';render()\"><b>"+c[3]+"</b><span>"+c[2]+"</span>"+(c[4]?("<small>"+c[4]+"</small>"):"")+"</div>";}).join("");}
+function passaAnu(m){if(!FANU)return true;var c=catAnu(m);if(FANU==="pagos")return c==="pagante"&&!!m.anuidade_paga;if(FANU==="abertos")return c==="pagante"&&!m.anuidade_paga;return c===FANU;}
+function pagoAntes(m){return (m.anuidade_paga&&Number(m.anuidade_valor)>0)?" <span class=\"pill p-pago\" title=\"Pagou a anuidade antes de ficar isento\">Pagou "+brlA(m.anuidade_valor)+" este ano</span>":"";}
+function anuidadePill(m){var c=catAnu(m);var x=pagoAntes(m);if(c==="honra")return "<span class=\"pill p-honra\">Isento · Honra</span>"+x;if(c==="mestre")return "<span class=\"pill p-mestre\">Isento · Mestre</span>"+x;if(c==="isento")return "<span class=\"pill p-isento2\">"+(/^pag/i.test(m.anuidade_status||"")?"Isento":esc(m.anuidade_status||"Isento"))+"</span>"+x;if(m.anuidade_paga)return "<span class=\"pill p-pago\">Anuidade em dia</span>";return "<span class=\"pill p-aberto\">"+esc(m.anuidade_status||"Em aberto")+"</span>";}
 function row(k,v){if(v==null||v==="")return "";return "<div><div class=\"k\">"+esc(k)+"</div><div class=\"v\">"+esc(v)+"</div></div>";}
 function fichaHtml(f){if(!f)return "<div style=\"font-size:12.5px;color:#9a937f;\">Ficha de entronização ainda não preenchida.</div>";
   var L=[["Tratamento",f.tratamento],["Nascimento",fdata(f.nascimento)],["Nacionalidade",f.nacionalidade],["Profissão",f.profissao],["Restrições alimentares",f.restricoes],["1º Padrinho",f.padrinho1],["2º Padrinho",f.padrinho2],["Mestre que aprovou",f.mestre],["Atividades e interesses",f.atividades],["Biografia",f.biografia],["Honrarias e confrarias",f.honrarias],["Ligação com Bordeaux",f.ligacao_bordeaux],["Primeiro Bordeaux",f.primeiro_bordeaux],["Bordeaux preferido",f.bordeaux_preferido],["Experiência memorável",f.experiencia],["Outras histórias",f.outras_historias],["Local e data",f.local_data]];
@@ -150,10 +175,11 @@ function render(){
   var q=nrm(document.getElementById("busca").value);var nf=document.getElementById("fNucleo").value;
   var list=MEMBROS.filter(function(m){
     if(nf&&(m.nucleo||"")!==nf)return false;
+    if(!passaAnu(m))return false;
     if(!q)return true;
     return nrm(m.nome+" "+(m.email||"")+" "+(m.codigo||"")+" "+(m.grau||"")).indexOf(q)>=0;
   });
-  document.getElementById("resumo").textContent=list.length+" de "+MEMBROS.length+" membros";
+  document.getElementById("resumo").textContent=list.length+" de "+MEMBROS.length+" membros";chipsAnu();
   var topo=list.filter(aguardandoIntro).sort(function(a,b){return (""+(a.data_intronizacao||"")).localeCompare(""+(b.data_intronizacao||""));});
   var resto=list.filter(function(m){return !aguardandoIntro(m);});
   var html="";

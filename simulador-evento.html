@@ -182,8 +182,20 @@ async function salvarSim(){if(!(S.titulo||"").trim()){msg("Dê um nome (item 1).
   var d=JSON.parse(JSON.stringify(S));var rec={titulo:S.titulo.trim(),data:S.data||null,dados:d,updated_at:new Date().toISOString()};
   var r=CUR?await sb.from("evento_simulacoes").update(rec).eq("id",CUR).select("*").single():await sb.from("evento_simulacoes").insert(rec).select("*").single();
   if(r.error){msg("Erro: "+r.error.message,"#8f1d24");return;}
-  var x=r.data;SIMS=SIMS.filter(function(s){return s.id!==x.id;});SIMS.unshift(x);CUR=x.id;SUJO=false;listaSel();side();msg("✔ Salvo","#2f6b3a");}
-async function excluirSim(){if(!CUR){novaSim(true);return;}if(!confirm("Excluir \""+S.titulo+"\"?"))return;var r=await sb.from("evento_simulacoes").delete().eq("id",CUR);if(r.error){msg("Erro: "+r.error.message,"#8f1d24");return;}SIMS=SIMS.filter(function(s){return s.id!==CUR;});SUJO=false;if(SIMS.length)abrirSim(SIMS[0].id);else novaSim(true);msg("Excluído.","#5b5446");}
+  var x=r.data;SIMS=SIMS.filter(function(s){return s.id!==x.id;});SIMS.unshift(x);CUR=x.id;SUJO=false;listaSel();side();
+  var fz=await finReceitasPrest(x.id,S);msg(fz.erro?("Salvo, mas não lançou no Financeiro: "+fz.erro):("✔ Salvo"+(fz.n?(" · "+fz.n+" receita(s) no Financeiro"):"")),fz.erro?"#8f1d24":"#2f6b3a");}
+// As "Outras receitas" marcadas como já recebidas na prestação de contas entram no
+// Financeiro (tabela receitas). fonte = "prest:<id da prestação>:<linha>" — a cada
+// Salvar as linhas desta prestação são refeitas, então mudar ou desmarcar não duplica.
+// Categoria Contribuições (Eventos é reservado às inscrições e não entra no resumo).
+async function finReceitasPrest(id,X){try{
+  var del=await sb.from("receitas").delete().like("fonte","prest:"+id+":%");if(del.error)return {erro:del.error.message};
+  if(!X||X.status!=="realizado"||X.kind==="consolidado")return {n:0};
+  var ano=parseInt((""+(X.data||"")).slice(0,4),10)||new Date().getFullYear();
+  var L=[];(X.receitas||[]).forEach(function(r,i){var v=num(r.valor);if(r.recebido&&v>0)L.push({ano:ano,categoria:"Contribuições",descricao:((r.nome||"Receita").trim()||"Receita")+" · "+(X.titulo||"Evento"),valor:v,pago:true,fonte:"prest:"+id+":"+i});});
+  if(!L.length)return {n:0};var ins=await sb.from("receitas").insert(L);if(ins.error)return {erro:ins.error.message};return {n:L.length};
+}catch(e){return {erro:""+(e&&e.message||e)};}}
+async function excluirSim(){if(!CUR){novaSim(true);return;}if(!confirm("Excluir \""+S.titulo+"\"?"))return;var r=await sb.from("evento_simulacoes").delete().eq("id",CUR);if(r.error){msg("Erro: "+r.error.message,"#8f1d24");return;}await finReceitasPrest(CUR,null);SIMS=SIMS.filter(function(s){return s.id!==CUR;});SUJO=false;if(SIMS.length)abrirSim(SIMS[0].id);else novaSim(true);msg("Excluído.","#5b5446");}
 function msg(t,c){var m=document.getElementById("msg");m.style.color=c||"#5b5446";m.textContent=t;clearTimeout(window._mt);window._mt=setTimeout(function(){m.textContent="";},4000);}
 // ---------- edição ----------
 function set(path,v,re){var o=S,k=path.split(".");for(var i=0;i<k.length-1;i++)o=o[k[i]];o[k[k.length-1]]=v;SUJO=true;if(re)render();else side();}

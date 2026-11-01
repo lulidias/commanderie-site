@@ -83,6 +83,7 @@ td.n,th.n{text-align:right;white-space:nowrap;}
 <div id="app" class="wrap" style="display:none;">
   <h1 id="h1">Simulação de custo do evento</h1>
   <div class="sub" id="h1s">Preencha os custos e as pessoas — o sistema calcula o rateio necessário para cobrir todas as despesas.</div>
+  <div style="margin:0 0 10px;"><a id="bVoltar" class="btn g" href="painel-conselho.html?sec=eventos&amp;tab=prestacao" style="text-decoration:none;display:inline-block;">&#8592; Voltar para Eventos</a></div>
   <div class="bar">
     <select class="inp" id="selSim" onchange="abrirSim(this.value)" style="flex:1;min-width:220px;"></select>
     <button class="btn g mS" onclick="novaSim()">+ Nova simulação</button><button class="btn g mP" onclick="novaPrest()">+ Nova prestação de contas</button>
@@ -165,7 +166,7 @@ async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){document.
   if(tipo==="simulacao"){var F=SIMS.filter(function(x){var d=x.dados||{};return d.kind!=="consolidado"&&d.status!=="realizado";});if(F.length)abrirSim(F[0].id);else novaSim(true);return;}
   if(tipo==="nova-prestacao"){novaPrest();return;}if(tipo==="relatorio"){novoCons();return;}MODO="P";var R2=SIMS.filter(function(x){return modoDe(x)==="P";});if(R2.length)abrirSim(R2[0].id);else novaPrest();}
 function rotulo(x){var d=x.dados||{};var k=d.kind==="consolidado"?"📑 ":(d.status==="realizado"?"✔ ":"🧮 ");return k+(x.titulo||"Sem título")+(x.data?(" · "+new Date(x.data+"T12:00:00").toLocaleDateString("pt-BR")):"");}
-function setModo(m){MODO=m;var a=document.getElementById("app");a.classList.toggle("modoS",m==="S");a.classList.toggle("modoP",m==="P");document.querySelectorAll(".dtop a").forEach(function(a){a.href="painel-conselho.html?sec=eventos"+(m==="P"?"&tab=prestacao":"");});var t=document.querySelector(".dtop b");if(t)t.textContent=m==="S"?"Simular novo evento":"Prestação de contas dos eventos";document.title=(m==="S"?"Simular novo evento":"Prestação de contas")+" — Commanderie de Bordeaux";
+function setModo(m){MODO=m;var a=document.getElementById("app");a.classList.toggle("modoS",m==="S");a.classList.toggle("modoP",m==="P");var bv=document.getElementById("bVoltar");if(bv){bv.href="painel-conselho.html?sec=eventos"+(m==="P"?"&tab=prestacao":"");bv.innerHTML=m==="P"?"&#8592; Voltar para a Prestação de contas":"&#8592; Voltar para Eventos";}document.querySelectorAll(".dtop a").forEach(function(a){a.href="painel-conselho.html?sec=eventos"+(m==="P"?"&tab=prestacao":"");});var t=document.querySelector(".dtop b");if(t)t.textContent=m==="S"?"Simular novo evento":"Prestação de contas dos eventos";document.title=(m==="S"?"Simular novo evento":"Prestação de contas")+" — Commanderie de Bordeaux";
   shellEv(m,0);}
 function shellEv(m,k){var tt=document.querySelector(".ps-tt");if(!tt){if(k<40)setTimeout(function(){shellEv(MODO,k+1);},150);return;}
   tt.textContent=m==="S"?"Simular novo evento":"Prestação de contas dos eventos";var tk=document.querySelector(".ps-tk");if(tk)tk.textContent="Eventos";

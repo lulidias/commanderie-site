@@ -165,7 +165,11 @@ async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){document.
   if(tipo==="simulacao"){var F=SIMS.filter(function(x){var d=x.dados||{};return d.kind!=="consolidado"&&d.status!=="realizado";});if(F.length)abrirSim(F[0].id);else novaSim(true);return;}
   if(tipo==="nova-prestacao"){novaPrest();return;}if(tipo==="relatorio"){novoCons();return;}MODO="P";var R2=SIMS.filter(function(x){return modoDe(x)==="P";});if(R2.length)abrirSim(R2[0].id);else novaPrest();}
 function rotulo(x){var d=x.dados||{};var k=d.kind==="consolidado"?"📑 ":(d.status==="realizado"?"✔ ":"🧮 ");return k+(x.titulo||"Sem título")+(x.data?(" · "+new Date(x.data+"T12:00:00").toLocaleDateString("pt-BR")):"");}
-function setModo(m){MODO=m;var a=document.getElementById("app");a.classList.toggle("modoS",m==="S");a.classList.toggle("modoP",m==="P");document.querySelectorAll(".dtop a").forEach(function(a){a.href="painel-conselho.html?sec=eventos"+(m==="P"?"&tab=prestacao":"");});var t=document.querySelector(".dtop b");if(t)t.textContent=m==="S"?"Simular novo evento":"Prestação de contas dos eventos";document.title=(m==="S"?"Simular novo evento":"Prestação de contas")+" — Commanderie de Bordeaux";}
+function setModo(m){MODO=m;var a=document.getElementById("app");a.classList.toggle("modoS",m==="S");a.classList.toggle("modoP",m==="P");document.querySelectorAll(".dtop a").forEach(function(a){a.href="painel-conselho.html?sec=eventos"+(m==="P"?"&tab=prestacao":"");});var t=document.querySelector(".dtop b");if(t)t.textContent=m==="S"?"Simular novo evento":"Prestação de contas dos eventos";document.title=(m==="S"?"Simular novo evento":"Prestação de contas")+" — Commanderie de Bordeaux";
+  shellEv(m,0);}
+function shellEv(m,k){var tt=document.querySelector(".ps-tt");if(!tt){if(k<40)setTimeout(function(){shellEv(MODO,k+1);},150);return;}
+  tt.textContent=m==="S"?"Simular novo evento":"Prestação de contas dos eventos";var tk=document.querySelector(".ps-tk");if(tk)tk.textContent="Eventos";
+  document.querySelectorAll(".ps-side a.ps-i").forEach(function(a){if(/sec=eventos/.test(a.getAttribute("href")||""))a.classList.add("on");});}
 function modoDe(x){var d=(x&&x.dados)||x||{};return (d.kind==="consolidado"||d.status==="realizado")?"P":"S";}
 function listaSel(){var g=function(f,t){var L=SIMS.filter(f);return L.length?("<optgroup label='"+t+"'>"+L.map(function(x){return "<option value='"+x.id+"'"+(CUR===x.id?" selected":"")+">"+esc(rotulo(x))+"</option>";}).join("")+"</optgroup>"):"";};
   setModo(MODO);
@@ -366,5 +370,5 @@ function imprimir(modo){var pgs=[];
     +"window.onload=function(){setTimeout(function(){"+(modo==="pdf"?"baixarPDF();":"window.print();")+"},800);};";
   w.document.write("<!doctype html><html><head><meta charset='utf-8'><title>"+esc(S.titulo||"Relatório")+"</title>"+FONTS+"<style>"+CSSP+".tb{position:sticky;top:0;z-index:9;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;background:#1e2a56;color:#f3e3bd;padding:10px;font-family:Arial,sans-serif;font-size:13px;}.tb button{background:#b08a3a;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;}@media print{.tb{display:none;}}</style></head><body>"+bar+html+"<script>"+js+"<\/script></body></html>");w.document.close();}
 document.addEventListener("DOMContentLoaded",init);
-</script><script src="/js/redes-rodape.js?v=4" defer></script>
+</script><script src="js/painel-shell.js?v=20261031" data-esconder=".dtop"></script><script src="/js/redes-rodape.js?v=4" defer></script>
 </body></html>

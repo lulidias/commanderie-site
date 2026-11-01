@@ -57,10 +57,10 @@
       if (r.error) { el.innerHTML = '<span class="rm-alerta" style="font-size:13px">Não foi possível ler os números das redes: ' + r.error.message + "</span>"; return; }
       var L = r.data || [];
       if (!L.length) { el.innerHTML = '<span style="color:#8a8270;font-size:13px">Ainda não há números coletados.</span>'; return; }
-      var ig = L.filter(function (x) { return x.plataforma === "instagram"; }), fb = L.filter(function (x) { return x.plataforma === "facebook"; });
+      var ig = L.filter(function (x) { return x.plataforma === "instagram"; }), fb = L.filter(function (x) { return x.plataforma === "facebook"; }), th = L.filter(function (x) { return x.plataforma === "threads"; });
       var h = iso(hoje), d = function (k) { var x = new Date(hoje); x.setDate(hoje.getDate() - k); return iso(x); };
       var a7 = d(6), b7 = d(13), b7f = d(7), a30 = d(29);
-      var igU = ig.filter(function (x) { return x.seguidores != null; }).pop() || {}, fbU = fb.filter(function (x) { return x.seguidores != null; }).pop() || {};
+      var igU = ig.filter(function (x) { return x.seguidores != null; }).pop() || {}, fbU = fb.filter(function (x) { return x.seguidores != null; }).pop() || {}, thU = th.filter(function (x) { return x.seguidores != null; }).pop() || {};
       var nov7 = soma(ig, "novos_seguidores", a7, h), nov7p = soma(ig, "novos_seguidores", b7, b7f), nov30 = soma(ig, "novos_seguidores", a30, h);
       var com7 = soma(ig, "comentarios", a7, h), com7p = soma(ig, "comentarios", b7, b7f);
       var alc7 = soma(ig, "alcance", a7, h), alc7p = soma(ig, "alcance", b7, b7f);
@@ -79,8 +79,12 @@
         + '<div class="rm-c"><h4>' + ico("fb") + 'Facebook</h4><div class="rm-big">' + n(fbU.seguidores) + "<small>seguidores</small></div>"
         + '<div class="rm-l"><span>Posts publicados</span><b>' + n(fbU.posts) + "</b></div>"
         + '<div class="rm-off">Comentários e alcance do Facebook entram quando a Meta liberar a permissão de leitura da página.</div></div>'
-        + '<div class="rm-c"><h4>' + ico("th") + 'Threads</h4><div class="rm-big">—</div>'
-        + '<div class="rm-off">Os números aparecem aqui quando a conexão do Threads for concluída.</div></div>'
+        + (thU.data ? '<div class="rm-c"><h4>' + ico("th") + 'Threads</h4><div class="rm-big">' + n(thU.seguidores) + "<small>seguidores</small></div>"
+          + '<div class="rm-l"><span>Respostas · 7 dias</span><b>' + n(soma(th, "comentarios", a7, h)) + "</b></div>"
+          + '<div class="rm-l"><span>Interações · 7 dias</span><b>' + n(soma(th, "interacoes", a7, h)) + "</b></div>"
+          + (completo ? '<div class="rm-l"><span>Visitas ao perfil · 7 dias</span><b>' + n(soma(th, "visitas_perfil", a7, h)) + "</b></div>" : "")
+          + '<div class="rm-l"><span>Posts publicados</span><b>' + n(thU.posts) + "</b></div></div>"
+          : '<div class="rm-c"><h4>' + ico("th") + 'Threads</h4><div class="rm-big">—</div><div class="rm-off">Os números aparecem aqui na próxima coleta.</div></div>')
         + "</div>";
       if (completo) html += '<div class="rm-gr">'
         + '<div class="rm-c rm-g"><h5>Novos seguidores por dia <span>· Instagram, 28 dias</span></h5>' + barras(ig, "novos_seguidores", 28, "#1e2a56") + "</div>"

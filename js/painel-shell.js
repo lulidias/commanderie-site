@@ -215,7 +215,7 @@
     (function () {   // números das redes (a tabela só responde ao Conselho)
       function vai() { window.redesMetricas(document.getElementById("psMet"), sb, { modo: "compacto", link: "painel-redes.html" }); }
       if (window.redesMetricas) return vai();
-      var s = document.createElement("script"); s.src = "js/redes-metricas.js?v=1"; s.onload = vai; document.head.appendChild(s);
+      var s = document.createElement("script"); s.src = "js/redes-metricas.js?v=2"; s.onload = vai; document.head.appendChild(s);
     })();
     sb.auth.getUser().then(function (u) {
       var id = u.data && u.data.user && u.data.user.id; if (!id) return;

@@ -150,7 +150,7 @@ function renderEstatico(){
   doughnut("cAdimp",{"Em dia":A.em_dia||0,"A pagar":A.a_pagar||0,"Isentos":A.isentos||0});
   // Receitas x Despesas por ano (recebido x pago, como o Superávit/Déficit do Financeiro)
   var pa2=F.por_ano||{};var anosL=Object.keys(pa2).sort();
-  if(anosL.length)mk("cRecDesp",{type:"bar",data:{labels:anosL,datasets:[{label:"Receitas recebidas",data:anosL.map(function(a){return pa2[a].receitas.recebido;}),backgroundColor:"#2f6b3a",borderRadius:5},{label:"Despesas pagas",data:anosL.map(function(a){return pa2[a].despesas.pago;}),backgroundColor:"#c0392b",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:function(c){return c.dataset.label+": "+brl2(c.raw);}}}},scales:{y:{beginAtZero:true}}}});else vazio("cRecDesp","Sem lançamentos ainda.");
+  if(anosL.length)mk("cRecDesp",{type:"bar",data:{labels:anosL.map(exLbl),datasets:[{label:"Receitas recebidas",data:anosL.map(function(a){return pa2[a].receitas.recebido;}),backgroundColor:"#2f6b3a",borderRadius:5},{label:"Despesas pagas",data:anosL.map(function(a){return pa2[a].despesas.pago;}),backgroundColor:"#c0392b",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:function(c){return c.dataset.label+": "+brl2(c.raw);}}}},scales:{y:{beginAtZero:true}}}});else vazio("cRecDesp","Sem lançamentos ainda.");
   // Composicao do caixa
   doughnut("cCaixa",{"Anuidades recebidas":cx.anuidades_recebidas||0,"Eventos recebidos":cx.eventos_recebidos||0,"Outras receitas recebidas":cx.outras_recebidas||0,"Despesas pagas":cx.saidas||0},true,"Sem movimentação ainda.");
   // Membros
@@ -168,10 +168,13 @@ function renderEstatico(){
   var fo=FUNIL.filter(function(s){return ps[s];});if((ps["Recusado"]||0))fo.push("Recusado");
   bar("cInd",fo,fo.map(function(s){return ps[s]||0;}),"#5a2d86");
 }
+// 1º exercício: 2025 e 2026 juntos (espelho de fin_exercicio() no SQL)
+function exAno(y){y=Number(y);return (y&&y<2026)?2026:y;}
+function exLbl(a){return String(a)==="2026"?"2025–2026":String(a);}
 function popAno(){
-  var anos={};(D.eventos.lista||[]).forEach(function(e){if(e.ano)anos[e.ano]=1;});(F.anos||[]).forEach(function(a){anos[a]=1;});
+  var anos={};(D.eventos.lista||[]).forEach(function(e){if(e.ano)anos[exAno(e.ano)]=1;});(F.anos||[]).forEach(function(a){anos[exAno(a)]=1;});
   var arr=Object.keys(anos).sort();var sel=document.getElementById("anoSel");
-  sel.innerHTML='<option value="">Todos</option>'+arr.map(function(a){return '<option>'+a+'</option>';}).join("");
+  sel.innerHTML='<option value="">Todos</option>'+arr.map(function(a){return '<option value="'+a+'">'+exLbl(a)+'</option>';}).join("");
   var pref=""+(F.ciclo||new Date().getFullYear());if(arr.indexOf(pref)>=0)sel.value=pref;
 }
 async function renderAno(){
@@ -179,7 +182,7 @@ async function renderAno(){
   var FA=FANO[ano];
   if(!FA){try{FA=FANO[ano]=await finResumo(ano);}catch(e){document.getElementById("kpisAno").innerHTML='<div style="color:#8f1d24;font-size:13px;">Erro ao ler o Financeiro: '+String(e.message||e).replace(/</g,"&lt;")+'</div>';return;}}
   if(document.getElementById("anoSel").value!==ano)return;
-  var L=ano||"(todos os anos)",R=FA.receitas||{},De=FA.despesas||{};
+  var L=ano?exLbl(ano):"(todos os anos)",R=FA.receitas||{},De=FA.despesas||{};
   document.getElementById("kpisAno").innerHTML=
      kpi(brl(R.cotizado),"Receitas "+L)
     +kpi(brl(R.recebido),"Recebido "+L,"#2f6b3a")
@@ -192,7 +195,7 @@ async function renderAno(){
   if(rp.length)mk("cRecEv",{type:"bar",data:{labels:rp.map(function(x){return x.nome;}),datasets:[{label:"Recebido",data:rp.map(function(x){return x.recebido;}),backgroundColor:"#b08a3a",borderRadius:5},{label:"A receber",data:rp.map(function(x){return x.a_receber;}),backgroundColor:"#e6d9b3",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:function(c){return c.dataset.label+": "+brl2(c.raw);}}}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});else vazio("cRecEv","Nenhuma receita de evento neste período.");
   var dc=entries(De.por_categoria||{}).filter(function(x){return Number(x[1].previsto);}).sort(function(a,b){return b[1].previsto-a[1].previsto;});
   bar("cDespCat",dc.map(function(x){return x[0];}),dc.map(function(x){return x[1].previsto;}),"#8a6a1f",true,true,"Nenhuma despesa neste período.");
-  var lst=(D.eventos.lista||[]).filter(function(e){return !ano||(""+e.ano)===ano;});
+  var lst=(D.eventos.lista||[]).filter(function(e){return !ano||(""+exAno(e.ano))===ano;});
   var caps=lst.filter(function(e){return (e.tipo||"")==="Capítulo";});
   bar("cCap",caps.map(function(x){return x.nome;}),caps.map(function(x){return x.confirmados;}),"#1e2a56",false,false,"Nenhum capítulo neste período.");
 }

@@ -19,6 +19,10 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0;}
 .tab{background:#fffdf7;border:1px solid var(--line);border-radius:22px;padding:9px 16px;font-size:13.5px;color:#5b5446;cursor:pointer;}
 .tab.on{background:var(--navy);border-color:var(--navy);color:#fff;}.tab b{font-weight:normal;opacity:.7;margin-left:4px;}
+.tab.big{font-size:15px;padding:11px 22px;font-family:Georgia,serif;}
+.subs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:-4px 0 14px;}
+.sb{background:none;border:1px solid var(--line);border-radius:18px;padding:5px 12px;font-size:12.5px;color:#5b5446;cursor:pointer;}
+.sb.on{border-color:var(--gold);background:#f6efdc;color:var(--navy);}.sb b{font-weight:normal;opacity:.7;margin-left:3px;}
 .tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
 .inp{flex:1;min-width:200px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:#fffdf7;}
 .bn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block;}
@@ -51,6 +55,7 @@ td a{color:var(--navy);}
   <div class="dhead"><div class="k">Conselho Diretor</div><h1>Importadores, imprensa e influenciadores</h1><div class="sub">Contatos que os produtores veem no Painel do Produtor. As Importadoras Membros vêm do cadastro delas; os demais você cadastra aqui.</div></div>
   <div class="wrap">
     <div class="tabs" id="tabs"></div>
+    <div class="subs" id="subs"></div>
     <div class="tools"><input class="inp" id="busca" placeholder="Buscar por nome, veículo, cidade, e-mail ou @instagram" oninput="render()"><button class="bn" onclick="abrir()">+ Novo contato</button><button class="bn o" onclick="exportar()">&#11015; Planilha (CSV)</button></div>
     <div class="tblw"><div id="lista"></div></div>
     <p class="note">Importadoras Membros: para alterar os dados, use o <a href="painel-importadoras.html" style="color:var(--navy);">Painel das Importadoras</a>. Novas importadoras que se inscreverem e forem aprovadas aparecem aqui sozinhas.</p>
@@ -76,8 +81,12 @@ td a{color:var(--navy);}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
-var IMPS=[],CTS=[],F="todos",ED=null;
-var ABAS=[["todos","Todos"],["membro","Importadoras Membros"],["Importador","Outros importadores"],["Jornalista","Jornalistas"],["Influencer","Influenciadores"],["outros","Críticos e sommeliers"]];
+var IMPS=[],CTS=[],ED=null;
+var A=/aba=imprensa/.test(location.search+location.hash)?"impr":"imp",F="todos";
+var ABAS={imp:{t:"Importadoras",subs:[["todos","Todas"],["membro","Importadoras Membros"],["Importador","Outras importadoras"]]},
+          impr:{t:"Jornalistas, influenciadores e críticos",subs:[["todos","Todos"],["Jornalista","Jornalistas"],["Influencer","Influenciadores"],["Critico","Críticos"],["outros","Sommeliers e outros"]]}};
+function abaDe(k){return (k==="membro"||k==="Importador")?"imp":"impr";}
+function setAba(a){A=a;F="todos";render();}
 function $(i){return document.getElementById(i);}
 function esc(t){return (""+(t==null?"":t)).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
 function nrm(t){return (""+(t||"")).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
@@ -85,18 +94,23 @@ function mail(e){return e?("<a href=\"mailto:"+esc(e)+"\">"+esc(e)+"</a>"):"—"
 function tel(t){if(!t)return "—";var d=(""+t).replace(/\D/g,"");if(d.length<=11)d="55"+d;return "<a href=\"https://wa.me/"+d+"\" target=\"_blank\" rel=\"noopener\" style=\"white-space:nowrap;\">"+esc(t)+"</a>";}
 function insta(i){if(!i)return "—";var h=(""+i).trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/^@/,"").replace(/\/.*$/,"");return "<a href=\"https://instagram.com/"+esc(h)+"\" target=\"_blank\" rel=\"noopener\">@"+esc(h)+"</a>";}
 function linhas(){var a=IMPS.map(function(x){return {k:"membro",tipo:"Importadora Membro",nome:x.nome,veiculo:x.plano?("Cota "+x.plano):"",contato:[x.responsavel,x.contato_nome].filter(function(v,i,a){return v&&a.indexOf(v)===i;}).join(" · "),email:x.email,telefone:x.telefone,instagram:x.instagram,endereco:x.endereco,cidade:x.cidade,id:x.id};});
-  var b=CTS.map(function(x){return {k:(x.tipo==="Importador"||x.tipo==="Jornalista"||x.tipo==="Influencer")?x.tipo:"outros",tipo:x.tipo,nome:x.nome,veiculo:x.veiculo,contato:x.contato,email:x.email,telefone:x.telefone,instagram:x.instagram,endereco:x.endereco,cidade:x.cidade,site:x.site,obs:x.obs,id:x.id,ed:1};});
+  var b=CTS.map(function(x){return {k:(x.tipo==="Importador"||x.tipo==="Jornalista"||x.tipo==="Influencer")?x.tipo:(nrm(x.tipo)==="critico"?"Critico":"outros"),tipo:x.tipo,nome:x.nome,veiculo:x.veiculo,contato:x.contato,email:x.email,telefone:x.telefone,instagram:x.instagram,endereco:x.endereco,cidade:x.cidade,site:x.site,obs:x.obs,id:x.id,ed:1};});
   return a.concat(b);}
-function render(){var L=linhas(),c={todos:L.length};L.forEach(function(x){c[x.k]=(c[x.k]||0)+1;});
-  $("tabs").innerHTML=ABAS.map(function(t){return "<span class='tab"+(F===t[0]?" on":"")+"' onclick=\"F='"+t[0]+"';render()\">"+t[1]+"<b>"+(c[t[0]]||0)+"</b></span>";}).join("");
+function render(){var T=linhas(),ca={imp:0,impr:0},c={};T.forEach(function(x){ca[abaDe(x.k)]++;c[x.k]=(c[x.k]||0)+1;});
+  var L=T.filter(function(x){return abaDe(x.k)===A;});c.todos=L.length;
+  $("tabs").innerHTML=["imp","impr"].map(function(a){return "<span class='tab big"+(A===a?" on":"")+"' onclick=\"setAba('"+a+"')\">"+ABAS[a].t+"<b>"+ca[a]+"</b></span>";}).join("");
+  $("subs").innerHTML=ABAS[A].subs.filter(function(t){return t[0]!=="outros"||c.outros;}).map(function(t){return "<span class='sb"+(F===t[0]?" on":"")+"' onclick=\"F='"+t[0]+"';render()\">"+t[1]+"<b>"+(c[t[0]]||0)+"</b></span>";}).join("");
+  $("busca").placeholder=A==="imp"?"Buscar importadora por nome, contato, cidade, e-mail ou @instagram":"Buscar por nome, veículo, cidade, e-mail ou @instagram";
+  var nota=document.querySelector(".note");if(nota)nota.style.display=A==="imp"?"":"none";
   var q=nrm($("busca").value);var r=L.filter(function(x){return (F==="todos"||x.k===F)&&(!q||nrm([x.nome,x.veiculo,x.contato,x.email,x.cidade,x.endereco,x.instagram].join(" ")).indexOf(q)>=0);});
   if(!r.length){$("lista").innerHTML="<div class='vazio'>"+(L.length?"Nenhum contato encontrado.":"Nenhum contato ainda. Use <b>+ Novo contato</b>.")+"</div>";return;}
-  var imp=function(x){return x.k==="membro"||x.k==="Importador";};var soImpr=(F==="Jornalista"||F==="Influencer"||F==="outros");
-  $("lista").innerHTML="<table><thead><tr><th>Nome</th><th>Tipo</th>"+((F==="membro"||F==="Importador")?"<th>Contato</th><th>Endereço</th>":"")+"<th>E-mail</th><th>Telefone</th><th>Instagram</th><th></th></tr></thead><tbody>"+r.map(function(x){
-    var soImp=(F==="membro"||F==="Importador");var cE=soImp?("<td>"+esc(x.contato||"—")+"</td><td>"+esc([x.endereco,x.cidade].filter(Boolean).join(" — ")||"—")+"</td>"):"";
+  var soImp=(A==="imp");
+  var imp=function(x){return x.k==="membro"||x.k==="Importador";};
+  $("lista").innerHTML="<table><thead><tr><th>Nome</th><th>Tipo</th>"+(soImp?"<th>Contato</th><th>Endereço</th>":"")+"<th>E-mail</th><th>Telefone</th><th>Instagram</th><th></th></tr></thead><tbody>"+r.map(function(x){
+    var cE=soImp?("<td>"+esc(x.contato||"—")+"</td><td>"+esc([x.endereco,x.cidade].filter(Boolean).join(" — ")||"—")+"</td>"):"";
     var extra=(!soImp&&imp(x)&&(x.contato||x.endereco||x.cidade))?("<br><small>"+esc([x.contato,[x.endereco,x.cidade].filter(Boolean).join(" — ")].filter(Boolean).join(" · "))+"</small>"):"";
-    return "<tr><td><b>"+esc(x.nome)+"</b>"+extra+(x.veiculo?("<br><small>"+esc(x.veiculo)+"</small>"):"")+(x.site?("<br><small><a href=\""+esc(/^https?:/.test(x.site)?x.site:("https://"+x.site))+"\" target=\"_blank\" rel=\"noopener\">"+esc(x.site)+"</a></small>"):"")+"</td><td><span class='pill"+(x.k==="membro"?" m":"")+"'>"+esc(x.tipo)+"</span></td>"+cE+"<td>"+mail(x.email)+"</td><td>"+tel(x.telefone)+"</td><td>"+insta(x.instagram)+"</td><td style='white-space:nowrap;'>"+(x.ed?("<button class='lk' onclick=\"abrir('"+x.id+"')\">editar</button> <button class='lk r' onclick=\"remover('"+x.id+"')\">remover</button>"):"<a href='painel-importadoras.html' style='font-size:12.5px;'>editar</a>")+"</td></tr>";}).join("")+"</tbody></table>";}
-function abrir(id){ED=id||null;var x=id?CTS.filter(function(c){return c.id===id;})[0]:{tipo:(F==="Jornalista"||F==="Influencer"||F==="Importador")?F:"Importador"};
+    return "<tr><td><b>"+esc(x.nome)+"</b>"+extra+(x.veiculo?("<br><small>"+esc(x.veiculo)+"</small>"):"")+(x.site?("<br><small><a href=\""+esc(/^https?:/.test(x.site)?x.site:("https://"+x.site))+"\" target=\"_blank\" rel=\"noopener\">"+esc(x.site)+"</a></small>"):"")+"</td><td><span class='pill"+(x.k==="membro"?" m":"")+"'>"+esc(x.tipo==="Influencer"?"Influenciador":x.tipo)+"</span></td>"+cE+"<td>"+mail(x.email)+"</td><td>"+tel(x.telefone)+"</td><td>"+insta(x.instagram)+"</td><td style='white-space:nowrap;'>"+(x.ed?("<button class='lk' onclick=\"abrir('"+x.id+"')\">editar</button> <button class='lk r' onclick=\"remover('"+x.id+"')\">remover</button>"):"<a href='painel-importadoras.html' style='font-size:12.5px;'>editar</a>")+"</td></tr>";}).join("")+"</tbody></table>";}
+function abrir(id){ED=id||null;var x=id?CTS.filter(function(c){return c.id===id;})[0]:{tipo:(F==="Jornalista"||F==="Influencer"||F==="Importador")?F:(F==="Critico"?"Crítico":(A==="imp"?"Importador":"Jornalista"))};
   $("mTit").textContent=id?"Editar contato":"Novo contato";$("fTipo").value=x.tipo||"Importador";$("fNome").value=x.nome||"";$("fVeic").value=x.veiculo||"";$("fCont").value=x.contato||"";$("fEmail").value=x.email||"";$("fTel").value=x.telefone||"";$("fInsta").value=x.instagram||"";$("fSite").value=x.site||"";$("fEnd").value=x.endereco||"";$("fCid").value=x.cidade||"";$("fObs").value=x.obs||"";$("fMsg").textContent="";tipoForm();$("modal").style.display="flex";}
 function tipoForm(){var im=$("fTipo").value==="Importador";Array.prototype.forEach.call(document.querySelectorAll(".soImp"),function(e){e.style.display=im?"":"none";});}
 function fechar(){$("modal").style.display="none";}
@@ -106,7 +120,7 @@ async function salvar(){var m=$("fMsg");var d={tipo:$("fTipo").value,nome:$("fNo
   var r=ED?await sb.from("imprensa_contatos").update(d).eq("id",ED).select("id"):await sb.from("imprensa_contatos").insert(d).select("id");
   if(r.error){m.style.color="#8f1d24";m.textContent=/endereco|contato|site/.test(r.error.message)?"Falta rodar o SQL contatos_mercado.sql no Supabase.":("Erro: "+r.error.message);return;}
   if(!r.data||!r.data.length){m.style.color="#8f1d24";m.textContent="O banco não aceitou (sem permissão).";return;}
-  fechar();await carregar();}
+  A=abaDe(d.tipo==="Importador"?"Importador":"x");fechar();await carregar();}
 async function remover(id){var x=CTS.filter(function(c){return c.id===id;})[0]||{};if(!confirm("Remover "+(x.nome||"este contato")+"?"))return;var r=await sb.from("imprensa_contatos").delete().eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}await carregar();}
 function exportar(){var L=linhas();var rows=[["Tipo","Nome","Empresa/veiculo","Contato","E-mail","Telefone","Instagram","Endereco","Cidade"]].concat(L.map(function(x){return [x.tipo,x.nome,x.veiculo||"",x.contato||"",x.email||"",x.telefone||"",x.instagram||"",x.endereco||"",x.cidade||""];}));
   var csv=rows.map(function(r){return r.map(function(v){return '"'+(""+v).replace(/"/g,'""')+'"';}).join(";");}).join("\n");var a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"}));a.download="contatos-commanderie.csv";a.click();}

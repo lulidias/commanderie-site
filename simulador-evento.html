@@ -100,6 +100,7 @@ td.n,th.n{text-align:right;white-space:nowrap;}
 </div>
 <datalist id="dlMemb"></datalist>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/ev-pendentes.js?v=1"></script>
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
 var MODO="P",SIMS=[],ADEGA=[],MEMB=[],CUR=null,S=null,SUJO=false;
@@ -119,7 +120,8 @@ function fdat(d){return d?new Date(d+"T12:00:00").toLocaleDateString("pt-BR",{we
 function cap1(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
 function arred(v,a){a=a||10;return Math.ceil((v-0.0001)/a)*a;}
 // ---------- cálculo ----------
-function calc(X){X=X||S;var p=X.p,ar=X.ar||{mp:0,cp:0};var mp=p.mp||0,cp=p.cp||0,P=mp+cp+(p.mc||0)+(p.cc||0),pag=mp+cp;
+function evLig(X){return (X&&X.status==="realizado"&&window.EVPEND)?EVPEND.daPrest(X,X.data):null;}
+function calc(X){X=X||S;var EVL=evLig(X);if(EVL)X.ar={mp:EVL.mp,cp:EVL.cp};var p=X.p,ar=X.ar||{mp:0,cp:0};var mp=p.mp||0,cp=p.cp||0,P=mp+cp+(p.mc||0)+(p.cc||0),pag=mp+cp;
   var fech=X.rest_modo==="fechado";var porPessoaRest=fech?0:num(X.preco_pessoa)*(1+num(X.servico_pct)/100);
   var rest=fech?num(X.rest_total):porPessoaRest*P;
   var vin=0,garr=0;(X.vinhos||[]).forEach(function(v){garr+=v.qtd||0;if(!v.pago)vin+=(v.qtd||0)*num(v.preco);});
@@ -151,6 +153,7 @@ async function init(){var u=(await sb.auth.getUser()).data.user;if(!u){document.
   var q=await sb.from("evento_simulacoes").select("*").order("updated_at",{ascending:false});
   if(q.error){document.getElementById("st").innerHTML="Rode o SQL <b>evento_simulacoes.sql</b> no Supabase. ("+esc(q.error.message)+")";return;}
   SIMS=q.data||[];
+  try{await EVPEND.carregar(sb);}catch(e){}
   var a=await sb.from("adega_vinhos").select("*").order("ordem",{ascending:true});var ai=await sb.from("adega_saida_itens").select("vinho_id,qtd");
   if(!a.error){var sd={};(ai.data||[]).forEach(function(i){sd[i.vinho_id]=(sd[i.vinho_id]||0)+i.qtd;});ADEGA=(a.data||[]).map(function(v){v.est=(Number(v.adquirido)||0)-(sd[v.id]||0);return v;}).filter(function(v){return v.est>0;});}
   var m=await sb.from("membros").select("nome").order("nome",{ascending:true});MEMB=(m.data||[]).map(function(x){return x.nome;}).filter(Boolean);
@@ -184,6 +187,11 @@ async function excluirSim(){if(!CUR){novaSim(true);return;}if(!confirm("Excluir 
 function msg(t,c){var m=document.getElementById("msg");m.style.color=c||"#5b5446";m.textContent=t;clearTimeout(window._mt);window._mt=setTimeout(function(){m.textContent="";},4000);}
 // ---------- edição ----------
 function set(path,v,re){var o=S,k=path.split(".");for(var i=0;i<k.length-1;i++)o=o[k[i]];o[k[k.length-1]]=v;SUJO=true;if(re)render();else side();}
+function evSel(){var R=window.EVPEND&&EVPEND.daPrest?EVPEND:null;if(!R)return "";var L=[];try{L=Object.values(EVPEND._todos?EVPEND._todos():{});}catch(e){}
+  var lig=evLig(S);var auto=!S.evento_id;
+  return "<label class='l' style='grid-column:1/-1;'><span>Evento do calendário · quem ainda não pagou vem de lá</span><select class='inp' onchange=\"set('evento_id',this.value||null,1)\"><option value=''>"+(auto?(lig?("Automático pela data: "+esc(lig.titulo||"")):"Automático pela data (nenhum evento nesta data)"):"Automático pela data")+"</option>"
+    +L.sort(function(a,b){return (""+b.data).localeCompare(""+a.data);}).map(function(e){return "<option value='"+esc(e.id)+"'"+(S.evento_id===e.id?" selected":"")+">"+esc((e.data?e.data.split("-").reverse().join("/")+" · ":"")+(e.titulo||""))+"</option>";}).join("")+"</select>"
+    +(lig?("<small style='display:block;color:#5b5446;margin-top:4px;'>"+(lig.nomes.length?("Ainda não pagaram: "+esc(lig.nomes.join(", "))):"Todos já pagaram ✔")+"</small>"):"")+"</label>";}
 function stepper(path,val,sm){return "<span class='st"+(sm?" sm":"")+"'><button type='button' onclick=\"stp('"+path+"',-1)\">−</button><input inputmode='numeric' value='"+(val||0)+"' oninput=\"set('"+path+"',Math.max(0,parseInt(this.value,10)||0))\" onblur='render()'><button type='button' onclick=\"stp('"+path+"',1)\">+</button></span>";}
 function stp(path,d){var o=S,k=path.split(".");for(var i=0;i<k.length-1;i++)o=o[k[i]];var n=Math.max(0,(parseInt(o[k[k.length-1]],10)||0)+d);o[k[k.length-1]]=n;SUJO=true;render();}
 function money(path,val,w){return "<span class='money'><input class='inp' inputmode='decimal' value='"+fv(val)+"' placeholder='0,00' style='"+(w?("width:"+w+"px;"):"")+"' oninput=\"set('"+path+"',num(this.value))\" onblur='render()'></span>";}
@@ -196,8 +204,10 @@ function render(){if(isCons()){renderCons();return;}
     +"<label class='l' style='grid-column:1/-1;'><span>Nome do evento *</span><input class='inp' id='f_titulo' value='"+esc(S.titulo)+"' placeholder='Ex.: Capítulo XI · Jantar de entronização' oninput=\"set('titulo',this.value)\"></label>"
     +"<label class='l'><span>Data</span><input class='inp' type='date' value='"+esc(S.data)+"' oninput=\"set('data',this.value)\"></label>"
     +"<label class='l'><span>Tipo</span><select class='inp' onchange=\"set('tipo',this.value,1)\">"+["Jantar","Almoço","Degustação","Coquetel"].map(function(t){return "<option"+(S.tipo===t?" selected":"")+">"+t+"</option>";}).join("")+"</select></label>"
-    +"<label class='l' style='grid-column:span 2;'><span>Local / restaurante</span><input class='inp' value='"+esc(S.local)+"' placeholder='Ex.: Piselli Boa Vista' oninput=\"set('local',this.value)\"></label></div></div>";
-  function arBox(k){return real?("<div class='arx'>ainda não pagaram "+stepper("ar."+k,(S.ar||{})[k],1)+"</div>"):"";}
+    +"<label class='l' style='grid-column:span 2;'><span>Local / restaurante</span><input class='inp' value='"+esc(S.local)+"' placeholder='Ex.: Piselli Boa Vista' oninput=\"set('local',this.value)\"></label>"
+    +(real?evSel():"")+"</div></div>";
+  var EVL=evLig(S);
+  function arBox(k){if(!real)return "";if(EVL)return "<div class='arx' title='"+esc(EVL.nomes.join(", "))+"'>ainda não pagaram <b>"+(EVL[k]||0)+"</b> <small style='color:#8a8270;'>· pelo evento</small></div>";return "<div class='arx'>ainda não pagaram "+stepper("ar."+k,(S.ar||{})[k],1)+"</div>";}
   h+="<div class='sec'><h2>"+I()+"Pessoas</h2><div class='d'>"+(real?"Quem veio. Use − e + para ver como ficaria com um membro ou convidado a mais ou a menos.":"Quantas pessoas devem vir. Use − e + para simular mais ou menos gente.")+"</div><div class='pp'>"
     +"<div class='pc pg'><b>Membros que pagam</b><small>pagam o valor de membro</small>"+stepper("p.mp",p.mp)+arBox("mp")+"</div>"
     +"<div class='pc pg'><b>Convidados que pagam</b><small>pagam o valor de convidado</small>"+stepper("p.cp",p.cp)+arBox("cp")+"</div>"

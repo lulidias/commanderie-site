@@ -25,6 +25,12 @@
 --                                                         (renderCaixa).
 --   * Anuidade das importadoras é em EUROS e não entra (igual à tela).
 --
+--   * 1º exercício: 2025 e 2026 formam UM período (nov/2025 – dez/2026),
+--     porque a Commanderie abriu em nov/2025. fin_exercicio(ano) devolve
+--     2026 para 2025 (e antes); de 2027 em diante, ano a ano. Os lançamentos
+--     continuam com o ano real — só a soma do período junta. (01/11/2026)
+--     Espelho no JS: exAno() em painel-conselho.html e painel-bi.html.
+--
 -- Se mudar uma regra no Financeiro (valorRsvpFin, evCalc, catNorm,
 -- despPg, renderAno, renderCaixa), mude aqui também.
 --
@@ -71,6 +77,12 @@ returns text language sql immutable set search_path = public as $$
   end;
 $$;
 
+-- Exercício a que pertence um ano (2025 entra no 1º exercício, 2026)
+create or replace function public.fin_exercicio(p int)
+returns int language sql immutable set search_path = public as $$
+  select case when p is not null and p < 2026 then 2026 else p end;
+$$;
+
 -- Período (um ano, ou todos se p_ano for null) — espelho de renderAno(ano)
 create or replace function public._fin_periodo(p_ano int)
 returns jsonb language plpgsql stable security definer set search_path = public as $$
@@ -88,9 +100,9 @@ begin
   -- atrasos de anos anteriores
   select coalesce(sum(coalesce(m.anuidade_valor,0)),0) into atr
     from membros m cross join lateral unnest(coalesce(m.anuidade_atrasos,'{}')) u(aa)
-   where u.aa::int <> v_ciclo and (p_ano is null or u.aa::int = p_ano);
+   where u.aa::int <> v_ciclo and (p_ano is null or fin_exercicio(u.aa::int) = p_ano);
 
-  if (p_ano is null or p_ano = v_ciclo) and anu_c > 0 then
+  if (p_ano is null or p_ano = fin_exercicio(v_ciclo)) and anu_c > 0 then
     cats := jsonb_build_object('Anuidade', jsonb_build_object('cotizado', anu_c, 'recebido', anu_p));
   end if;
   if atr > 0 then
@@ -104,7 +116,7 @@ begin
     select fin_cat_norm(categoria) cat, sum(coalesce(valor,0)) c,
            sum(case when coalesce(pago,false) then coalesce(valor,0) else 0 end) p
       from receitas
-     where (p_ano is null or ano = p_ano) and fin_cat_norm(categoria) <> 'Eventos'
+     where (p_ano is null or fin_exercicio(ano) = p_ano) and fin_cat_norm(categoria) <> 'Eventos'
      group by 1
   loop
     cats := jsonb_set(cats, array[r.cat], jsonb_build_object(
@@ -120,7 +132,7 @@ begin
            fin_valor_rsvp(x.pago_valor, x.categoria, x.convidado_nome, x.convidados, e.titulo, e.valor) val
       from eventos e join evento_rsvp x on x.evento_id = e.id
      where not coalesce(e.sem_receita,false)
-       and (p_ano is null or (e.data is not null and extract(year from e.data)::int = p_ano))
+       and (p_ano is null or (e.data is not null and fin_exercicio(extract(year from e.data)::int) = p_ano))
   ), l as (
     select id, data, nucleo, tipo, nome,
            sum(val) filter (where status='Confirmado' and val<>0) rec,
@@ -130,7 +142,7 @@ begin
       from v group by 1,2,3,4,5
   )
   select coalesce(jsonb_agg(jsonb_build_object('id',id,'nome',nome,'tipo',tipo,'nucleo',nucleo,
-            'ano',extract(year from data)::int,'data',to_char(data,'DD/MM/YYYY'),
+            'ano',fin_exercicio(extract(year from data)::int),'data',to_char(data,'DD/MM/YYYY'),
             'recebido',coalesce(rec,0),'a_receber',coalesce(arec,0),'n_recebido',nrec,'n_a_receber',narec) order by data),'[]'::jsonb),
          coalesce(sum(rec),0), coalesce(sum(arec),0)
     into ev, ev_r, ev_a
@@ -147,12 +159,12 @@ begin
   select coalesce(sum(coalesce(valor,0)),0),
          coalesce(sum(case when coalesce(pago,false) then coalesce(valor,0)
                            else least(coalesce(valor,0), greatest(0, coalesce(valor_pago,0))) end),0)
-    into dc, dp from despesas where p_ano is null or ano = p_ano;
+    into dc, dp from despesas where p_ano is null or fin_exercicio(ano) = p_ano;
   select coalesce(jsonb_object_agg(cat, jsonb_build_object('previsto', c, 'pago', p)), '{}'::jsonb) into dcat
     from (select coalesce(nullif(btrim(categoria),''),'Outro') cat, sum(coalesce(valor,0)) c,
                  sum(case when coalesce(pago,false) then coalesce(valor,0)
                           else least(coalesce(valor,0), greatest(0, coalesce(valor_pago,0))) end) p
-            from despesas where p_ano is null or ano = p_ano group by 1) t;
+            from despesas where p_ano is null or fin_exercicio(ano) = p_ano group by 1) t;
 
   return jsonb_build_object(
     'ano', p_ano,
@@ -198,7 +210,7 @@ begin
 
   -- anos do seletor do Financeiro (ciclo + anos com receitas/despesas)
   select coalesce(jsonb_agg(a order by a), '[]'::jsonb) into anos from (
-    select v_ciclo a union select ano from receitas where ano is not null union select ano from despesas where ano is not null) t;
+    select fin_exercicio(v_ciclo) a union select fin_exercicio(ano) from receitas where ano is not null union select fin_exercicio(ano) from despesas where ano is not null) t;
   for y in select (jsonb_array_elements_text(anos))::int loop
     por_ano := por_ano || jsonb_build_object(y::text, public._fin_periodo(y) - 'ano');
   end loop;
@@ -238,3 +250,4 @@ revoke all on function public.fin_resumo(int) from public, anon;
 grant execute on function public.fin_resumo(int) to authenticated;
 grant execute on function public.fin_valor_rsvp(numeric,text,text,int,text,numeric) to authenticated;
 grant execute on function public.fin_cat_norm(text) to authenticated;
+grant execute on function public.fin_exercicio(int) to authenticated;

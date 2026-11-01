@@ -712,13 +712,20 @@ function imprimirPresenca(evid){var ev=(eventos||[]).find(function(z){return z.i
   var w=window.open("","_blank");if(!w){alert("Permita pop-ups para este site para gerar a lista.");return;}w.document.open();w.document.write(h);w.document.close();setTimeout(function(){try{w.focus();w.print();}catch(err){}},600);}
 function presencaBloco(ev,pres){
   var nuc=ev.nucleo||"";var mems=window.MEMBROS_ALL||[];
-  function linha(m){var on=pres[m.id]?"checked":"";return "<label style=\"display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 0;cursor:pointer;\"><input type=\"checkbox\" "+on+" style=\"width:auto;margin:0;\" onchange=\"marcarPresenca('"+ev.id+"','"+m.id+"',this.checked)\"> "+esc(m.nome)+(m.nucleo?(" <span style=\"color:#9a937f;font-size:11px;\">· "+esc(m.nucleo)+"</span>"):"")+"</label>";}
+  // Quem está inscrito e PAGO (Confirmado, qualquer categoria: membro, Mestre, Conselho…) já conta
+  // como presente, a não ser que alguém desmarque. Ficam no topo da lista. (01/11/2026)
+  var pagos={};(ev.evento_rsvp||[]).forEach(function(x){if(x.status==="Confirmado"&&x.user_id)pagos[x.user_id]=1;});
+  function ehPago(m){return !!(m.user_id&&pagos[m.user_id]);}
+  function presente(m){return pres[m.id]===true||(pres[m.id]!==false&&ehPago(m));}
+  function linha(m){var on=presente(m)?"checked":"";return "<label style=\"display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 0;cursor:pointer;\"><input type=\"checkbox\" "+on+" style=\"width:auto;margin:0;\" onchange=\"marcarPresenca('"+ev.id+"','"+m.id+"',this.checked)\"> "+esc(m.nome)+(m.nucleo?(" <span style=\"color:#9a937f;font-size:11px;\">· "+esc(m.nucleo)+"</span>"):"")+(ehPago(m)?" <span style=\"color:#1e2a56;font-size:10.5px;border:1px solid #cfd6ea;background:#eef1f8;border-radius:10px;padding:0 6px;\">inscrito e pago</span>":"")+"</label>";}
+  var ins=mems.filter(ehPago),resto=mems.filter(function(m){return !ehPago(m);});
   var doNuc,outros;
-  if(nuc&&nuc!=="Brasil"){doNuc=mems.filter(function(m){return (m.nucleo||"")===nuc;});outros=mems.filter(function(m){return (m.nucleo||"")!==nuc;});}
-  else{doNuc=mems;outros=[];}
-  var nPres=Object.keys(pres).filter(function(k){return pres[k];}).length;
-  var html="<div style=\"margin:10px 0 6px;\"><div style=\"font-size:12px;color:#8a8270;font-weight:bold;margin-bottom:4px;\">Lista de presença"+(nuc&&nuc!=="Brasil"?(" — Núcleo "+esc(nuc)):"")+" <span style=\"color:#2f6b3a;\">("+nPres+" presente"+(nPres===1?"":"s")+")</span></div>";
-  html+="<div style=\"border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:#fffdf7;max-height:240px;overflow:auto;\">"+(doNuc.length?doNuc.map(linha).join(""):"<span style=\"font-size:12px;color:#9a937f;\">Nenhum membro neste núcleo.</span>")+"</div>";
+  if(nuc&&nuc!=="Brasil"){doNuc=resto.filter(function(m){return (m.nucleo||"")===nuc;});outros=resto.filter(function(m){return (m.nucleo||"")!==nuc;});}
+  else{doNuc=resto;outros=[];}
+  var nPres=mems.filter(presente).length;
+  var html="<div style=\"margin:10px 0 6px;\"><div style=\"font-size:12px;color:#8a8270;font-weight:bold;margin-bottom:4px;\">Lista de presença"+(nuc&&nuc!=="Brasil"?(" — Núcleo "+esc(nuc)):"")+" <span style=\"color:#1e2a56;\">("+nPres+" presente"+(nPres===1?"":"s")+")</span></div>";
+  if(ins.length)html+="<div style=\"font-size:11.5px;color:#1e2a56;margin:2px 0 4px;\">Inscritos e pagos ("+ins.length+") · já contam como presentes — desmarque quem não foi</div><div style=\"border:1px solid #cfd6ea;border-radius:10px;padding:8px 12px;background:#f6f8fc;max-height:240px;overflow:auto;margin-bottom:8px;\">"+ins.map(linha).join("")+"</div><div style=\"font-size:11.5px;color:#8a8270;margin:2px 0 4px;\">Outros membros</div>";
+  html+="<div style=\"border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:#fffdf7;max-height:240px;overflow:auto;\">"+(doNuc.length?doNuc.map(linha).join(""):"<span style=\"font-size:12px;color:#9a937f;\">Nenhum outro membro neste núcleo.</span>")+"</div>";
   if(outros.length){html+="<div style=\"margin-top:6px;\"><a onclick=\"togglePresOutros('"+ev.id+"')\" style=\"color:var(--navy);cursor:pointer;font-size:12.5px;\">+ comendadores de outros núcleos ("+outros.length+")</a><div id=\"presOutros_"+ev.id+"\" style=\"display:none;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:#fbf7ec;max-height:240px;overflow:auto;margin-top:6px;\">"+outros.map(linha).join("")+"</div></div>";}
   html+="</div>";return html;
 }

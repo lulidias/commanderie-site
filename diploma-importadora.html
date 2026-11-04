@@ -225,6 +225,11 @@ async function iniciar(){
   if(q.get("de")==="importador"){$("lnkBack").href="painel-importador.html";$("lnkLogo").href="painel-importador.html";}
   function bloq(t,p,login){$("bloq").querySelector("h2").textContent=t;$("bloq").querySelector("p").textContent=p||"";$("bloq").querySelector("a").style.display=login?"inline-block":"none";}
   function mostra(){$("bloq").style.display="none";$("ctl").style.display="block";$("stage").style.display="flex";escala();pintar();}
+  // Prévia de TESTE (vem do modo teste da inscrição de importadora): mostra o diploma com
+  // os dados digitados, marcado como prévia, sem login e sem importadora cadastrada.
+  if(q.get("amostra")==="1"){OFICIAL=false;preencher({nome:q.get("nome")||"Importadora Exemplo",responsavel_nome:q.get("rep")||"",plano:q.get("cota")||"Ouro"});if(q.get("cid"))$("iCid").value=q.get("cid");
+    $("lnkBack").href="painel-conselho.html?sec=inscricoes";$("lnkLogo").href=$("lnkBack").href;$("avPrev").style.cssText="display:block;background:#fbeaea;border-color:#e6cccc;color:#8f1d24;";
+    $("avPrev").innerHTML="<b>MODO TESTE</b> — prévia do diploma que a importadora recebe depois que o pagamento é confirmado e o Conselho aprova. O diploma oficial sai sem a marca de prévia.";mostra();return;}
   if(!sb){bloq("Não foi possível carregar","Tente de novo em instantes.");return;}
   try{var u=(await sb.auth.getUser()).data.user;if(!u){bloq("Acesso restrito","Entre na sua conta para ver o diploma.",true);return;}
     var c=await sb.rpc("is_conselho");var cons=!!(c&&c.data===true);

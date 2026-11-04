@@ -96,6 +96,10 @@ async function iniciar(){
   document.getElementById("lista").innerHTML=h;document.getElementById("st").style.display="none";document.getElementById("app").style.display="block";}
 iniciar();
 </script>
-<script src="js/painel-shell.js?v=20261031" data-esconder=".dtop"></script>
+<script>
+// Duas versões da mesma página: pelo Painel do Comendador (nucleos.html) fica simples, com
+// "← Painel"; pelo menu do Conselho (nucleos.html?conselho=1) entra a moldura do Conselho.
+(function(){if(!/[?&]conselho=1\b/.test(location.search))return;var s=document.createElement("script");s.src="js/painel-shell.js?v=20261031";s.setAttribute("data-esconder",".dtop");document.body.appendChild(s);})();
+</script>
 <script src="/js/redes-rodape.js?v=4" defer></script>
 </body></html>

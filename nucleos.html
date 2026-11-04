@@ -81,14 +81,16 @@ async function iniciar(){
   NUC.forEach(function(N){var k=nrm(N.n);
     var mest=M.filter(function(m){return nrm(m.nucleo)===k&&/mestre/.test(nrm(m.grau))&&!/grao/.test(nrm(m.grau));});
     var nMem=M.filter(function(m){return nrm(m.nucleo)===k;}).length;
-    var caps=E.filter(function(e){return nrm(e.nucleo)===k&&nrm(e.tipo)==="capitulo"&&e.data&&(e.realizado||e.data<=hoje);});
-    var ab=caps[0]||null;var nEv=E.filter(function(e){return nrm(e.nucleo)===k&&e.data&&(e.realizado||e.data<=hoje);}).length;
+    // eventos do núcleo: pelo campo núcleo, ou (sem núcleo) pela cidade/local do evento
+    var doN=E.filter(function(e){var en=nrm(e.nucleo);return e.data&&(e.realizado||e.data<=hoje)&&(en===k||((!en||en==="brasil")&&(nrm(e.cidade).indexOf(k)>=0||nrm(e.local).indexOf(k)>=0)));});
+    // abertura = 1º Capítulo do núcleo; se não houver Capítulo, o 1º evento realizado
+    var ab=doN.filter(function(e){return nrm(e.tipo)==="capitulo";})[0]||doN[0]||null;var nEv=doN.length;
     var fotos=ab?(ab.evento_fotos||[]).slice().sort(function(a,b){return (a.ordem||0)-(b.ordem||0);}).map(function(f){return f.url;}):[];
     if(ab){GALS[ab.id]=fotos;GALN[ab.id]="Abertura "+N.n+" · "+[(ab.tipo||"")+(ab.numero?(" "+ab.numero):""),ab.titulo].filter(Boolean).join(" · ");}
     h+="<div class='nuc'><div class='nhead'><div style='flex:1;min-width:200px;'><h2>"+esc(N.n)+"</h2><div class='cid'>"+esc(N.c)+(N.s?(" · "+N.s):"")+"</div></div>"
       +(ab?("<span class='pill pa'>Aberto em "+esc(fdat(ab.data))+"</span>"):"<span class='pill pb'>Abertura em breve</span>")+"</div>"
       +"<div class='mest'>"+(mest.length?mest.map(function(m){return "<div class='m'>"+av(m)+"<div><div class='k'>Mestre</div><b>"+esc(m.nome)+"</b></div></div>";}).join(""):"<div class='m'><div class='av'>?</div><div><div class='k'>Mestre</div><b style='color:#8a8270;'>a definir</b></div></div>")+"</div>"
-      +"<div class='grid4'><div class='st'><span>Comendadores</span><b>"+nMem+"</b></div><div class='st'><span>Eventos realizados</span><b>"+nEv+"</b></div><div class='st'><span>Capítulo de abertura</span><b style='font-size:14.5px;'>"+(ab?esc([(ab.numero?("Capítulo "+ab.numero):(ab.tipo||"")),ab.local].filter(Boolean).join(" · ")):"—")+"</b></div></div>"
+      +"<div class='grid4'><div class='st'><span>Comendadores</span><b>"+nMem+"</b></div><div class='st'><span>Eventos realizados</span><b>"+nEv+"</b></div><div class='st'><span>Evento de abertura</span><b style='font-size:14.5px;'>"+(ab?esc([(ab.numero?("Capítulo "+ab.numero):(ab.tipo||"")),ab.local].filter(Boolean).join(" · ")):"—")+"</b></div></div>"
       +(fotos.length?("<div class='fts'>"+fotos.slice(0,8).map(function(u,i){return "<div onclick=\"lbOpen('"+ab.id+"',"+i+")\"><img src='"+esc(u)+"' loading='lazy' alt=''>"+(i===7&&fotos.length>8?("<span class='mais'>+"+(fotos.length-8)+"</span>"):"")+"</div>";}).join("")+"</div><a class='lk' onclick=\"lbOpen('"+ab.id+"')\">&#9638; Ver todas as "+fotos.length+" fotos da abertura e baixar</a>"):(ab?"<div style='font-size:12.5px;color:#8a8270;margin-top:12px;'>As fotos da abertura ainda não foram publicadas.</div>":""))
       +"</div>";});
   document.getElementById("lista").innerHTML=h;document.getElementById("st").style.display="none";document.getElementById("app").style.display="block";}

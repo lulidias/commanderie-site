@@ -16,7 +16,14 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background
 .dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:34px;margin:6px 0 4px;}
 .dhead .sub{font-size:13.5px;color:#8a8270;max-width:620px;margin:0 auto;line-height:1.5;}
 .wrap{max-width:980px;margin:0 auto;padding:16px 16px 60px;}
-.gm{display:flex;gap:16px;align-items:center;background:var(--navy);color:#fff;border-radius:16px;padding:16px 20px;margin-bottom:18px;}
+.gm{display:flex;gap:16px;align-items:center;background:var(--navy);color:#fff;border-radius:16px;padding:16px 20px;margin-bottom:12px;}
+.gms{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:12px;}
+.gms .gm{margin-bottom:0;}
+.gm .s{font-size:12px;color:#ddd0ad;margin-top:3px;line-height:1.4;}
+.hist{display:flex;gap:16px;align-items:center;background:#fffdf7;border:1.5px solid var(--gold);border-radius:16px;padding:16px 20px;margin-bottom:22px;}
+.hist .k{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.hist b{font-family:Georgia,serif;font-weight:normal;font-size:21px;color:var(--navy);display:block;margin-top:2px;}
+.hist .s{font-size:13px;color:#5b5446;margin-top:3px;line-height:1.45;}
 .gm .k{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:#e7d8a8;}
 .gm b{font-family:Georgia,serif;font-weight:normal;font-size:21px;display:block;margin-top:2px;}
 .nuc{background:#fffdf7;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:16px;padding:18px 20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(40,30,10,.05);}
@@ -81,7 +88,13 @@ async function iniciar(){
   CONS=false;if(/[?&]conselho=1\b/.test(location.search)){try{var c=await sb.rpc("is_conselho");CONS=!!(c&&c.data===true);}catch(e){}}
   EVS=E.filter(function(e){return e.data&&(e.realizado||e.data<=hoje);}).slice().reverse();
   var gms=M.filter(function(m){return /gr[aã]o/i.test(nrm(m.grau));});
-  var h=gms.length?("<div class='gm'>"+av(gms[0])+"<div><div class='k'>Grão-Mestre · Brasil</div><b>"+gms.map(function(g){return esc(g.nome);}).join(" · ")+"</b></div></div>"):"";
+  // Topo: Grand Maître internacional (Grand Conseil du Vin de Bordeaux) e Grão-Mestre do Brasil;
+  // em destaque, o Grand Maître que participou da abertura da Commanderie no Brasil.
+  var gmBr=gms[0]||{nome:"Manu Brandão"};
+  var h="<div class='gms'>"
+    +"<div class='gm'>"+av({nome:"Hubert de Boüard"})+"<div><div class='k'>Grand Maître · Internacional</div><b>Hubert de Boüard</b><div class='s'>Grand Conseil du Vin de Bordeaux</div></div></div>"
+    +"<div class='gm'>"+av(gmBr)+"<div><div class='k'>Grão-Mestre · Brasil</div><b>"+esc(gmBr.nome)+"</b><div class='s'>Commanderie de Bordeaux do Brasil</div></div></div></div>"
+    +"<div class='hist'>"+av({nome:"Jean-Marc Dulong"})+"<div><div class='k'>&#10022; Na abertura da Commanderie no Brasil</div><b>Jean-Marc Dulong</b><div class='s'>Grand Maître Internacional do Grand Conseil du Vin de Bordeaux de 2023 a outubro de 2026 — participou da abertura da Commanderie de Bordeaux no Brasil.</div></div></div>";
   NUC.forEach(function(N){var k=nrm(N.n);
     var mest=M.filter(function(m){return nrm(m.nucleo)===k&&/mestre/.test(nrm(m.grau))&&!/grao/.test(nrm(m.grau));});
     var nMem=M.filter(function(m){return nrm(m.nucleo)===k;}).length;

@@ -153,9 +153,16 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
     </div>
     <ol class="steps">
       <li>No app do banco, escolha <b>Pix → Ler QR Code</b> ou <b>Pix Copia e Cola</b> (o valor já vem preenchido).</li>
-      <li>Depois de pagar, envie o <b>comprovante</b> — o Conselho confirma e conclui a associação.</li>
+      <li>Depois de pagar, <b>envie o comprovante aqui embaixo</b> para finalizar a inscrição — o Conselho confere e conclui a associação.</li>
     </ol>
-    <div style="text-align:center;margin-top:16px;"><a class="btn" id="pComp" href="#">Enviar comprovante por e-mail</a></div>
+    <div id="compBox" style="margin-top:16px;border:1.5px solid var(--gold,#b08a3a);border-radius:14px;padding:16px 18px;background:#fffdf7;text-align:center;">
+      <div style="font-family:Georgia,serif;color:#1e2a56;font-size:18px;">Enviar o comprovante e finalizar</div>
+      <div style="font-size:13px;color:#5b5446;margin:4px 0 10px;">Foto ou PDF do comprovante do PIX. A inscrição só é concluída depois do envio.</div>
+      <input type="file" id="compArq" accept="image/*,application/pdf" style="max-width:100%;">
+      <div style="margin-top:10px;"><button class="btn" id="compBtn" onclick="enviarComprovante()">Enviar comprovante e finalizar inscrição</button></div>
+      <div id="compMsg" style="font-size:13px;margin-top:8px;min-height:16px;"></div>
+    </div>
+    <div style="text-align:center;margin-top:10px;font-size:12.5px;color:#8a8270;">Não conseguiu enviar? <a id="pComp" href="#" style="color:#1e2a56;">mande o comprovante por e-mail</a>.</div>
     <div class="dipbox"><div class="dipin"><img src="img/brasao-alta.png" alt=""><span><b>Diploma de Importadora Oficial</b><br>Após a confirmação, o Conselho emite o diploma da sua importadora, no padrão dos diplomas do Grand Conseil. Ele fica disponível para baixar no Painel do Importador.</span></div></div>
     <p class="sub" style="font-size:12.5px;margin-top:12px;">O valor em reais segue o câmbio comercial do euro no momento da inscrição.</p>
   </div>
@@ -168,7 +175,20 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
-var PLANO="Ouro";
+var PLANO="Ouro",EMAIL_INSC="",VALOR_BRL=0;
+// Comprovante do PIX: vai para a pasta privada imp-comprovantes e fica ligado à inscrição
+// (sql/importadora_inscricao_comprovante.sql). Sem ele a inscrição fica "Aguardando pagamento".
+async function enviarComprovante(){var m=document.getElementById("compMsg"),b=document.getElementById("compBtn"),f=document.getElementById("compArq").files[0];
+  if(!f){m.style.color="#8f1d24";m.textContent="Escolha a foto ou o PDF do comprovante.";return;}
+  if(f.size>10*1024*1024){m.style.color="#8f1d24";m.textContent="Arquivo muito grande (máx. 10 MB).";return;}
+  b.disabled=true;m.style.color="#5b5446";m.textContent="Enviando…";
+  try{var ext=((f.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg");var path="insc/"+Date.now()+"-"+Math.random().toString(36).slice(2,10)+"."+ext;
+    var up=await sb.storage.from("imp-comprovantes").upload(path,f,{contentType:f.type||undefined,upsert:false});if(up.error)throw up.error;
+    var r=await sb.rpc("importadora_insc_comprovante",{p_email:EMAIL_INSC,p_path:path,p_valor:VALOR_BRL||0});if(r.error)throw r.error;
+    if(r.data===false)throw new Error("inscrição não encontrada");
+    document.getElementById("compBox").innerHTML="<div style=\"font-family:Georgia,serif;color:#1e2a56;font-size:20px;\">✦ Inscrição finalizada ✦</div><div style=\"font-size:14px;color:#5b5446;margin-top:6px;\">Recebemos o seu comprovante. O Conselho confere o pagamento e envia a confirmação da associação por e-mail.</div>";
+  }catch(e){b.disabled=false;m.style.color="#8f1d24";m.textContent="Não foi possível enviar agora. Tente de novo ou use o link de e-mail abaixo.";}
+}
 var EUR={Ouro:1800,Prata:900};
 var MARGEM=0;            // % acrescentado ao cambio comercial do dia (0 = sem acrescimo)
 var COT=null,COT_HORA="";
@@ -208,6 +228,7 @@ async function enviar(){
     var pag=vb?("[Pagamento PIX] cota "+PLANO+" € "+EUR[PLANO]+" × câmbio "+COT.toFixed(4)+(MARGEM?(" + "+MARGEM+"%"):"")+" = "+brl(vb)+(COT_HORA?(" (cotação "+COT_HORA+")"):"")):"";
     var r=await sb.rpc("inscrever_importadora",{p:{nome:nome,responsavel:resp,cnpj:v("cnpj"),email:email,telefone:v("telefone"),cidade:v("cidade"),instagram:v("instagram"),plano:PLANO,obs:[v("obs"),pag].filter(Boolean).join("\n")}});
     if(r.error){btn.disabled=false;diz("Não foi possível enviar: "+r.error.message,"#8f1d24");return;}
+    EMAIL_INSC=email;VALOR_BRL=vb||0;
     mostrarPagamento(nome);
   }catch(e){btn.disabled=false;diz("Não foi possível enviar. Tente de novo.","#8f1d24");}
 }

@@ -456,7 +456,7 @@ async function carregarImportadores(){
   var el=document.getElementById("tabImp");
   var q=await sb.rpc("contatos_importadores");
   if(q.error){el.innerHTML="<p style=\"color:#9a937f;font-size:13px;\">(rode o SQL importadores_contato.sql) "+esc(q.error.message)+"</p>";return;}
-  IMP_ROWS=q.data||[];
+  IMP_ROWS=(q.data||[]).filter(function(x){return !/^\[TESTE\]/.test(x.nome||"");});
   if(!IMP_ROWS.length){el.innerHTML="<p style=\"color:#8a8270;font-size:13px;\">Nenhuma importadora.</p>";return;}
   var rm=IS_CONSELHO;
   var tb="<table class=\"tbl\"><thead><tr><th>Importadora</th><th>Contato</th><th>Endereço</th><th>E-mail</th><th>Telefone</th><th>Instagram</th>"+(rm?"<th></th>":"")+"</tr></thead><tbody>";

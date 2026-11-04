@@ -124,7 +124,7 @@ async function salvar(){var m=$("fMsg");var d={tipo:$("fTipo").value,nome:$("fNo
 async function remover(id){var x=CTS.filter(function(c){return c.id===id;})[0]||{};if(!confirm("Remover "+(x.nome||"este contato")+"?"))return;var r=await sb.from("imprensa_contatos").delete().eq("id",id);if(r.error){alert("Erro: "+r.error.message);return;}await carregar();}
 function exportar(){var L=linhas();var rows=[["Tipo","Nome","Empresa/veiculo","Contato","E-mail","Telefone","Instagram","Endereco","Cidade"]].concat(L.map(function(x){return [x.tipo,x.nome,x.veiculo||"",x.contato||"",x.email||"",x.telefone||"",x.instagram||"",x.endereco||"",x.cidade||""];}));
   var csv=rows.map(function(r){return r.map(function(v){return '"'+(""+v).replace(/"/g,'""')+'"';}).join(";");}).join("\n");var a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"}));a.download="contatos-commanderie.csv";a.click();}
-async function carregar(){var a=await sb.rpc("contatos_importadores");IMPS=(a&&!a.error&&a.data)||[];
+async function carregar(){var a=await sb.rpc("contatos_importadores");IMPS=((a&&!a.error&&a.data)||[]).filter(function(x){return !/^\[TESTE\]/.test(x.nome||"");});
   var b=await sb.from("imprensa_contatos").select("*").order("nome",{ascending:true});CTS=(b&&!b.error&&b.data)||[];
   if(b&&b.error){$("lista").innerHTML="<div class='vazio' style='color:#8f1d24;'>Erro: "+esc(b.error.message)+"</div>";return;}render();}
 async function iniciar(){var u=(await sb.auth.getUser()).data.user;

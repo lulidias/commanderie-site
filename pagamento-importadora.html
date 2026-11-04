@@ -132,10 +132,14 @@ function copiarChave(){var m=document.getElementById("pMsg");(navigator.clipboar
 var Q=new URLSearchParams(location.search);
 var NOME=(Q.get("imp")||"").slice(0,80),PLANO=/prata/i.test(Q.get("cota")||"")?"Prata":"Ouro",ANO=(Q.get("ano")||"").replace(/\D/g,"").slice(0,4);
 var EURV=parseFloat(Q.get("eur"));if(!(EURV>0&&EURV<100000))EURV=EUR[PLANO];
+// Valor fixo em REAIS (importadora de TESTE: &brl=1) — sem câmbio
+var BRLV=parseFloat((Q.get("brl")||"").replace(",","."));if(!(BRLV>0&&BRLV<100000))BRLV=0;
 async function iniciar(){
   document.getElementById("pSub").innerHTML=(NOME?("<b>"+NOME.replace(/[<>&]/g,"")+"</b> · "):"")+"cota <b>"+PLANO+"</b> · € "+EURV.toLocaleString("pt-BR")+(ANO?(" · anuidade "+ANO):"");
-  await cotacao();var v=valorBrl(EURV);var txid=("IMP"+NOME.normalize("NFD").replace(/[^A-Za-z0-9]/g,"").toUpperCase()+(ANO||"")).slice(0,25);
-  if(v){document.getElementById("pBrl").textContent=brl(v);document.getElementById("pCalc").innerHTML="€ "+EURV.toLocaleString("pt-BR")+" × câmbio "+COT.toLocaleString("pt-BR",{minimumFractionDigits:4,maximumFractionDigits:4})+(MARGEM?(" + "+MARGEM+"%"):"")+(COT_HORA?("<br>cotação de "+COT_HORA):"");PIX=pixPayload(v,txid);}
+  if(BRLV)document.getElementById("pSub").innerHTML=(NOME?("<b>"+NOME.replace(/[<>&]/g,"")+"</b> · "):"")+"<b style='color:#8f1d24;'>valor de teste</b>"+(ANO?(" · anuidade "+ANO):"");
+  if(!BRLV)await cotacao();var v=BRLV||valorBrl(EURV);var txid=("IMP"+NOME.normalize("NFD").replace(/[^A-Za-z0-9]/g,"").toUpperCase()+(ANO||"")).slice(0,25);
+  if(v&&BRLV){document.getElementById("pBrl").textContent=brl(v);document.getElementById("pCalc").textContent="Valor fixo em reais (teste) — sem câmbio.";PIX=pixPayload(v,txid);}
+  else if(v){document.getElementById("pBrl").textContent=brl(v);document.getElementById("pCalc").innerHTML="€ "+EURV.toLocaleString("pt-BR")+" × câmbio "+COT.toLocaleString("pt-BR",{minimumFractionDigits:4,maximumFractionDigits:4})+(MARGEM?(" + "+MARGEM+"%"):"")+(COT_HORA?("<br>cotação de "+COT_HORA):"");PIX=pixPayload(v,txid);}
   else{document.getElementById("pBrl").textContent="€ "+EURV.toLocaleString("pt-BR");document.getElementById("pCalc").textContent="Não foi possível obter o câmbio agora. Atualize a página em instantes; a chave PIX abaixo já pode ser usada.";PIX=pixPayload(0,txid);}
   var q=document.getElementById("qr");q.innerHTML="";try{new QRCode(q,{text:PIX,width:180,height:180,correctLevel:QRCode.CorrectLevel.M});}catch(e){q.style.display="none";}
   document.getElementById("pComp").href="mailto:sac@commanderiedebordeaux.com.br?subject="+encodeURIComponent("Comprovante PIX — Anuidade importadora "+NOME+(ANO?(" "+ANO):"")+" — cota "+PLANO)+"&body="+encodeURIComponent("Segue o comprovante do PIX da anuidade"+(ANO?(" "+ANO):"")+" (cota "+PLANO+(v?(", "+brl(v)):"")+") da importadora "+NOME+".");}

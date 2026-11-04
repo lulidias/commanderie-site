@@ -38,6 +38,7 @@
       { t: "Novo membro", h: "painel-conselho.html?sec=novomembro", i: "mais" },
       { t: "Membros", h: "painel-membros.html", i: "gente" },
       { t: "Embaixadas", h: "painel-embaixadas.html", i: "predio" },
+      { t: "Núcleos (Mestres e aberturas)", h: "nucleos.html", i: "mapa" },
       { t: "Membro do Ano", h: "painel-membro-ano.html", i: "selo" },
       { t: "Disciple & Compagnon", h: "disciples-compagnons.html", i: "doc" }] },
     { g: "Eventos", itens: [{ t: "Eventos e Capítulos", h: "painel-conselho.html?sec=eventos", i: "cal", c: "ev" }] },

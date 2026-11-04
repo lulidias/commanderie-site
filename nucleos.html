@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Núcleos — Commanderie de Bordeaux</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><link rel="apple-touch-icon" href="img/icon-180.png"><meta name="theme-color" content="#1e2a56">
+<style>
+:root{--cream:#f8f3e6;--navy:#1e2a56;--gold:#b08a3a;--gold-l:#c9a85c;--red:#8f1d24;--ink:#2a2620;--line:#ddd0ad;}
+*{box-sizing:border-box;}
+html,body{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 22px;background:#fffdf7;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+.dtop img{width:34px;}.dtop b{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.dtop .back{margin-left:auto;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;}
+.dhead{text-align:center;padding:34px 20px 6px;}
+.dhead .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.dhead h1{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:34px;margin:6px 0 4px;}
+.dhead .sub{font-size:13.5px;color:#8a8270;max-width:620px;margin:0 auto;line-height:1.5;}
+.wrap{max-width:980px;margin:0 auto;padding:16px 16px 60px;}
+.gm{display:flex;gap:16px;align-items:center;background:var(--navy);color:#fff;border-radius:16px;padding:16px 20px;margin-bottom:18px;}
+.gm .k{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:#e7d8a8;}
+.gm b{font-family:Georgia,serif;font-weight:normal;font-size:21px;display:block;margin-top:2px;}
+.nuc{background:#fffdf7;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:16px;padding:18px 20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(40,30,10,.05);}
+.nhead{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;}
+.nhead h2{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:24px;margin:0;}
+.nhead .cid{font-size:12.5px;color:#8a8270;margin-top:2px;}
+.pill{display:inline-block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:3px 10px;white-space:nowrap;}
+.pa{color:var(--navy);background:#eef1f8;border:1px solid #cfd6ea;}
+.pb{color:#8a6a1f;background:#f6efdc;border:1px solid var(--line);}
+.av{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);background:#efe7d2;flex:none;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;color:var(--gold);font-size:22px;overflow:hidden;}
+.av img{width:100%;height:100%;object-fit:cover;}
+.mest{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.m{display:flex;gap:10px;align-items:center;background:#faf6ea;border:1px solid var(--line);border-radius:12px;padding:8px 12px;}
+.m .k{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);}
+.m b{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:16px;display:block;}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:14px;}
+.st{background:#faf6ea;border:1px solid var(--line);border-radius:10px;padding:8px 12px;}
+.st span{display:block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#8a8270;}
+.st b{font-family:Georgia,serif;font-weight:normal;color:var(--navy);font-size:17px;}
+.fts{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;margin-top:12px;}
+.fts div{aspect-ratio:1;border-radius:8px;overflow:hidden;cursor:zoom-in;background:#e9e1cc;position:relative;}
+.fts img{width:100%;height:100%;object-fit:cover;display:block;}
+.fts .mais{position:absolute;inset:0;background:rgba(30,42,86,.72);color:#fff;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:18px;}
+.lk{display:inline-block;margin-top:10px;font-size:13px;color:var(--navy);cursor:pointer;text-decoration:underline;}
+.state{text-align:center;padding:70px 20px;color:#6a634f;}.state h2{font-family:Georgia,serif;color:var(--navy);font-weight:normal;}
+.btn{display:inline-block;background:var(--navy);color:#fff;border-radius:10px;padding:10px 18px;text-decoration:none;}
+#lightbox{display:none;position:fixed;inset:0;background:rgba(10,8,5,.93);z-index:60;align-items:center;justify-content:center;}
+</style></head><body>
+<div class="dtop"><a href="index.html?painel=1" style="display:inline-flex;"><img src="img/brasao.png" alt="Brasão"></a><b>Núcleos</b><a class="back" href="index.html?painel=1">&#8592; Painel</a></div>
+<div id="st" class="state">Carregando…</div>
+<div id="app" style="display:none;">
+  <div class="dhead"><div class="k">Commanderie de Bordeaux do Brasil</div><h1>Os Núcleos</h1><div class="sub">Cada núcleo com o seu Mestre, a cidade e o capítulo de abertura — com as fotos daquela noite.</div></div>
+  <div class="wrap" id="lista"></div>
+</div>
+<div id="lightbox" onclick="if(event.target===this)lbClose()"><span onclick="lbClose()" style="position:absolute;top:12px;right:20px;color:#fff;font-size:32px;cursor:pointer;line-height:1;">&times;</span><span onclick="lbNav(-1,event)" style="position:absolute;left:6px;top:50%;transform:translateY(-50%);color:#fff;font-size:44px;cursor:pointer;padding:10px 16px;user-select:none;">&#8249;</span><img id="lightboxImg" alt="" style="max-width:90%;max-height:90vh;border-radius:8px;"><span onclick="lbNav(1,event)" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);color:#fff;font-size:44px;cursor:pointer;padding:10px 16px;user-select:none;">&#8250;</span><div id="lbCount" style="position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#e7d8a8;font-size:13px;"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/fotos-grade.js?v=1"></script>
+<script>
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+// Os cinco núcleos. A data de abertura vem do 1º Capítulo do núcleo registrado em Eventos
+// (eventos.nucleo); sem capítulo ainda, aparece "abertura em breve".
+var NUC=[{n:"São Paulo",c:"São Paulo · SP",s:"Matriz"},{n:"Rio de Janeiro",c:"Rio de Janeiro · RJ"},{n:"Recife",c:"Recife · PE"},{n:"Curitiba",c:"Curitiba · PR"},{n:"Porto Alegre",c:"Porto Alegre · RS"}];
+var GALS={},GALN={},LB=[],LBi=0,LBID="";
+function esc(t){return (""+(t==null?"":t)).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function nrm(t){return (""+(t||"")).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
+function ini(n){return (""+(n||"")).split(/\s+/).filter(Boolean).slice(0,2).map(function(p){return p[0];}).join("").toUpperCase();}
+function fdat(d){return d?new Date((""+d).slice(0,10)+"T12:00:00").toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"}):"";}
+function av(m){return "<div class='av'>"+(m&&m.foto_url?("<img src='"+esc(m.foto_url)+"' alt=''>"):esc(ini(m&&m.nome)))+"</div>";}
+function lbOpen(id,i){LB=GALS[id]||[];LBi=i||0;LBID=id;if(!LB.length)return;if(window.FG&&i==null){FG.grade();return;}document.getElementById("lightbox").style.display="flex";lbShow();}
+function lbShow(){document.getElementById("lightboxImg").src=LB[LBi];document.getElementById("lbCount").textContent=(LBi+1)+" / "+LB.length;}
+function lbNav(d,e){if(e)e.stopPropagation();LBi=(LBi+d+LB.length)%LB.length;lbShow();}
+function lbClose(){document.getElementById("lightbox").style.display="none";}
+if(window.FG)FG.config({lista:function(){return LB;},atual:function(){return LBi;},mostrar:function(i){LBi=i;document.getElementById("lightbox").style.display="flex";lbShow();},nome:function(){return GALN[LBID]||"abertura";},titulo:function(){return esc(GALN[LBID]||"Fotos");}});
+async function iniciar(){
+  var u=(await sb.auth.getUser()).data.user;
+  if(!u){document.getElementById("st").innerHTML="<h2>Acesso restrito</h2><p>Entre na sua conta para ver os núcleos.</p><a class='btn' href='index.html?login=1&next=nucleos.html'>Entrar</a>";return;}
+  var mq=await sb.from("membros").select("id,nome,grau,nucleo,foto_url");var M=(mq.data||[]);
+  var eq=await sb.from("eventos").select("id,tipo,numero,titulo,data,local,cidade,nucleo,realizado,evento_fotos(id,url,ordem)").order("data",{ascending:true});var E=(eq.data||[]);
+  var hoje=new Date().toISOString().slice(0,10);
+  var gms=M.filter(function(m){return /gr[aã]o/i.test(nrm(m.grau));});
+  var h=gms.length?("<div class='gm'>"+av(gms[0])+"<div><div class='k'>Grão-Mestre · Brasil</div><b>"+gms.map(function(g){return esc(g.nome);}).join(" · ")+"</b></div></div>"):"";
+  NUC.forEach(function(N){var k=nrm(N.n);
+    var mest=M.filter(function(m){return nrm(m.nucleo)===k&&/mestre/.test(nrm(m.grau))&&!/grao/.test(nrm(m.grau));});
+    var nMem=M.filter(function(m){return nrm(m.nucleo)===k;}).length;
+    var caps=E.filter(function(e){return nrm(e.nucleo)===k&&nrm(e.tipo)==="capitulo"&&e.data&&(e.realizado||e.data<=hoje);});
+    var ab=caps[0]||null;var nEv=E.filter(function(e){return nrm(e.nucleo)===k&&e.data&&(e.realizado||e.data<=hoje);}).length;
+    var fotos=ab?(ab.evento_fotos||[]).slice().sort(function(a,b){return (a.ordem||0)-(b.ordem||0);}).map(function(f){return f.url;}):[];
+    if(ab){GALS[ab.id]=fotos;GALN[ab.id]="Abertura "+N.n+" · "+[(ab.tipo||"")+(ab.numero?(" "+ab.numero):""),ab.titulo].filter(Boolean).join(" · ");}
+    h+="<div class='nuc'><div class='nhead'><div style='flex:1;min-width:200px;'><h2>"+esc(N.n)+"</h2><div class='cid'>"+esc(N.c)+(N.s?(" · "+N.s):"")+"</div></div>"
+      +(ab?("<span class='pill pa'>Aberto em "+esc(fdat(ab.data))+"</span>"):"<span class='pill pb'>Abertura em breve</span>")+"</div>"
+      +"<div class='mest'>"+(mest.length?mest.map(function(m){return "<div class='m'>"+av(m)+"<div><div class='k'>Mestre</div><b>"+esc(m.nome)+"</b></div></div>";}).join(""):"<div class='m'><div class='av'>?</div><div><div class='k'>Mestre</div><b style='color:#8a8270;'>a definir</b></div></div>")+"</div>"
+      +"<div class='grid4'><div class='st'><span>Comendadores</span><b>"+nMem+"</b></div><div class='st'><span>Eventos realizados</span><b>"+nEv+"</b></div><div class='st'><span>Capítulo de abertura</span><b style='font-size:14.5px;'>"+(ab?esc([(ab.numero?("Capítulo "+ab.numero):(ab.tipo||"")),ab.local].filter(Boolean).join(" · ")):"—")+"</b></div></div>"
+      +(fotos.length?("<div class='fts'>"+fotos.slice(0,8).map(function(u,i){return "<div onclick=\"lbOpen('"+ab.id+"',"+i+")\"><img src='"+esc(u)+"' loading='lazy' alt=''>"+(i===7&&fotos.length>8?("<span class='mais'>+"+(fotos.length-8)+"</span>"):"")+"</div>";}).join("")+"</div><a class='lk' onclick=\"lbOpen('"+ab.id+"')\">&#9638; Ver todas as "+fotos.length+" fotos da abertura e baixar</a>"):(ab?"<div style='font-size:12.5px;color:#8a8270;margin-top:12px;'>As fotos da abertura ainda não foram publicadas.</div>":""))
+      +"</div>";});
+  document.getElementById("lista").innerHTML=h;document.getElementById("st").style.display="none";document.getElementById("app").style.display="block";}
+iniciar();
+</script>
+<script src="js/painel-shell.js?v=20261031" data-esconder=".dtop"></script>
+<script src="/js/redes-rodape.js?v=4" defer></script>
+</body></html>

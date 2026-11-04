@@ -83,6 +83,7 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
 </head>
 <body>
 <div class="topbar"><a class="voltar" href="importadoras-oficiais.html" onclick="return voltar()">&#8592; Voltar</a></div>
+<div id="testeBar" style="display:none;background:#8f1d24;color:#fff;text-align:center;padding:10px 14px;font-size:13.5px;letter-spacing:.3px;">&#9888; <b>MODO TESTE</b> · inscrição marcada como [TESTE] · PIX de <b>R$ 1,00</b> (pode pagar de verdade para testar) · depois remova em Painel do Conselho → Inscrições</div>
 <div class="card"><div class="inner">
   <img class="brasao" src="/img/brasao-alta.png" alt="Commanderie de Bordeaux do Brasil">
   <div class="kick">Commanderie de Bordeaux do Brasil</div>
@@ -176,6 +177,12 @@ h1{text-align:center;font-weight:normal;color:var(--navy);font-size:34px;line-he
 <script>
 var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
 var PLANO="Ouro",EMAIL_INSC="",VALOR_BRL=0;
+// MODO TESTE (importador-inscricao.html?teste=1): o Conselho percorre o fluxo inteiro
+// sem afetar nada de verdade — nome com [TESTE], PIX de R$ 1,00, aprovação bloqueada no painel.
+var TESTE=/[?&]teste=1\b/.test(location.search);
+if(TESTE)document.addEventListener("DOMContentLoaded",function(){var b=document.getElementById("testeBar");if(b)b.style.display="block";
+  var pre={nome:"Importadora Exemplo",responsavel:"Teste do Conselho",email:"teste@commanderiedebordeaux.com.br",telefone:"41 99999-0000",cidade:"Curitiba PR",cnpj:"00.000.000/0001-00"};
+  Object.keys(pre).forEach(function(k){var e=document.getElementById(k);if(e&&!e.value)e.value=pre[k];});});
 // Comprovante do PIX: vai para a pasta privada imp-comprovantes e fica ligado à inscrição
 // (sql/importadora_inscricao_comprovante.sql). Sem ele a inscrição fica "Aguardando pagamento".
 async function enviarComprovante(){var m=document.getElementById("compMsg"),b=document.getElementById("compBtn"),f=document.getElementById("compArq").files[0];
@@ -206,9 +213,10 @@ function crc16(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8
 function pixPayload(valor,txid){var mai=tlv("00","BR.GOV.BCB.PIX")+tlv("01",PIX_CHAVE);var p=tlv("00","01")+tlv("26",mai)+tlv("52","0000")+tlv("53","986")+(valor?tlv("54",valor.toFixed(2)):"")+tlv("58","BR")+tlv("59",PIX_NOME)+tlv("60",PIX_CIDADE)+tlv("62",tlv("05",txid||"***"))+"6304";return p+crc16(p);}
 function copiarPix(){var m=document.getElementById("pMsg");(navigator.clipboard?navigator.clipboard.writeText(PIX):Promise.reject()).then(function(){m.textContent="✔ Código copiado! No banco, use “Pix Copia e Cola”.";}).catch(function(){prompt("Copie o código PIX:",PIX);});}
 function copiarChave(){var m=document.getElementById("pMsg");(navigator.clipboard?navigator.clipboard.writeText("69.296.264/0001-30"):Promise.reject()).then(function(){m.textContent="✔ Chave CNPJ copiada.";}).catch(function(){prompt("Chave PIX (CNPJ):","69.296.264/0001-30");});}
-function mostrarPagamento(nome){var eur=EUR[PLANO];var v=valorBrl(eur);document.getElementById("pCota").textContent=PLANO+" (€ "+eur.toLocaleString("pt-BR")+")";
+function mostrarPagamento(nome){var eur=EUR[PLANO];var v=TESTE?1:valorBrl(eur);document.getElementById("pCota").textContent=PLANO+" (€ "+eur.toLocaleString("pt-BR")+")";
   var txid=("IMP"+(nome||"").normalize("NFD").replace(/[^A-Za-z0-9]/g,"").toUpperCase()).slice(0,25);
-  if(v){document.getElementById("pBrl").textContent=brl(v);document.getElementById("pCalc").innerHTML="€ "+eur.toLocaleString("pt-BR")+" × câmbio "+COT.toLocaleString("pt-BR",{minimumFractionDigits:4,maximumFractionDigits:4})+(MARGEM?(" + "+MARGEM+"%"):"")+(COT_HORA?("<br>cotação de "+COT_HORA):"");PIX=pixPayload(v,txid);}
+  if(v&&TESTE){document.getElementById("pBrl").textContent=brl(v);document.getElementById("pCalc").innerHTML="<b style='color:#8f1d24;'>Valor de teste</b> — a cota real seria € "+eur.toLocaleString("pt-BR");PIX=pixPayload(v,txid);}
+  else if(v){document.getElementById("pBrl").textContent=brl(v);document.getElementById("pCalc").innerHTML="€ "+eur.toLocaleString("pt-BR")+" × câmbio "+COT.toLocaleString("pt-BR",{minimumFractionDigits:4,maximumFractionDigits:4})+(MARGEM?(" + "+MARGEM+"%"):"")+(COT_HORA?("<br>cotação de "+COT_HORA):"");PIX=pixPayload(v,txid);}
   else{document.getElementById("pBrl").textContent="€ "+eur.toLocaleString("pt-BR");document.getElementById("pCalc").textContent="Não foi possível obter o câmbio agora. O Conselho enviará o valor em reais; a chave PIX abaixo já pode ser usada.";PIX=pixPayload(0,txid);}
   var q=document.getElementById("qr");q.innerHTML="";try{new QRCode(q,{text:PIX,width:180,height:180,correctLevel:QRCode.CorrectLevel.M});}catch(e){q.style.display="none";}
   document.getElementById("pComp").href="mailto:sac@commanderiedebordeaux.com.br?subject="+encodeURIComponent("Comprovante PIX — Importadora "+(nome||"")+" — cota "+PLANO)+"&body="+encodeURIComponent("Segue o comprovante do PIX da anuidade (cota "+PLANO+(v?(", "+brl(v)):"")+") da importadora "+(nome||"")+".");
@@ -219,6 +227,7 @@ function v(id){var e=document.getElementById(id);return e?e.value.trim():"";}
 function diz(t,cor){var m=document.getElementById("msg");m.style.color=cor||"#5b5446";m.textContent=t;}
 async function enviar(){
   var nome=v("nome"),resp=v("responsavel"),email=v("email");
+  if(TESTE&&nome&&nome.indexOf("[TESTE]")!==0)nome="[TESTE] "+nome;
   if(!nome){diz("Informe o nome da importadora.","#8f1d24");return;}
   if(!resp){diz("Informe o representante legal (será entronizado Comendador).","#8f1d24");return;}
   if(!email||email.indexOf("@")<0){diz("Informe um e-mail válido.","#8f1d24");return;}
@@ -228,7 +237,7 @@ async function enviar(){
     var pag=vb?("[Pagamento PIX] cota "+PLANO+" € "+EUR[PLANO]+" × câmbio "+COT.toFixed(4)+(MARGEM?(" + "+MARGEM+"%"):"")+" = "+brl(vb)+(COT_HORA?(" (cotação "+COT_HORA+")"):"")):"";
     var r=await sb.rpc("inscrever_importadora",{p:{nome:nome,responsavel:resp,cnpj:v("cnpj"),email:email,telefone:v("telefone"),cidade:v("cidade"),instagram:v("instagram"),plano:PLANO,obs:[v("obs"),pag].filter(Boolean).join("\n")}});
     if(r.error){btn.disabled=false;diz("Não foi possível enviar: "+r.error.message,"#8f1d24");return;}
-    EMAIL_INSC=email;VALOR_BRL=vb||0;
+    EMAIL_INSC=email;VALOR_BRL=TESTE?1:(vb||0);
     mostrarPagamento(nome);
   }catch(e){btn.disabled=false;diz("Não foi possível enviar. Tente de novo.","#8f1d24");}
 }

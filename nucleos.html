@@ -78,6 +78,9 @@ function fdat(d){return d?new Date((""+d).slice(0,10)+"T12:00:00").toLocaleDateS
 function av(m){return "<div class='av'>"+(m&&m.foto_url?("<img src='"+esc(m.foto_url)+"' alt=''>"):esc(ini(m&&m.nome)))+"</div>";}
 // Conselho: avatar com "📷 trocar foto". tipo "m" = membro (grava no cadastro); "x" = Grand Maître (nucleos_info)
 function avE(m,tipo,chave){if(!CONS)return av(m);return "<div class='avw'>"+av(m)+"<label class='trf' title='Trocar a foto do rosto'>&#128247;<input type='file' accept='image/*' onchange=\"trocarFoto(this,'"+tipo+"','"+esc(chave)+"')\"></label></div>";}
+// Foto do Mestre só desta página (nucleos_info "_mestre_<id>"); sem ela, usa a do cadastro do membro.
+// Trocar aqui NÃO muda a foto que o membro colocou no próprio cadastro.
+function fotoMestre(m){var I=INFO[nrm("_mestre_"+m.id)]||{};return {nome:m.nome,foto_url:I.foto_url||m.foto_url||""};}
 function fotoExt(chave,nome){var I=INFO[nrm(chave)]||{};return {nome:nome,foto_url:I.foto_url||""};}
 async function trocarFoto(inp,tipo,chave){var f=inp.files&&inp.files[0];if(!f)return;
   try{var img=await new Promise(function(ok,er){var i=new Image();i.onload=function(){ok(i);};i.onerror=er;i.src=URL.createObjectURL(f);});
@@ -111,7 +114,7 @@ async function iniciar(){
   var gmBr=gms[0]||{nome:"Manu Brandão"};
   var h="<div class='gms'>"
     +"<div class='gm'>"+avE(fotoExt("_gm_internacional","Hubert de Boüard"),"x","_gm_internacional")+"<div><div class='k'>Grand Maître · Internacional</div><b>Hubert de Boüard</b><div class='s'>Grand Conseil du Vin de Bordeaux</div></div></div>"
-    +"<div class='gm'>"+(gmBr.id?avE(gmBr,"m",gmBr.id):av(gmBr))+"<div><div class='k'>Grão-Mestre · Brasil</div><b>"+esc(gmBr.nome)+"</b><div class='s'>Commanderie de Bordeaux do Brasil</div></div></div></div>"
+    +"<div class='gm'>"+(gmBr.id?avE(fotoMestre(gmBr),"x","_mestre_"+gmBr.id):av(gmBr))+"<div><div class='k'>Grão-Mestre · Brasil</div><b>"+esc(gmBr.nome)+"</b><div class='s'>Commanderie de Bordeaux do Brasil</div></div></div></div>"
     +"<div class='hist'>"+avE(fotoExt("_gm_abertura","Jean-Marc Dulong"),"x","_gm_abertura")+"<div><div class='k'>&#10022; Na abertura da Commanderie no Brasil</div><b>Jean-Marc Dulong</b><div class='s'>Grand Maître Internacional do Grand Conseil du Vin de Bordeaux de 2023 a outubro de 2026 — participou da abertura da Commanderie de Bordeaux no Brasil.</div></div></div>";
   NUC.forEach(function(N){var k=nrm(N.n);
     var mest=M.filter(function(m){return nrm(m.nucleo)===k&&/mestre/.test(nrm(m.grau))&&!/grao/.test(nrm(m.grau));});
@@ -128,7 +131,7 @@ async function iniciar(){
       +(dAb?("<span class='pill pa'>Aberto em "+esc(fdat(dAb))+"</span>"):"<span class='pill pb'>Abertura em breve</span>")+(CONS?(" <a class='lk' style='margin:0 0 0 8px;' onclick=\"edNuc('"+esc(N.n)+"')\">&#9998; editar</a>"):"")+"</div>"
       +(lAb||I.texto?("<div style='font-size:13.5px;color:#4a4438;margin-top:8px;line-height:1.55;'>"+(lAb?("<b style='color:var(--navy);font-weight:normal;font-family:Georgia,serif;'>"+esc(lAb)+"</b>"):"")+(I.texto?((lAb?" — ":"")+esc(I.texto)):"")+"</div>"):"")
       +(CONS?formNuc(N.n,I,dAb,lAb,ab):"")
-      +"<div class='mest'>"+(mest.length?mest.map(function(m){return "<div class='m'>"+avE(m,"m",m.id)+"<div><div class='k'>Mestre</div><b>"+esc(m.nome)+"</b></div></div>";}).join(""):"<div class='m'><div class='av'>?</div><div><div class='k'>Mestre</div><b style='color:#8a8270;'>a definir</b></div></div>")+"</div>"
+      +"<div class='mest'>"+(mest.length?mest.map(function(m){return "<div class='m'>"+avE(fotoMestre(m),"x","_mestre_"+m.id)+"<div><div class='k'>Mestre</div><b>"+esc(m.nome)+"</b></div></div>";}).join(""):"<div class='m'><div class='av'>?</div><div><div class='k'>Mestre</div><b style='color:#8a8270;'>a definir</b></div></div>")+"</div>"
       +"<div class='grid4'><div class='st'><span>Comendadores</span><b>"+nMem+"</b></div><div class='st'><span>Eventos realizados</span><b>"+nEv+"</b></div><div class='st'><span>Evento de abertura</span><b style='font-size:14.5px;'>"+(ab?esc([(ab.numero?("Capítulo "+ab.numero):(ab.tipo||"")),ab.titulo].filter(Boolean).join(" · ")):"—")+"</b></div></div>"
       +(fotos.length?("<div class='fts'>"+fotos.slice(0,8).map(function(u,i){return "<div onclick=\"lbOpen('"+ab.id+"',"+i+")\"><img src='"+esc(u)+"' loading='lazy' alt=''>"+(i===7&&fotos.length>8?("<span class='mais'>+"+(fotos.length-8)+"</span>"):"")+"</div>";}).join("")+"</div><a class='lk' onclick=\"lbOpen('"+ab.id+"')\">&#9638; Ver todas as "+fotos.length+" fotos da abertura e baixar</a>"):(ab?"<div style='font-size:12.5px;color:#8a8270;margin-top:12px;'>As fotos da abertura ainda não foram publicadas.</div>":""))
       +"</div>";});

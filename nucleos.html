@@ -125,7 +125,10 @@ iniciar();
 <script>
 // Duas versões da mesma página: pelo Painel do Comendador (nucleos.html) fica simples, com
 // "← Painel"; pelo menu do Conselho (nucleos.html?conselho=1) entra a moldura do Conselho.
-(function(){if(!/[?&]conselho=1\b/.test(location.search))return;var s=document.createElement("script");s.src="js/painel-shell.js?v=20261104";s.setAttribute("data-esconder",".dtop");document.body.appendChild(s);})();
+(function(){var ref="";try{var r=new URL(document.referrer);if(r.host===location.host)ref=r.pathname.split("/").pop()||"index.html";}catch(e){}
+  // Conselho: pelo link ?conselho=1 ou vindo de qualquer tela do Conselho (não do Painel do Comendador)
+  var doConselho=/[?&]conselho=1\b/.test(location.search)||(ref&&ref!=="index.html"&&ref!=="nucleos.html"&&ref!=="eventos.html"&&ref!=="diretorio.html");
+  if(!doConselho)return;if(!/[?&]conselho=1\b/.test(location.search)){try{history.replaceState(null,"","nucleos.html?conselho=1");}catch(e){}}var s=document.createElement("script");s.src="js/painel-shell.js?v=20261104";s.setAttribute("data-esconder",".dtop");document.body.appendChild(s);})();
 </script>
 <script src="/js/redes-rodape.js?v=4" defer></script>
 </body></html>

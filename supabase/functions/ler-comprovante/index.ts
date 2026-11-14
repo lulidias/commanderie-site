@@ -31,13 +31,18 @@ Deno.serve(async (req) => {
       // Evento com preço único por pessoa (ex.: Capítulo X, R$ 1.200 para todos):
       // o valor vem do próprio evento, e não das constantes do Jantar de 1 Ano.
       if (rr?.evento_id) {
-        const { data: ev } = await sb.from("eventos").select("titulo,numero,valor").eq("id", rr.evento_id).maybeSingle();
+        const { data: ev } = await sb.from("eventos").select("titulo,numero,valor,mestre_gratis").eq("id", rr.evento_id).maybeSingle();
         const vEv = Number(ev?.valor) || 0;
         nomeEvento = ev?.numero ? `Capítulo ${ev.numero}` : String(ev?.titulo || nomeEvento);
         if (vEv > 0 && vEv !== V_COMENDADOR) {
           precoUnico = true;
           esperado = temConvidado && !externo ? vEv * 2 : vEv;
           VALIDOS = [vEv, vEv * 2];
+        }
+        // Evento em que Mestres e Grão-Mestre não pagam (ex.: Jantar de Fim de Ano 2026):
+        // o Mestre só paga o acompanhante, se levar.
+        if (ev?.mestre_gratis && rr.categoria === "mestre" && vEv > 0) {
+          precoUnico = true; esperado = temConvidado ? vEv : 0; VALIDOS = [vEv];
         }
       }
       quem = String(rr?.convidado_nome || "").trim();

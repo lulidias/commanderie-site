@@ -148,11 +148,19 @@
   .vinho .op div{flex:1;min-width:170px;border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff;}
   .vinho .op b{display:block;font-family:Georgia,serif;color:var(--navy);font-size:19px;font-weight:normal;}
   .vinho .op span{font-family:Arial,sans-serif;font-size:13px;color:var(--ink2);}
-  .vinho .ou{align-self:center;font-style:italic;color:var(--gold);flex:0;min-width:0;border:none;background:none;padding:0;}
+  .vinho .op div.ou{align-self:center;font-style:italic;color:var(--gold);flex:0;min-width:0;border:none;background:none;padding:0;}
   .acomp{grid-column:1/-1;display:flex;gap:9px;align-items:center;font-family:Arial,sans-serif;font-size:15px;color:var(--navy);background:#faf6ea;border:1px solid #e6d9b3;border-radius:10px;padding:12px 14px;cursor:pointer;}
   .acomp input{width:20px;height:20px;accent-color:#1e2a56;}
   .totalbox{text-align:center;font-family:Arial,sans-serif;font-size:15px;color:var(--ink2);margin-top:14px;}
   .totalbox b{font-family:Georgia,serif;color:var(--navy);font-size:24px;font-weight:normal;}
+  .heroimg{position:relative;height:300px;background:#1e2a56 url('/img/home/hero-vinhedo.jpg') center 45%/cover;border-bottom:1px solid var(--gold);}
+  .heroimg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,21,52,0) 30%,rgba(14,21,52,.88) 100%);}
+  .heroimg .ht{position:absolute;left:26px;right:26px;bottom:22px;z-index:1;color:#fff;}
+  .heroimg .hk{font-family:Georgia,serif;font-size:12.5px;letter-spacing:2.5px;color:#e8d6aa;text-transform:uppercase;}
+  .heroimg .hh{font-family:Georgia,serif;font-size:40px;line-height:1.08;margin-top:4px;}
+  .heroimg .hd{font-family:Georgia,serif;font-style:italic;font-size:17px;color:#f0ece2;margin-top:6px;}
+  .heroimg .hb{position:absolute;top:16px;right:18px;width:70px;z-index:1;}
+  @media(max-width:480px){.heroimg{height:250px;}.heroimg .hk{font-size:10.5px;letter-spacing:1.5px;}.heroimg .hh{font-size:32px;}.heroimg .hd{font-size:14.5px;}.heroimg .hb{width:56px;}}
   .loginlink{text-align:center;font-family:Arial,sans-serif;font-size:13.5px;color:var(--ink2);margin-top:6px;}
   .loginlink a{color:var(--navy);border-bottom:1px solid var(--gold);cursor:pointer;}
   .fld select{font-family:Arial,sans-serif;font-size:16px;color:var(--navy);background:#fffdf7;border:1px solid var(--line);border-radius:9px;padding:11px 12px;width:100%;}
@@ -160,12 +168,11 @@
 </style>
 </head>
 <body>
-<div class="card"><div class="inner">
+<div class="card">
+  <div class="heroimg"><img class="hb" src="/img/brasao-escuro.png" alt=""><div class="ht"><div class="hk">Commanderie de Bordeaux do Brasil</div><div class="hh">Jantar de Fim de Ano</div><div class="hd">2 de dezembro · 18h30 · Casa Comitê, São Paulo</div></div></div>
+  <div class="inner">
   <a onclick="if(document.referrer&&document.referrer.indexOf(location.host)>=0){history.back()}else{location.href='/'}" style="display:inline-flex;align-items:center;gap:6px;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;">← Voltar</a>
-  <img class="brasao" src="/img/brasao-alta.png" alt="Brasão da Commanderie de Bordeaux" style="margin-top:14px;">
-  <div class="kick">Jantar de Fim de Ano</div>
-  <h1>Commanderie de Bordeaux<small>do Brasil</small></h1>
-  <p class="intro">A Mesa da Commanderie tem a honra de convidá-lo, com um acompanhante, para o <b>Jantar de Fim de Ano</b>: a última mesa de 2026, com os Comendadores e os seus Bordeaux.</p>
+  <p class="intro" style="margin-top:22px;">A Mesa da Commanderie tem a honra de convidá-lo, com um acompanhante, para o <b>Jantar de Fim de Ano</b>: a última mesa de 2026, com os Comendadores e os seus Bordeaux.</p>
 
   <div class="sep"></div>
   <div class="lbl">Data</div>
@@ -175,7 +182,7 @@
   <h2 class="sec">Participação</h2>
   <p style="text-align:center;" class="valor"><small>R$</small> <span id="precoTxt">800,00</span> <span id="precoSub" style="font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;">· por pessoa</span></p>
   <div id="mestreBox" style="display:none;max-width:440px;margin:12px auto 4px;background:linear-gradient(160deg,#243161,#161f3f);border:1px solid #c9a85c;border-radius:14px;padding:14px 16px;color:#f3ecd9;text-align:center;font-family:Arial,sans-serif;"></div>
-  <p id="precoNota" style="text-align:center;font-size:14.5px;color:var(--ink2);font-family:Arial,sans-serif;margin:6px auto 0;max-width:440px;line-height:1.6;">Cada Comendador pode levar <b>um acompanhante</b>: os dois juntos ficam <b>R$ 1.600,00</b>. Mestres e Grão-Mestre não pagam a sua parte; o acompanhante deles paga R$ 800,00.</p>
+  <p id="precoNota" style="text-align:center;font-size:14.5px;color:var(--ink2);font-family:Arial,sans-serif;margin:6px auto 0;max-width:440px;line-height:1.6;">Cada Comendador pode levar <b>um acompanhante</b>: os dois juntos ficam <b>R$ 1.600,00</b>.</p>
   <p style="text-align:center;margin-top:16px;"><a class="btn gold" onclick="document.getElementById('frm').scrollIntoView({behavior:'smooth',block:'start'})" style="cursor:pointer;text-decoration:none;display:inline-block;">Reservar e pagar &darr;</a></p>
 
   <div class="sep"></div>
@@ -198,6 +205,7 @@
   <img src="/img/casa-comite-logo.jpg" alt="Casa Comitê" style="display:block;width:260px;max-width:70%;margin:8px auto 4px;mix-blend-mode:multiply;">
   <p class="phist">À frente da Casa Comitê está o chef <b>Raphael Arrigucci</b>. Cresceu entre as cozinhas dos restaurantes do pai, no eixo Rio–São Paulo, e aos 18 anos entrou no Cantaloup, ao lado de <b>Laurent Suaudeau</b>, um dos grandes mestres da cozinha francesa no Brasil. Passou depois por algumas das casas mais premiadas de São Paulo — D.O.M., Arturito, Casa Europa, Loi e Ristorantino —, trabalhando ao lado de nomes como Alex Atala, Paola Carosella e Salvatore Loi, até encontrar a sua cozinha autoral.</p>
   <p class="phist">Com a jornalista <b>Renata Reif</b>, criou a Casa Comitê: alta gastronomia em formato íntimo, mesas para poucos, guiada pela sazonalidade, pelo aproveitamento integral dos ingredientes e pelo trabalho com pequenos produtores.</p>
+  <img src="/img/fim-de-ano/casa-comite-jardim.jpg" alt="O jardim da Casa Comitê à noite" style="display:block;width:100%;border-radius:10px;border:1px solid var(--line);margin:16px 0 4px;">
   <p class="local" style="margin-top:14px;"><b>Casa Comitê</b><br>Rua Magalhães de Araújo, 84 · Jardim Guedala<br>São Paulo — SP · CEP 05611-020<br><a href="https://www.google.com/maps/search/?api=1&query=Rua+Magalh%C3%A3es+de+Ara%C3%BAjo+84+Jardim+Guedala+S%C3%A3o+Paulo" target="_blank" rel="noopener" style="font-family:Arial,sans-serif;font-size:13px;color:var(--navy);border-bottom:1px solid var(--gold);text-decoration:none;">Abrir no mapa</a></p>
 
   <div class="sep"></div>
@@ -272,11 +280,11 @@ function escolheu(){
   var fn=document.getElementById("f_nome"); if(SEL&&!fn.readOnly) fn.value=SEL.nome;
   atualizaTotal();
 }
-function calcula(){var ac=document.getElementById("f_comacomp").checked;return souMestre()?(ac?VALOR:0):VALOR*(ac?2:1);}
+function calcula(){var ac=document.getElementById("f_comacomp").checked;return VALOR*(ac?2:1);}
 function atualizaTotal(){
   var ac=document.getElementById("f_comacomp").checked;
   document.querySelectorAll(".acompf").forEach(function(e){e.style.display=ac?"":"none";});
-  var t=calcula(); document.getElementById("totalBox").innerHTML=t?("Total: <b>"+brlC(t)+"</b>"+(ac?" <span style=\"font-size:13px;\">(você e o acompanhante)</span>":"")):"<b>Sem custo</b> para Mestres e Grão-Mestre";
+  var t=calcula(); document.getElementById("totalBox").innerHTML="Total: <b>"+brlC(t)+"</b>"+(ac?" <span style=\"font-size:13px;\">(você e o acompanhante)</span>":"");
 }
 async function carregarEu(){try{
   var u=(await sb.auth.getUser()).data.user; if(!u)return;
@@ -286,8 +294,6 @@ async function carregarEu(){try{
   if(EU.nome){fn.value=EU.nome;} if(EU.email||u.email){fe.value=EU.email||u.email;fe.readOnly=true;} if(EU.telefone&&!ft.value)ft.value=EU.telefone;
   document.getElementById("loginLink").innerHTML="Conectado como <b>"+esc(EU.nome||u.email)+"</b>.";
   var meu=LISTA.filter(function(x){return EU.nome&&x.nome===EU.nome;})[0]; if(meu){var sl=document.getElementById("f_membro");sl.value=meu.id;SEL=meu;sl.disabled=true;}
-  if(souMestre()){var b=document.getElementById("mestreBox");b.style.display="block";
-    b.innerHTML='<div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#e4cd97;">'+esc(EU.grau)+' · '+esc(EU.nome||"")+'</div><div style="font-family:Georgia,serif;font-size:19px;color:#fff;margin:6px 0 2px;">A sua participação: sem custo</div><div style="font-size:12.5px;color:#c9d0e8;">Se levar acompanhante, ele paga R$ 800,00.</div>';}
   atualizaTotal();
 }catch(e){}}
 function mostrarLogin(){var b=document.getElementById("loginBox");b.style.display="block";

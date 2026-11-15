@@ -143,6 +143,15 @@
   @media(max-width:560px){.fgrid{grid-template-columns:1fr;}}
 </style>
 <style>
+  .vinho2{max-width:540px;margin:16px auto 0;display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;background:#fffdf7;border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:14px;overflow:hidden;}
+  .vinho2 .vop{padding:22px 16px 20px;text-align:center;}
+  .vinho2 .vq{font-family:Georgia,serif;color:var(--gold);font-size:46px;line-height:1;}
+  .vinho2 .vn{font-family:Georgia,serif;color:var(--navy);font-size:20px;margin-top:6px;}
+  .vinho2 .vd{font-family:Arial,sans-serif;font-size:13px;color:var(--ink2);margin-top:6px;line-height:1.45;}
+  .vinho2 .vou{display:flex;align-items:center;justify-content:center;position:relative;width:46px;}
+  .vinho2 .vou::before{content:"";position:absolute;top:16px;bottom:16px;left:50%;border-left:1px solid var(--line);}
+  .vinho2 .vou span{position:relative;background:#fffdf7;font-family:Georgia,serif;font-style:italic;color:var(--gold);font-size:17px;padding:6px 0;}
+  @media(max-width:520px){.vinho2{grid-template-columns:1fr;}.vinho2 .vou{width:auto;height:34px;}.vinho2 .vou::before{top:50%;bottom:auto;left:24px;right:24px;border-left:none;border-top:1px solid var(--line);}.vinho2 .vou span{padding:0 12px;}}
   .vinho{max-width:520px;margin:14px auto 0;background:#fffdf7;border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:14px;padding:20px 22px;text-align:center;}
   .vinho .op{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
   .vinho .op div{flex:1;min-width:170px;border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff;}
@@ -161,6 +170,16 @@
   .heroimg .hd{font-family:Georgia,serif;font-style:italic;font-size:17px;color:#f0ece2;margin-top:6px;}
   .heroimg .hb{position:absolute;top:16px;right:18px;width:70px;z-index:1;}
   @media(max-width:480px){.heroimg{height:250px;}.heroimg .hk{font-size:10.5px;letter-spacing:1.5px;}.heroimg .hh{font-size:32px;}.heroimg .hd{font-size:14.5px;}.heroimg .hb{width:56px;}}
+  .ff{max-width:460px;margin:14px auto 0;text-align:center;}
+  .ff .fi{padding:12px 0;}
+  .ff .fi+.fi{border-top:1px solid var(--line);}
+  .ff .cn{font-family:Georgia,serif;color:var(--navy);font-size:20px;}
+  .ff .cd{font-family:Georgia,serif;font-style:italic;font-size:14.5px;color:var(--ink2);margin-top:3px;}
+  .eucard{background:var(--navy);color:#fff;border-radius:14px;padding:24px 22px;max-width:460px;margin:18px auto 0;text-align:center;box-shadow:0 10px 30px rgba(30,26,20,.18);}
+  .eucard .k{font-family:Arial,sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#cdb98a;font-weight:bold;}
+  .eucard .n{font-family:Georgia,serif;font-size:30px;margin:8px 0 2px;}
+  .eucard .g{font-family:Arial,sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#cdb98a;margin-bottom:8px;}
+  .eucard .w{font-size:14px;color:#cdb98a;font-family:Arial,sans-serif;}
   .loginlink{text-align:center;font-family:Arial,sans-serif;font-size:13.5px;color:var(--ink2);margin-top:6px;}
   .loginlink a{color:var(--navy);border-bottom:1px solid var(--gold);cursor:pointer;}
   .fld select{font-family:Arial,sans-serif;font-size:16px;color:var(--navy);background:#fffdf7;border:1px solid var(--line);border-radius:9px;padding:11px 12px;width:100%;}
@@ -172,7 +191,8 @@
   <div class="heroimg"><img class="hb" src="/img/brasao-escuro.png" alt=""><div class="ht"><div class="hk">Commanderie de Bordeaux do Brasil</div><div class="hh">Jantar de Fim de Ano</div><div class="hd">2 de dezembro · 18h30 · Casa Comitê, São Paulo</div></div></div>
   <div class="inner">
   <a onclick="if(document.referrer&&document.referrer.indexOf(location.host)>=0){history.back()}else{location.href='/'}" style="display:inline-flex;align-items:center;gap:6px;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:#fffdf7;border:1px solid var(--gold);border-radius:20px;padding:7px 15px;text-decoration:none;cursor:pointer;">← Voltar</a>
-  <p class="intro" style="margin-top:22px;">A Mesa da Commanderie tem a honra de convidá-lo, com um acompanhante, para o <b>Jantar de Fim de Ano</b>: a última mesa de 2026, com os Comendadores e os seus Bordeaux.</p>
+  <p class="intro" style="margin-top:22px;">A Mesa da Commanderie tem a honra de convidá-lo para o <b>último encontro de 2026</b>: uma noite de finger food e grandes Bordeaux na Casa Comitê, para celebrar o ano entre Comendadores.</p>
+  <p class="intro" style="margin-top:10px;font-style:italic;color:var(--gold);">Nesta noite, cada Comendador terá o prazer de trazer um acompanhante.</p>
 
   <div class="sep"></div>
   <div class="lbl">Data</div>
@@ -187,19 +207,23 @@
   <div class="sep"></div>
   <h2 class="sec">O Vinho</h2>
   <p class="sub">Cada Comendador leva o seu Bordeaux</p>
-  <div class="vinho">
-    <div class="op"><div><b>Uma magnum</b><span>de Bordeaux (1,5 L)</span></div><div class="ou">ou</div><div><b>Duas garrafas de 750 ml</b><span>iguais: mesmo château, mesma safra</span></div></div>
+  <div class="vinho2">
+    <div class="vop"><div class="vq">1</div><div class="vn">magnum</div><div class="vd">de Bordeaux · 1,5 litro</div></div>
+    <div class="vou"><span>ou</span></div>
+    <div class="vop"><div class="vq">2</div><div class="vn">garrafas de 750 ml</div><div class="vd">iguais: mesmo château, mesma safra</div></div>
   </div>
 
   <div class="sep"></div>
-  <h2 class="sec">O Menu</h2>
-  <p class="sub">Menu da Casa Comitê</p>
-  <div class="mcourse"><div class="ct">Pour commencer</div><div class="cn">Starters Comitê</div></div>
-  <div class="mcourse"><div class="ct">Entrée</div><div class="cn">Carpaccio tostado</div><div class="cd">Com foie gras líquido.</div></div>
-  <div class="mcourse"><div class="ct">Premier Plat</div><div class="cn">Dal plin de vitela</div><div class="cd">Com salsa de trufas negras e pangritata.</div></div>
-  <div class="mcourse"><div class="ct">Plat Principal</div><div class="cn">Paleta de leitão</div><div class="cd">Batata gratin e sauce porcini.</div></div>
-  <div class="mcourse"><div class="ct">Dessert</div><div class="cn">Royale de mascarpone</div><div class="cd">Com ganache e sorbet de frutas vermelhas.</div></div>
-  <div class="sep"></div>
+  <h2 class="sec">O Cardápio</h2>
+  <p class="sub">Finger food da Casa Comitê</p>
+  <div class="ff">
+    <div class="fi"><div class="cn">Starters Comitê</div></div>
+    <div class="fi"><div class="cn">Carpaccio tostado</div><div class="cd">com foie gras líquido</div></div>
+    <div class="fi"><div class="cn">Dal plin de vitela</div><div class="cd">com salsa de trufas negras e pangritata</div></div>
+    <div class="fi"><div class="cn">Paleta de leitão</div><div class="cd">batata gratin e sauce porcini</div></div>
+    <div class="fi"><div class="cn">Royale de mascarpone</div><div class="cd">com ganache e sorbet de frutas vermelhas</div></div>
+  </div>
+<div class="sep"></div>
   <div class="lbl">A Casa</div>
   <img src="/img/casa-comite-logo.jpg" alt="Casa Comitê" style="display:block;width:260px;max-width:70%;margin:8px auto 4px;mix-blend-mode:multiply;">
   <p class="phist">À frente da Casa Comitê está o chef <b>Raphael Arrigucci</b>. Cresceu entre as cozinhas dos restaurantes do pai, no eixo Rio–São Paulo, e aos 18 anos entrou no Cantaloup, ao lado de <b>Laurent Suaudeau</b>, um dos grandes mestres da cozinha francesa no Brasil. Passou depois por algumas das casas mais premiadas de São Paulo — D.O.M., Arturito, Casa Europa, Loi e Ristorantino —, trabalhando ao lado de nomes como Alex Atala, Paola Carosella e Salvatore Loi, até encontrar a sua cozinha autoral.</p>
@@ -276,7 +300,12 @@ async function carregarLista(){
 }
 function escolheu(){
   var v=document.getElementById("f_membro").value; SEL=LISTA.filter(function(x){return x.id===v;})[0]||null;
-  var fn=document.getElementById("f_nome"); if(SEL&&!fn.readOnly) fn.value=SEL.nome;
+  var set=function(id,t){var e=document.getElementById(id);e.value=t||"";e.readOnly=false;};
+  // trocou o nome: troca TODOS os dados. Só preenche e-mail, telefone e restrições se o nome escolhido for o da
+  // conta logada (os dados dos outros Comendadores não ficam expostos num link aberto).
+  var meu=SEL&&EU&&((EU.id&&EU.id===SEL.id)||(EU.nome&&EU.nome===SEL.nome));
+  set("f_nome",SEL?SEL.nome:"");
+  set("f_email",meu?EU.email:""); set("f_tel",meu?EU.telefone:""); set("f_rest",meu?EU.restricoes_alimentares:"");
   atualizaTotal();
 }
 function calcula(){var ac=document.getElementById("f_comacomp").checked;return VALOR*(ac?2:1);}
@@ -287,12 +316,12 @@ function atualizaTotal(){
 }
 async function carregarEu(){try{
   var u=(await sb.auth.getUser()).data.user; if(!u)return;
-  var r=await sb.from("membros").select("nome,email,telefone,grau").eq("user_id",u.id).maybeSingle();
+  var r=await sb.from("membros").select("id,nome,email,telefone,grau,restricoes_alimentares").eq("user_id",u.id).maybeSingle();
   EU=(r&&r.data)||{email:u.email}; 
   var fn=document.getElementById("f_nome"),fe=document.getElementById("f_email"),ft=document.getElementById("f_tel");
-  if(EU.nome){fn.value=EU.nome;} if(EU.email||u.email){fe.value=EU.email||u.email;fe.readOnly=true;} if(EU.telefone&&!ft.value)ft.value=EU.telefone;
+  // não preenche nada sozinho: os dados entram quando a pessoa escolhe o próprio nome no seletor
   document.getElementById("loginLink").innerHTML="Conectado como <b>"+esc(EU.nome||u.email)+"</b>.";
-  var meu=LISTA.filter(function(x){return EU.nome&&x.nome===EU.nome;})[0]; if(meu){var sl=document.getElementById("f_membro");sl.value=meu.id;SEL=meu;}
+
   atualizaTotal();
 }catch(e){}}
 function mostrarLogin(){var b=document.getElementById("loginBox");b.style.display="block";
@@ -330,7 +359,7 @@ async function inscrever(ev){
     p.scrollIntoView({behavior:"smooth",block:"center"}); return false;
   }
   if(falta<=0){
-    p.innerHTML='<div class="okb">✓ Presença confirmada</div><h3>Até lá, '+nome+'</h3>'+reconhecido+det+'<div class="pbtns"><a class="pbtn solid" onclick="baixarICS()">+ Adicionar ao calendário</a></div>';
+    p.innerHTML='<div class="okb">✓ Presença confirmada</div><h3>Até lá, '+nome+'</h3>'+reconhecido+det+cartaoEuVou();
   }else{
     p.innerHTML='<div class="okb" style="color:#8f1d24;">⚠ Reserva ainda NÃO confirmada — falta o pagamento</div><h3>Falta só o pagamento, '+nome+'</h3>'+reconhecido
      +'<p style="font-family:Arial,sans-serif;font-size:14px;color:var(--ink2);max-width:430px;margin:6px auto 0;line-height:1.6;">O seu lugar <b>só fica reservado depois do pagamento</b> de <b>'+brlC(falta)+'</b> e do envio do comprovante aqui nesta página.</p>'
@@ -340,11 +369,20 @@ async function inscrever(ev){
   }
   p.scrollIntoView({behavior:"smooth",block:"center"}); return false;
 }
+function grauTxt(){var g=((SEL&&SEL.grau)||(EU&&EU.grau)||"").toLowerCase();if(g.indexOf("grão")>=0||g.indexOf("grao")>=0)return "Grão-Mestre";if(g.indexOf("mestre")>=0||g.indexOf("maître")>=0)return "Mestre";return "Comendador";}
+function cartaoEuVou(){
+  var nome=val("f_nome")||"Comendador", gr=grauTxt();
+  var link="/cartao.html?nome="+encodeURIComponent(nome)+"&grau="+encodeURIComponent(gr)+"&t="+encodeURIComponent("Jantar de Fim de Ano")
+    +"&s="+encodeURIComponent("da Commanderie de Bordeaux")+"&q="+encodeURIComponent("2 de dezembro de 2026 · 18h30 · Casa Comitê")+"&o="+encodeURIComponent("Cada Comendador leva o seu Bordeaux.");
+  return '<div class="eucard"><div class="k">✦ Eu vou</div><div class="n">'+esc(nome)+'</div><div class="g">'+esc(gr)+'</div><div class="w">2 de dezembro de 2026 · 18h30 · Casa Comitê</div></div>'
+    +'<div class="pbtns"><a class="pbtn solid" href="'+link+'" target="_blank" rel="noopener">Compartilhar meu cartão</a><a class="pbtn" onclick="baixarICS()">+ Adicionar ao calendário</a></div>';
+}
 function blocoComp(estado,dados,falta){
   var botao='<label class="cmpfile" id="cmpLbl">📎 Enviar o comprovante do PIX<input type="file" accept="image/*,application/pdf" style="display:none" onchange="enviarComp(this)"></label>';
   if(!estado) return '<div class="lbl2">Comprovante do PIX</div><p>Já fez o PIX de <b>'+brlC(falta)+'</b>? Envie o comprovante e confirmamos na hora. Se ainda não fez, volte a esta página depois de pagar. <b>Sem o pagamento, o lugar não fica reservado.</b></p>'+botao+'<div id="cmpMsg" class="msgc"></div>';
   var cab,txt,cor;
-  if(estado==="aprovado"){cor="#2f6b3a";cab="✓ Pagamento confirmado";txt="Recebemos "+brlC(dados&&dados.pago_valor)+". Está tudo certo — nos vemos no jantar.";}
+  if(estado==="aprovado"){cor="#2f6b3a";cab="✓ Pagamento confirmado · presença confirmada";txt="Recebemos "+brlC(dados&&dados.pago_valor)+". Está tudo certo — nos vemos no dia 2.";
+    return '<div class="lbl2" style="color:'+cor+'">'+cab+'</div><p>'+txt+'</p>'+cartaoEuVou();}
   else if(estado==="parcial"){cor="#8a6d1f";cab="Falta uma parte";txt="Recebemos "+brlC(dados&&dados.pago_valor)+" de "+brlC(DEVIDO)+". Envie o comprovante do restante.";}
   else{cor="#8a6d1f";cab="Comprovante recebido";txt="Não conseguimos ler o valor automaticamente — a Secretaria confere à mão e entra em contato.";}
   return '<div class="lbl2" style="color:'+cor+'">'+cab+'</div><p>'+txt+'</p><div class="cmpacts">'+(dados&&dados.url?'<a href="'+dados.url+'" target="_blank" rel="noopener">Ver o que enviei</a>':'')+botao.replace("📎 Enviar o comprovante do PIX","Enviar outro")+'</div><div id="cmpMsg" class="msgc"></div>';

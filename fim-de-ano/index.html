@@ -181,8 +181,7 @@
   <div class="sep"></div>
   <h2 class="sec">Participação</h2>
   <p style="text-align:center;" class="valor"><small>R$</small> <span id="precoTxt">800,00</span> <span id="precoSub" style="font-size:15px;color:var(--ink2);font-family:Arial,sans-serif;">· por pessoa</span></p>
-  <div id="mestreBox" style="display:none;max-width:440px;margin:12px auto 4px;background:linear-gradient(160deg,#243161,#161f3f);border:1px solid #c9a85c;border-radius:14px;padding:14px 16px;color:#f3ecd9;text-align:center;font-family:Arial,sans-serif;"></div>
-  <p id="precoNota" style="text-align:center;font-size:14.5px;color:var(--ink2);font-family:Arial,sans-serif;margin:6px auto 0;max-width:440px;line-height:1.6;">Cada Comendador pode levar <b>um acompanhante</b>: os dois juntos ficam <b>R$ 1.600,00</b>.</p>
+    
   <p style="text-align:center;margin-top:16px;"><a class="btn gold" onclick="document.getElementById('frm').scrollIntoView({behavior:'smooth',block:'start'})" style="cursor:pointer;text-decoration:none;display:inline-block;">Reservar e pagar &darr;</a></p>
 
   <div class="sep"></div>
@@ -293,7 +292,7 @@ async function carregarEu(){try{
   var fn=document.getElementById("f_nome"),fe=document.getElementById("f_email"),ft=document.getElementById("f_tel");
   if(EU.nome){fn.value=EU.nome;} if(EU.email||u.email){fe.value=EU.email||u.email;fe.readOnly=true;} if(EU.telefone&&!ft.value)ft.value=EU.telefone;
   document.getElementById("loginLink").innerHTML="Conectado como <b>"+esc(EU.nome||u.email)+"</b>.";
-  var meu=LISTA.filter(function(x){return EU.nome&&x.nome===EU.nome;})[0]; if(meu){var sl=document.getElementById("f_membro");sl.value=meu.id;SEL=meu;sl.disabled=true;}
+  var meu=LISTA.filter(function(x){return EU.nome&&x.nome===EU.nome;})[0]; if(meu){var sl=document.getElementById("f_membro");sl.value=meu.id;SEL=meu;}
   atualizaTotal();
 }catch(e){}}
 function mostrarLogin(){var b=document.getElementById("loginBox");b.style.display="block";

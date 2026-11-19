@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Manu — Épice · Maison Louis Roederer</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3"><meta name="theme-color" content="#2B3A55">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<!-- TESTE: painel do Embaixador Épice para a Maison Louis Roederer (dados de EXEMPLO).
+     Mais tarde vai para o site da Épice; os dados reais devem ir para o Supabase com acesso restrito. -->
+<style>
+:root{--navy:#2B3A55;--cream:#F7F2E6;--gold:#C9A24B;--gold-d:#9c7a2e;--ink:#262626;--line:#e3d7b8;--paper:#fffdf8;--red:#8f1d24;--green:#2f6b3a;}
+*{box-sizing:border-box;}
+html,body{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;}
+.serif{font-family:Cambria,Caladea,Georgia,serif;}
+.dtop{display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--paper);border-bottom:1px solid var(--line);}
+.dtop b{font-family:Cambria,Caladea,Georgia,serif;color:var(--navy);font-weight:normal;font-size:17px;}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 16px 60px;}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin:8px 0 6px;}
+.head .k{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-d);}
+.head h1{font-family:Cambria,Caladea,Georgia,serif;font-weight:normal;color:var(--navy);font-size:32px;margin:4px 0 2px;}
+.head .sub{font-size:13px;color:#7d7461;}
+.amostra{display:inline-block;background:#fbeaea;color:var(--red);border:1px solid #e6c4c6;border-radius:20px;padding:3px 10px;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-top:6px;}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper);}
+.seg button{border:none;background:none;padding:8px 12px;font-size:13px;color:#5b5446;cursor:pointer;font-family:inherit;}
+.seg button.on{background:var(--navy);color:#fff;}
+.btn{border:none;border-radius:10px;padding:9px 16px;font-size:13.5px;cursor:pointer;font-family:inherit;}
+.btn.n{background:var(--navy);color:#fff;}.btn.g{background:var(--gold);color:#fff;}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 4px;}
+.chip{border:1px solid var(--line);background:var(--paper);border-radius:22px;padding:8px 14px;font-size:13px;cursor:pointer;color:#5b5446;}
+.chip.on{border-color:var(--navy);background:var(--navy);color:#fff;}
+.chip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0;}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:16px 0;}
+.kpi{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:14px;padding:12px 16px;}
+.kpi span{display:block;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:#8a8270;}
+.kpi b{display:block;font-family:Cambria,Caladea,Georgia,serif;font-weight:normal;color:var(--navy);font-size:26px;margin-top:2px;}
+.kpi small{color:#7d7461;font-size:12px;}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px;}
+.card h2{font-family:Cambria,Caladea,Georgia,serif;font-weight:normal;color:var(--navy);font-size:20px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;}
+.card h2 small{font-family:Arial,sans-serif;font-size:12px;color:#8a8270;}
+.cv{position:relative;height:280px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:#8a8270;padding:7px 8px;border-bottom:1px solid var(--line);font-weight:normal;}
+td{padding:8px;border-bottom:1px solid #efe6cf;vertical-align:top;}
+td.n,th.n{text-align:right;white-space:nowrap;}
+.pill{display:inline-block;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;padding:2px 9px;white-space:nowrap;}
+.p-ok{color:var(--green);background:#eef6ef;border:1px solid #cfe6d3;}
+.p-tr{color:var(--gold-d);background:#f8f0dc;border:1px solid var(--line);}
+.p-pl{color:var(--navy);background:#eef1f8;border:1px solid #cfd6ea;}
+.marca{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
+.amb{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;}
+.am{display:flex;gap:10px;align-items:center;background:#faf6ea;border:1px solid var(--line);border-radius:12px;padding:10px 12px;}
+.am .av{width:42px;height:42px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:Cambria,Georgia,serif;font-size:15px;flex:none;}
+.am b{display:block;font-family:Cambria,Caladea,Georgia,serif;font-weight:normal;color:var(--navy);font-size:15px;}
+.am small{color:#7d7461;font-size:12px;}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;}
+.tri{background:#faf6ea;border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+.tri h3{margin:0 0 8px;font-family:Cambria,Caladea,Georgia,serif;font-weight:normal;color:var(--navy);font-size:17px;}
+.tri li{font-size:13px;margin:0 0 6px;line-height:1.4;}
+.tri ul{margin:0;padding-left:16px;}
+#mapa{height:460px;border-radius:12px;border:1px solid var(--line);z-index:1;}
+.tipos{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px;}
+.tp{border:1px solid var(--line);background:#faf6ea;border-radius:18px;padding:5px 11px;font-size:12.5px;cursor:pointer;color:#5b5446;user-select:none;}
+.tp.off{opacity:.4;}
+.tp i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px;}
+.mapgrid{display:grid;grid-template-columns:minmax(0,2fr) minmax(240px,1fr);gap:14px;}
+@media(max-width:760px){.mapgrid{grid-template-columns:1fr;}#mapa{height:360px;}}
+.cid{max-height:460px;overflow:auto;}
+.cid .c{border-bottom:1px solid #efe6cf;padding:8px 2px;cursor:pointer;}
+.cid .c b{font-family:Cambria,Caladea,Georgia,serif;font-weight:normal;color:var(--navy);font-size:15px;}
+.cid .c small{display:block;color:#7d7461;font-size:12px;margin-top:2px;}
+.st{text-align:center;padding:70px 20px;color:#6a634f;}.st h2{font-family:Cambria,Georgia,serif;color:var(--navy);font-weight:normal;}
+@media print{.noprint{display:none!important;}body{background:#fff;}.card,.kpi{break-inside:avoid;}}
+</style></head><body>
+<div class="dtop"><b>Épice · Maison Louis Roederer</b></div>
+<div id="st" class="st">Carregando…</div>
+<div id="app" class="wrap" style="display:none;">
+  <div class="head">
+    <div><div class="k" data-t="k">Embaixador · Brasil</div><h1 data-t="h1">Relatório do Embaixador</h1><div class="sub" data-t="sub">Vendas, importações, embaixadores, eventos e planejamento das marcas da Maison Louis Roederer no Brasil.</div><span class="amostra" data-t="amostra">Dados de exemplo — teste</span></div>
+    <div class="tools noprint">
+      <div class="seg" id="lang"><button data-l="pt" class="on">PT</button><button data-l="fr">FR</button></div>
+      <div class="seg" id="per"><button data-p="ano" class="on">2026</button><button data-p="T1">T1</button><button data-p="T2">T2</button><button data-p="T3">T3</button><button data-p="T4">T4</button></div>
+      <button class="btn g" onclick="relatorio()" data-t="btnRel">⬇ Relatório (PDF)</button>
+    </div>
+  </div>
+  <div class="chips noprint" id="marcas"></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="card"><h2><span data-t="hMapa">Presença no Brasil</span><small id="mapTot"></small></h2>
+    <div class="tipos noprint" id="tipos"></div>
+    <div class="mapgrid"><div id="mapa"></div><div class="cid" id="cidades"></div></div></div>
+  <div class="grid2">
+    <div class="card"><h2><span data-t="hVendas">Vendas por mês</span><small data-t="garrafas">garrafas</small></h2><div class="cv"><canvas id="cVendas"></canvas></div></div>
+    <div class="card"><h2><span data-t="hMix">Vendas por marca</span><small>R$</small></h2><div class="cv"><canvas id="cMix"></canvas></div></div>
+  </div>
+  <div class="card"><h2><span data-t="hImp">Importações</span><small id="impTot"></small></h2><div style="overflow-x:auto;"><table id="tImp"></table></div></div>
+  <div class="card"><h2><span data-t="hAmb">Embaixadores no Brasil</span><small id="ambTot"></small></h2><div class="amb" id="amb"></div></div>
+  <div class="grid2">
+    <div class="card"><h2><span data-t="hEvR">Eventos realizados</span><small id="evRTot"></small></h2><div style="overflow-x:auto;"><table id="tEvR"></table></div></div>
+    <div class="card"><h2><span data-t="hEvF">Próximos eventos</span><small id="evFTot"></small></h2><div style="overflow-x:auto;"><table id="tEvF"></table></div></div>
+  </div>
+  <div class="card"><h2><span data-t="hPlan">Planejamento do ano</span><small>2026</small></h2><div class="plan" id="plan"></div></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+var LF=window.L; // Leaflet (o nome "L" é usado abaixo para o idioma)
+var sb=window.supabase.createClient("https://yvdkaycwtulqjnvlpgvy.supabase.co","sb_publishable_v3QZOo0NYLpOAk9p5JBNjQ_r0vb-Zjd");
+// ===================== DADOS DE EXEMPLO (trocar pelos reais) =====================
+var MARCAS=[{k:"LR",n:"Louis Roederer",c:"#2B3A55"},{k:"CR",n:"Cristal",c:"#C9A24B"},{k:"OTT",n:"Domaines Ott",c:"#d98c7a"},{k:"RP",n:"Ramos Pinto",c:"#7a2e3a"}];
+// garrafas vendidas por mês (jan..dez) e preço médio (R$) por marca
+var VENDAS={LR:[420,380,450,510,470,520,560,600,640,710,820,980],CR:[24,20,26,30,28,32,30,34,38,42,55,80],OTT:[160,150,170,140,110,90,80,90,120,180,240,300],RP:[90,85,100,110,120,115,125,130,140,150,170,210]};
+var PRECO={LR:420,CR:3200,OTT:260,RP:180};
+var IMPORT=[{d:"2026-02-10",m:"LR",item:"Collection 244 · Brut Nature",q:1800,st:"ok"},{d:"2026-03-22",m:"OTT",item:"Château de Selle · By.Ott Rosé",q:1200,st:"ok"},{d:"2026-05-15",m:"RP",item:"Duas Quintas · LBV · Tawny 10 anos",q:960,st:"ok"},{d:"2026-06-30",m:"CR",item:"Cristal 2016 · Cristal Rosé 2014",q:180,st:"ok"},{d:"2026-09-05",m:"LR",item:"Collection 245 · Vintage 2016",q:2400,st:"ok"},{d:"2026-11-12",m:"LR",item:"Collection 245 (fim de ano)",q:3000,st:"tr"},{d:"2026-11-28",m:"OTT",item:"Clos Mireille · Château Romassan",q:720,st:"tr"},{d:"2027-01-20",m:"CR",item:"Cristal 2016 (alocação 2027)",q:240,st:"pl"}];
+var AMB=[{n:"Embaixador São Paulo",c:"São Paulo · SP",contas:38},{n:"Embaixador Rio de Janeiro",c:"Rio de Janeiro · RJ",contas:24},{n:"Embaixador Curitiba",c:"Curitiba · PR",contas:15},{n:"Embaixador Porto Alegre",c:"Porto Alegre · RS",contas:11},{n:"Embaixador Recife",c:"Recife · PE",contas:9},{n:"Embaixador Brasília",c:"Brasília · DF",contas:12},{n:"Embaixador Belo Horizonte",c:"Belo Horizonte · MG",contas:10}];
+var EVENTOS=[{d:"2026-03-18",m:"LR",t:"Jantar harmonizado Collection 244",l:"São Paulo",p:40},{d:"2026-05-07",m:"OTT",t:"Lançamento verão Domaines Ott",l:"Rio de Janeiro",p:60},{d:"2026-06-20",m:"RP",t:"Degustação Porto vintage",l:"Curitiba",p:25},{d:"2026-08-14",m:"CR",t:"Cristal Experience",l:"São Paulo",p:18},{d:"2026-10-22",m:"LR",t:"Brinde Roederer · Jantar de 1 Ano da Commanderie",l:"São Paulo",p:50},{d:"2026-12-03",m:"LR",t:"Celebração de fim de ano Roederer",l:"São Paulo",p:80},{d:"2026-12-10",m:"CR",t:"Jantar Cristal Rosé",l:"Rio de Janeiro",p:20},{d:"2027-02-15",m:"OTT",t:"Verão Ott · beach club",l:"Florianópolis",p:120},{d:"2027-03-25",m:"RP",t:"Masterclass Ramos Pinto",l:"Porto Alegre",p:30}];
+var PLANO={pt:[["T1",["Chegada Collection 244","Jantar de lançamento em SP","Treinamento das equipes de venda"]],["T2",["Campanha de verão Domaines Ott","Abertura de 10 novas contas no RJ","Degustações Ramos Pinto no Sul"]],["T3",["Chegada Collection 245","Cristal Experience","Visita da Maison ao Brasil"]],["T4",["Fim de ano: caixas presente","Eventos de fim de ano em 3 cidades","Planejamento 2027 com a Maison"]]],
+           fr:[["T1",["Arrivée de la Collection 244","Dîner de lancement à São Paulo","Formation des équipes de vente"]],["T2",["Campagne d'été Domaines Ott","Ouverture de 10 nouveaux comptes à Rio","Dégustations Ramos Pinto dans le Sud"]],["T3",["Arrivée de la Collection 245","Cristal Experience","Visite de la Maison au Brésil"]],["T4",["Fin d'année : coffrets cadeaux","Événements de fin d'année dans 3 villes","Planification 2027 avec la Maison"]]]};
+// Mapa: cidades com pontos de venda (produtos) e ações feitas — tipo: ev=evento, tr=treinamento, dg=degustação, vt=vertical
+var CIDADES={"São Paulo":[-23.55,-46.63],"Rio de Janeiro":[-22.91,-43.17],"Curitiba":[-25.43,-49.27],"Porto Alegre":[-30.03,-51.23],"Recife":[-8.05,-34.88],"Brasília":[-15.79,-47.88],"Belo Horizonte":[-19.92,-43.94],"Florianópolis":[-27.59,-48.55],"Salvador":[-12.97,-38.50],"Fortaleza":[-3.73,-38.53],"Goiânia":[-16.68,-49.25],"Campinas":[-22.91,-47.06],"Ribeirão Preto":[-21.18,-47.81],"Balneário Camboriú":[-26.99,-48.63],"Manaus":[-3.12,-60.02],"Natal":[-5.79,-35.21]};
+var PDV={"São Paulo":{LR:48,CR:12,OTT:30,RP:22},"Rio de Janeiro":{LR:26,CR:6,OTT:22,RP:10},"Curitiba":{LR:14,CR:3,OTT:8,RP:9},"Porto Alegre":{LR:10,CR:2,OTT:5,RP:12},"Recife":{LR:9,CR:2,OTT:7,RP:4},"Brasília":{LR:12,CR:4,OTT:6,RP:5},"Belo Horizonte":{LR:10,CR:2,OTT:5,RP:6},"Florianópolis":{LR:7,CR:1,OTT:9,RP:3},"Salvador":{LR:6,CR:1,OTT:6,RP:2},"Fortaleza":{LR:4,CR:1,OTT:5,RP:1},"Goiânia":{LR:5,CR:1,OTT:2,RP:2},"Campinas":{LR:6,CR:1,OTT:3,RP:3},"Ribeirão Preto":{LR:4,CR:1,OTT:2,RP:2},"Balneário Camboriú":{LR:5,CR:2,OTT:6,RP:1},"Manaus":{LR:2,CR:0,OTT:1,RP:1},"Natal":{LR:2,CR:0,OTT:3,RP:1}};
+var ACOES=[{c:"São Paulo",tp:"ev",m:"LR",d:"2026-03-18",t:"Jantar harmonizado Collection 244"},{c:"São Paulo",tp:"tr",m:"LR",d:"2026-02-20",t:"Treinamento equipe de vendas"},{c:"São Paulo",tp:"vt",m:"CR",d:"2026-08-14",t:"Vertical Cristal 2008 · 2012 · 2016"},{c:"São Paulo",tp:"dg",m:"RP",d:"2026-09-10",t:"Degustação Tawny 10 · 20 · 30 anos"},{c:"Rio de Janeiro",tp:"ev",m:"OTT",d:"2026-05-07",t:"Lançamento verão Domaines Ott"},{c:"Rio de Janeiro",tp:"tr",m:"OTT",d:"2026-04-15",t:"Treinamento sommeliers · rosés de Provence"},{c:"Curitiba",tp:"dg",m:"RP",d:"2026-06-20",t:"Degustação Porto vintage"},{c:"Curitiba",tp:"vt",m:"LR",d:"2026-07-09",t:"Vertical Louis Roederer Vintage"},{c:"Porto Alegre",tp:"tr",m:"RP",d:"2026-05-28",t:"Treinamento Douro · Ramos Pinto"},{c:"Recife",tp:"dg",m:"LR",d:"2026-08-07",t:"Degustação na abertura do núcleo"},{c:"Brasília",tp:"ev",m:"CR",d:"2026-09-25",t:"Jantar Cristal"},{c:"Belo Horizonte",tp:"tr",m:"LR",d:"2026-10-02",t:"Treinamento lojas e restaurantes"},{c:"Florianópolis",tp:"ev",m:"OTT",d:"2026-01-25",t:"Verão Ott · beach club"},{c:"Salvador",tp:"dg",m:"OTT",d:"2026-03-05",t:"Degustação rosés Ott"},{c:"Balneário Camboriú",tp:"ev",m:"CR",d:"2026-12-28",t:"Réveillon Cristal (programado)"}];
+// ===================== TEXTOS PT / FR =====================
+var TX={pt:{k:"Embaixador · Brasil",h1:"Relatório do Embaixador",sub:"Vendas, importações, embaixadores, eventos e planejamento das marcas da Maison Louis Roederer no Brasil.",amostra:"Dados de exemplo — teste",btnRel:"⬇ Relatório (PDF)",hVendas:"Vendas por mês",garrafas:"garrafas",hMix:"Vendas por marca",hImp:"Importações",hAmb:"Embaixadores no Brasil",hEvR:"Eventos realizados",hEvF:"Próximos eventos",hPlan:"Planejamento do ano",hMapa:"Presença no Brasil",tpPdv:"Pontos de venda",tpEv:"Eventos",tpTr:"Treinamentos",tpDg:"Degustações",tpVt:"Verticais",pdv:"pontos de venda",acoes:"ações",todas:"Todas as marcas",kV:"Vendas",kF:"Faturamento",kI:"Importado",kA:"Embaixadores",kE:"Eventos realizados",kP:"Próximos eventos",gf:"garrafas",cid:"cidades",contas:"contas",conv:"convidados",data:"Data",marca:"Marca",item:"Produto",qtd:"Garrafas",sit:"Situação",ev:"Evento",local:"Local",ok:"Desembaraçado",tr:"Em trânsito",pl:"Programado",meses:["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"],per:{ano:"Ano 2026",T1:"1º trimestre 2026",T2:"2º trimestre 2026",T3:"3º trimestre 2026",T4:"4º trimestre 2026"},nada:"Nada neste período."},
+        fr:{k:"Ambassadeur · Brésil",h1:"Rapport de l'Ambassadeur",sub:"Ventes, importations, ambassadeurs, événements et planification des marques de la Maison Louis Roederer au Brésil.",amostra:"Données d'exemple — test",btnRel:"⬇ Rapport (PDF)",hVendas:"Ventes par mois",garrafas:"bouteilles",hMix:"Ventes par marque",hImp:"Importations",hAmb:"Ambassadeurs au Brésil",hEvR:"Événements réalisés",hEvF:"Prochains événements",hPlan:"Planification de l'année",hMapa:"Présence au Brésil",tpPdv:"Points de vente",tpEv:"Événements",tpTr:"Formations",tpDg:"Dégustations",tpVt:"Verticales",pdv:"points de vente",acoes:"actions",todas:"Toutes les marques",kV:"Ventes",kF:"Chiffre d'affaires",kI:"Importé",kA:"Ambassadeurs",kE:"Événements réalisés",kP:"Prochains événements",gf:"bouteilles",cid:"villes",contas:"comptes",conv:"invités",data:"Date",marca:"Marque",item:"Produit",qtd:"Bouteilles",sit:"Statut",ev:"Événement",local:"Lieu",ok:"Dédouané",tr:"En transit",pl:"Programmé",meses:["janv","févr","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"],per:{ano:"Année 2026",T1:"1er trimestre 2026",T2:"2e trimestre 2026",T3:"3e trimestre 2026",T4:"4e trimestre 2026"},nada:"Rien sur cette période."}};
+var L="pt",P="ano",M="";var CH={};
+try{L=localStorage.getItem("manu_lang")||"pt";}catch(e){}
+function t(k){return TX[L][k];}
+function esc(s){return (""+(s==null?"":s)).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function nf(n){return Number(n).toLocaleString(L==="fr"?"fr-FR":"pt-BR");}
+function brl(n){return "R$ "+Number(n).toLocaleString(L==="fr"?"fr-FR":"pt-BR",{maximumFractionDigits:0});}
+function fd(d){return new Date(d+"T12:00:00").toLocaleDateString(L==="fr"?"fr-FR":"pt-BR",{day:"2-digit",month:"short",year:"numeric"});}
+function mesesP(){return P==="ano"?[0,1,2,3,4,5,6,7,8,9,10,11]:{T1:[0,1,2],T2:[3,4,5],T3:[6,7,8],T4:[9,10,11]}[P];}
+function noP(d){var y=+d.slice(0,4),m=+d.slice(5,7)-1;return y===2026&&mesesP().indexOf(m)>=0;}
+function mk(m){return MARCAS.filter(function(x){return x.k===m;})[0];}
+function sel(){return M?MARCAS.filter(function(x){return x.k===M;}):MARCAS;}
+var HOJE="2026-11-19";
+function render(){
+  document.documentElement.lang=L==="fr"?"fr":"pt-BR";
+  document.querySelectorAll("[data-t]").forEach(function(e){e.textContent=t(e.getAttribute("data-t"));});
+  document.querySelectorAll("#lang button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-l")===L);});
+  document.querySelectorAll("#per button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-p")===P);});
+  document.getElementById("marcas").innerHTML="<span class='chip"+(M?"":" on")+"' onclick=\"M='';render()\">"+t("todas")+"</span>"+MARCAS.map(function(x){return "<span class='chip"+(M===x.k?" on":"")+"' onclick=\"M='"+x.k+"';render()\"><i style='background:"+x.c+"'></i>"+x.n+"</span>";}).join("");
+  var ms=mesesP(),S=sel();
+  var gf=0,fat=0;S.forEach(function(x){ms.forEach(function(i){gf+=VENDAS[x.k][i];fat+=VENDAS[x.k][i]*PRECO[x.k];});});
+  var imp=IMPORT.filter(function(r){return (!M||r.m===M)&&noP(r.d);}),impQ=imp.reduce(function(a,r){return a+r.q;},0);
+  var evs=EVENTOS.filter(function(e){return !M||e.m===M;});var evR=evs.filter(function(e){return e.d<=HOJE&&noP(e.d);}),evF=evs.filter(function(e){return e.d>HOJE;});
+  var cids={};AMB.forEach(function(a){cids[a.c]=1;});
+  document.getElementById("kpis").innerHTML=[[t("kV"),nf(gf),t("gf")],[t("kF"),brl(fat),t("per")[P]],[t("kI"),nf(impQ),t("gf")],[t("kA"),AMB.length,Object.keys(cids).length+" "+t("cid")],[t("kE"),evR.length,nf(evR.reduce(function(a,e){return a+e.p;},0))+" "+t("conv")],[t("kP"),evF.length,""]].map(function(k){return "<div class='kpi'><span>"+k[0]+"</span><b>"+k[1]+"</b><small>"+k[2]+"</small></div>";}).join("");
+  // gráficos
+  if(window.Chart){Object.keys(CH).forEach(function(k){CH[k].destroy();});
+    CH.v=new Chart(document.getElementById("cVendas"),{type:"bar",data:{labels:ms.map(function(i){return t("meses")[i];}),datasets:S.map(function(x){return {label:x.n,data:ms.map(function(i){return VENDAS[x.k][i];}),backgroundColor:x.c,borderRadius:4,stack:"s"};})},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});
+    CH.m=new Chart(document.getElementById("cMix"),{type:"doughnut",data:{labels:S.map(function(x){return x.n;}),datasets:[{data:S.map(function(x){return ms.reduce(function(a,i){return a+VENDAS[x.k][i]*PRECO[x.k];},0);}),backgroundColor:S.map(function(x){return x.c;}),borderColor:"#fffdf8"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:function(c){return c.label+": "+brl(c.raw);}}}}}});}
+  // importações
+  document.getElementById("impTot").textContent=nf(impQ)+" "+t("gf");
+  document.getElementById("tImp").innerHTML=imp.length?("<tr><th>"+t("data")+"</th><th>"+t("marca")+"</th><th>"+t("item")+"</th><th class='n'>"+t("qtd")+"</th><th>"+t("sit")+"</th></tr>"+imp.map(function(r){var x=mk(r.m);return "<tr><td>"+fd(r.d)+"</td><td><span class='marca' style='background:"+x.c+"'></span>"+x.n+"</td><td>"+esc(r.item)+"</td><td class='n'>"+nf(r.q)+"</td><td><span class='pill p-"+r.st+"'>"+t(r.st)+"</span></td></tr>";}).join("")):"<tr><td>"+t("nada")+"</td></tr>";
+  // embaixadores
+  document.getElementById("ambTot").textContent=AMB.length+" · "+Object.keys(cids).length+" "+t("cid");
+  document.getElementById("amb").innerHTML=AMB.map(function(a){return "<div class='am'><div class='av'>"+esc(a.c.slice(0,2).toUpperCase())+"</div><div><b>"+esc(a.n)+"</b><small>"+esc(a.c)+" · "+a.contas+" "+t("contas")+"</small></div></div>";}).join("");
+  // eventos
+  function tabEv(L2,id,tot){document.getElementById(tot).textContent=L2.length;document.getElementById(id).innerHTML=L2.length?("<tr><th>"+t("data")+"</th><th>"+t("ev")+"</th><th>"+t("local")+"</th><th class='n'>"+t("conv")+"</th></tr>"+L2.map(function(e){var x=mk(e.m);return "<tr><td>"+fd(e.d)+"</td><td><span class='marca' style='background:"+x.c+"'></span>"+esc(e.t)+"</td><td>"+esc(e.l)+"</td><td class='n'>"+e.p+"</td></tr>";}).join("")):"<tr><td>"+t("nada")+"</td></tr>";}
+  tabEv(evR,"tEvR","evRTot");tabEv(evF,"tEvF","evFTot");
+  mapa();
+  // planejamento
+  document.getElementById("plan").innerHTML=PLANO[L].map(function(q){return "<div class='tri' style='"+(P===q[0]?"border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;":"")+"'><h3>"+q[0]+" · 2026</h3><ul>"+q[1].map(function(i){return "<li>"+esc(i)+"</li>";}).join("")+"</ul></div>";}).join("");
+}
+var MAPA=null,CAMADA=null,TIPOS={pdv:1,ev:1,tr:1,dg:1,vt:1};
+var TCOR={pdv:"#2B3A55",ev:"#C9A24B",tr:"#2f6b3a",dg:"#7a2e3a",vt:"#d98c7a"},TNOM={pdv:"tpPdv",ev:"tpEv",tr:"tpTr",dg:"tpDg",vt:"tpVt"};
+function mapa(){
+  document.getElementById("tipos").innerHTML=Object.keys(TNOM).map(function(k){return "<span class='tp"+(TIPOS[k]?"":" off")+"' onclick=\"TIPOS['"+k+"']=!TIPOS['"+k+"'];render()\"><i style='background:"+TCOR[k]+"'></i>"+t(TNOM[k])+"</span>";}).join("");
+  var ac=ACOES.filter(function(a){return (!M||a.m===M)&&TIPOS[a.tp]&&(P==="ano"?a.d.slice(0,4)==="2026":noP(a.d));});
+  var por={};Object.keys(CIDADES).forEach(function(c){var p=PDV[c]||{},n=M?(p[M]||0):Object.keys(p).reduce(function(a,k){return a+p[k];},0);por[c]={pdv:TIPOS.pdv?n:0,ac:[]};});
+  ac.forEach(function(a){if(por[a.c])por[a.c].ac.push(a);});
+  var lista=Object.keys(por).filter(function(c){return por[c].pdv||por[c].ac.length;}).sort(function(a,b){return (por[b].pdv+por[b].ac.length*10)-(por[a].pdv+por[a].ac.length*10);});
+  var totP=lista.reduce(function(a,c){return a+por[c].pdv;},0);
+  document.getElementById("mapTot").textContent=lista.length+" "+t("cid")+" · "+totP+" "+t("pdv")+" · "+ac.length+" "+t("acoes");
+  document.getElementById("cidades").innerHTML=lista.map(function(c){var o=por[c];return "<div class='c' onclick=\"irCidade('"+c+"')\"><b>"+c+"</b><small>"+(o.pdv?(o.pdv+" "+t("pdv")):"")+(o.ac.length?((o.pdv?" · ":"")+o.ac.map(function(a){return "<span style='color:"+TCOR[a.tp]+"'>●</span> "+esc(a.t);}).join("<br>")):"")+"</small></div>";}).join("")||("<div style='color:#7d7461;font-size:13px;'>"+t("nada")+"</div>");
+  if(!LF)return;
+  if(!MAPA){MAPA=LF.map("mapa",{scrollWheelZoom:false}).setView([-15.5,-50],4);LF.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:"© OpenStreetMap · © CARTO",maxZoom:12}).addTo(MAPA);}
+  if(CAMADA)CAMADA.remove();CAMADA=LF.layerGroup().addTo(MAPA);
+  lista.forEach(function(c){var o=por[c],ll=CIDADES[c];
+    var html="<b style='font-family:Cambria,Georgia,serif;color:#2B3A55;font-size:15px;'>"+c+"</b>"+(o.pdv?("<br>"+o.pdv+" "+t("pdv")+(M?"":" <small style='color:#7d7461'>("+MARCAS.map(function(x){return x.n+" "+((PDV[c]||{})[x.k]||0);}).join(" · ")+")</small>")):"")+o.ac.map(function(a){return "<br><span style='color:"+TCOR[a.tp]+"'>●</span> "+fd(a.d)+" · "+esc(a.t);}).join("");
+    if(o.pdv)LF.circleMarker(ll,{radius:Math.min(26,5+Math.sqrt(o.pdv)*2.4),color:"#2B3A55",weight:1,fillColor:"#2B3A55",fillOpacity:.25}).bindPopup(html).addTo(CAMADA);
+    var tipos={};o.ac.forEach(function(a){tipos[a.tp]=1;});Object.keys(tipos).forEach(function(tp,i){var off=[[0,0],[0.35,0.35],[-0.35,0.35],[0.35,-0.35],[-0.35,-0.35]][i]||[0,0];LF.circleMarker([ll[0]+off[0],ll[1]+off[1]],{radius:6,color:"#fff",weight:1.5,fillColor:TCOR[tp],fillOpacity:1}).bindPopup(html).addTo(CAMADA);});});
+  setTimeout(function(){MAPA.invalidateSize();},50);}
+function irCidade(c){if(MAPA&&CIDADES[c]){MAPA.setView(CIDADES[c],7);}}
+function relatorio(){var tt=document.title;document.title=(L==="fr"?"Rapport-Ambassadeur-Roederer-":"Relatorio-Embaixador-Roederer-")+(P==="ano"?"2026":P+"-2026");setTimeout(function(){window.print();document.title=tt;},300);}
+document.getElementById("lang").onclick=function(e){var l=e.target.getAttribute("data-l");if(!l)return;L=l;try{localStorage.setItem("manu_lang",L);}catch(x){}render();};
+document.getElementById("per").onclick=function(e){var p=e.target.getAttribute("data-p");if(!p)return;P=p;render();};
+// Acesso: só o Grão-Mestre (Manu), por enquanto
+async function iniciar(){var st=document.getElementById("st");
+  var u=(await sb.auth.getUser()).data.user;if(!u){st.innerHTML="<h2>Acesso restrito</h2><p>Entre na sua conta.</p><p><a href='index.html?login=1&next=manu.html'>Entrar</a></p>";return;}
+  var m=await sb.from("membros").select("nome,grau").eq("user_id",u.id).maybeSingle();var g=((m&&m.data&&m.data.grau)||"").toLowerCase();
+  if(!/gr[aã]o/.test(g)){st.innerHTML="<h2>Acesso restrito</h2><p>Página de teste do Grão-Mestre.</p>";return;}
+  st.style.display="none";document.getElementById("app").style.display="block";render();}
+iniciar();
+</script>
+<script src="js/painel-shell.js?v=20261031" data-esconder=".dtop"></script>
+</body></html>

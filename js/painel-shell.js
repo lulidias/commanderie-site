@@ -62,7 +62,8 @@
       { t: "Modelos de E-mail", h: "painel-emails.html", i: "email" },
       { t: "Apresentações", h: "painel-apresentacoes.html", i: "tela" },
       { t: "Manual de Marca", h: "manual-marca.html", i: "pincel" }] },
-    { g: "Conselho", itens: [{ t: "Melhorias", h: "painel-conselho.html?sec=melhorias", i: "lamp" }] }
+    { g: "Conselho", itens: [{ t: "Melhorias", h: "painel-conselho.html?sec=melhorias", i: "lamp" }] },
+    { g: "Teste", itens: [{ t: "Manu (Épice · Roederer)", h: "manu.html", i: "bi" }] }
   ];
   function ico(n) { return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (I[n] || "") + "</svg>"; }
   function atual(h) {

@@ -104,7 +104,8 @@ td.n,th.n{text-align:right;white-space:nowrap;}
     <div><div class="k" data-t="k">Embaixador · Brasil</div><h1 data-t="h1">Relatório do Embaixador</h1><div class="sub" data-t="sub">Vendas, importações, embaixadores, eventos e planejamento das marcas da Maison Louis Roederer no Brasil.</div><span class="amostra" data-t="amostra">Dados de exemplo — teste</span></div>
     <div class="tools noprint">
       <div class="seg" id="lang"><button data-l="pt" class="on">PT</button><button data-l="fr">FR</button></div>
-      <div class="seg" id="per"><button data-p="ano" class="on">2026</button><button data-p="T1">T1</button><button data-p="T2">T2</button><button data-p="T3">T3</button><button data-p="T4">T4</button></div>
+      <div class="seg" id="anos"></div>
+      <div class="seg" id="per"><button data-p="ano" class="on" data-t="anoTodo">Ano</button><button data-p="T1">T1</button><button data-p="T2">T2</button><button data-p="T3">T3</button><button data-p="T4">T4</button></div>
       <button class="btn g" onclick="relatorio()" data-t="btnRel">⬇ Relatório (PDF)</button>
     </div>
   </div>
@@ -123,7 +124,7 @@ td.n,th.n{text-align:right;white-space:nowrap;}
     <div class="card"><h2><span data-t="hEvR">Eventos realizados</span><small id="evRTot"></small></h2><div style="overflow-x:auto;"><table id="tEvR"></table></div></div>
     <div class="card"><h2><span data-t="hEvF">Próximos eventos</span><small id="evFTot"></small></h2><div style="overflow-x:auto;"><table id="tEvF"></table></div></div>
   </div>
-  <div class="card"><h2><span data-t="hPlan">Planejamento do ano</span><small>2026</small></h2><div class="plan" id="plan"></div></div>
+  <div class="card"><h2><span data-t="hPlan">Planejamento do ano</span><small id="planAno">2026</small></h2><div class="plan" id="plan"></div></div>
   </div>
   <div id="secPromo" style="display:none;">
     <div class="head"><div><div class="k">Épice · Maison Louis Roederer</div><h1>Promoções e descontos especiais</h1><div class="sub">Condições em vigor para clientes e parceiros. Use o código no pedido.</div><span class="amostra">Dados de exemplo — teste</span></div></div>
@@ -321,8 +322,19 @@ function renderMerc(){var n=MERC.anos.length-1,gf=MERC.gf[n],usd=MERC.usd[n],cr=
   CHM.m=new Chart(document.getElementById("cMMarca"),{type:"doughnut",data:{labels:MERC.marcas.map(function(m){return m[0];}),datasets:[{data:MERC.marcas.map(function(m){return m[1];}),backgroundColor:cores,borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"right",labels:{boxWidth:12,font:{size:11}}}}}});
   CHM.s=new Chart(document.getElementById("cMMes"),{data:{labels:TX.pt.meses,datasets:[{type:"bar",label:"Mercado (mil gf)",data:MERC.mesMerc,backgroundColor:"#d9d2bf",borderRadius:4,yAxisID:"y",order:1},{type:"line",label:"Louis Roederer + Cristal (mil gf)",data:MERC.mesLR,borderColor:"#2B3A55",backgroundColor:"#2B3A55",yAxisID:"y1",tension:.3,order:0}],},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"}},scales:{y:{beginAtZero:true},y1:{beginAtZero:true,position:"right",grid:{drawOnChartArea:false}}}}});}
 // ===================== TEXTOS PT / FR =====================
-var TX={pt:{k:"Embaixador · Brasil",h1:"Relatório do Embaixador",sub:"Vendas, importações, embaixadores, eventos e planejamento das marcas da Maison Louis Roederer no Brasil.",amostra:"Dados de exemplo — teste",btnRel:"⬇ Relatório (PDF)",hVendas:"Vendas por mês",garrafas:"garrafas",hMix:"Vendas por marca",hImp:"Importações",hAmb:"Embaixadores no Brasil",hEvR:"Eventos realizados",hEvF:"Próximos eventos",hPlan:"Planejamento do ano",hMapa:"Presença no Brasil",tpPdv:"Pontos de venda",tpEv:"Eventos",tpTr:"Treinamentos",tpDg:"Degustações",tpVt:"Verticais",pdv:"pontos de venda",acoes:"ações",todas:"Todas as marcas",kV:"Vendas",kF:"Faturamento",kI:"Importado",kA:"Embaixadores",kE:"Eventos realizados",kP:"Próximos eventos",gf:"garrafas",cid:"cidades",contas:"contas",conv:"convidados",data:"Data",marca:"Marca",item:"Produto",qtd:"Garrafas",sit:"Situação",ev:"Evento",local:"Local",ok:"Desembaraçado",tr:"Em trânsito",pl:"Programado",meses:["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"],per:{ano:"Ano 2026",T1:"1º trimestre 2026",T2:"2º trimestre 2026",T3:"3º trimestre 2026",T4:"4º trimestre 2026"},nada:"Nada neste período."},
-        fr:{k:"Ambassadeur · Brésil",h1:"Rapport de l'Ambassadeur",sub:"Ventes, importations, ambassadeurs, événements et planification des marques de la Maison Louis Roederer au Brésil.",amostra:"Données d'exemple — test",btnRel:"⬇ Rapport (PDF)",hVendas:"Ventes par mois",garrafas:"bouteilles",hMix:"Ventes par marque",hImp:"Importations",hAmb:"Ambassadeurs au Brésil",hEvR:"Événements réalisés",hEvF:"Prochains événements",hPlan:"Planification de l'année",hMapa:"Présence au Brésil",tpPdv:"Points de vente",tpEv:"Événements",tpTr:"Formations",tpDg:"Dégustations",tpVt:"Verticales",pdv:"points de vente",acoes:"actions",todas:"Toutes les marques",kV:"Ventes",kF:"Chiffre d'affaires",kI:"Importé",kA:"Ambassadeurs",kE:"Événements réalisés",kP:"Prochains événements",gf:"bouteilles",cid:"villes",contas:"comptes",conv:"invités",data:"Date",marca:"Marque",item:"Produit",qtd:"Bouteilles",sit:"Statut",ev:"Événement",local:"Lieu",ok:"Dédouané",tr:"En transit",pl:"Programmé",meses:["janv","févr","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"],per:{ano:"Année 2026",T1:"1er trimestre 2026",T2:"2e trimestre 2026",T3:"3e trimestre 2026",T4:"4e trimestre 2026"},nada:"Rien sur cette période."}};
+var TX={pt:{k:"Embaixador · Brasil",h1:"Relatório do Embaixador",sub:"Vendas, importações, embaixadores, eventos e planejamento das marcas da Maison Louis Roederer no Brasil.",amostra:"Dados de exemplo — teste",btnRel:"⬇ Relatório (PDF)",hVendas:"Vendas por mês",garrafas:"garrafas",hMix:"Vendas por marca",hImp:"Importações",hAmb:"Embaixadores no Brasil",hEvR:"Eventos realizados",hEvF:"Próximos eventos",hPlan:"Planejamento do ano",hMapa:"Presença no Brasil",tpPdv:"Pontos de venda",tpEv:"Eventos",tpTr:"Treinamentos",tpDg:"Degustações",tpVt:"Verticais",pdv:"pontos de venda",acoes:"ações",todas:"Todas as marcas",kV:"Vendas",kF:"Faturamento",kI:"Importado",kA:"Embaixadores",kE:"Eventos realizados",kP:"Próximos eventos",gf:"garrafas",cid:"cidades",contas:"contas",conv:"convidados",data:"Data",marca:"Marca",item:"Produto",qtd:"Garrafas",sit:"Situação",ev:"Evento",local:"Local",ok:"Desembaraçado",tr:"Em trânsito",pl:"Programado",meses:["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"],per:{ano:"Ano",T1:"1º trimestre",T2:"2º trimestre",T3:"3º trimestre",T4:"4º trimestre"},anoTodo:"Ano",vs:"vs",nada:"Nada neste período."},
+        fr:{k:"Ambassadeur · Brésil",h1:"Rapport de l'Ambassadeur",sub:"Ventes, importations, ambassadeurs, événements et planification des marques de la Maison Louis Roederer au Brésil.",amostra:"Données d'exemple — test",btnRel:"⬇ Rapport (PDF)",hVendas:"Ventes par mois",garrafas:"bouteilles",hMix:"Ventes par marque",hImp:"Importations",hAmb:"Ambassadeurs au Brésil",hEvR:"Événements réalisés",hEvF:"Prochains événements",hPlan:"Planification de l'année",hMapa:"Présence au Brésil",tpPdv:"Points de vente",tpEv:"Événements",tpTr:"Formations",tpDg:"Dégustations",tpVt:"Verticales",pdv:"points de vente",acoes:"actions",todas:"Toutes les marques",kV:"Ventes",kF:"Chiffre d'affaires",kI:"Importé",kA:"Ambassadeurs",kE:"Événements réalisés",kP:"Prochains événements",gf:"bouteilles",cid:"villes",contas:"comptes",conv:"invités",data:"Date",marca:"Marque",item:"Produit",qtd:"Bouteilles",sit:"Statut",ev:"Événement",local:"Lieu",ok:"Dédouané",tr:"En transit",pl:"Programmé",meses:["janv","févr","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"],per:{ano:"Année",T1:"1er trimestre",T2:"2e trimestre",T3:"3e trimestre",T4:"4e trimestre"},anoTodo:"Année",vs:"vs",nada:"Rien sur cette période."}};
+// ===================== ANOS ANTERIORES (exemplo: gerados a partir de 2026) =====================
+var ANOS=[2024,2025,2026],ANO=2026,FATOR={2024:.74,2025:.86,2026:1};
+var VA={},DADOS={};
+ANOS.forEach(function(y){var f=FATOR[y],dv=2026-y;VA[y]={};Object.keys(VENDAS).forEach(function(k){VA[y][k]=y===2026?VENDAS[k]:VENDAS[k].map(function(v,i){return Math.round(v*f*(1+((i*7+y)%5-2)/40));});});
+  if(y===2026){DADOS[y]={IMPORT:IMPORT,EVENTOS:EVENTOS,ACOES:ACOES};return;}
+  var ren=function(x){return String(x).replace(/Collection (24\d)/g,function(a,n){return "Collection "+(n-dv);}).replace(/(Vintage|Brut Nature|Cristal|Cristal Rosé) (20\d\d)/g,function(a,w,n){return w+" "+(n-dv);});};
+  var dt=function(d){return y+d.slice(4);};
+  DADOS[y]={IMPORT:IMPORT.map(function(r){return Object.assign({},r,{d:dt(r.d),item:ren(r.item),q:Math.round(r.q*f/10)*10,st:"ok"});}),
+    EVENTOS:EVENTOS.map(function(e){return Object.assign({},e,{d:dt(e.d),t:ren(e.t),p:Math.max(8,Math.round(e.p*f))});}),
+    ACOES:ACOES.map(function(a){return Object.assign({},a,{d:dt(a.d),t:ren(a.t)});})};});
+function perLbl(){return t("per")[P]+" "+ANO;}
 var L="pt",P="ano",M="";var CH={};
 try{L=localStorage.getItem("manu_lang")||"pt";}catch(e){}
 function t(k){return TX[L][k];}
@@ -331,7 +343,7 @@ function nf(n){return Number(n).toLocaleString(L==="fr"?"fr-FR":"pt-BR");}
 function brl(n){return "R$ "+Number(n).toLocaleString(L==="fr"?"fr-FR":"pt-BR",{maximumFractionDigits:0});}
 function fd(d){return new Date(d+"T12:00:00").toLocaleDateString(L==="fr"?"fr-FR":"pt-BR",{day:"2-digit",month:"short",year:"numeric"});}
 function mesesP(){return P==="ano"?[0,1,2,3,4,5,6,7,8,9,10,11]:{T1:[0,1,2],T2:[3,4,5],T3:[6,7,8],T4:[9,10,11]}[P];}
-function noP(d){var y=+d.slice(0,4),m=+d.slice(5,7)-1;return y===2026&&mesesP().indexOf(m)>=0;}
+function noP(d){var y=+d.slice(0,4),m=+d.slice(5,7)-1;return y===ANO&&mesesP().indexOf(m)>=0;}
 function mk(m){return MARCAS.filter(function(x){return x.k===m;})[0];}
 function sel(){return M?MARCAS.filter(function(x){return x.k===M;}):MARCAS;}
 var HOJE="2026-11-19";
@@ -339,18 +351,20 @@ function render(){
   document.documentElement.lang=L==="fr"?"fr":"pt-BR";
   document.querySelectorAll("[data-t]").forEach(function(e){e.textContent=t(e.getAttribute("data-t"));});
   document.querySelectorAll("#lang button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-l")===L);});
+  document.getElementById("anos").innerHTML=ANOS.map(function(y){return "<button data-y='"+y+"' class='"+(y===ANO?"on":"")+"'>"+y+"</button>";}).join("");document.getElementById("planAno").textContent=ANO;
   document.querySelectorAll("#per button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-p")===P);});
   document.getElementById("marcas").innerHTML="<span class='chip"+(M?"":" on")+"' onclick=\"M='';render()\">"+t("todas")+"</span>"+MARCAS.map(function(x){return "<span class='chip"+(M===x.k?" on":"")+"' onclick=\"M='"+x.k+"';render()\"><i style='background:"+x.c+"'></i>"+x.n+"</span>";}).join("");
   var ms=mesesP(),S=sel();
-  var gf=0,fat=0;S.forEach(function(x){ms.forEach(function(i){gf+=VENDAS[x.k][i];fat+=VENDAS[x.k][i]*PRECO[x.k];});});
-  var imp=IMPORT.filter(function(r){return (!M||r.m===M)&&noP(r.d);}),impQ=imp.reduce(function(a,r){return a+r.q;},0);
-  var evs=EVENTOS.filter(function(e){return !M||e.m===M;});var evR=evs.filter(function(e){return e.d<=HOJE&&noP(e.d);}),evF=evs.filter(function(e){return e.d>HOJE;});
+  var V=VA[ANO],D=DADOS[ANO],VP=VA[ANO-1];var gf=0,fat=0,gfA=0;S.forEach(function(x){ms.forEach(function(i){gf+=V[x.k][i];fat+=V[x.k][i]*PRECO[x.k];if(VP)gfA+=VP[x.k][i];});});
+  var cmp=VP&&gfA?(" · "+(gf>=gfA?"+":"")+((gf/gfA-1)*100).toFixed(0)+"% "+t("vs")+" "+(ANO-1)):"";
+  var imp=D.IMPORT.filter(function(r){return (!M||r.m===M)&&noP(r.d);}),impQ=imp.reduce(function(a,r){return a+r.q;},0);
+  var evs=D.EVENTOS.filter(function(e){return !M||e.m===M;});var evR=evs.filter(function(e){return e.d<=HOJE&&noP(e.d);}),evF=ANO===2026?evs.filter(function(e){return e.d>HOJE;}):[];
   var cids={};AMB.forEach(function(a){cids[a.c]=1;});
-  document.getElementById("kpis").innerHTML=[[t("kV"),nf(gf),t("gf")],[t("kF"),brl(fat),t("per")[P]],[t("kI"),nf(impQ),t("gf")],[t("kA"),AMB.length,Object.keys(cids).length+" "+t("cid")],[t("kE"),evR.length,nf(evR.reduce(function(a,e){return a+e.p;},0))+" "+t("conv")],[t("kP"),evF.length,""]].map(function(k){return "<div class='kpi'><span>"+k[0]+"</span><b>"+k[1]+"</b><small>"+k[2]+"</small></div>";}).join("");
+  document.getElementById("kpis").innerHTML=[[t("kV"),nf(gf),t("gf")+cmp],[t("kF"),brl(fat),perLbl()],[t("kI"),nf(impQ),t("gf")],[t("kA"),AMB.length,Object.keys(cids).length+" "+t("cid")],[t("kE"),evR.length,nf(evR.reduce(function(a,e){return a+e.p;},0))+" "+t("conv")],[t("kP"),evF.length,""]].map(function(k){return "<div class='kpi'><span>"+k[0]+"</span><b>"+k[1]+"</b><small>"+k[2]+"</small></div>";}).join("");
   // gráficos
   if(window.Chart){Object.keys(CH).forEach(function(k){CH[k].destroy();});
-    CH.v=new Chart(document.getElementById("cVendas"),{type:"bar",data:{labels:ms.map(function(i){return t("meses")[i];}),datasets:S.map(function(x){return {label:x.n,data:ms.map(function(i){return VENDAS[x.k][i];}),backgroundColor:x.c,borderRadius:4,stack:"s"};})},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});
-    CH.m=new Chart(document.getElementById("cMix"),{type:"doughnut",data:{labels:S.map(function(x){return x.n;}),datasets:[{data:S.map(function(x){return ms.reduce(function(a,i){return a+VENDAS[x.k][i]*PRECO[x.k];},0);}),backgroundColor:S.map(function(x){return x.c;}),borderColor:"#fffdf8"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:function(c){return c.label+": "+brl(c.raw);}}}}}});}
+    CH.v=new Chart(document.getElementById("cVendas"),{type:"bar",data:{labels:ms.map(function(i){return t("meses")[i];}),datasets:S.map(function(x){return {label:x.n,data:ms.map(function(i){return V[x.k][i];}),backgroundColor:x.c,borderRadius:4,stack:"s"};})},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});
+    CH.m=new Chart(document.getElementById("cMix"),{type:"doughnut",data:{labels:S.map(function(x){return x.n;}),datasets:[{data:S.map(function(x){return ms.reduce(function(a,i){return a+V[x.k][i]*PRECO[x.k];},0);}),backgroundColor:S.map(function(x){return x.c;}),borderColor:"#fffdf8"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:function(c){return c.label+": "+brl(c.raw);}}}}}});}
   // importações
   document.getElementById("impTot").textContent=nf(impQ)+" "+t("gf");
   document.getElementById("tImp").innerHTML=imp.length?("<tr><th>"+t("data")+"</th><th>"+t("marca")+"</th><th>"+t("item")+"</th><th class='n'>"+t("qtd")+"</th><th>"+t("sit")+"</th></tr>"+imp.map(function(r){var x=mk(r.m);return "<tr><td>"+fd(r.d)+"</td><td><span class='marca' style='background:"+x.c+"'></span>"+x.n+"</td><td>"+esc(r.item)+"</td><td class='n'>"+nf(r.q)+"</td><td><span class='pill p-"+r.st+"'>"+t(r.st)+"</span></td></tr>";}).join("")):"<tr><td>"+t("nada")+"</td></tr>";
@@ -362,14 +376,14 @@ function render(){
   tabEv(evR,"tEvR","evRTot");tabEv(evF,"tEvF","evFTot");
   mapa();
   // planejamento
-  document.getElementById("plan").innerHTML=PLANO[L].map(function(q){return "<div class='tri' style='"+(P===q[0]?"border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;":"")+"'><h3>"+q[0]+" · 2026</h3><ul>"+q[1].map(function(i){return "<li>"+esc(i)+"</li>";}).join("")+"</ul></div>";}).join("");
+  document.getElementById("plan").innerHTML=PLANO[L].map(function(q){return "<div class='tri' style='"+(P===q[0]?"border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;":"")+"'><h3>"+q[0]+" · "+ANO+"</h3><ul>"+q[1].map(function(i){return "<li>"+esc(i)+"</li>";}).join("")+"</ul></div>";}).join("");
 }
 var MAPA=null,CAMADA=null,TIPOS={pdv:1,ev:1,tr:1,dg:1,vt:1};
 var TCOR={pdv:"#2B3A55",ev:"#C9A24B",tr:"#2f6b3a",dg:"#7a2e3a",vt:"#d98c7a"},TNOM={pdv:"tpPdv",ev:"tpEv",tr:"tpTr",dg:"tpDg",vt:"tpVt"};
 function mapa(){
   document.getElementById("tipos").innerHTML=Object.keys(TNOM).map(function(k){return "<span class='tp"+(TIPOS[k]?"":" off")+"' onclick=\"TIPOS['"+k+"']=!TIPOS['"+k+"'];render()\"><i style='background:"+TCOR[k]+"'></i>"+t(TNOM[k])+"</span>";}).join("");
-  var ac=ACOES.filter(function(a){return (!M||a.m===M)&&TIPOS[a.tp]&&(P==="ano"?a.d.slice(0,4)==="2026":noP(a.d));});
-  var por={};Object.keys(CIDADES).forEach(function(c){var p=PDV[c]||{},n=M?(p[M]||0):Object.keys(p).reduce(function(a,k){return a+p[k];},0);por[c]={pdv:TIPOS.pdv?n:0,ac:[]};});
+  var ac=DADOS[ANO].ACOES.filter(function(a){return (!M||a.m===M)&&TIPOS[a.tp]&&noP(a.d);});
+  var por={};Object.keys(CIDADES).forEach(function(c){var p=PDV[c]||{},n=Math.round((M?(p[M]||0):Object.keys(p).reduce(function(a,k){return a+p[k];},0))*FATOR[ANO]);por[c]={pdv:TIPOS.pdv?n:0,ac:[]};});
   ac.forEach(function(a){if(por[a.c])por[a.c].ac.push(a);});
   var lista=Object.keys(por).filter(function(c){return por[c].pdv||por[c].ac.length;}).sort(function(a,b){return (por[b].pdv+por[b].ac.length*10)-(por[a].pdv+por[a].ac.length*10);});
   var totP=lista.reduce(function(a,c){return a+por[c].pdv;},0);
@@ -385,9 +399,10 @@ function mapa(){
     var tipos={};o.ac.forEach(function(a){tipos[a.tp]=1;});Object.keys(tipos).forEach(function(tp,i){var off=[[0,0],[0.35,0.35],[-0.35,0.35],[0.35,-0.35],[-0.35,-0.35]][i]||[0,0];LF.circleMarker([ll[0]+off[0],ll[1]+off[1]],{radius:6,color:"#fff",weight:1.5,fillColor:TCOR[tp],fillOpacity:1}).bindPopup(html).addTo(CAMADA);});});
   setTimeout(function(){MAPA.invalidateSize();},50);}
 function irCidade(c){if(MAPA&&CIDADES[c]){MAPA.setView(CIDADES[c],7);}}
-function relatorio(){var tt=document.title;document.title=(L==="fr"?"Rapport-Ambassadeur-Roederer-":"Relatorio-Embaixador-Roederer-")+(P==="ano"?"2026":P+"-2026");setTimeout(function(){window.print();document.title=tt;},300);}
+function relatorio(){var tt=document.title;document.title=(L==="fr"?"Rapport-Ambassadeur-Roederer-":"Relatorio-Embaixador-Roederer-")+(P==="ano"?ANO:P+"-"+ANO);setTimeout(function(){window.print();document.title=tt;},300);}
 document.getElementById("abas").onclick=function(e){var b=e.target.closest("button");if(b)aba(b.getAttribute("data-a"));};
 document.getElementById("lang").onclick=function(e){var l=e.target.getAttribute("data-l");if(!l)return;L=l;try{localStorage.setItem("manu_lang",L);}catch(x){}render();};
+document.getElementById("anos").onclick=function(e){var y=+e.target.getAttribute("data-y");if(!y)return;ANO=y;render();};
 document.getElementById("per").onclick=function(e){var p=e.target.getAttribute("data-p");if(!p)return;P=p;render();};
 // Acesso: Grão-Mestre (Manu) e Luli Dias
 async function iniciar(){var st=document.getElementById("st");

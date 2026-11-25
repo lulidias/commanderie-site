@@ -100,13 +100,15 @@ td.n,th.n{text-align:right;white-space:nowrap;}
 .cid .c{border-bottom:1px solid #efe6cf;padding:8px 2px;cursor:pointer;}
 .cid .c b{font-family:Cambria,Caladea,Georgia,serif;font-weight:normal;color:var(--navy);font-size:15px;}
 .cid .c small{display:block;color:#7d7461;font-size:12px;margin-top:2px;}
+.login{max-width:380px;margin:0 auto;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;}
+.login input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font-size:15px;margin:8px 0 12px;font-family:inherit;}
 .st{text-align:center;padding:70px 20px;color:#6a634f;}.st h2{font-family:Cambria,Georgia,serif;color:var(--navy);font-weight:normal;}
 @media print{.noprint{display:none!important;}body{background:#fff;}.card,.kpi{break-inside:avoid;}}
 </style></head><body>
-<div class="dtop"><b>Épice · Maison Louis Roederer</b></div>
+<div class="dtop"><b>Épice · Maison Louis Roederer</b><span id="quem" style="margin-left:auto;font-size:13px;color:#7d7461;"></span></div>
 <div id="st" class="st">Carregando…</div>
 <div id="app" class="wrap" style="display:none;">
-  <div class="abas noprint" id="abas"><button data-a="rel" class="on">&#128202; Relatório</button><button data-a="promo">&#127991; Promoções</button><button data-a="ped">&#129534; Pedido</button><button data-a="merc">&#127870; Mercado · Ideal BI</button></div>
+  <div class="abas noprint" id="abas"><button data-a="rel" class="on">&#128202; Relatório</button><button data-a="promo">&#127991; Promoções</button><button data-a="ped">&#129534; Pedido</button><button data-a="merc">&#127870; Mercado · Ideal BI</button><button data-a="aces" id="abaAces" style="display:none;">&#128273; Acessos</button></div>
   <div id="secRel">
   <div class="head">
     <div><div class="k" data-t="k">Embaixador · Brasil</div><h1 data-t="h1">Relatório do Embaixador</h1><div class="sub" data-t="sub">Vendas, importações, embaixadores, eventos e planejamento das marcas da Maison Louis Roederer no Brasil.</div><span class="amostra" data-t="amostra">Dados de exemplo — teste</span></div>
@@ -180,6 +182,17 @@ td.n,th.n{text-align:right;white-space:nowrap;}
     <div class="card"><h2>Importação mensal · Louis Roederer + Cristal × mercado<small>garrafas · 2026</small></h2><div class="cv"><canvas id="cMMes"></canvas></div></div>
     <div class="card" style="font-size:13px;color:#5b5446;">Fonte: Ideal BI (inteligência de comércio exterior). Os números desta aba são <b>exemplo</b>: quando a Ideal BI enviar a planilha (CSV/Excel) de importações de Champagne (NCM 2204.10.10), os valores reais entram aqui.</div>
   </div>
+  <div id="secAces" style="display:none;">
+    <div class="head"><div><div class="k">Épice · Maison Louis Roederer</div><h1>Acessos de convidados</h1><div class="sub">Pessoas de fora da Commanderie (ex.: equipe da Maison) que podem abrir esta página. Elas digitam o e-mail e recebem um link pessoal, válido por 30 dias — sem cadastro e sem senha.</div></div></div>
+    <div class="card"><h2>Autorizar e-mail</h2><div class="fg">
+      <label><span>E-mail</span><input id="aEmail" type="email" placeholder="nome@louis-roederer.com"></label>
+      <label><span>Nome</span><input id="aNome"></label>
+      <label><span>Empresa</span><input id="aEmp" placeholder="Maison Louis Roederer"></label>
+      <div style="display:flex;align-items:end;gap:8px;flex-wrap:wrap;"><button class="btn n" onclick="acSalvar(false)">Autorizar</button><button class="btn g" onclick="acSalvar(true)">Autorizar e enviar link</button></div></div>
+      <div id="aMsg" style="font-size:13px;margin-top:8px;"></div></div>
+    <div class="card"><h2>Pessoas autorizadas<small id="aTot"></small></h2><div style="overflow-x:auto;"><table id="tAces"></table></div>
+      <div style="font-size:12.5px;color:#7d7461;margin-top:10px;">Link para enviar a eles: <b>commanderiedebordeaux.com.br/manu.html</b> — ao abrir, digitam o e-mail e recebem o acesso.</div></div>
+  </div>
   <div id="secPed" style="display:none;">
     <div class="head"><div><div class="k">Épice · Maison Louis Roederer</div><h1>Pedido</h1><div class="sub">Escolha os vinhos, informe o cliente e o estado: o desconto e o frete são calculados na hora.</div><span class="amostra">Dados de exemplo — teste</span></div></div>
     <div class="pedgrid">
@@ -239,7 +252,7 @@ var REG={SP:"Sudeste",RJ:"Sudeste",MG:"Sudeste",ES:"Sudeste",PR:"Sul",SC:"Sul",R
 var DESC={Sudeste:{PF:5,PJ:15},Sul:{PF:5,PJ:12},"Centro-Oeste":{PF:3,PJ:10},Nordeste:{PF:3,PJ:10},Norte:{PF:0,PJ:8}};
 var FRETE={Sudeste:{cx:45,base:30,dias:"2 a 4",gratis:3000},Sul:{cx:55,base:35,dias:"3 a 5",gratis:3500},"Centro-Oeste":{cx:70,base:40,dias:"4 a 6",gratis:4000},Nordeste:{cx:85,base:45,dias:"5 a 8",gratis:5000},Norte:{cx:110,base:60,dias:"7 a 12",gratis:6000}};
 var PED={tipo:"PF",q:{},marca:""};
-function aba(a){["rel","promo","ped","merc"].forEach(function(k){document.getElementById({rel:"secRel",promo:"secPromo",ped:"secPed",merc:"secMerc"}[k]).style.display=k===a?"block":"none";});if(a==="merc")renderMerc();document.querySelectorAll("#abas button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-a")===a);});if(a==="rel"&&MAPA)setTimeout(function(){MAPA.invalidateSize();},50);}
+function aba(a){["rel","promo","ped","merc","aces"].forEach(function(k){document.getElementById({rel:"secRel",promo:"secPromo",ped:"secPed",merc:"secMerc",aces:"secAces"}[k]).style.display=k===a?"block":"none";});if(a==="merc")renderMerc();if(a==="aces")acLista();document.querySelectorAll("#abas button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-a")===a);});if(a==="rel"&&MAPA)setTimeout(function(){MAPA.invalidateSize();},50);}
 function br(n){return "R$ "+Number(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 function renderPromo(){
   document.getElementById("promos").innerHTML=PROMOS.map(function(p){var x=mk(p.m[0]);return "<div class='pr' style='border-left-color:"+x.c+"'><span class='tag'>"+esc(p.tag)+"</span><h3>"+esc(p.t)+"</h3><p>"+esc(p.d)+"</p><p>Código: <span class='cod'>"+p.cod+"</span> · válido até "+fd(p.ate)+"</p><button class='btn n' style='padding:6px 12px;font-size:12.5px;' onclick=\"usarCupom('"+p.cod+"')\">Usar no pedido</button></div>";}).join("");
@@ -465,14 +478,48 @@ document.getElementById("abas").onclick=function(e){var b=e.target.closest("butt
 document.getElementById("lang").onclick=function(e){var l=e.target.getAttribute("data-l");if(!l)return;L=l;try{localStorage.setItem("manu_lang",L);}catch(x){}render();};
 document.getElementById("anos").onclick=function(e){var y=+e.target.getAttribute("data-y");if(!y)return;ANO=y;render();};
 document.getElementById("per").onclick=function(e){var p=e.target.getAttribute("data-p");if(!p)return;P=p;render();};
-// Acesso: Grão-Mestre (Manu) e Luli Dias
+// ===================== ACESSO =====================
+// 1) Manu / Luli logados na Commanderie: acesso completo + aba "Acessos" + menu do Conselho
+// 2) Convidados (ex.: Maison): link pessoal por e-mail (?k=...), sem cadastro na Commanderie
+function abrir(){document.getElementById("st").style.display="none";document.getElementById("app").style.display="block";render();renderPromo();initPed();initEtq();}
+function fmtDH(d){return d?new Date(d).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}):"—";}
+async function acLista(){var r=await sb.rpc("manu_lista");var t=document.getElementById("tAces");if(r.error){t.innerHTML="<tr><td>Erro: "+esc(r.error.message)+" — rode o arquivo sql/manu_acesso.sql no Supabase.</td></tr>";return;}
+  var L2=r.data||[];document.getElementById("aTot").textContent=L2.length;
+  t.innerHTML=L2.length?("<tr><th>E-mail</th><th>Nome</th><th>Empresa</th><th>Situação</th><th>Último acesso</th><th>Link vale até</th><th></th></tr>"+L2.map(function(a){var e=esc(a.email);return "<tr><td>"+e+"</td><td>"+esc(a.nome||"")+"</td><td>"+esc(a.empresa||"")+"</td><td>"+(a.ativo?"<span class='pill p-ok'>ativo</span>":"<span class='pill p-pl'>bloqueado</span>")+"</td><td>"+fmtDH(a.ultimo_acesso)+"</td><td>"+fmtDH(a.token_exp)+"</td><td style='white-space:nowrap;'>"
+    +(a.ativo?"<button class='btn g' style='padding:5px 10px;font-size:12px;' onclick=\"acEnviar('"+e+"')\">Enviar link</button> <button class='btn' style='padding:5px 10px;font-size:12px;background:#eee;' onclick=\"acAtivo('"+e+"',false)\">Bloquear</button>":"<button class='btn n' style='padding:5px 10px;font-size:12px;' onclick=\"acAtivo('"+e+"',true)\">Reativar</button>")
+    +" <button class='btn' style='padding:5px 10px;font-size:12px;background:#fbeaea;color:#8f1d24;' onclick=\"acExcluir('"+e+"')\">Excluir</button></td></tr>";}).join("")):"<tr><td>Ninguém autorizado ainda.</td></tr>";
+  window._aces=L2;}
+async function acSalvar(enviar){var em=(document.getElementById("aEmail").value||"").trim().toLowerCase(),msg=document.getElementById("aMsg");
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){msg.innerHTML="<span style='color:#8f1d24'>E-mail inválido.</span>";return;}
+  var r=await sb.rpc("manu_salvar",{p_email:em,p_nome:(document.getElementById("aNome").value||"").trim(),p_empresa:(document.getElementById("aEmp").value||"").trim(),p_ativo:true});
+  if(r.error){msg.innerHTML="<span style='color:#8f1d24'>Erro: "+esc(r.error.message)+"</span>";return;}
+  if(enviar){var e2=await sb.rpc("manu_enviar_link",{p_email:em});if(e2.error){msg.innerHTML="<span style='color:#8f1d24'>Autorizado, mas o e-mail falhou: "+esc(e2.error.message)+"</span>";acLista();return;}}
+  msg.innerHTML="<span style='color:#2f6b3a'>✔ "+esc(em)+(enviar?" autorizado e link enviado.":" autorizado.")+"</span>";["aEmail","aNome","aEmp"].forEach(function(id){document.getElementById(id).value="";});acLista();}
+async function acEnviar(em){var r=await sb.rpc("manu_enviar_link",{p_email:em});document.getElementById("aMsg").innerHTML=r.error?"<span style='color:#8f1d24'>Erro: "+esc(r.error.message)+"</span>":"<span style='color:#2f6b3a'>✔ Link enviado para "+esc(em)+".</span>";acLista();}
+async function acAtivo(em,at){var a=(window._aces||[]).filter(function(x){return x.email===em;})[0]||{};await sb.rpc("manu_salvar",{p_email:em,p_nome:a.nome||"",p_empresa:a.empresa||"",p_ativo:at});acLista();}
+async function acExcluir(em){if(!confirm("Excluir o acesso de "+em+"?"))return;await sb.rpc("manu_excluir",{p_email:em});acLista();}
+function telaLogin(msg){var st=document.getElementById("st");
+  st.innerHTML="<div class='login'><h2 style='margin-top:0;'>Épice · Maison Louis Roederer</h2><p style='font-size:14px;'>Digite o seu e-mail para receber o link de acesso.<br><i style='color:#8a8270;'>Saisissez votre e-mail pour recevoir le lien d'accès.</i></p>"+(msg?"<p style='color:#8f1d24;font-size:13.5px;'>"+msg+"</p>":"")
+   +"<input id='lgEmail' type='email' placeholder='seu@email.com' autocomplete='email'><button class='btn n' style='width:100%;' id='lgBtn'>Receber link · Recevoir le lien</button><div id='lgMsg' style='font-size:13.5px;margin-top:12px;'></div>"
+   +"<p style='font-size:12px;color:#8a8270;margin-top:18px;'>Membro da Commanderie? <a href='index.html?login=1&next=manu.html'>Entrar com a sua conta</a></p></div>";
+  document.getElementById("lgBtn").onclick=async function(){var em=(document.getElementById("lgEmail").value||"").trim().toLowerCase(),m=document.getElementById("lgMsg");
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){m.innerHTML="<span style='color:#8f1d24'>E-mail inválido · e-mail invalide.</span>";return;}
+    this.disabled=true;var r=await sb.rpc("manu_pedir_link",{p_email:em});this.disabled=false;
+    m.innerHTML=r.error?"<span style='color:#8f1d24'>Erro: "+esc(r.error.message)+"</span>":"<span style='color:#2f6b3a'>Se este e-mail estiver autorizado, o link chega em alguns minutos (veja também o spam).<br><i>Si cet e-mail est autorisé, le lien arrivera dans quelques minutes (vérifiez aussi les spams).</i></span>";};}
+function sairConv(){try{localStorage.removeItem("manu_k");}catch(e){}location.href="manu.html";}
 async function iniciar(){var st=document.getElementById("st");
-  var u=(await sb.auth.getUser()).data.user;if(!u){st.innerHTML="<h2>Acesso restrito</h2><p>Entre na sua conta.</p><p><a href='index.html?login=1&next=manu.html'>Entrar</a></p>";return;}
-  var m=await sb.from("membros").select("nome,grau").eq("user_id",u.id).maybeSingle();var g=((m&&m.data&&m.data.grau)||"").toLowerCase(),nm=((m&&m.data&&m.data.nome)||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-  // Acesso: o Grão-Mestre (Manu) e a Luli Dias
-  if(!(/gr[aã]o/.test(g)||/^luli\b/.test(nm))){st.innerHTML="<h2>Acesso restrito</h2><p>Página de teste — acesso do Manu e da Luli.</p>";return;}
-  st.style.display="none";document.getElementById("app").style.display="block";render();renderPromo();initPed();initEtq();}
+  // link do e-mail: guarda o código e limpa o endereço
+  var k=(location.search.match(/[?&]k=([0-9a-f-]{36})/i)||[])[1];
+  if(k){try{localStorage.setItem("manu_k",k);}catch(e){}try{history.replaceState(null,"","manu.html");}catch(e){}}
+  else{try{k=localStorage.getItem("manu_k");}catch(e){}}
+  var u=(await sb.auth.getUser()).data.user;
+  if(u){var m=await sb.from("membros").select("nome,grau").eq("user_id",u.id).maybeSingle();var g=((m&&m.data&&m.data.grau)||"").toLowerCase(),nm=((m&&m.data&&m.data.nome)||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+    if(/gr[aã]o/.test(g)||/^luli\b/.test(nm)){document.getElementById("abaAces").style.display="";abrir();
+      var s=document.createElement("script");s.src="js/painel-shell.js?v=20261031";s.setAttribute("data-esconder",".dtop");document.body.appendChild(s);return;}}
+  if(k){var r=await sb.rpc("manu_entrar",{p_token:k});
+    if(!r.error&&r.data){var d=r.data;document.getElementById("quem").innerHTML=esc(d.nome||d.email)+(d.empresa?" · "+esc(d.empresa):"")+" · <a href='#' onclick='sairConv();return false;'>Sair</a>";abrir();return;}
+    try{localStorage.removeItem("manu_k");}catch(e){}telaLogin("O link expirou ou não é mais válido. Peça um novo abaixo. · Le lien a expiré, demandez-en un nouveau.");return;}
+  telaLogin("");}
 iniciar();
 </script>
-<script src="js/painel-shell.js?v=20261031" data-esconder=".dtop"></script>
 </body></html>
